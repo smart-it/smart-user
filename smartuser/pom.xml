@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.smartitengineering</groupId>
+    <artifactId>smart-user</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>smart-user</name>
+    <url>http://maven.apache.org</url>
+    <distributionManagement>
+       <!-- use the following if you're not using a snapshot version. -->
+        <repository>
+            <id>free-ftp-distro-repo</id>
+            <name>My FTP release</name>
+            <url>ftp://imyousuf.100webspace.net/imyousuf.100webspace.net/maven-repo/release</url>
+        </repository>
+       <!-- use the following if you ARE using a snapshot version. -->
+        <snapshotRepository>
+            <id>free-ftp-snapshot-repo</id>
+            <name>My FTP snapshot</name>
+            <url>ftp://imyousuf.100webspace.net/imyousuf.100webspace.net/maven-repo/snapshot</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <repositories>
+        <repository>
+            <id>maven2-repository.dev.java.net</id>
+            <name>Java.net Repository for Maven</name>
+            <url>http://download.java.net/maven/2/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>smart-it-snapshot-repo</id>
+            <name>Smart IT Engineering snapshot repo</name>
+            <url>http://dev.smartitengineering.com/maven-repo/snapshot</url>
+            <snapshots>
+            </snapshots>
+        </repository>
+    </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <modules>
+        <module>smart-user-api</module>
+        <module>smart-user-impl</module>
+        <module>smart-user-element</module>
+        <module>smart-user-resource</module>
+        <module>smart-user-rest-client</module>
+    </modules>
+    <properties>
+        <nbm-plugin-version>2.6.2</nbm-plugin-version>
+        <netbeans-api-version>RELEASE61</netbeans-api-version>
+        <abstract-dao-version>0.4-SNAPSHOT</abstract-dao-version>
+    </properties>
+</project>
