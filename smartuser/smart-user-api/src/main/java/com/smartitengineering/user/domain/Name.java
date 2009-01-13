@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.user;
+package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
 
