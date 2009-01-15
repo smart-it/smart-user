@@ -5,6 +5,8 @@
 
 package com.smartitengineering.user.domain;
 
+import java.util.Date;
+
 /**
  *
  * @author modhu7
@@ -14,11 +16,28 @@ public class Person extends BasicPerson{
     private BasicPerson mother;
     private BasicPerson spouse;
     private Address address;
+    private Date birthDay;
     private String primaryEmail;
     private String secondaryEmail;
     private String phoneNumber;
     private String cellPhoneNumber;
     private String faxNumber;
+
+    public Date getBirthDay() {
+        if(birthDay == null){
+            return new Date();
+        }
+        return birthDay;
+    }
+
+    public void setBirthDay(Date birthDay) {
+        if(birthDay==null){
+            return;
+        }
+        this.birthDay = birthDay;
+    }
+    
+    
 
     public Address getAddress() {
         if(address==null){

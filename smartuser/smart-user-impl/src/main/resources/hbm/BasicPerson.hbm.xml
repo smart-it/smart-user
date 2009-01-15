@@ -94,6 +94,11 @@
                 length="255"
             />
             <property
+                name="birthDay"
+                column="birth_day"
+                type="java.util.Date"
+            />
+            <property
                 name="secondaryEmail"
                 column="secondary_email"
                 type="java.lang.String"
