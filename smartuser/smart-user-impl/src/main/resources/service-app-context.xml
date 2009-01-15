@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ *   
+ * This is a common dao with basic CRUD operations and is not limited to any 
+ * persistent layer implementation
+ * 
+ * Copyright (C) 2008  Imran M Yousuf (imyousuf@smartitengineering.com)
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ *
+-->
+
+<!--
+    Document   : db-beanfactory.xml
+    Created on : May 20, 2008, 8:21 PM
+    Author     : imyousuf
+    Description:
+        This document will contain the Spring Application Context for the DB
+        Persistene Engine Implementation
+-->
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "spring-beans.dtd"  >
+<beans>
+    <!-- 
+        Please make sure the following properties are availabe to the context
+        com.smartitengineering.dao.connection.driver_class
+        com.smartitengineering.dao.connection.url
+        com.smartitengineering.dao.connection.username
+        com.smartitengineering.dao.connection.password
+        com.smartitengineering.dao.dialect
+        com.smartitengineering.dao.show_sql
+    -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:db-config.properties</value>
+            </list>
+        </property>
+        <property name="properties" >
+            <props>
+                <prop key="hibernate.connection.driver_class">${com.smartitengineering.dao.connection.driver_class}
+                </prop>
+                <prop key="hibernate.connection.url">${com.smartitengineering.dao.connection.url}
+                </prop>
+                <prop key="hibernate.connection.username">${com.smartitengineering.dao.connection.username}
+                </prop>
+                <prop key="hibernate.connection.password">${com.smartitengineering.dao.connection.password}
+                </prop>
+                <prop key="hibernate.dialect">${com.smartitengineering.dao.dialect}
+                </prop>
+                <prop key="hibernate.show_sql">${com.smartitengineering.dao.show_sql}
+                </prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- Local C3P0 DataSource that works in any environment -->
+    <!-- (Both DataSource implementations have a "close" method to be called on shutdown) -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass">
+            <value>${hibernate.connection.driver_class}</value>
+        </property>
+        <property name="jdbcUrl">
+            <value>${hibernate.connection.url}</value>
+        </property>
+        <property name="user">
+            <value>${hibernate.connection.username}</value>
+        </property>
+        <property name="password">
+            <value>${hibernate.connection.password}</value>
+        </property>
+        <property name="acquireIncrement">
+            <value>5</value>
+        </property>
+        <property name="checkoutTimeout">
+            <value>5000</value>
+        </property>
+        <property name="initialPoolSize">
+            <value>5</value>
+        </property>
+        <property name="maxIdleTime">
+            <value>120</value>
+        </property>
+        <!-- Will never expire (seconds)-->
+        <property name="maxPoolSize">
+            <value>30</value>
+        </property>
+        <property name="maxStatements">
+            <value>500</value>
+        </property>
+        <property name="maxStatementsPerConnection">
+            <value>12</value>
+        </property>
+        <property name="minPoolSize">
+            <value>3</value>
+        </property>
+        <property name="numHelperThreads">
+            <value>4</value>
+        </property>
+    </bean>
+    
+    <!-- Hibernate SessionFactory -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource">
+            <ref local="dataSource" />
+        </property>
+        <property name="mappingResources">
+            <list>                
+                <value>hbm/BasicPerson.hbm.xml</value>                
+                <value>hbm/Privilege.hbm.xml</value>
+                <value>hbm/Role.hbm.xml</value>
+                <value>hbm/User.hbm.xml</value>
+                <value>hbm/UserPerson.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}
+                </prop>
+                <prop key="hibernate.autoCommit">true
+                </prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}
+                </prop>
+                <prop key="hibernate.hbm2ddl.auto">create-drop
+                </prop>
+                <prop key="hibernate.query.substitutions">true 'T', false 'F'
+                </prop>
+            </props>
+        </property>
+    
+
+</beans>
