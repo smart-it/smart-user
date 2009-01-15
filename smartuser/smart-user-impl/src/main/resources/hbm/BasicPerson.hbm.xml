@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd" >
+<hibernate-mapping>
+    <class
+        name="com.smartitengineering.bookstore.domain.BasicPerson"
+        table="basic_person"
+        dynamic-update="false"
+        dynamic-insert="false"
+        
+    >
+        <id
+            name="id"
+            column="id"
+            type="java.lang.Integer"
+        >
+            <generator class = "increment">
+            </generator>
+        </id>
+        <version name="version" column="version" />
+        <property
+            name="nationalID"
+            column="national_id"
+            type="java.lang.String"
+            length="255"
+        />
+        <component name="Name">
+            <property
+                name="firstName"
+                column="first_name"
+                type="java.lang.String"
+                length="255"
+            />
+            <property
+                name="lastName"
+                column="last_name"
+                type="java.lang.String"
+                length="255"
+            />
+            <property
+                name="middleInitial"
+                column="middle_initial"
+                type="java.lang.String"
+                length="255"
+            />
+        </component>
+        <joined-subclass name="com.smartitengineering.user.domain.Person"
+               extends="com.smartitengineering.user.domain.BasicPerson"
+               table="person">
+            <key column="id" />
+            <one-to-one name="father" cascade="all" />
+            <one-to-one name="mother" cascade="all" />
+            <one-to-one name="spouse" cascade="all" />
+            
+            
+            <component name="Address">
+                <property
+                    name="streetAddress"
+                    column="street_address"
+                    type="java.lang.String"
+                    length="255"
+                />
+                <property
+                    name="city"
+                    column="city"
+                    type="java.lang.String"
+                    length="255"
+                />
+                <property
+                    name="state"
+                    column="state"
+                    type="java.lang.String"
+                    length="255"
+                />
+                <property
+                    name="country"
+                    column="country"
+                    type="java.lang.String"
+                    length="255"
+                />
+                <property
+                    name="zip"
+                    column="zip"
+                    type="java.lang.String"
+                    length="255"
+                />
+            </component>
+            
+            
+            <property
+                name="primaryEmail"
+                column="primary_email"
+                type="java.lang.String"
+                length="255"
+            />
+            <property
+                name="secondaryEmail"
+                column="secondary_email"
+                type="java.lang.String"
+                length="255"
+            />
+            <property
+                name="phoneNumber"
+                column="phone_number"
+                type="java.lang.String"
+                length="255"
+            />
+            <property
+                name="cellPhoneNumber"
+                column="cell_phone_number"
+                type="java.lang.String"
+                length="255"
+            />
+            <property
+                name="faxNumber"
+                column="fax_number"
+                type="java.lang.String"
+                length="255"
+            />
+        </joined-subclass>
+    </class>
+</hibernate-mapping>

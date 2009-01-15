@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd" >
+<hibernate-mapping>
+    <class
+        name="com.smartitengineering.user.domain.User"
+        table="user"
+        dynamic-update="false"
+        dynamic-insert="false"
+     >
+        <id
+            name="id"
+            column="id"
+            type="java.lang.Integer"
+        >
+            <generator class = "increment">
+            </generator>
+        </id>
+        <version name="version" column="version" />
+        <property
+            name="username"
+            column="username"
+            type="java.lang.String"
+            length="255"
+        />
+	<property
+            name="password"
+            column="password"
+            type="java.lang.String"
+            length="255"
+        />
+        <set name="roles" lazy="false" outer-join="true" cascade="none" table="user_role" inverse="false">
+            <key column="user_id" />
+            <many-to-many class="com.smartitengineering.user.domain.Role" column="role_id" lazy="false" outer-join="true" />
+        </set>
+	
+    </class>
+</hibernate-mapping>
