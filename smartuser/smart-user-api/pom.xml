@@ -21,7 +21,7 @@
         <dependency>
             <groupId>com.smartitengineering</groupId>
             <artifactId>smart-domain</artifactId>
-            <version>${abstract-dao-version}</version>
+            <version>0.4-SNAPSHOT</version>
         </dependency>        
     </dependencies>
     <build>
