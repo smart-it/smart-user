@@ -15,7 +15,7 @@ import java.util.Collection;
  *
  * @author modhu7
  */
-public interface UserService extends PersonService{
+public interface UserService{
     
     public void create(UserPerson user);
     
