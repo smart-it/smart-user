@@ -22,7 +22,7 @@
             <groupId>com.smartitengineering</groupId>
             <artifactId>smart-domain</artifactId>
             <version>${abstract-dao-version}</version>
-        </dependency>
+        </dependency>        
     </dependencies>
     <build>
         <plugins>
