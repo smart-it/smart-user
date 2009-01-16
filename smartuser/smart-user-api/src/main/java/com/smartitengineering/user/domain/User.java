@@ -5,6 +5,7 @@
 
 package com.smartitengineering.user.domain;
 
+import com.smartitengineering.domain.AbstractPersistentDTO;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,7 +13,7 @@ import java.util.Set;
  *
  * @author modhu7
  */
-public class User {
+public class User extends AbstractPersistentDTO<User>{
     private String username;
     private String password;
     private Set<Role> roles;
@@ -57,6 +58,10 @@ public class User {
             return;
         }
         this.username = username;
+    }
+
+    public boolean isValid() {
+        return true;
     }
     
     
