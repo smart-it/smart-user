@@ -5,12 +5,16 @@
 
 package com.smartitengineering.user.filter;
 
+import com.smartitengineering.user.domain.Name;
+
+
+
 /**
  *
  * @author modhu7
  */
 public class PersonFilter {
-    private String name;
+    private Name name;
     private String email;
 
     public String getEmail() {
@@ -20,9 +24,9 @@ public class PersonFilter {
         return email;
     }
 
-    public String getName() {
+    public Name getName() {
         if(name==null){
-            return "";
+            return new Name();
         }
         return name;
     }
@@ -36,7 +40,7 @@ public class PersonFilter {
         this.email = email;
     }
 
-    public void setName(String name) {
+    public void setName(Name name) {
         if(name==null){
             return;
         }
