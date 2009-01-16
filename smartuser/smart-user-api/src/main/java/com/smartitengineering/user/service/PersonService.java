@@ -21,6 +21,8 @@ public interface PersonService {
     
     public void delete(Person person);
     
-    public Collection<Person> search(PersonFilter filter);    
+    public Collection<Person> search(PersonFilter filter); 
+    
+    public Person getPersonByID(Integer id);
     
 }

@@ -73,8 +73,14 @@ public class UserServiceImpl implements UserService{
     public Collection<UserPerson> search(UserPersonFilter filter) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
-    
+
+    public User getUserByID(Integer id) {
+        return getUserReadDao().getById(id);
+    }
+
+    public UserPerson getUserPersonByID(Integer id) {
+        return getUserPersonReadDao().getById(id);
+    }
     
     public CommonReadDao<UserPerson> getUserPersonReadDao() {
         return userPersonReadDao;

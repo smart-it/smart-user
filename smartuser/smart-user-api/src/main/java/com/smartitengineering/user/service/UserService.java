@@ -30,4 +30,8 @@ public interface UserService{
     public Collection<User> search(UserFilter filter);
     
     public Collection<UserPerson> search(UserPersonFilter filter);
+    
+    public User getUserByID(Integer id);
+    
+    public UserPerson getUserPersonByID(Integer id);
 }

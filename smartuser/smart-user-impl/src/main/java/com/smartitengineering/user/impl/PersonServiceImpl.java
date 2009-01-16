@@ -65,4 +65,8 @@ public class PersonServiceImpl implements PersonService{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public Person getPersonByID(Integer id) {
+        return getPersonReadDao().getById(id);
+    }
+
 }
