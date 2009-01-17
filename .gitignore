@@ -1,0 +1,6 @@
+private/
+catalog.xml
+generated
+target
+*.properties
+*~
