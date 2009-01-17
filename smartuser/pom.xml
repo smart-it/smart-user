@@ -56,8 +56,7 @@
         <module>smart-user-rest-client</module>
     </modules>
     <properties>
-        <nbm-plugin-version>2.6.2</nbm-plugin-version>
-        <netbeans-api-version>RELEASE61</netbeans-api-version>
+        <jersey.version>1.0.1</jersey.version>
         <abstract-dao-version>0.4-SNAPSHOT</abstract-dao-version>
     </properties>
 </project>
