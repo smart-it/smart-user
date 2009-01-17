@@ -1,0 +1,4 @@
+port = 9998
+url = http://localhost/
+warname = smartuser
+
