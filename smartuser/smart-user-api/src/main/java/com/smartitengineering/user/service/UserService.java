@@ -17,7 +17,7 @@ import java.util.Collection;
  */
 public interface UserService{
     
-    public void create(UserPerson user);
+    public void create(UserPerson userPerson);
     
     public void update(User user);
     

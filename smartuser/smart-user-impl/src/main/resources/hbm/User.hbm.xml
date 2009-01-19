@@ -23,7 +23,7 @@
             type="java.lang.String"
             length="255"
         />
-	<property
+        <property
             name="password"
             column="password"
             type="java.lang.String"
@@ -33,6 +33,5 @@
             <key column="user_id" />
             <many-to-many class="com.smartitengineering.user.domain.Role" column="role_id" lazy="false" outer-join="true" />
         </set>
-	
     </class>
 </hibernate-mapping>

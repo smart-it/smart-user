@@ -3,8 +3,8 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd" >
 <hibernate-mapping>
     <class
-        name="com.smartitengineering.user.domain.User"
-        table="suer"
+        name="com.smartitengineering.user.domain.UserPerson"
+        table="userperson"
         dynamic-update="false"
         dynamic-insert="false"
      >
