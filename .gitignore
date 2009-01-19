@@ -1,5 +1,6 @@
 private/
 catalog.xml
+derby.log
 generated
 target
 *.properties
