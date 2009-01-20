@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Properties;
 import javax.ws.rs.core.UriBuilder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
@@ -26,35 +28,26 @@ public abstract class AbstractClientImpl {
         if (null != port) {
             try {
                 return Integer.parseInt(port);
-            } catch (NumberFormatException e) {
+            }
+            catch (NumberFormatException e) {
             }
         }
         return defaultPort;
     }
 
     private static URI getBaseURI() {
-        /*
-         * Please note that the following code needs to change to read the
-         * host, port and context from a properties file
-         */
-        Properties properties = new Properties();
-
-        try {
-            InputStream file = AbstractClientImpl.class.getClassLoader().getResourceAsStream(
-                    "connection.properties");
-            properties.load(file);
-        } catch (IOException ex) {
-        }
-        String url = properties.getProperty("url");
-        String port = properties.getProperty("port");
-        String warname = properties.getProperty("warname");
-        return UriBuilder.fromUri(url).port(getPort(new Integer(port))).path(warname).build();
+        new ClassPathXmlApplicationContext(
+            "client-context.xml");
+        final ConnectionConfig connectionConfig =
+            ConfigFactory.getInstance().getConnectionConfig();
+        return UriBuilder.fromUri(connectionConfig.getBasicUrl()).port(getPort(connectionConfig.
+            getPort())).path(connectionConfig.getContextPath()).build();
     }
 
     protected AbstractClientImpl() {
         Client c = Client.create();
         webResource =
-                c.resource(BASE_URI);
+            c.resource(BASE_URI);
         System.out.println(BASE_URI);
     }
 

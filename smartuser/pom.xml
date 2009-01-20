@@ -59,5 +59,6 @@
         <jersey.version>1.0.1</jersey.version>
         <abstract-dao-version>0.4-SNAPSHOT</abstract-dao-version>
         <smart-util-version>0.1-SNAPSHOT</smart-util-version>
+        <spring.version>2.5.6</spring.version>
     </properties>
 </project>
