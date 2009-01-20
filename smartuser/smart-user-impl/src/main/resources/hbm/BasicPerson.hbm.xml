@@ -21,6 +21,7 @@
         <property
             name="nationalID"
             column="national_id"
+            unique="true"
             type="java.lang.String"
             length="255"
         />
@@ -90,6 +91,7 @@
             <property
                 name="primaryEmail"
                 column="primary_email"
+                unique="true"
                 type="java.lang.String"
                 length="255"
             />

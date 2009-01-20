@@ -19,8 +19,8 @@
         
         <version name="version" column="version" />
         
-        <one-to-one name="user"/>
-        <one-to-one name="person"/>
+        <one-to-one name="user" cascade="all"/>
+        <one-to-one name="person" cascade="all"/>
         
     </class>
 </hibernate-mapping>
