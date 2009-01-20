@@ -4,7 +4,7 @@
 <hibernate-mapping>
     <class
         name="com.smartitengineering.user.domain.User"
-        table="user"
+        table="smart_user"
         dynamic-update="false"
         dynamic-insert="false"
      >
