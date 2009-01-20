@@ -15,4 +15,4 @@ testDeleteAll=true
 server=glassfish
 uri=http://localhost/
 port=9998
-warname=bookstore
+warname=smartuser

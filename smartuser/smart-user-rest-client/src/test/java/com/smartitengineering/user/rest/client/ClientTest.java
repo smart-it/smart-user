@@ -10,8 +10,8 @@ import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.domain.UserPerson;
 import com.smartitengineering.user.service.UserService;
+import com.smartitengineering.user.service.UserServiceFactory;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
@@ -65,9 +65,7 @@ public class ClientTest extends TestCase{
     public ClientTest(String testName) throws IOException {
         super(testName);
         try {
-            properties.load(new FileInputStream("/home/modhu7/NetBeansProjects/smart-user/" +
-                    "smartuser/smart-user-rest-client/" + "src/test/resources/" +
-                    "testConfiguration.properties"));
+            properties.load(getClass().getClassLoader().getResourceAsStream("testConfiguration.properties"));
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -91,8 +89,8 @@ public class ClientTest extends TestCase{
             glassfish = new GlassFish(getBaseURI().getPort());
             // Deploy Glassfish referencing the web.xml
             ScatteredWar war = new ScatteredWar(getBaseURI().getRawPath(),
-                    new File("/home/modhu7/NetBeansProjects/smart-user/smartuser/smart-user-rest-client/src/test/webapp"),
-                    new File("/home/modhu7/NetBeansProjects/smart-user/smartuser/smart-user-rest-client/src/test/webapp/WEB-INF/web.xml"),
+                    new File("./src/test/webapp"),
+                    new File("./src/test/webapp/WEB-INF/web.xml"),
                     Collections.singleton(new File("target/classes").toURI().toURL()));
             System.out.println(war.name);
             
@@ -113,6 +111,7 @@ public class ClientTest extends TestCase{
     
     public void testResources(){
         doTestCreate();
+        doTestServiceAggregator();
     }
 
     private void doTestCreate() {
@@ -133,6 +132,11 @@ public class ClientTest extends TestCase{
         
         service.create(userPerson);
         service.getUserByID(1);
+    }
+
+    private void doTestServiceAggregator() {
+        assertNotNull(UserServiceFactory.getInstance().getPersonService());
+        assertNotNull(UserServiceFactory.getInstance().getUserService());
     }
          
     
