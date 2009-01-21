@@ -31,7 +31,12 @@ public interface UserService{
     
     public Collection<UserPerson> search(UserPersonFilter filter);
     
-    public User getUserByID(Integer id);
+    public Collection<UserPerson> getAllUserPerson();
     
-    public UserPerson getUserPersonByID(Integer id);
+    public Collection<User> getAllUser();
+    
+    public User getUserByID(String username);
+    
+    public UserPerson getUserPersonByID(String username);    
+    
 }

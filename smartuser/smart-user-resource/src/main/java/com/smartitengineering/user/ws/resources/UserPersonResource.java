@@ -14,6 +14,7 @@ import com.smartitengineering.user.ws.element.UserPersonFilterElement;
 import javax.annotation.Resource;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -21,6 +22,7 @@ import javax.ws.rs.Path;
 
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 /**
@@ -41,6 +43,7 @@ public class UserPersonResource {
         try {
             userService.create(userPersonElement.getUserPerson());
         } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
     
@@ -54,11 +57,11 @@ public class UserPersonResource {
     }
 
     @DELETE
-    @Path("{id}")
+    @Path("{username}")
     @Consumes("application/xml")
-    public void deleteUserPerson(@PathParam("id") Integer id) {
+    public void deleteUserPerson(@PathParam("username") String username) {
         try {
-            userService.delete(userService.getUserByID(id));
+            userService.delete(userService.getUserPersonByID(username));
         } catch (Exception e) {
         }
     }
@@ -84,16 +87,42 @@ public class UserPersonResource {
     }
     
     @GET
-    @Path("{id}")
+    @Path("{username}")
     @Produces("application/xml")
     public UserPersonElement getUserPersonByID(
-            @PathParam("id") Integer id) {
+            @PathParam("username") String username){
         UserPersonElement userPersonElement = new UserPersonElement();
         try {
-            userPersonElement.setUserPerson(userService.getUserPersonByID(id));
+            userPersonElement.setUserPerson(userService.getUserPersonByID(username));
         } catch (Exception e) {
         }
         return userPersonElement;
+    }
+    
+    @GET
+    @Path("alluserperson")
+    @Produces("application/xml")
+    public UserPersonElements getAllUser() {
+        UserPersonElements userPersonElements = new UserPersonElements();
+        try {
+            userPersonElements.setUserPersons(userService.getAllUserPerson());
+        } catch (Exception e) {
+        }
+        return userPersonElements;
+    }
+
+    @GET
+    @Produces("application/xml")
+    public UserPersonElements searchUserByGet(
+            @DefaultValue(value = "NO USERNAME") @QueryParam(value = "username") final String username) {
+        UserPersonFilter filter = new UserPersonFilter();
+        filter.setUsername(username);
+        UserPersonElements userPersonElements = new UserPersonElements();
+        try {
+            userPersonElements.setUserPersons(userService.search(filter));
+        } catch (Exception e) {
+        }
+        return userPersonElements;
     }
     
     public UserService getUserService() {

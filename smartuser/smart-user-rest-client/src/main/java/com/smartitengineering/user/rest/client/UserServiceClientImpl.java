@@ -11,10 +11,14 @@ import com.smartitengineering.user.filter.UserFilter;
 import com.smartitengineering.user.filter.UserPersonFilter;
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.user.ws.element.UserElement;
+import com.smartitengineering.user.ws.element.UserElements;
 import com.smartitengineering.user.ws.element.UserPersonElement;
+import com.smartitengineering.user.ws.element.UserPersonElements;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 import java.util.Collection;
+import javax.ws.rs.core.MultivaluedMap;
 
 /**
  *
@@ -58,27 +62,45 @@ public class UserServiceClientImpl extends AbstractClientImpl implements UserSer
     }
 
     public Collection<User> search(UserFilter filter) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        MultivaluedMap<String, String> map = new MultivaluedMapImpl();
+        map.add("username", filter.getUsername());
+        WebResource resource = getWebResource().path("user").queryParams(map);
+        
+        final UserElements userElements = resource.get(UserElements.class);
+        return userElements.getUsers();
     }
 
     public Collection<UserPerson> search(UserPersonFilter filter) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        MultivaluedMap<String, String> map = new MultivaluedMapImpl();
+        map.add("username", filter.getUsername());
+        WebResource resource = getWebResource().path("userperson").queryParams(map);
+        
+        final UserPersonElements userPersonElements = resource.get(UserPersonElements.class);
+        return userPersonElements.getUserPersons(); 
+    }    
+
+    public Collection<UserPerson> getAllUserPerson() {
+        WebResource resource = getWebResource().path("userperson/alluserperson");        
+        final UserPersonElements userPersonElements = resource.get(UserPersonElements.class);
+        return userPersonElements.getUserPersons(); 
     }
 
-    public User getUserByID(Integer id) {
-        WebResource resource = getWebResource().path("user/" +
-                id);
-        final UserElement element = resource.get(UserElement.class);
-        final User user = element.getUser();
-        return user;
+    public Collection<User> getAllUser() {
+        WebResource resource = getWebResource().path("user/alluser");        
+        final UserElements userElements = resource.get(UserElements.class);
+        return userElements.getUsers();
     }
 
-    public UserPerson getUserPersonByID(Integer id) {
-        WebResource resource = getWebResource().path("userperson/" +
-                id);
-        final UserPersonElement element = resource.get(UserPersonElement.class);
-        final UserPerson userPerson = element.getUserPerson();
-        return userPerson;
+    public User getUserByID(String username) {
+        WebResource resource = getWebResource().path("user/" + username);        
+        final UserElement userElement = resource.get(UserElement.class);
+        return userElement.getUser();
+    }
+
+    public UserPerson getUserPersonByID(String username) {
+        WebResource resource = getWebResource().path("userperson/" + username);        
+        final UserPersonElement userPersonElement = resource.get(UserPersonElement.class);
+        return userPersonElement.getUserPerson(); 
     }
 
 }

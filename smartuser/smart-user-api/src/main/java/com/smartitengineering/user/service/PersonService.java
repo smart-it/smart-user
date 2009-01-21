@@ -23,6 +23,8 @@ public interface PersonService {
     
     public Collection<Person> search(PersonFilter filter); 
     
-    public Person getPersonByID(Integer id);
+    public Collection<Person> getAllPerson();
+    
+    public Person getPersonByID(String email);
     
 }

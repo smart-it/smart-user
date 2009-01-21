@@ -9,9 +9,12 @@ import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.filter.PersonFilter;
 import com.smartitengineering.user.service.PersonService;
 import com.smartitengineering.user.ws.element.PersonElement;
+import com.smartitengineering.user.ws.element.PersonElements;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 import java.util.Collection;
+import javax.ws.rs.core.MultivaluedMap;
 
 /**
  *
@@ -41,15 +44,29 @@ public class PersonServiceClientImpl extends AbstractClientImpl implements Perso
     }
 
     public Collection<Person> search(PersonFilter filter) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        MultivaluedMap<String, String> map = new MultivaluedMapImpl();
+        map.add("email", filter.getEmail());
+        map.add("firstName", filter.getName().getFirstName());
+        map.add("lastName", filter.getName().getLastName());
+        map.add("middleInitial", filter.getName().getMiddleInitial());
+        WebResource resource = getWebResource().path("person").queryParams(map);
+        final PersonElements personElements = resource.get(PersonElements.class);
+        return personElements.getPersons();
     }
 
-    public Person getPersonByID(Integer id) {
+    public Person getPersonByID(String email) {
         WebResource resource = getWebResource().path("person/" +
-                id);
+                email);
         final PersonElement element = resource.get(PersonElement.class);
         final Person person = element.getPerson();
         return person;
     }
+
+    public Collection<Person> getAllPerson() {
+        WebResource resource = getWebResource().path("person/allperson");        
+        final PersonElements personElements = resource.get(PersonElements.class);
+        return personElements.getPersons(); 
+    }
+
 
 }
