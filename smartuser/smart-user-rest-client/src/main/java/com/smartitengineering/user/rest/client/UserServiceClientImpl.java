@@ -5,11 +5,15 @@
 
 package com.smartitengineering.user.rest.client;
 
+import com.smartitengineering.user.domain.Privilege;
+import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.domain.UserPerson;
 import com.smartitengineering.user.filter.UserFilter;
 import com.smartitengineering.user.filter.UserPersonFilter;
 import com.smartitengineering.user.service.UserService;
+import com.smartitengineering.user.ws.element.PrivilegeElement;
+import com.smartitengineering.user.ws.element.RoleElement;
 import com.smartitengineering.user.ws.element.UserElement;
 import com.smartitengineering.user.ws.element.UserElements;
 import com.smartitengineering.user.ws.element.UserPersonElement;
@@ -101,6 +105,60 @@ public class UserServiceClientImpl extends AbstractClientImpl implements UserSer
         WebResource resource = getWebResource().path("userperson/" + username);        
         final UserPersonElement userPersonElement = resource.get(UserPersonElement.class);
         return userPersonElement.getUserPerson(); 
+    }
+
+    public void create(Role role) {
+        RoleElement roleElement = new RoleElement();
+        roleElement.setRole(role);
+        final Builder type = getWebResource().path("role").type("application/xml");
+        type.post();
+    }
+
+    public void update(Role role) {
+        RoleElement roleElement = new RoleElement();
+        roleElement.setRole(role);
+        final Builder type = getWebResource().path("role").type("application/xml");
+        type.put();
+    }
+
+    public void delete(Role role) {
+        RoleElement roleElement = new RoleElement();
+        roleElement.setRole(role);
+        final Builder type = getWebResource().path("role").type("application/xml");
+        type.delete();
+    }
+
+    public Role getRoleByName(String name) {
+        WebResource resource = getWebResource().path("role/" + name);        
+        final RoleElement roleElement = resource.get(RoleElement.class);
+        return roleElement.getRole();
+    }
+
+    public void create(Privilege privilege) {
+        PrivilegeElement privilegeElement = new PrivilegeElement();
+        privilegeElement.setPrivilege(privilege);
+        final Builder type = getWebResource().path("privilege").type("application/xml");
+        type.post();
+    }
+
+    public void update(Privilege privilege) {
+        PrivilegeElement privilegeElement = new PrivilegeElement();
+        privilegeElement.setPrivilege(privilege);
+        final Builder type = getWebResource().path("privilege").type("application/xml");
+        type.put();
+    }
+
+    public void delete(Privilege privilege) {
+        PrivilegeElement privilegeElement = new PrivilegeElement();
+        privilegeElement.setPrivilege(privilege);
+        final Builder type = getWebResource().path("privilege").type("application/xml");
+        type.delete();
+    }
+
+    public Privilege getPrivilegeByName(String name) {
+        WebResource resource = getWebResource().path("privilege/" + name);        
+        final PrivilegeElement privilegeElement = resource.get(PrivilegeElement.class);
+        return privilegeElement.getPrivilege();
     }
 
 }

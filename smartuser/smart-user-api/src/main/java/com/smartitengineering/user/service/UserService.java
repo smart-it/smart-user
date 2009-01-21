@@ -5,6 +5,8 @@
 
 package com.smartitengineering.user.service;
 
+import com.smartitengineering.user.domain.Privilege;
+import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.domain.UserPerson;
 import com.smartitengineering.user.filter.UserFilter;
@@ -37,6 +39,28 @@ public interface UserService{
     
     public User getUserByUsername(String username);
     
-    public UserPerson getUserPersonByUsername(String username);    
+    public UserPerson getUserPersonByUsername(String username);  
+    
+    
+    /*Role Service*/
+    
+    public void create(Role role);
+    
+    public void update(Role role);
+    
+    public void delete(Role role);
+    
+    public Role getRoleByName(String name);
+    
+    
+    /*Privilege Service*/
+    
+    public void create(Privilege privilege);
+    
+    public void update(Privilege privilege);
+    
+    public void delete(Privilege privilege);
+    
+    public Privilege getPrivilegeByName(String name);
     
 }

@@ -9,6 +9,8 @@ import com.smartitengineering.dao.common.CommonWriteDao;
 import com.smartitengineering.dao.common.queryparam.FetchMode;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
+import com.smartitengineering.user.domain.Privilege;
+import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.domain.UserPerson;
 import com.smartitengineering.user.filter.UserFilter;
@@ -30,6 +32,10 @@ public class UserServiceImpl implements UserService {
     private CommonWriteDao<User> userWriteDao;
     private CommonReadDao<UserPerson> userPersonReadDao;
     private CommonWriteDao<UserPerson> userPersonWriteDao;
+    private CommonReadDao<Role> roleReadDao;
+    private CommonWriteDao<Role> roleWriteDao;
+    private CommonReadDao<Privilege> privilegeReadDao;
+    private CommonWriteDao<Privilege> privilegeWriteDao;
 
     public void create(UserPerson userPerson) {
         try {
@@ -74,12 +80,12 @@ public class UserServiceImpl implements UserService {
             queryParameters.add(qp);
         }
         Collection<User> users = new HashSet<User>();
-        if(queryParameters.size()==0){
+        if (queryParameters.size() == 0) {
             try {
                 users = getUserReadDao().getAll();
             } catch (Exception e) {
             }
-        }else{
+        } else {
             users = getUserReadDao().getList(queryParameters);
         }
         return users;
@@ -89,17 +95,17 @@ public class UserServiceImpl implements UserService {
         QueryParameter qp;
         List<QueryParameter> queryParameters = new ArrayList<QueryParameter>();
         if (!StringUtils.isEmpty(filter.getUsername())) {
-            qp = QueryParameterFactory.getNestedParametersParam("User", FetchMode.DEFAULT, 
+            qp = QueryParameterFactory.getNestedParametersParam("User", FetchMode.DEFAULT,
                     QueryParameterFactory.getStringLikePropertyParam("username", filter.getUsername()));
             queryParameters.add(qp);
         }
         Collection<UserPerson> userPersons = new HashSet<UserPerson>();
-        if(queryParameters.size()==0){
+        if (queryParameters.size() == 0) {
             try {
                 userPersons = getUserPersonReadDao().getAll();
             } catch (Exception e) {
             }
-        }else{
+        } else {
             try {
                 userPersons = getUserPersonReadDao().getList(queryParameters);
             } catch (Exception e) {
@@ -135,11 +141,83 @@ public class UserServiceImpl implements UserService {
 
     public UserPerson getUserPersonByUsername(String username) {
         QueryParameter qp;
-        qp = QueryParameterFactory.getNestedParametersParam("User", FetchMode.DEFAULT, 
-                    QueryParameterFactory.getStringLikePropertyParam("username", username));
+        qp = QueryParameterFactory.getNestedParametersParam("User", FetchMode.DEFAULT,
+                QueryParameterFactory.getStringLikePropertyParam("username", username));
         UserPerson userPerson = getUserPersonReadDao().getSingle(qp);
         return userPerson;
     }
+    
+    
+    //Role Services
+    
+    public void create(Role role) {
+        try {
+            getRoleWriteDao().save(role);
+        } catch (Exception e) {
+        }
+    }
+
+    public void update(Role role) {
+        try {
+            getRoleWriteDao().update(role);
+        } catch (Exception e) {
+        }
+    }
+
+    public void delete(Role role) {
+        try {
+            getRoleWriteDao().delete(role);
+        } catch (Exception e) {
+        }
+    }
+
+    public Role getRoleByName(String name) {
+        QueryParameter qp;
+        qp = QueryParameterFactory.getStringLikePropertyParam("name", name);
+        Role role = new Role();
+        try {
+            role = getRoleReadDao().getSingle(qp);
+        } catch (Exception e) {
+        }
+        return role;
+    }
+
+    //Privilege services
+    
+    public void create(Privilege privilege) {
+        try {
+            getPrivilegeWriteDao().save(privilege);
+        } catch (Exception e) {
+        }
+    }
+
+    public void update(Privilege privilege) {
+        try {
+            getPrivilegeWriteDao().update(privilege);
+        } catch (Exception e) {
+        }
+    }
+
+    public void delete(Privilege privilege) {
+        try {
+            getPrivilegeWriteDao().delete(privilege);
+        } catch (Exception e) {
+        }
+    }
+
+    public Privilege getPrivilegeByName(String name) {
+        QueryParameter qp;
+        qp = QueryParameterFactory.getStringLikePropertyParam("name", name);
+        Privilege privilege = new Privilege();
+        try {
+            privilege = getPrivilegeReadDao().getSingle(qp);
+        } catch (Exception e) {
+        }
+        return privilege;
+    }
+    
+    
+    //Getter and Setter Methods
 
     public CommonReadDao<UserPerson> getUserPersonReadDao() {
         return userPersonReadDao;
@@ -171,5 +249,37 @@ public class UserServiceImpl implements UserService {
 
     public void setUserWriteDao(CommonWriteDao<User> userWriteDao) {
         this.userWriteDao = userWriteDao;
+    }   
+
+    public CommonReadDao<Privilege> getPrivilegeReadDao() {
+        return privilegeReadDao;
+    }
+
+    public void setPrivilegeReadDao(CommonReadDao<Privilege> privilegeReadDao) {
+        this.privilegeReadDao = privilegeReadDao;
+    }
+
+    public CommonWriteDao<Privilege> getPrivilegeWriteDao() {
+        return privilegeWriteDao;
+    }
+
+    public void setPrivilegeWriteDao(CommonWriteDao<Privilege> privilegeWriteDao) {
+        this.privilegeWriteDao = privilegeWriteDao;
+    }
+
+    public CommonReadDao<Role> getRoleReadDao() {
+        return roleReadDao;
+    }
+
+    public void setRoleReadDao(CommonReadDao<Role> roleReadDao) {
+        this.roleReadDao = roleReadDao;
+    }
+
+    public CommonWriteDao<Role> getRoleWriteDao() {
+        return roleWriteDao;
+    }
+
+    public void setRoleWriteDao(CommonWriteDao<Role> roleWriteDao) {
+        this.roleWriteDao = roleWriteDao;
     }
 }
