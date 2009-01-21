@@ -33,20 +33,10 @@ public final class UserServiceFactory {
     private UserService userService;
     @InjectableField
     private PersonService personService;
-    private RoleService roleService;
-    private PrivilegeService privilegeService;
-
+    
     public PersonService getPersonService() {
         return personService;
-    }
-
-    public PrivilegeService getPrivilegeService() {
-        return privilegeService;
-    }
-
-    public RoleService getRoleService() {
-        return roleService;
-    }
+    }    
 
     public UserService getUserService() {
         return userService;
