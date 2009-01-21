@@ -21,8 +21,13 @@
         <dependency>
             <groupId>com.smartitengineering</groupId>
             <artifactId>smart-domain</artifactId>
-            <version>0.4-SNAPSHOT</version>
-        </dependency>        
+            <version>${abstract-dao-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.smartitengineering.smart-util</groupId>
+            <artifactId>smart-spring-util</artifactId>
+            <version>${smart-util-version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
