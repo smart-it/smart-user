@@ -91,13 +91,13 @@ public class UserServiceClientImpl extends AbstractClientImpl implements UserSer
         return userElements.getUsers();
     }
 
-    public User getUserByID(String username) {
+    public User getUserByUsername(String username) {
         WebResource resource = getWebResource().path("user/" + username);        
         final UserElement userElement = resource.get(UserElement.class);
         return userElement.getUser();
     }
 
-    public UserPerson getUserPersonByID(String username) {
+    public UserPerson getUserPersonByUsername(String username) {
         WebResource resource = getWebResource().path("userperson/" + username);        
         final UserPersonElement userPersonElement = resource.get(UserPersonElement.class);
         return userPersonElement.getUserPerson(); 

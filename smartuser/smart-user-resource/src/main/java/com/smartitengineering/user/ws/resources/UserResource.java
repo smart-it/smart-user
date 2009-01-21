@@ -50,7 +50,7 @@ public class UserResource {
     @Consumes("application/xml")
     public void deleteUser(@PathParam("username") String username) {
         try {
-            userService.delete(userService.getUserByID(username));
+            userService.delete(userService.getUserByUsername(username));
         } catch (Exception e) {
         }
     }
@@ -82,7 +82,7 @@ public class UserResource {
             @PathParam("username") String username) {
         UserElement userElement = new UserElement();
         try {
-            userElement.setUser(userService.getUserByID(username));
+            userElement.setUser(userService.getUserByUsername(username));
         } catch (Exception e) {
         }
         return userElement;

@@ -126,14 +126,14 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
-    public User getUserByID(String username) {
+    public User getUserByUsername(String username) {
         QueryParameter qp;
         qp = QueryParameterFactory.getStringLikePropertyParam("username", username);
         User user = getUserReadDao().getSingle(qp);
         return user;
     }
 
-    public UserPerson getUserPersonByID(String username) {
+    public UserPerson getUserPersonByUsername(String username) {
         QueryParameter qp;
         qp = QueryParameterFactory.getNestedParametersParam("User", FetchMode.DEFAULT, 
                     QueryParameterFactory.getStringLikePropertyParam("username", username));

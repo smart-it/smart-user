@@ -108,7 +108,7 @@ public class PersonServiceImpl implements PersonService{
         return persons;
     }
 
-    public Person getPersonByID(String email) {
+    public Person getPersonByEmail(String email) {
         Person person = new Person();
         person = getPersonReadDao().getSingle(QueryParameterFactory.getEqualPropertyParam("email", email));
         return person;

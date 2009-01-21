@@ -54,7 +54,7 @@ public class PersonServiceClientImpl extends AbstractClientImpl implements Perso
         return personElements.getPersons();
     }
 
-    public Person getPersonByID(String email) {
+    public Person getPersonByEmail(String email) {
         WebResource resource = getWebResource().path("person/" +
                 email);
         final PersonElement element = resource.get(PersonElement.class);

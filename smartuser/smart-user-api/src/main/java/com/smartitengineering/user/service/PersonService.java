@@ -25,6 +25,6 @@ public interface PersonService {
     
     public Collection<Person> getAllPerson();
     
-    public Person getPersonByID(String email);
+    public Person getPersonByEmail(String email);
     
 }

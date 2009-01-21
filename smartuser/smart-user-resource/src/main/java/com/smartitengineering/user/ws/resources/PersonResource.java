@@ -65,7 +65,7 @@ public class PersonResource {
     @Consumes("application/xml")
     public void deletePerson(@PathParam("email") String email) {
         try {
-            personService.delete(personService.getPersonByID(email));
+            personService.delete(personService.getPersonByEmail(email));
         } catch (Exception e) {
         }
     }
@@ -98,7 +98,7 @@ public class PersonResource {
             @PathParam("email") String email) {
         PersonElement personElement = new PersonElement();
         try {
-            personElement.setPerson(personService.getPersonByID(email));
+            personElement.setPerson(personService.getPersonByEmail(email));
         } catch (Exception e) {
         }
         return personElement;

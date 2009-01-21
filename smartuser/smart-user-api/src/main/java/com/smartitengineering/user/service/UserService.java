@@ -35,8 +35,8 @@ public interface UserService{
     
     public Collection<User> getAllUser();
     
-    public User getUserByID(String username);
+    public User getUserByUsername(String username);
     
-    public UserPerson getUserPersonByID(String username);    
+    public UserPerson getUserPersonByUsername(String username);    
     
 }
