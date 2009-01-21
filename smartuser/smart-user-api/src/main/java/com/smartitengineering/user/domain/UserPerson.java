@@ -18,7 +18,7 @@ public class UserPerson extends AbstractPersistentDTO<UserPerson>{
 
     public Person getPerson() {
         if(person==null){
-            return new Person();
+            person = new Person();
         }
         return person;
     }
@@ -32,7 +32,7 @@ public class UserPerson extends AbstractPersistentDTO<UserPerson>{
 
     public User getUser() {
         if(user==null){
-            return new User();
+            user = new User();
         }
         return user;
     }

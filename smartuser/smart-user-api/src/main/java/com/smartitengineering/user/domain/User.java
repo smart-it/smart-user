@@ -8,6 +8,7 @@ package com.smartitengineering.user.domain;
 import com.smartitengineering.domain.AbstractPersistentDTO;
 import java.util.HashSet;
 import java.util.Set;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -20,7 +21,7 @@ public class User extends AbstractPersistentDTO<User>{
 
     public String getPassword() {
         if(password==null){
-            return "";
+            password = "";
         }
         return password;
     }
@@ -34,7 +35,7 @@ public class User extends AbstractPersistentDTO<User>{
 
     public Set<Role> getRoles() {
         if(roles==null){
-            return new HashSet<Role>();
+            roles = new HashSet<Role>();
         }
         return roles;
     }
@@ -48,7 +49,7 @@ public class User extends AbstractPersistentDTO<User>{
 
     public String getUsername() {
         if(username==null){
-            return "";
+            username = "";
         }
         return username;
     }
@@ -61,6 +62,9 @@ public class User extends AbstractPersistentDTO<User>{
     }
 
     public boolean isValid() {
+        if(StringUtils.isEmpty(username)){
+            return false;
+        }
         return true;
     }
     

@@ -20,7 +20,7 @@ public class Address extends AbstractPersistentDTO<Address>{
 
     public String getCountry() {
         if(country==null){
-            return "";
+            country = "";
         }
         return country;
     }
@@ -34,7 +34,7 @@ public class Address extends AbstractPersistentDTO<Address>{
 
     public String getCity() {
         if(city==null){
-            return "";
+            city = "";
         }
         return city;
     }
@@ -48,7 +48,7 @@ public class Address extends AbstractPersistentDTO<Address>{
 
     public String getState() {
         if(state==null){
-            return "";
+            state = "";
         }
         return state;
     }
@@ -62,7 +62,7 @@ public class Address extends AbstractPersistentDTO<Address>{
 
     public String getStreetAddress() {
         if(streetAddress==null){
-            return "";
+            streetAddress = "";
         }
         return streetAddress;
     }
@@ -76,7 +76,7 @@ public class Address extends AbstractPersistentDTO<Address>{
 
     public String getZip() {
         if(zip==null){
-            return "";
+            zip = "";
         }
         return zip;
     }

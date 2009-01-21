@@ -18,7 +18,7 @@ public class BasicPerson extends AbstractPersistentDTO<BasicPerson>{
 
     public Name getName() {
         if(name == null){
-            return new Name();
+            name = new Name();
         }
         return name;
     }
@@ -32,7 +32,7 @@ public class BasicPerson extends AbstractPersistentDTO<BasicPerson>{
 
     public String getNationalID() {
         if(nationalID==null){
-            return "";
+            nationalID = "";
         }
         return nationalID;
     }

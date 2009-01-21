@@ -19,7 +19,7 @@ public class Privilege extends AbstractPersistentDTO<Privilege>{
 
     public String getDisplayName() {
         if(displayName==null){
-            return "";
+            displayName = "";
         }
         return displayName;
     }
@@ -33,7 +33,7 @@ public class Privilege extends AbstractPersistentDTO<Privilege>{
 
     public String getName() {
         if(name==null){
-            return "";
+            name = "";
         }
         return name;
     }
@@ -47,7 +47,7 @@ public class Privilege extends AbstractPersistentDTO<Privilege>{
 
     public String getShortDescription() {
         if(shortDescription==null){
-            return "";
+            shortDescription = "";
         }
         return shortDescription;
     }

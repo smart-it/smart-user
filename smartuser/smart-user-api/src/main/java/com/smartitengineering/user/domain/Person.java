@@ -6,6 +6,7 @@
 package com.smartitengineering.user.domain;
 
 import java.util.Date;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -25,7 +26,7 @@ public class Person extends BasicPerson{
 
     public Date getBirthDay() {
         if(birthDay == null){
-            return new Date();
+            birthDay = new Date();
         }
         return birthDay;
     }
@@ -41,7 +42,7 @@ public class Person extends BasicPerson{
 
     public Address getAddress() {
         if(address==null){
-            return new Address();
+            address = new Address();
         }
         return address;
     }
@@ -55,7 +56,7 @@ public class Person extends BasicPerson{
 
     public String getCellPhoneNumber() {
         if(cellPhoneNumber==null){
-            return "";
+            cellPhoneNumber = "";
         }
         return cellPhoneNumber;
     }
@@ -69,7 +70,7 @@ public class Person extends BasicPerson{
 
     public BasicPerson getFather() {
         if(father==null){
-            return new BasicPerson();
+            father =  new BasicPerson();
         }
         return father;
     }
@@ -83,7 +84,7 @@ public class Person extends BasicPerson{
 
     public String getFaxNumber() {
         if(faxNumber==null){
-            return "";
+            faxNumber = "";
         }
         return faxNumber;
     }
@@ -97,7 +98,7 @@ public class Person extends BasicPerson{
 
     public BasicPerson getMother() {
         if(mother==null){
-            return new BasicPerson();
+            mother = new BasicPerson();
         }
         return mother;
     }
@@ -111,7 +112,7 @@ public class Person extends BasicPerson{
 
     public String getPhoneNumber() {
         if(phoneNumber==null){
-            return "";
+            phoneNumber = "";
         }
         return phoneNumber;
     }
@@ -125,7 +126,7 @@ public class Person extends BasicPerson{
 
     public String getPrimaryEmail() {
         if(primaryEmail==null){
-            return "";
+            primaryEmail = "";
         }
         return primaryEmail;
     }
@@ -139,7 +140,7 @@ public class Person extends BasicPerson{
 
     public String getSecondaryEmail() {
         if(secondaryEmail==null){
-            return "";
+            secondaryEmail = "";
         }
         return secondaryEmail;
     }
@@ -153,7 +154,7 @@ public class Person extends BasicPerson{
 
     public BasicPerson getSpouse() {
         if(spouse==null){
-            return new BasicPerson();
+            spouse = new BasicPerson();
         }
         return spouse;
     }
@@ -163,6 +164,15 @@ public class Person extends BasicPerson{
             return;
         }
         this.spouse = spouse;
-    }    
+    }
+
+    @Override
+    public boolean isValid() {
+        if(StringUtils.isEmpty(primaryEmail) || StringUtils.isEmpty(getNationalID())){
+            return false;
+        }
+        return true;
+    }
+    
     
 }

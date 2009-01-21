@@ -19,7 +19,7 @@ public class Name extends AbstractPersistentDTO<Name>{
 
     public String getFirstName() {
         if(firstName==null){
-            return "";
+            firstName = "";
         }
         return firstName;
     }
@@ -33,7 +33,7 @@ public class Name extends AbstractPersistentDTO<Name>{
 
     public String getLastName() {
         if(lastName==null){
-            return "";
+            lastName = "";
         }
         return lastName;
     }
@@ -47,7 +47,7 @@ public class Name extends AbstractPersistentDTO<Name>{
 
     public String getMiddleInitial() {
         if(middleInitial==null){
-            return "";
+            middleInitial = "";
         }
         return middleInitial;
     }
