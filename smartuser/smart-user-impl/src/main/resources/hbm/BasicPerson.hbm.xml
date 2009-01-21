@@ -49,9 +49,9 @@
                extends="com.smartitengineering.user.domain.BasicPerson"
                table="person">
             <key column="id" />
-            <one-to-one name="father" cascade="all" />
-            <one-to-one name="mother" cascade="all" />
-            <one-to-one name="spouse" cascade="all" />
+            <many-to-one name="father" cascade="all" column="father_id" lazy="false" unique="true"/>
+            <many-to-one name="mother" cascade="all" column="mother_id" lazy="false" unique="true"/>
+            <many-to-one name="spouse" cascade="all" column="spouse_id" lazy="false" unique="true"/>
             
             
             <component name="Address">
