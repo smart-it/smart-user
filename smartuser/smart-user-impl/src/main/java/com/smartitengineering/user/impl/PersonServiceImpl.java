@@ -110,7 +110,7 @@ public class PersonServiceImpl implements PersonService{
 
     public Person getPersonByEmail(String email) {
         Person person = new Person();
-        person = getPersonReadDao().getSingle(QueryParameterFactory.getEqualPropertyParam("email", email));
+        person = getPersonReadDao().getSingle(QueryParameterFactory.getEqualPropertyParam("primaryEmail", email));
         return person;
     }
 
