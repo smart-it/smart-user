@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.domain;
 
+import com.smartitengineering.domain.AbstractPersistentDTO;
 import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 
@@ -12,10 +12,12 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author modhu7
  */
-public class Person extends BasicPerson{
-    private BasicPerson father;
-    private BasicPerson mother;
-    private BasicPerson spouse;
+public class Person extends AbstractPersistentDTO<Person> {
+
+    private BasicIdentity father;
+    private BasicIdentity mother;
+    private BasicIdentity spouse;
+    private BasicIdentity self;
     private Address address;
     private Date birthDay;
     private String primaryEmail;
@@ -25,154 +27,161 @@ public class Person extends BasicPerson{
     private String faxNumber;
 
     public Date getBirthDay() {
-        if(birthDay == null){
+        if (birthDay == null) {
             birthDay = new Date();
         }
         return birthDay;
     }
 
     public void setBirthDay(Date birthDay) {
-        if(birthDay==null){
+        if (birthDay == null) {
             return;
         }
         this.birthDay = birthDay;
     }
-    
-    
 
     public Address getAddress() {
-        if(address==null){
+        if (address == null) {
             address = new Address();
         }
         return address;
     }
 
     public void setAddress(Address address) {
-        if(address==null){
+        if (address == null) {
             return;
         }
         this.address = address;
     }
 
     public String getCellPhoneNumber() {
-        if(cellPhoneNumber==null){
+        if (cellPhoneNumber == null) {
             cellPhoneNumber = "";
         }
         return cellPhoneNumber;
     }
 
     public void setCellPhoneNumber(String cellPhoneNumber) {
-        if(cellPhoneNumber==null){
+        if (cellPhoneNumber == null) {
             return;
         }
         this.cellPhoneNumber = cellPhoneNumber;
     }
 
-    public BasicPerson getFather() {
-        if(father==null){
-            father =  new BasicPerson();
+    public BasicIdentity getFather() {
+        if (father == null) {
+            father = new BasicIdentity();
         }
         return father;
     }
 
-    public void setFather(BasicPerson father) {
-        if(father==null){
+    public void setFather(BasicIdentity father) {
+        if (father == null) {
             return;
         }
         this.father = father;
     }
 
     public String getFaxNumber() {
-        if(faxNumber==null){
+        if (faxNumber == null) {
             faxNumber = "";
         }
         return faxNumber;
     }
 
     public void setFaxNumber(String faxNumber) {
-        if(faxNumber==null){
+        if (faxNumber == null) {
             return;
         }
         this.faxNumber = faxNumber;
     }
 
-    public BasicPerson getMother() {
-        if(mother==null){
-            mother = new BasicPerson();
+    public BasicIdentity getMother() {
+        if (mother == null) {
+            mother = new BasicIdentity();
         }
         return mother;
     }
 
-    public void setMother(BasicPerson mother) {
-        if(mother==null){
+    public void setMother(BasicIdentity mother) {
+        if (mother == null) {
             return;
         }
         this.mother = mother;
     }
 
     public String getPhoneNumber() {
-        if(phoneNumber==null){
+        if (phoneNumber == null) {
             phoneNumber = "";
         }
         return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        if(phoneNumber==null){
+        if (phoneNumber == null) {
             return;
         }
         this.phoneNumber = phoneNumber;
     }
 
     public String getPrimaryEmail() {
-        if(primaryEmail==null){
+        if (primaryEmail == null) {
             primaryEmail = "";
         }
         return primaryEmail;
     }
 
     public void setPrimaryEmail(String primaryEmail) {
-        if(primaryEmail==null){
+        if (primaryEmail == null) {
             return;
         }
         this.primaryEmail = primaryEmail;
     }
 
     public String getSecondaryEmail() {
-        if(secondaryEmail==null){
+        if (secondaryEmail == null) {
             secondaryEmail = "";
         }
         return secondaryEmail;
     }
 
     public void setSecondaryEmail(String secondaryEmail) {
-        if(secondaryEmail==null){
+        if (secondaryEmail == null) {
             return;
         }
         this.secondaryEmail = secondaryEmail;
     }
 
-    public BasicPerson getSpouse() {
-        if(spouse==null){
-            spouse = new BasicPerson();
+    public BasicIdentity getSpouse() {
+        if (spouse == null) {
+            spouse = new BasicIdentity();
         }
         return spouse;
     }
 
-    public void setSpouse(BasicPerson spouse) {
-        if(spouse==null){
+    public void setSpouse(BasicIdentity spouse) {
+        if (spouse == null) {
             return;
         }
         this.spouse = spouse;
     }
 
+    public BasicIdentity getSelf() {
+        if(self == null){
+            self = new BasicIdentity();
+        }
+        return self;
+    }
+
+    public void setSelf(BasicIdentity self) {
+        this.self = self;
+    }
+
     @Override
     public boolean isValid() {
-        if(StringUtils.isEmpty(primaryEmail) || StringUtils.isEmpty(getNationalID())){
+        if (StringUtils.isEmpty(primaryEmail) || StringUtils.isEmpty(this.self.getNationalID())) {
             return false;
         }
         return true;
     }
-    
-    
 }

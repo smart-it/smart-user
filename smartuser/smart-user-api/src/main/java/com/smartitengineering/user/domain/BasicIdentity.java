@@ -11,7 +11,7 @@ import com.smartitengineering.domain.AbstractPersistentDTO;
  *
  * @author modhu7
  */
-public class BasicPerson extends AbstractPersistentDTO<BasicPerson>{
+public class BasicIdentity extends AbstractPersistentDTO<BasicIdentity>{
     
     private String nationalID;
     private Name name;

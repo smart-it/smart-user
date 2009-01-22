@@ -2,13 +2,10 @@
 
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd" >
 <hibernate-mapping>
-    <class
-        name="com.smartitengineering.user.domain.BasicPerson"
-        table="basic_person"
-        dynamic-update="false"
-        dynamic-insert="false"
-        
-    >
+    <class name="com.smartitengineering.user.domain.Person"               
+               table="person"
+               dynamic-update="false"
+               dynamic-insert="false">
         <id
             name="id"
             column="id"
@@ -18,112 +15,77 @@
             </generator>
         </id>
         <version name="version" column="version" />
-        <property
-            name="nationalID"
-            column="national_id"
-            unique="true"
-            type="java.lang.String"
-            length="255"
-        />
-        <component name="Name">
+        <many-to-one name="self" cascade="all" column="self_id" lazy="false" />
+        <many-to-one name="father" cascade="all" column="father_id" lazy="false" />
+        <many-to-one name="mother" cascade="all" column="mother_id" lazy="false" />
+        <many-to-one name="spouse" cascade="all" column="spouse_id" lazy="false" />
+        <component name="address">
             <property
-                name="firstName"
-                column="first_name"
-                type="java.lang.String"
-                length="255"
-            />
-            <property
-                name="lastName"
-                column="last_name"
-                type="java.lang.String"
-                length="255"
-            />
-            <property
-                name="middleInitial"
-                column="middle_initial"
-                type="java.lang.String"
-                length="255"
-            />
-        </component>
-        <joined-subclass name="com.smartitengineering.user.domain.Person"
-               extends="com.smartitengineering.user.domain.BasicPerson"
-               table="person">
-            <key column="id" />
-            <many-to-one name="father" cascade="all" column="father_id" lazy="false" unique="true"/>
-            <many-to-one name="mother" cascade="all" column="mother_id" lazy="false" unique="true"/>
-            <many-to-one name="spouse" cascade="all" column="spouse_id" lazy="false" unique="true"/>
-            
-            
-            <component name="Address">
-                <property
                     name="streetAddress"
                     column="street_address"
                     type="java.lang.String"
                     length="255"
                 />
-                <property
+            <property
                     name="city"
                     column="city"
                     type="java.lang.String"
                     length="255"
                 />
-                <property
+            <property
                     name="state"
                     column="state"
                     type="java.lang.String"
                     length="255"
                 />
-                <property
+            <property
                     name="country"
                     column="country"
                     type="java.lang.String"
                     length="255"
                 />
-                <property
+            <property
                     name="zip"
                     column="zip"
                     type="java.lang.String"
                     length="255"
                 />
-            </component>
-            
-            
-            <property
+        </component>
+        <property
                 name="primaryEmail"
                 column="primary_email"
                 unique="true"
                 type="java.lang.String"
                 length="255"
             />
-            <property
+        <property
                 name="birthDay"
                 column="birth_day"
                 type="java.util.Date"
             />
-            <property
+        <property
                 name="secondaryEmail"
                 column="secondary_email"
                 type="java.lang.String"
                 length="255"
             />
-            <property
+        <property
                 name="phoneNumber"
                 column="phone_number"
                 type="java.lang.String"
                 length="255"
             />
-            <property
+        <property
                 name="cellPhoneNumber"
                 column="cell_phone_number"
                 type="java.lang.String"
                 length="255"
             />
-            <property
+        <property
                 name="faxNumber"
                 column="fax_number"
                 type="java.lang.String"
                 length="255"
             />
-        </joined-subclass>
     </class>
 </hibernate-mapping>
