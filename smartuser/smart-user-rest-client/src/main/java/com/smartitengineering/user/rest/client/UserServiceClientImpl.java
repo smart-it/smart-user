@@ -111,21 +111,21 @@ public class UserServiceClientImpl extends AbstractClientImpl implements UserSer
         RoleElement roleElement = new RoleElement();
         roleElement.setRole(role);
         final Builder type = getWebResource().path("role").type("application/xml");
-        type.post();
+        type.post(roleElement);
     }
 
     public void update(Role role) {
         RoleElement roleElement = new RoleElement();
         roleElement.setRole(role);
         final Builder type = getWebResource().path("role").type("application/xml");
-        type.put();
+        type.put(roleElement);
     }
 
     public void delete(Role role) {
         RoleElement roleElement = new RoleElement();
         roleElement.setRole(role);
         final Builder type = getWebResource().path("role").type("application/xml");
-        type.delete();
+        type.delete(roleElement);
     }
 
     public Role getRoleByName(String name) {
@@ -138,24 +138,25 @@ public class UserServiceClientImpl extends AbstractClientImpl implements UserSer
         PrivilegeElement privilegeElement = new PrivilegeElement();
         privilegeElement.setPrivilege(privilege);
         final Builder type = getWebResource().path("privilege").type("application/xml");
-        type.post();
+        type.post(privilegeElement);
     }
 
     public void update(Privilege privilege) {
         PrivilegeElement privilegeElement = new PrivilegeElement();
         privilegeElement.setPrivilege(privilege);
         final Builder type = getWebResource().path("privilege").type("application/xml");
-        type.put();
+        type.put(privilegeElement);
     }
 
     public void delete(Privilege privilege) {
         PrivilegeElement privilegeElement = new PrivilegeElement();
         privilegeElement.setPrivilege(privilege);
         final Builder type = getWebResource().path("privilege").type("application/xml");
-        type.delete();
+        type.delete(privilegeElement);
     }
 
     public Privilege getPrivilegeByName(String name) {
+        System.out.println("Client " + name);
         WebResource resource = getWebResource().path("privilege/" + name);        
         final PrivilegeElement privilegeElement = resource.get(PrivilegeElement.class);
         return privilegeElement.getPrivilege();
