@@ -19,8 +19,8 @@
         
         <version name="version" column="version" />
         
-        <one-to-one name="user" cascade="all"/>
-        <one-to-one name="person" cascade="all"/>
+        <many-to-one name="user" cascade="all" column="user_id" unique="true" lazy="false"/>
+        <many-to-one name="person" cascade="save-update" column="person_id" unique="true" lazy="false"/>
         
     </class>
 </hibernate-mapping>
