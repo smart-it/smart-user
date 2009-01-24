@@ -22,7 +22,7 @@ public class Role extends AbstractPersistentDTO<Role>{
 
     public Set<Privilege> getPrivileges() {
         if(privileges == null){
-            return new HashSet<Privilege>();
+            privileges = new HashSet<Privilege>();
         }
         return privileges;
     }
@@ -38,7 +38,7 @@ public class Role extends AbstractPersistentDTO<Role>{
 
     public String getDisplayName() {
         if(displayName==null){
-            return "";
+            displayName = "";
         }
         return displayName;
     }
@@ -52,7 +52,7 @@ public class Role extends AbstractPersistentDTO<Role>{
 
     public String getName() {
         if(name==null){
-            return "";
+            name = "";
         }
         return name;
     }
@@ -66,7 +66,7 @@ public class Role extends AbstractPersistentDTO<Role>{
 
     public String getShortDescription() {
         if(shortDescription==null){
-            return "";
+            shortDescription = "";
         }
         return shortDescription;
     }
