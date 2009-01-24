@@ -5,16 +5,16 @@
 
 package com.smartitengineering.user.dao;
 
-import com.smartitengineering.user.domain.Person;
+import com.smartitengineering.user.domain.Role;
 
 /**
  *
  * @author modhu7
  */
-public class PersonDaoImpl extends AbstractDao<Person>{
+public class RoleDaoImpl extends AbstractDao<Role>{
 
-    public PersonDaoImpl() {
-        setEntityClass(Person.class);
+    public RoleDaoImpl() {
+        setEntityClass(Role.class);
     }
-        
+    
 }
