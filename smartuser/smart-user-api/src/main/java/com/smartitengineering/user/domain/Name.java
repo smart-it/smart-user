@@ -6,6 +6,7 @@
 package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -60,6 +61,9 @@ public class Name extends AbstractPersistentDTO<Name>{
     }
     
     public boolean isValid() {
+        if(StringUtils.isEmpty(lastName) || StringUtils.isEmpty(firstName)){
+            return false;
+        }
         return true;
     }
 

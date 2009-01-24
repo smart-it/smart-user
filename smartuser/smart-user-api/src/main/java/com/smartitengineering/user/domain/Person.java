@@ -179,9 +179,9 @@ public class Person extends AbstractPersistentDTO<Person> {
 
     @Override
     public boolean isValid() {
-        if (StringUtils.isEmpty(primaryEmail) || StringUtils.isEmpty(this.self.getNationalID())) {
-            return false;
+        if (!StringUtils.isEmpty(primaryEmail) && self.isValid()) {
+            return true;
         }
-        return true;
+        return false;
     }
 }

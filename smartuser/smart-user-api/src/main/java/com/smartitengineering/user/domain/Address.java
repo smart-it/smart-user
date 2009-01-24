@@ -89,6 +89,10 @@ public class Address extends AbstractPersistentDTO<Address>{
     }   
 
     public boolean isValid() {
+        if(streetAddress==null || zip==null || country==null ||
+                city==null || state==null){
+            return false;
+        }
         return true;
     }
     

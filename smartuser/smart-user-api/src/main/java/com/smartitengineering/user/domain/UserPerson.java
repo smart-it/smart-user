@@ -47,7 +47,7 @@ public class UserPerson extends AbstractPersistentDTO<UserPerson>{
     
 
     public boolean isValid() {
-        return true;
+        return user.isValid();
     }
 
 }

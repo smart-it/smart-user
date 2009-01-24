@@ -62,7 +62,7 @@ public class User extends AbstractPersistentDTO<User>{
     }
 
     public boolean isValid() {
-        if(StringUtils.isEmpty(username)){
+        if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password)){
             return false;
         }
         return true;

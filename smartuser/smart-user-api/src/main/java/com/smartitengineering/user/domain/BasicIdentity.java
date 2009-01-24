@@ -6,6 +6,7 @@
 package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -45,7 +46,12 @@ public class BasicIdentity extends AbstractPersistentDTO<BasicIdentity>{
     }
     
     public boolean isValid() {
-        return true;
+        if(!StringUtils.isEmpty(nationalID) && name != null){
+            if(name.isValid()){
+                return true;
+            }
+        }
+        return false;
     }
 
 }
