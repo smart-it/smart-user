@@ -11,6 +11,7 @@ import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.domain.UserPerson;
 import com.smartitengineering.user.filter.UserFilter;
 import com.smartitengineering.user.filter.UserPersonFilter;
+import com.smartitengineering.user.rest.client.exception.SmartException;
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.user.ws.element.PrivilegeElement;
 import com.smartitengineering.user.ws.element.RoleElement;
@@ -18,6 +19,7 @@ import com.smartitengineering.user.ws.element.UserElement;
 import com.smartitengineering.user.ws.element.UserElements;
 import com.smartitengineering.user.ws.element.UserPersonElement;
 import com.smartitengineering.user.ws.element.UserPersonElements;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
@@ -34,7 +36,14 @@ public class UserServiceClientImpl extends AbstractClientImpl implements UserSer
         UserPersonElement userPersonElement = new UserPersonElement();
         userPersonElement.setUserPerson(userPerson);
         final Builder type = getWebResource().path("userperson").type("application/xml");
-        type.post(userPersonElement);
+        try {
+            type.post(userPersonElement);
+        }
+        catch(UniformInterfaceException ex) {
+            String message = ex.getResponse().getEntity(String.class);
+            int status = ex.getResponse().getStatus();
+            throw new SmartException(message, status, ex);
+        }
     }
 
     public void update(User user) {

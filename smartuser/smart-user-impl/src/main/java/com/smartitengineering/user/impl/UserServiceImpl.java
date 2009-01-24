@@ -40,7 +40,8 @@ public class UserServiceImpl implements UserService {
     public void create(UserPerson userPerson) {
         try {
             getUserPersonWriteDao().save(userPerson);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
+            throw e;
         }
     }
 
@@ -134,15 +135,15 @@ public class UserServiceImpl implements UserService {
 
     public User getUserByUsername(String username) {
         QueryParameter qp;
-        qp = QueryParameterFactory.getStringLikePropertyParam("username", username);
+        qp = QueryParameterFactory.getEqualPropertyParam("username", username);
         User user = getUserReadDao().getSingle(qp);
         return user;
     }
 
     public UserPerson getUserPersonByUsername(String username) {
         QueryParameter qp;
-        qp = QueryParameterFactory.getNestedParametersParam("User", FetchMode.DEFAULT,
-                QueryParameterFactory.getStringLikePropertyParam("username", username));
+        qp = QueryParameterFactory.getNestedParametersParam("user", FetchMode.DEFAULT,
+                QueryParameterFactory.getEqualPropertyParam("username", username));
         UserPerson userPerson = getUserPersonReadDao().getSingle(qp);
         return userPerson;
     }
@@ -173,7 +174,7 @@ public class UserServiceImpl implements UserService {
 
     public Role getRoleByName(String name) {
         QueryParameter qp;
-        qp = QueryParameterFactory.getStringLikePropertyParam("name", name);
+        qp = QueryParameterFactory.getEqualPropertyParam("name", name);
         Role role = new Role();
         try {
             role = getRoleReadDao().getSingle(qp);
@@ -186,8 +187,10 @@ public class UserServiceImpl implements UserService {
     
     public void create(Privilege privilege) {
         try {
+            System.out.println(privilege.getDisplayName());
             getPrivilegeWriteDao().save(privilege);
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -207,11 +210,13 @@ public class UserServiceImpl implements UserService {
 
     public Privilege getPrivilegeByName(String name) {
         QueryParameter qp;
-        qp = QueryParameterFactory.getStringLikePropertyParam("name", name);
+        System.out.println("Server " + name);        
         Privilege privilege = new Privilege();
         try {
-            privilege = getPrivilegeReadDao().getSingle(qp);
+            privilege = getPrivilegeReadDao().getSingle(
+                    QueryParameterFactory.getEqualPropertyParam("name", name));
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return privilege;
     }

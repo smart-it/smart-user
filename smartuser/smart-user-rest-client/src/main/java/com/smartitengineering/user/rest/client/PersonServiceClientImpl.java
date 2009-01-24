@@ -4,7 +4,6 @@
  */
 
 package com.smartitengineering.user.rest.client;
-
 import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.filter.PersonFilter;
 import com.smartitengineering.user.service.PersonService;
@@ -55,10 +54,9 @@ public class PersonServiceClientImpl extends AbstractClientImpl implements Perso
     }
 
     public Person getPersonByEmail(String email) {
-        WebResource resource = getWebResource().path("person/" +
-                email);
+        WebResource resource = getWebResource().path("person/" + email);        
         final PersonElement element = resource.get(PersonElement.class);
-        final Person person = element.getPerson();
+        final Person person = element.getPerson();        
         return person;
     }
 
