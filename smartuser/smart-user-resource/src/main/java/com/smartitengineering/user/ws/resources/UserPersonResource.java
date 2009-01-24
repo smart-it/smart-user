@@ -2,9 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.ws.resources;
-
 
 import com.smartitengineering.user.filter.UserPersonFilter;
 import com.smartitengineering.user.service.UserService;
@@ -23,8 +21,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
 /**
  *
  * @author modhu7
@@ -33,39 +34,45 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(value = "singleton")
 public class UserPersonResource {
+
     @Resource(name = "userService")
     private UserService userService;
-    
-    
-    @POST        
+
+    @POST
     @Consumes("application/xml")
-    public void create(UserPersonElement userPersonElement) {
+    public Response create(UserPersonElement userPersonElement) {
         try {
             userService.create(userPersonElement.getUserPerson());
+            return Response.ok().build();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE! " + e.getMessage());
+            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).entity("Stale Object!").build();
         }
     }
-    
+
     @PUT
     @Consumes("application/xml")
-    public void updateUserPerson(UserPersonElement userPersonElement) {
+    public Response updateUserPerson(UserPersonElement userPersonElement) {
         try {
             userService.update(userPersonElement.getUserPerson());
+            return Response.ok().build();
         } catch (Exception e) {
+            return Response.ok().build();
         }
     }
 
     @DELETE
     @Path("{username}")
     @Consumes("application/xml")
-    public void deleteUserPerson(@PathParam("username") String username) {
+    public Response deleteUserPerson(@PathParam("username") String username) {
         try {
             userService.delete(userService.getUserPersonByUsername(username));
+            return Response.ok().build();
         } catch (Exception e) {
+            return Response.ok().build();
         }
     }
-    
+
     @POST
     @Path("search")
     @Consumes("application/xml")
@@ -78,19 +85,19 @@ public class UserPersonResource {
             userPersonFilter = userPersonFilterElement.getUserPersonFilter();
         } else {
             userPersonFilter = new UserPersonFilter();
-        }        
+        }
         try {
             userPersonElements.setUserPersons(userService.search(userPersonFilter));
         } catch (Exception e) {
         }
         return userPersonElements;
     }
-    
+
     @GET
     @Path("{username}")
     @Produces("application/xml")
     public UserPersonElement getUserPersonByID(
-            @PathParam("username") String username){
+            @PathParam("username") String username) {
         UserPersonElement userPersonElement = new UserPersonElement();
         try {
             userPersonElement.setUserPerson(userService.getUserPersonByUsername(username));
@@ -98,7 +105,7 @@ public class UserPersonResource {
         }
         return userPersonElement;
     }
-    
+
     @GET
     @Path("alluserperson")
     @Produces("application/xml")
@@ -124,7 +131,7 @@ public class UserPersonResource {
         }
         return userPersonElements;
     }
-    
+
     public UserService getUserService() {
         return userService;
     }

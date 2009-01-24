@@ -17,6 +17,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -33,29 +34,35 @@ public class RoleResource {
     
     @POST
     @Consumes("application/xml")
-    public void createRole(RoleElement roleElement) {
+    public Response createRole(RoleElement roleElement) {
         try {
             userService.create(roleElement.getRole());
+            return Response.ok().build();
         } catch (Exception e) {
+            return Response.ok().build();
         }
     }
     
     @PUT
     @Consumes("application/xml")
-    public void updateRole(RoleElement roleElement) {
+    public Response updateRole(RoleElement roleElement) {
         try {
             userService.update(roleElement.getRole());
+            return Response.ok().build();
         } catch (Exception e) {
+            return Response.ok().build();
         }
     }
 
     @DELETE
     @Path("{name}")
     @Consumes("application/xml")
-    public void deleteRole(@PathParam("name") String name) {
+    public Response deleteRole(@PathParam("name") String name) {
         try {
             userService.delete(userService.getRoleByName(name));
+            return Response.ok().build();
         } catch (Exception e) {
+            return Response.ok().build();
         }
     }
 

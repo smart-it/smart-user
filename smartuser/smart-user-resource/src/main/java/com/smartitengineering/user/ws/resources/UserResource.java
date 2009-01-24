@@ -21,6 +21,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -38,20 +39,24 @@ public class UserResource {
 
     @PUT
     @Consumes("application/xml")
-    public void updateUser(UserElement userElement) {
+    public Response updateUser(UserElement userElement) {
         try {
             userService.update(userElement.getUser());
+            return Response.ok().build();
         } catch (Exception e) {
+            return Response.ok().build();
         }
     }
 
     @DELETE
     @Path("{username}")
     @Consumes("application/xml")
-    public void deleteUser(@PathParam("username") String username) {
+    public Response deleteUser(@PathParam("username") String username) {
         try {
             userService.delete(userService.getUserByUsername(username));
+            return Response.ok().build();
         } catch (Exception e) {
+            return Response.ok().build();
         }
     }
 
