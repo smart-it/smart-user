@@ -119,6 +119,8 @@
     <bean id="personDao" class="com.smartitengineering.user.dao.PersonDaoImpl" parent="abstractDao"/>
     <bean id="userDao" class="com.smartitengineering.user.dao.UserDaoImpl" parent="abstractDao"/>
     <bean id="userPersonDao" class="com.smartitengineering.user.dao.UserPersonDaoImpl" parent="abstractDao"/>
+    <bean id="roleDao" class="com.smartitengineering.user.dao.RoleDaoImpl" parent="abstractDao"/>
+    <bean id="privilegeDao" class="com.smartitengineering.user.dao.PrivilegeDaoImpl" parent="abstractDao"/>
     <bean id="personService" class="com.smartitengineering.user.impl.PersonServiceImpl">
         <property name="personReadDao">
             <ref local="personDao" />
@@ -140,6 +142,19 @@
         <property name="userPersonWriteDao">
             <ref local="userPersonDao" />
         </property>
+        <property name="roleReadDao">
+            <ref local="roleDao" />
+        </property>
+        <property name="roleWriteDao">
+            <ref local="roleDao" />
+        </property>
+        <property name="privilegeReadDao">
+            <ref local="privilegeDao" />
+        </property>
+        <property name="privilegeWriteDao">
+            <ref local="privilegeDao" />
+        </property>
+        
     </bean>
     <bean id="beanRegistrar" class="com.smartitengineering.util.spring.BeanFactoryRegistrar">
         <property name="beanFactoryContextName">
