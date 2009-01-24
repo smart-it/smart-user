@@ -13,4 +13,8 @@ import com.smartitengineering.user.domain.UserPerson;
  */
 public class UserPersonDaoImpl extends AbstractDao<UserPerson>{
 
+    public UserPersonDaoImpl() {
+        setEntityClass(UserPerson.class);
+    }
+    
 }
