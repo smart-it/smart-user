@@ -9,7 +9,9 @@ import com.smartitengineering.user.ws.element.PersonElement;
 import com.smartitengineering.user.ws.element.PersonElements;
 import com.smartitengineering.user.ws.element.PersonFilterElement;
 import com.smartitengineering.user.ws.element.PrivilegeElement;
+import com.smartitengineering.user.ws.element.PrivilegeElements;
 import com.smartitengineering.user.ws.element.RoleElement;
+import com.smartitengineering.user.ws.element.RoleElements;
 import com.smartitengineering.user.ws.element.UserElement;
 import com.smartitengineering.user.ws.element.UserElements;
 import com.smartitengineering.user.ws.element.UserFilterElement;
@@ -35,7 +37,8 @@ public class JAXBContextResolver implements ContextResolver<JAXBContext> {
     private final Class[] cTypes = {PersonElement.class, PersonElements.class, PersonFilterElement.class,
         UserElement.class, UserElements.class, UserFilterElement.class,
         UserPersonElement.class, UserPersonElements.class, UserPersonFilterElement.class,
-        RoleElement.class, PrivilegeElement.class
+        RoleElement.class, PrivilegeElement.class,
+        RoleElements.class, PrivilegeElements.class
     };
 
     public JAXBContextResolver() throws Exception {

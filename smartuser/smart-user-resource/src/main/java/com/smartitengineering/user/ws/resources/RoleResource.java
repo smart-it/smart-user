@@ -8,6 +8,7 @@ package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.user.ws.element.RoleElement;
+import com.smartitengineering.user.ws.element.RoleElements;
 import javax.annotation.Resource;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -78,6 +79,19 @@ public class RoleResource {
         } catch (Exception e) {
         }
         return roleElement;
+    }
+    
+    @GET
+    @Path("search/{name}")
+    @Produces("application/xml")
+    public RoleElements getRolesByName(
+            @PathParam("name") String name) {
+        RoleElements roleElements = new RoleElements();
+        try {
+            roleElements.setRoles(userService.getRolesByName(name));
+        } catch (Exception e) {
+        }
+        return roleElements;
     }
 
 }

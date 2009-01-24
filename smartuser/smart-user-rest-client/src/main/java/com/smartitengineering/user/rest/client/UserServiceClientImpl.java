@@ -14,7 +14,9 @@ import com.smartitengineering.user.filter.UserPersonFilter;
 import com.smartitengineering.user.rest.client.exception.SmartException;
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.user.ws.element.PrivilegeElement;
+import com.smartitengineering.user.ws.element.PrivilegeElements;
 import com.smartitengineering.user.ws.element.RoleElement;
+import com.smartitengineering.user.ws.element.RoleElements;
 import com.smartitengineering.user.ws.element.UserElement;
 import com.smartitengineering.user.ws.element.UserElements;
 import com.smartitengineering.user.ws.element.UserPersonElement;
@@ -169,6 +171,20 @@ public class UserServiceClientImpl extends AbstractClientImpl implements UserSer
         WebResource resource = getWebResource().path("privilege/" + name);        
         final PrivilegeElement privilegeElement = resource.get(PrivilegeElement.class);
         return privilegeElement.getPrivilege();
+    }
+
+    public Collection<Role> getRolesByName(String name) {
+        WebResource resource = getWebResource().path("role/"+"search/"+name);
+        final RoleElements roleElements = resource.get(RoleElements.class);
+        return roleElements.getRoles();
+        
+        
+    }
+
+    public Collection<Privilege> getPrivilegesByName(String name) {
+        WebResource resource = getWebResource().path("privilege/"+"search/"+name);
+        final PrivilegeElements privilegeElements = resource.get(PrivilegeElements.class);
+        return privilegeElements.getPrivileges();
     }
 
 }

@@ -7,6 +7,7 @@ package com.smartitengineering.user.impl;
 import com.smartitengineering.dao.common.CommonReadDao;
 import com.smartitengineering.dao.common.CommonWriteDao;
 import com.smartitengineering.dao.common.queryparam.FetchMode;
+import com.smartitengineering.dao.common.queryparam.MatchMode;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.user.domain.Privilege;
@@ -182,6 +183,17 @@ public class UserServiceImpl implements UserService {
         }
         return role;
     }
+    
+    public Collection<Role> getRolesByName(String name) {
+        QueryParameter qp;
+        qp = QueryParameterFactory.getStringLikePropertyParam("name", name, MatchMode.ANYWHERE);
+        Collection<Role> roles = new HashSet<Role>();
+        try {
+            roles = getRoleReadDao().getList(qp);
+        } catch (Exception e) {
+        }
+        return roles;
+    }
 
     //Privilege services
     
@@ -209,8 +221,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public Privilege getPrivilegeByName(String name) {
-        QueryParameter qp;
-        System.out.println("Server " + name);        
+        QueryParameter qp;                
         Privilege privilege = new Privilege();
         try {
             privilege = getPrivilegeReadDao().getSingle(
@@ -219,6 +230,19 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
         return privilege;
+    }  
+    
+
+    public Collection<Privilege> getPrivilegesByName(String name) {
+        QueryParameter qp;        
+        Collection<Privilege> privileges = new HashSet<Privilege>();
+        try {
+            privileges = getPrivilegeReadDao().getList(
+                    QueryParameterFactory.getStringLikePropertyParam("name", name, MatchMode.ANYWHERE));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return privileges;
     }
     
     
@@ -287,4 +311,6 @@ public class UserServiceImpl implements UserService {
     public void setRoleWriteDao(CommonWriteDao<Role> roleWriteDao) {
         this.roleWriteDao = roleWriteDao;
     }
+
+    
 }

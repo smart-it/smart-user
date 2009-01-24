@@ -8,6 +8,7 @@ package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.user.ws.element.PrivilegeElement;
+import com.smartitengineering.user.ws.element.PrivilegeElements;
 import javax.annotation.Resource;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -78,5 +79,18 @@ public class PrivilegeResource {
         } catch (Exception e) {
         }
         return privilegeElement;
+    }
+    
+    @GET
+    @Path("search/{name}")
+    @Produces("application/xml")
+    public PrivilegeElements getPrivilegesByName(
+            @PathParam("name") String name) {
+        PrivilegeElements privilegeElements = new PrivilegeElements();
+        try {
+            privilegeElements.setPrivileges(userService.getPrivilegesByName(name));
+        } catch (Exception e) {
+        }
+        return privilegeElements;
     }
 }

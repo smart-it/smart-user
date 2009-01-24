@@ -52,6 +52,8 @@ public interface UserService{
     
     public Role getRoleByName(String name);
     
+    public Collection<Role> getRolesByName(String name);
+    
     
     /*Privilege Service*/
     
@@ -62,5 +64,7 @@ public interface UserService{
     public void delete(Privilege privilege);
     
     public Privilege getPrivilegeByName(String name);
+    
+    public Collection<Privilege> getPrivilegesByName(String name);
     
 }
