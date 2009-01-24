@@ -4,12 +4,13 @@
  */
 package com.smartitengineering.user.rest.client;
 
-import com.smartitengineering.user.domain.Address;
-import com.smartitengineering.user.domain.BasicPerson;
 import com.smartitengineering.user.domain.Name;
 import com.smartitengineering.user.domain.Person;
-import com.smartitengineering.user.domain.User;
+import com.smartitengineering.user.domain.Privilege;
+import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.UserPerson;
+import com.smartitengineering.user.filter.PersonFilter;
+import com.smartitengineering.user.rest.client.exception.SmartException;
 import com.smartitengineering.user.service.PersonService;
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.user.service.UserServiceFactory;
@@ -20,8 +21,10 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.UriBuilder;
@@ -113,96 +116,271 @@ public class ClientTest extends TestCase {
     }
 
     public void testResources() {
-        doTestCreate();
+        doTestPersonService();
+        doTestPrivilegeService();
+        doTestRoleService();
+        doTestUserPersonService();
         doTestServiceAggregator();
     }
 
-    private void doTestCreate() {
-        System.out.println("test");
-        UserService service = WebServiceClientFactory.getUserService();
+    private void doTestGetUserPersonByUserName() {
+        UserService userService = WebServiceClientFactory.getUserService();
+        UserPerson userPerson = userService.getUserPersonByUsername("modhu7");
+        System.out.println(userPerson.getPerson().getPrimaryEmail());
+        System.out.println(userPerson.getPerson().getSelf().getName().getFirstName());
+        System.out.println(userPerson.getUser().getRoles().size());
+    }
+
+    private void doTestPersonService() {
+        doTestCreatePerson();
+        doTestReadPerson();
+        doTestGetPersonByEmail();
+        doTestSearchPerson();
+        doTestUpdatePerson();
+    }
+
+    private void doTestPrivilegeService() {
+        doTestCreatePrivilege();
+        doTestReadPrivilege();
+        doTestUpdatePrivilege();
+    }
+
+    private void doTestRoleService() {
+        doTestCreateRole();
+        doTestReadRole();
+        doTestUpdateRole();
+    }
+
+    private void doTestUpdateUserPerson() {
+        UserService userService = WebServiceClientFactory.getUserService();
+    //UserPerson userPerson = userService
+
+    }
+
+    private void doTestUserPersonService() {
+        doTestCreateUserPerson();
+        doTestReadUserPerson();
+        doTestGetUserPersonByUserName();
+        doTestUpdateUserPerson();
+    }
+
+    private void doTestCreateUserPerson() {
+        UserService userService = WebServiceClientFactory.getUserService();
         PersonService personService = WebServiceClientFactory.getPersonService();
-        System.out.println("test");
+        Set<Role> roles = new HashSet<Role>();
+        roles.add(userService.getRoleByName("Role-5"));
+        roles.add(userService.getRoleByName("Role-9"));
         UserPerson userPerson = new UserPerson();
-        User user = new User();
-        Name fatherName = new Name();
-        fatherName.setFirstName("A");
-        fatherName.setLastName("Sen");
-        fatherName.setMiddleInitial("B");
-        BasicPerson father = new BasicPerson();
-        father.setName(fatherName);
-        father.setNationalID("123456789");
+        userPerson.setPerson(personService.getPersonByEmail("email-1@email.com"));
+        userPerson.getUser().setUsername("modhu7");
+        userPerson.getUser().setPassword("password");
+        userPerson.getUser().setRoles(roles);
+        userService.create(userPerson);
 
-        Name motherName = new Name();
-        motherName.setFirstName("D");
-        motherName.setLastName("Sen");
-        motherName.setMiddleInitial("K");
-        BasicPerson mother = new BasicPerson();
-        mother.setName(motherName);
-        mother.setNationalID("123456788");
+        userPerson.setPerson(personService.getPersonByEmail("email-2@email.com"));
+        userPerson.getUser().setUsername("imyousuf");
+        userPerson.getUser().setPassword("password");
+        userPerson.getUser().setRoles(roles);
+        userService.create(userPerson);
 
-        Name spouseName = new Name();
-        spouseName.setFirstName("S");
-        spouseName.setLastName("Gupta");
-        spouseName.setMiddleInitial("R");
-        BasicPerson spouse = new BasicPerson();
-        spouse.setName(spouseName);
-        spouse.setNationalID("123456787");
+        userPerson.setPerson(personService.getPersonByEmail("email-2@email.com"));
+        userPerson.getUser().setUsername("ahmyousuf");
+        userPerson.getUser().setPassword("password");
+        userPerson.getUser().setRoles(roles);
+//        try {
+//            userService.create(userPerson);
+//            fail("Should not be succeed to add more than one user with same person");
+//        } catch (Exception e) {
+//        }
+    }
+
+    private void doTestCreatePerson() {
+        PersonService personService = WebServiceClientFactory.getPersonService();
+        for (int i = 0; i < 10; i++) {
+            Person person = new Person();
+            person.getFather().getName().setFirstName("FFN" + i);
+            person.getFather().getName().setLastName("FLN" + i);
+            person.getFather().getName().setMiddleInitial("FM" + i);
+            person.getFather().setNationalID("F123456789-" + i);
+
+            person.getMother().getName().setFirstName("MFN" + i);
+            person.getMother().getName().setLastName("MLN" + i);
+            person.getMother().getName().setMiddleInitial("MM" + i);
+            person.getMother().setNationalID("M123456789-" + i);
+
+            person.getSpouse().getName().setFirstName("SFN" + i);
+            person.getSpouse().getName().setLastName("SLN" + i);
+            person.getSpouse().getName().setMiddleInitial("SM" + i);
+            person.getSpouse().setNationalID("S123456789-" + i);
+
+            person.getSelf().getName().setFirstName("PersonFN-" + i);
+            person.getSelf().getName().setLastName("PersonLN-" + i);
+            person.getSelf().getName().setMiddleInitial("M-" + i);
+            person.getSelf().setNationalID("P123456789-" + i);
 
 
-        Name name = new Name();
-        name.setFirstName("S");
-        name.setLastName("Gupta");
-        name.setMiddleInitial("S");
-
-        Person person = new Person();
-        person.setFather(father);
-        person.setMother(mother);
-        person.setSpouse(spouse);
-        person.setName(name);
-        person.setNationalID("0123456721");
-        person.setFaxNumber("fax-0123456");
-        Address address = new Address();
-        address.setCity("Dhaka");
-        address.setCountry("BD");
-        address.setZip("1207");
-        person.setAddress(new Address());
-        person.setBirthDay(new Date(System.currentTimeMillis()));
-        person.setCellPhoneNumber("0123");
-
-        user.setUsername("modhu7");
-        user.setPassword("password");
-
-        userPerson.setPerson(person);
-
-        userPerson.setUser(user);
-
-        personService.create(person);
-
-        service.create(userPerson);
-
-        List<User> list = new ArrayList<User>(service.getAllUser());
-
-        System.out.println(list.size());
-
-        for (User user1 : list) {
-            System.out.println(user1.getUsername());
-            System.out.println(user1.getPassword());
-            System.out.println(user1.getRoles());
+            person.getAddress().setCity("Dhaka-" + i);
+            person.getAddress().setCountry("Bangladesh-" + i);
+            person.setBirthDay(new Date(System.currentTimeMillis() - new Long("788400000000") + i * 86400000));
+            person.setCellPhoneNumber("01712345678-" + i);
+            person.setFaxNumber("+8801254876932" + i);
+            person.setPhoneNumber("+880123654789" + i);
+            person.setPrimaryEmail("email-" + i + "@email.com");
+            person.setSecondaryEmail("sec-email-" + i + "@email.com");
+            personService.create(person);
         }
+    }
 
+    private void doTestCreatePrivilege() {
+        UserService userService = WebServiceClientFactory.getUserService();
+        for (int i = 0; i < 20; i++) {
+            Privilege privilege = new Privilege();
+            privilege.setDisplayName("Display Privilege-" + i);
+            privilege.setName("Privilege-" + i);
+            privilege.setShortDescription("No Description");
+            userService.create(privilege);
+        }
+    }
+
+    private void doTestCreateRole() {
+        UserService userService = WebServiceClientFactory.getUserService();
+        for (int i = 0; i < 10; i++) {
+            Role role = new Role();
+            role.setDisplayName("Display Role-" + i);
+            role.setName("Role-" + i);
+            role.setShortDescription("No Description");
+            Set<Privilege> privileges = new HashSet<Privilege>();
+
+            privileges.add(userService.getPrivilegeByName("Privilege-" + (2 * i)));
+            privileges.add(userService.getPrivilegeByName("Privilege-" + (2 * i + 1)));
+            role.setPrivileges(privileges);
+            userService.create(role);
+        }
+    }
+
+    private void doTestGetPersonByEmail() {
+        PersonService personService = WebServiceClientFactory.getPersonService();
+        Person person = personService.getPersonByEmail("email-6@email.com");
+        assertNotNull(person);
+        System.out.println(person.getPrimaryEmail());
+        System.out.println(person.getSelf().getName().getFirstName());
+    }
+
+    private void doTestReadPerson() {
+        PersonService personService = WebServiceClientFactory.getPersonService();
         List<Person> listPerson = new ArrayList<Person>(personService.getAllPerson());
-
         System.out.println(listPerson.size());
+        for (Person person : listPerson) {
+            System.out.println(person.getBirthDay());
+        }
+        assertTrue(listPerson.size() == 10);
 
-        for (Person person1 : listPerson) {
-            System.out.println(person1.getCellPhoneNumber());
+    }
 
+    private void doTestReadUserPerson() {
+        UserService userService = WebServiceClientFactory.getUserService();
+        List<UserPerson> list = new ArrayList<UserPerson>(userService.getAllUserPerson());
+        System.out.println(list.size());
+        for (UserPerson userPerson : list) {
+            System.out.println(userPerson.getUser().getUsername());
         }
 
+    }
+
+    private void doTestReadPrivilege() {
+        UserService userService = WebServiceClientFactory.getUserService();
+        Privilege privilege = userService.getPrivilegeByName("Privilege-5");
+        assertNotNull(privilege);
+        System.out.println(privilege.getDisplayName());
+
+        privilege = userService.getPrivilegeByName("Privilege-1");
+        assertNotNull(privilege);
+        assertTrue(privilege.getName().equals("Privilege-1"));
+        System.out.println(privilege.getDisplayName());
+
+        privilege = userService.getPrivilegeByName("Privilege-2");
+        assertNotNull(privilege);
+        assertTrue(privilege.getName().equals("Privilege-2"));
+        System.out.println(privilege.getDisplayName());
+
+        privilege = userService.getPrivilegeByName("Privilege-3");
+        assertNotNull(privilege);
+        assertTrue(privilege.getName().equals("Privilege-3"));
+        System.out.println(privilege.getDisplayName());
+
+        privilege = userService.getPrivilegeByName("Privilege-17");
+        assertNotNull(privilege);
+        assertTrue(privilege.getName().equals("Privilege-17"));
+        System.out.println(privilege.getDisplayName());
+
+        privilege = userService.getPrivilegeByName("Privilege-0");
+        assertNotNull(privilege);
+        assertTrue(privilege.getName().equals("Privilege-0"));
+        System.out.println(privilege.getDisplayName());
+    }
+
+    private void doTestReadRole() {
+        UserService userService = WebServiceClientFactory.getUserService();
+        Role role = userService.getRoleByName("Role-1");
+        assertNotNull(role);
+        assertTrue(role.getName().equals("Role-1"));
+
+        role = userService.getRoleByName("Role-0");
+        assertNotNull(role);
+        assertTrue(role.getName().equals("Role-0"));
+
+    }
+
+    private void doTestSearchPerson() {
+        PersonService personService = WebServiceClientFactory.getPersonService();
+        PersonFilter personFilter = new PersonFilter();
+        Name name = new Name();
+        name.setFirstName("PersonFN");
+        personFilter.setName(name);
+        personFilter.setEmail("email-6@email.com");
+        List<Person> listPerson = new ArrayList<Person>(personService.search(personFilter));
+        for (Person person : listPerson) {
+            System.out.println(person.getBirthDay());
+        }
     }
 
     private void doTestServiceAggregator() {
         assertNotNull(UserServiceFactory.getInstance().getPersonService());
         assertNotNull(UserServiceFactory.getInstance().getUserService());
+    }
+
+    private void doTestUpdatePerson() {
+        PersonService personService = WebServiceClientFactory.getPersonService();
+        List<Person> listPerson = new ArrayList<Person>(personService.getAllPerson());
+        Person person = new Person();
+        person = listPerson.get(5);
+        person.getSelf().getName().setFirstName(person.getSelf().getName().getFirstName() + " updated");
+        personService.update(person);
+
+        listPerson = new ArrayList<Person>(personService.getAllPerson());
+        System.out.println(listPerson.size());
+        for (Person personR : listPerson) {
+            System.out.println(personR.getSelf().getName().getFirstName());
+        }
+        assertTrue(listPerson.size() == 10);
+    }
+
+    private void doTestUpdatePrivilege() {
+        UserService userService = WebServiceClientFactory.getUserService();
+        Privilege privilege = userService.getPrivilegeByName("Privilege-6");
+        privilege.setDisplayName(privilege.getDisplayName() + "-updated");
+        userService.update(privilege);
+        privilege = userService.getPrivilegeByName("Privilege-6");
+        assertNotNull(privilege);
+        System.out.println("Display Name: " + privilege.getDisplayName());
+    }
+
+    private void doTestUpdateRole() {
+        UserService userService = WebServiceClientFactory.getUserService();
+        Role role = userService.getRoleByName("Role-4");
+        role.getPrivileges().add(userService.getPrivilegeByName("Privilege-18"));
+        userService.update(role);
+        role = userService.getRoleByName("Role-4");
+        System.out.println(role.getPrivileges().size());
     }
 }
