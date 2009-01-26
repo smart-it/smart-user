@@ -8,9 +8,11 @@ import com.smartitengineering.user.domain.Name;
 import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.domain.Role;
+import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.domain.UserPerson;
 import com.smartitengineering.user.filter.PersonFilter;
 import com.smartitengineering.user.rest.client.exception.SmartException;
+import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.PersonService;
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.user.service.UserServiceFactory;
@@ -196,8 +198,8 @@ public class ClientTest extends TestCase {
 
     private void doTestCreatePerson() {
         PersonService personService = WebServiceClientFactory.getPersonService();
-        for (int i = 0; i < 10; i++) {
-            Person person = new Person();
+        Person person = new Person();
+        for (int i = 0; i < 10; i++) {            
             person.getFather().getName().setFirstName("FFN" + i);
             person.getFather().getName().setLastName("FLN" + i);
             person.getFather().getName().setMiddleInitial("FM" + i);
@@ -227,7 +229,29 @@ public class ClientTest extends TestCase {
             person.setPhoneNumber("+880123654789" + i);
             person.setPrimaryEmail("email-" + i + "@email.com");
             person.setSecondaryEmail("sec-email-" + i + "@email.com");
+            personService.create(person);           
+        }
+        try {
             personService.create(person);
+            fail("Should have failed!");
+        }
+        catch(SmartException ex) {
+            ExceptionMessage exception = ExceptionMessage.valueOf(ex.getMessage());
+            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION, exception);
+            assertEquals(ex.getExceptionElement().getFieldCausedBy(), UniqueConstrainedField.PERSON_EMAIL.name());
+        }
+        try {
+            person.setPrimaryEmail("another_"+person.getPrimaryEmail());
+            personService.create(person);
+            fail("Should have failed!");
+        }
+        catch(SmartException ex) {
+            ExceptionMessage exception = ExceptionMessage.valueOf(ex.getMessage());
+            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION, exception);
+            assertEquals(ex.getExceptionElement().getFieldCausedBy(), UniqueConstrainedField.PERSON_NATIONAL_ID.name());
+        }
+        catch(Exception ex) {
+            fail("Unexpected exception: " + ex.getMessage());
         }
     }
 
