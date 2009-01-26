@@ -10,14 +10,19 @@ import com.smartitengineering.dao.common.queryparam.FetchMode;
 import com.smartitengineering.dao.common.queryparam.MatchMode;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
+import com.smartitengineering.user.domain.BasicIdentity;
 import com.smartitengineering.user.domain.Person;
+import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.filter.PersonFilter;
+import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.PersonService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.StaleStateException;
+import org.hibernate.exception.ConstraintViolationException;
 
 /**
  *
@@ -26,6 +31,7 @@ import org.apache.commons.lang.StringUtils;
 public class PersonServiceImpl implements PersonService {
 
     private CommonReadDao<Person> personReadDao;
+    private CommonReadDao<BasicIdentity> basicIdentityReadDao;
     private CommonWriteDao<Person> personWriteDao;
 
     public CommonReadDao<Person> getPersonReadDao() {
@@ -46,22 +52,51 @@ public class PersonServiceImpl implements PersonService {
 
     public void create(Person person) {
         try {
+            Integer count = (Integer) getPersonReadDao().getOther(QueryParameterFactory.getElementCountParam(
+                    "primaryEmail"), QueryParameterFactory.
+                    getStringLikePropertyParam(
+                    "primaryEmail", person.getPrimaryEmail(), MatchMode.EXACT));
+            if (count.intValue() > 0) {
+                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
+                        name() + "-" +
+                        UniqueConstrainedField.PERSON_EMAIL.name());
+            }
+            count = (Integer) getBasicIdentityReadDao().getOther(QueryParameterFactory.getElementCountParam(
+                    "nationalID"), QueryParameterFactory.
+                    getStringLikePropertyParam(
+                    "nationalID", person.getSelf().getNationalID(),
+                    MatchMode.EXACT));
+            if (count.intValue() > 0) {
+                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
+                        name() + "-" +
+                        UniqueConstrainedField.PERSON_NATIONAL_ID.name());
+            }
             getPersonWriteDao().save(person);
-        } catch (Exception e) {
+        } catch (ConstraintViolationException e) {
+            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
+                    name() + "-" + UniqueConstrainedField.OTHER;
+            throw new RuntimeException(message, e);
+        } catch (StaleStateException e) {
+            String message =
+                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name();
+            throw new RuntimeException(message, e);
         }
+
+
     }
 
     public void update(Person person) {
-        try {
+        try {           
             getPersonWriteDao().update(person);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
+            
         }
     }
 
     public void delete(Person person) {
         try {
             getPersonWriteDao().delete(person);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
         }
     }
 
@@ -70,7 +105,8 @@ public class PersonServiceImpl implements PersonService {
         List<QueryParameter> queryParameters = new ArrayList<QueryParameter>();
         if (!StringUtils.isEmpty(filter.getEmail())) {
             System.out.println("Mail");
-            qp = QueryParameterFactory.getEqualPropertyParam("primaryEmail", filter.getEmail());
+            qp = QueryParameterFactory.getEqualPropertyParam("primaryEmail",
+                    filter.getEmail());
             queryParameters.add(qp);
         }
         if (!(StringUtils.isEmpty(filter.getName().getFirstName()) &&
@@ -82,20 +118,26 @@ public class PersonServiceImpl implements PersonService {
             if (!StringUtils.isEmpty(filter.getName().getFirstName())) {
                 System.out.println("First Name");
                 QueryParameter qpFirstName;
-                qpFirstName = QueryParameterFactory.getNestedParametersParam("self", FetchMode.DEFAULT,
+                qpFirstName = QueryParameterFactory.getNestedParametersParam(
+                        "self",
+                        FetchMode.DEFAULT,
                         QueryParameterFactory.getStringLikePropertyParam(
-                        "name.firstName", filter.getName().getFirstName(), MatchMode.ANYWHERE));
+                        "name.firstName", filter.getName().getFirstName(),
+                        MatchMode.ANYWHERE));
                 qpConjunction = qpFirstName;
                 System.out.println(qpConjunction.toString());
             }
             if (!StringUtils.isEmpty(filter.getName().getLastName())) {
                 System.out.println("Last Name");
                 QueryParameter qpLastName;
-                qpLastName = QueryParameterFactory.getNestedParametersParam("self", FetchMode.DEFAULT,
+                qpLastName = QueryParameterFactory.getNestedParametersParam(
+                        "self",
+                        FetchMode.DEFAULT,
                         QueryParameterFactory.getStringLikePropertyParam(
                         "name.lastName", filter.getName().getLastName()));
                 if (qpConjunction != null) {
-                    qpConjunction = QueryParameterFactory.getConjunctionParam(qpConjunction, qpLastName);
+                    qpConjunction = QueryParameterFactory.getConjunctionParam(
+                            qpConjunction, qpLastName);
                 } else {
                     qpConjunction = qpLastName;
                 }
@@ -104,11 +146,13 @@ public class PersonServiceImpl implements PersonService {
             if (!StringUtils.isEmpty(filter.getName().getMiddleInitial())) {
                 System.out.println("Middle");
                 QueryParameter qpMiddleInitial;
-                qpMiddleInitial = QueryParameterFactory.getNestedParametersParam("self", FetchMode.DEFAULT,
+                qpMiddleInitial = QueryParameterFactory.getNestedParametersParam("self",
+                        FetchMode.DEFAULT,
                         QueryParameterFactory.getStringLikePropertyParam(
                         "name.middleInitial", filter.getName().getLastName()));
                 if (qpConjunction != null) {
-                    qpConjunction = QueryParameterFactory.getConjunctionParam(qpConjunction, qpMiddleInitial);
+                    qpConjunction = QueryParameterFactory.getConjunctionParam(
+                            qpConjunction, qpMiddleInitial);
                 } else {
                     qpConjunction = qpMiddleInitial;
                 }
@@ -118,12 +162,12 @@ public class PersonServiceImpl implements PersonService {
         /*
         QueryParameter qpConjunction = null;
         qpConjunction = QueryParameterFactory.getNestedParametersParam("father", FetchMode.DEFAULT,
-                QueryParameterFactory.getStringLikePropertyParam(
-                "name.firstName", "FFN", MatchMode.ANYWHERE));
+        QueryParameterFactory.getStringLikePropertyParam(
+        "name.firstName", "FFN", MatchMode.ANYWHERE));
         queryParameters.add(qpConjunction);
         qpConjunction = 
-                QueryParameterFactory.getStringLikePropertyParam(
-                "address.country", "gla", MatchMode.ANYWHERE);
+        QueryParameterFactory.getStringLikePropertyParam(
+        "address.country", "gla", MatchMode.ANYWHERE);
         queryParameters.add(qpConjunction);
          */
 
@@ -160,7 +204,17 @@ public class PersonServiceImpl implements PersonService {
 
     public Person getPersonByEmail(String email) {
         Person person = new Person();
-        person = getPersonReadDao().getSingle(QueryParameterFactory.getEqualPropertyParam("primaryEmail", email));
+        person = getPersonReadDao().getSingle(QueryParameterFactory.
+                getEqualPropertyParam("primaryEmail", email));
         return person;
+    }
+
+    public CommonReadDao<BasicIdentity> getBasicIdentityReadDao() {
+        return basicIdentityReadDao;
+    }
+
+    public void setBasicIdentityReadDao(
+            CommonReadDao<BasicIdentity> basicIdentityReadDao) {
+        this.basicIdentityReadDao = basicIdentityReadDao;
     }
 }

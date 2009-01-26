@@ -6,9 +6,12 @@
 package com.smartitengineering.user.rest.client;
 import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.filter.PersonFilter;
+import com.smartitengineering.user.rest.client.exception.SmartException;
 import com.smartitengineering.user.service.PersonService;
+import com.smartitengineering.user.ws.element.ExceptionElement;
 import com.smartitengineering.user.ws.element.PersonElement;
 import com.smartitengineering.user.ws.element.PersonElements;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
@@ -25,7 +28,13 @@ public class PersonServiceClientImpl extends AbstractClientImpl implements Perso
         PersonElement personElement = new PersonElement();
         personElement.setPerson(person);
         final Builder type = getWebResource().path("person").type("application/xml");
-        type.post(personElement);
+        try {
+            type.post(personElement);
+        } catch (UniformInterfaceException e) {
+            ExceptionElement message = e.getResponse().getEntity(ExceptionElement.class);
+            int status = e.getResponse().getStatus();
+            throw new SmartException(message, status, e);
+        }
     }
 
     public void update(Person person) {
