@@ -117,6 +117,7 @@
         </property>
     </bean>
     <bean id="personDao" class="com.smartitengineering.user.dao.PersonDaoImpl" parent="abstractDao"/>
+    <bean id="basicIdentityReadDao" class="com.smartitengineering.user.dao.BasicIdentityDaoImpl" parent="abstractDao"/>
     <bean id="userDao" class="com.smartitengineering.user.dao.UserDaoImpl" parent="abstractDao"/>
     <bean id="userPersonDao" class="com.smartitengineering.user.dao.UserPersonDaoImpl" parent="abstractDao"/>
     <bean id="roleDao" class="com.smartitengineering.user.dao.RoleDaoImpl" parent="abstractDao"/>
@@ -127,6 +128,9 @@
         </property>
         <property name="personWriteDao">
             <ref local="personDao" />
+        </property>
+        <property name="basicIdentityReadDao">
+            <ref local="basicIdentityReadDao" />
         </property>
     </bean>
     <bean id="userService" class="com.smartitengineering.user.impl.UserServiceImpl">
