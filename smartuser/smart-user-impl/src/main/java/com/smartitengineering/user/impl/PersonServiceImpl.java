@@ -66,9 +66,17 @@ public class PersonServiceImpl implements PersonService {
     }
 
     public void update(Person person) {
+        validatePerson(person);
         try {
             getPersonWriteDao().update(person);
-        } catch (RuntimeException e) {
+        } catch (ConstraintViolationException e) {
+            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
+                    name() + "-" + UniqueConstrainedField.OTHER;
+            throw new RuntimeException(message, e);
+        } catch (StaleStateException e) {
+            String message =
+                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name();
+            throw new RuntimeException(message, e);
         }
     }
 
