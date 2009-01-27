@@ -6,7 +6,6 @@ package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Name;
 import com.smartitengineering.user.domain.Person;
-import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.filter.PersonFilter;
 import com.smartitengineering.user.service.PersonService;
 import com.smartitengineering.user.ws.element.ExceptionElement;
@@ -50,10 +49,8 @@ public class PersonResource {
         try {
             personService.create(personElement.getPerson());
             return Response.ok().build();
-        } catch (RuntimeException e) {
-            System.out.println("MMMMMMMMMMMMMMMMM: " + e.getMessage());
-            String group = e.getMessage().split("-")[0];
-            System.out.println("MMMMMMMMMMMMMMMMM: " + e.getMessage() + " " + group);
+        } catch (RuntimeException e) {            
+            String group = e.getMessage().split("-")[0];            
             String field = e.getMessage().split("-")[1];
             ExceptionElement exceptionElement = new ExceptionElement();
             exceptionElement.setGroup(group);
@@ -68,8 +65,13 @@ public class PersonResource {
         try {
             personService.update(personElement.getPerson());
             return Response.ok().build();
-        } catch (Exception e) {
-            return Response.ok().build();
+        }catch (RuntimeException e) {            
+            String group = e.getMessage().split("-")[0];            
+            String field = e.getMessage().split("-")[1];
+            ExceptionElement exceptionElement = new ExceptionElement();
+            exceptionElement.setGroup(group);
+            exceptionElement.setFieldCausedBy(field);
+            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).entity(exceptionElement).build();            
         }
     }
 
