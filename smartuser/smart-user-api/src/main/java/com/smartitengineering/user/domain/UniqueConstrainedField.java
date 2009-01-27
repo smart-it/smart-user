@@ -17,5 +17,7 @@ public enum UniqueConstrainedField {
     PERSON_SPOUSE_NATIONAL_ID,
     PERSON_EMAIL,
     USER_USERNAME,
+    ROLE_NAME,
+    PRIVILEGE_NAME,
     OTHER
 }

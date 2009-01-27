@@ -158,7 +158,9 @@
         <property name="privilegeWriteDao">
             <ref local="privilegeDao" />
         </property>
-        
+        <property name="personService">
+            <ref local="personService" />
+        </property>
     </bean>
     <bean id="beanRegistrar" class="com.smartitengineering.util.spring.BeanFactoryRegistrar">
         <property name="beanFactoryContextName">
