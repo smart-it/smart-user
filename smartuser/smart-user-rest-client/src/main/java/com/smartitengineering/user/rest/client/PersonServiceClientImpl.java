@@ -41,14 +41,20 @@ public class PersonServiceClientImpl extends AbstractClientImpl implements Perso
         PersonElement personElement = new PersonElement();
         personElement.setPerson(person);
         final Builder type = getWebResource().path("person").type("application/xml");
-        type.put(personElement);
+        try {
+            type.put(personElement);
+        } catch (UniformInterfaceException e) {
+            ExceptionElement message = e.getResponse().getEntity(ExceptionElement.class);
+            int status = e.getResponse().getStatus();
+            throw new SmartException(message, status, e);
+        }
     }
 
     public void delete(Person person) {
         PersonElement personElement = new PersonElement();
         personElement.setPerson(person);
         final Builder type = getWebResource().path("person").type("application/xml");
-        type.post();
+        type.delete();
     }
 
     public Collection<Person> search(PersonFilter filter) {
