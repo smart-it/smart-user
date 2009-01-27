@@ -75,5 +75,9 @@ public class PersonServiceClientImpl extends AbstractClientImpl implements Perso
         return personElements.getPersons(); 
     }
 
+    public void validatePerson(Person person) {
+        throw new UnsupportedOperationException("Not supported yet.");        
+    }
+
 
 }

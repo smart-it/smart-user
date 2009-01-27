@@ -27,4 +27,6 @@ public interface PersonService {
     
     public Person getPersonByEmail(String email);
     
+    public void validatePerson(Person person);
+    
 }
