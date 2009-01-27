@@ -6,6 +6,7 @@ package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.filter.UserPersonFilter;
 import com.smartitengineering.user.service.UserService;
+import com.smartitengineering.user.ws.element.ExceptionElement;
 import com.smartitengineering.user.ws.element.UserPersonElement;
 import com.smartitengineering.user.ws.element.UserPersonElements;
 import com.smartitengineering.user.ws.element.UserPersonFilterElement;
@@ -44,9 +45,13 @@ public class UserPersonResource {
         try {
             userService.create(userPersonElement.getUserPerson());
             return Response.ok().build();
-        } catch (Exception e) {
-            System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE! " + e.getMessage());
-            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).entity("Stale Object!").build();
+        } catch (Exception e) {            
+            String group = e.getMessage().split("-")[0];            
+            String field = e.getMessage().split("-")[1];
+            ExceptionElement exceptionElement = new ExceptionElement();
+            exceptionElement.setGroup(group);
+            exceptionElement.setFieldCausedBy(field);            
+            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).entity(exceptionElement).build();
         }
     }
 
@@ -56,8 +61,13 @@ public class UserPersonResource {
         try {
             userService.update(userPersonElement.getUserPerson());
             return Response.ok().build();
-        } catch (Exception e) {
-            return Response.ok().build();
+        }catch (RuntimeException e) {            
+            String group = e.getMessage().split("-")[0];            
+            String field = e.getMessage().split("-")[1];
+            ExceptionElement exceptionElement = new ExceptionElement();
+            exceptionElement.setGroup(group);
+            exceptionElement.setFieldCausedBy(field);
+            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).entity(exceptionElement).build();            
         }
     }
 
