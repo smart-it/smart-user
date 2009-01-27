@@ -7,6 +7,7 @@ package com.smartitengineering.user.ws.resources;
 
 
 import com.smartitengineering.user.service.UserService;
+import com.smartitengineering.user.ws.element.ExceptionElement;
 import com.smartitengineering.user.ws.element.PrivilegeElement;
 import com.smartitengineering.user.ws.element.PrivilegeElements;
 import javax.annotation.Resource;
@@ -19,6 +20,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -39,8 +41,13 @@ public class PrivilegeResource {
         try {
             userService.create(privilegeElement.getPrivilege());
             return Response.ok().build();
-        } catch (Exception e) {
-            return Response.ok().build();
+        } catch (RuntimeException e) {            
+            String group = e.getMessage().split("-")[0];            
+            String field = e.getMessage().split("-")[1];
+            ExceptionElement exceptionElement = new ExceptionElement();
+            exceptionElement.setGroup(group);
+            exceptionElement.setFieldCausedBy(field);
+            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).entity(exceptionElement).build();            
         }
     }
     
@@ -50,8 +57,13 @@ public class PrivilegeResource {
         try {
             userService.update(privilegeElement.getPrivilege());
             return Response.ok().build();
-        } catch (Exception e) {
-            return Response.ok().build();
+        }catch (RuntimeException e) {            
+            String group = e.getMessage().split("-")[0];            
+            String field = e.getMessage().split("-")[1];
+            ExceptionElement exceptionElement = new ExceptionElement();
+            exceptionElement.setGroup(group);
+            exceptionElement.setFieldCausedBy(field);
+            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).entity(exceptionElement).build();            
         }
     }
 
