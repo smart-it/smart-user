@@ -74,12 +74,10 @@ public class UserPersonResource {
     @DELETE
     @Path("{username}")
     @Consumes("application/xml")
-    public Response deleteUserPerson(@PathParam("username") String username) {
+    public void deleteUserPerson(@PathParam("username") String username) {
         try {
             userService.delete(userService.getUserPersonByUsername(username));
-            return Response.ok().build();
         } catch (Exception e) {
-            return Response.ok().build();
         }
     }
 

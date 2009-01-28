@@ -58,12 +58,10 @@ public class UserResource {
     @DELETE
     @Path("{username}")
     @Consumes("application/xml")
-    public Response deleteUser(@PathParam("username") String username) {
+    public void deleteUser(@PathParam("username") String username) {
         try {
             userService.delete(userService.getUserByUsername(username));
-            return Response.ok().build();
         } catch (Exception e) {
-            return Response.ok().build();
         }
     }
 

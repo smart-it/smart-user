@@ -70,12 +70,10 @@ public class RoleResource {
     @DELETE
     @Path("{name}")
     @Consumes("application/xml")
-    public Response deleteRole(@PathParam("name") String name) {
+    public void deleteRole(@PathParam("name") String name) {
         try {
             userService.delete(userService.getRoleByName(name));
-            return Response.ok().build();
         } catch (Exception e) {
-            return Response.ok().build();
         }
     }
 

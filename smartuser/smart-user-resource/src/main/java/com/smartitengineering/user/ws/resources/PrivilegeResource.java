@@ -70,12 +70,10 @@ public class PrivilegeResource {
     @DELETE
     @Path("{name}")
     @Consumes("application/xml")
-    public Response deletePrivilege(@PathParam("name") String name) {
+    public void deletePrivilege(@PathParam("name") String name) {
         try {
             userService.delete(userService.getPrivilegeByName(name));
-            return Response.ok().build();
         } catch (Exception e) {
-            return Response.ok().build();
         }
     }
 

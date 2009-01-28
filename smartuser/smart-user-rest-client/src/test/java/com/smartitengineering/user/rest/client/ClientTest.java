@@ -9,8 +9,11 @@ import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
+import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.domain.UserPerson;
 import com.smartitengineering.user.filter.PersonFilter;
+import com.smartitengineering.user.filter.UserFilter;
+import com.smartitengineering.user.filter.UserPersonFilter;
 import com.smartitengineering.user.rest.client.exception.SmartException;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.PersonService;
@@ -73,9 +76,11 @@ public class ClientTest extends TestCase {
     public ClientTest(String testName) throws IOException {
         super(testName);
         try {
-            properties.load(getClass().getClassLoader().getResourceAsStream("testConfiguration.properties"));
+            properties.load(getClass().getClassLoader().getResourceAsStream(
+                    "testConfiguration.properties"));
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null,
+                    ex);
         }
 
         connectionUri = properties.getProperty("uri");
@@ -99,7 +104,8 @@ public class ClientTest extends TestCase {
             ScatteredWar war = new ScatteredWar(getBaseURI().getRawPath(),
                     new File("./src/test/webapp"),
                     new File("./src/test/webapp/WEB-INF/web.xml"),
-                    Collections.singleton(new File("target/classes").toURI().toURL()));
+                    Collections.singleton(new File("target/classes").toURI().
+                    toURL()));
             System.out.println(war.name);
 
             glassfish.deploy(war);
@@ -122,14 +128,45 @@ public class ClientTest extends TestCase {
         doTestPrivilegeService();
         doTestRoleService();
         doTestUserPersonService();
+        doTestUserService();
+        doTestDeleteAll();
         doTestServiceAggregator();
+    }
+
+    private void doTestDeleteAll() {
+        PersonService personService = WebServiceClientFactory.getPersonService();
+        UserService userService = WebServiceClientFactory.getUserService();
+        
+        
+        Set<UserPerson> userPersons = new HashSet<UserPerson>(userService.getAllUserPerson());
+        for (UserPerson userPerson : userPersons){
+            userService.delete(userPerson);
+        }
+        Set<User> users = new HashSet<User>(userService.getAllUser());
+        for (User user : users){
+            userService.delete(user);
+        }       
+        Set<Person> persons = new HashSet<Person>(personService.getAllPerson());
+        for (Person person : persons){
+            personService.delete(person);
+        }
+        Set<Role> roles = new HashSet<Role>(userService.getRolesByName(""));
+        for (Role role : roles){
+            userService.delete(role);
+        }
+        Set<Privilege> privileges = new HashSet<Privilege>(userService.getPrivilegesByName(""));
+        for (Privilege privilege : privileges){
+            userService.delete(privilege);
+        }
+        
     }
 
     private void doTestGetUserPersonByUserName() {
         UserService userService = WebServiceClientFactory.getUserService();
         UserPerson userPerson = userService.getUserPersonByUsername("modhu7");
         System.out.println(userPerson.getPerson().getPrimaryEmail());
-        System.out.println(userPerson.getPerson().getSelf().getName().getFirstName());
+        System.out.println(userPerson.getPerson().getSelf().getName().
+                getFirstName());
         System.out.println(userPerson.getUser().getRoles().size());
     }
 
@@ -153,15 +190,58 @@ public class ClientTest extends TestCase {
         doTestUpdateRole();
     }
 
+    private void doTestSearchUser() {
+        UserService userService = WebServiceClientFactory.getUserService();
+        UserFilter userFilter = new UserFilter();
+        userFilter.setUsername("modhu7");
+        List<User> users = new ArrayList<User>(userService.search(userFilter));
+        assertEquals(4, users.size()); //this search returns non-unique results in list
+        Set<User> setUser = new HashSet<User>(userService.search(userFilter));
+        assertEquals(1, setUser.size());//this search returns unique results in set
+    }
+
+    private void doTestSearchUserPerson() {
+        UserService userService = WebServiceClientFactory.getUserService();
+        UserPersonFilter userPersonFilter = new UserPersonFilter();
+        userPersonFilter.setUsername("modhu7");
+        List<UserPerson> users = new ArrayList<UserPerson>(userService.search(userPersonFilter));
+        assertEquals(2, users.size());//this search returns non-unique results in list
+        Set<UserPerson> setUser = new HashSet<UserPerson>(userService.search(userPersonFilter));
+        assertEquals(1, setUser.size());//this search returns unique results in set
+    }
+
+    private void doTestUserService() {
+        doTestReadUser();
+        doTestSearchUser();
+        doTestUpdateUser();
+    }
+    
     private void doTestUpdateUserPerson() {
         UserService userService = WebServiceClientFactory.getUserService();
-    //UserPerson userPerson = userService
-
+        UserPerson userPerson = userService.getUserPersonByUsername("modhu7");
+        userPerson.getUser().setPassword("new" + userPerson.getUser().
+                getPassword());
+        userService.update(userPerson);
+        userPerson.getUser().setUsername("imyousuf");
+        try {
+            userService.update(userPerson);
+            fail("Should have failed");
+        } catch (SmartException e) {
+            ExceptionMessage exception = ExceptionMessage.valueOf(
+                    e.getMessage());
+            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
+                    exception);
+            assertEquals(e.getExceptionElement().getFieldCausedBy(),
+                    UniqueConstrainedField.USER_USERNAME.name());
+        } catch (Exception e) {
+            fail("Should have failed!");
+        }
     }
 
     private void doTestUserPersonService() {
         doTestCreateUserPerson();
         doTestReadUserPerson();
+        doTestSearchUserPerson();
         doTestGetUserPersonByUserName();
         doTestUpdateUserPerson();
     }
@@ -189,17 +269,94 @@ public class ClientTest extends TestCase {
         userPerson.getUser().setUsername("ahmyousuf");
         userPerson.getUser().setPassword("password");
         userPerson.getUser().setRoles(roles);
+
+        try {
+            userService.create(userPerson);
+            fail("Should have failed!");
+        } catch (SmartException e) {
+            ExceptionMessage exception = ExceptionMessage.valueOf(
+                    e.getMessage());
+            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
+                    exception);
+            assertEquals(e.getExceptionElement().getFieldCausedBy(),
+                    UniqueConstrainedField.PERSON.name());
+        } catch (Exception e) {
+            fail("Should have failed!");
+        }
+
+
+
+        userPerson.setPerson(personService.getPersonByEmail("email-3@email.com"));
+        userPerson.getUser().setUsername("imyousuf");
+        userPerson.getUser().setPassword("password");
+        userPerson.getUser().setRoles(roles);
+
+        try {
+            userService.create(userPerson);
+            fail("Should not be succeed to add more than one user with same person");
+        } catch (SmartException e) {
+            ExceptionMessage exception = ExceptionMessage.valueOf(
+                    e.getMessage());
+            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
+                    exception);
+            assertEquals(e.getExceptionElement().getFieldCausedBy(),
+                    UniqueConstrainedField.USER_USERNAME.name());
+        }
+
+        userPerson.setPerson(personService.getPersonByEmail("email-4@email.com"));
+        userPerson.getPerson().setId(null);
+        userPerson.getUser().setUsername("username-1");
+        userPerson.getUser().setPassword("password");
+        userPerson.getUser().setRoles(roles);
+        try {
+            userService.create(userPerson);
+            fail("Should not be succeed to add more than one user with same person");
+        } catch (SmartException e) {
+            ExceptionMessage exception = ExceptionMessage.valueOf(
+                    e.getMessage());
+            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
+                    exception);
+            assertEquals(e.getExceptionElement().getFieldCausedBy(),
+                    UniqueConstrainedField.PERSON_EMAIL.name());
+        }
+
+        userPerson.getPerson().setPrimaryEmail("another-" + userPerson.getPerson().
+                getPrimaryEmail());
+        try {
+            userService.create(userPerson);
+            fail("Should not be succeed to add more than one user with same person");
+        } catch (SmartException e) {
+            ExceptionMessage exception = ExceptionMessage.valueOf(
+                    e.getMessage());
+            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
+                    exception);
+            assertEquals(e.getExceptionElement().getFieldCausedBy(),
+                    UniqueConstrainedField.PERSON_NATIONAL_ID.name());
+        }
+
+//        userPerson.setPerson(personService.getPersonByEmail("email-3@email.com"));
+//        userPerson.getPerson().setPrimaryEmail("another_email-3@email.com");
+//        userPerson.getUser().setUsername("dipu7");
+//        userPerson.getUser().setPassword("password");
+//        userPerson.getUser().setRoles(roles);
+//
 //        try {
 //            userService.create(userPerson);
-//            fail("Should not be succeed to add more than one user with same person");
-//        } catch (Exception e) {
+//            fail("Should not be succeed");
+//        } catch (SmartException e) {
+//            ExceptionMessage exception = ExceptionMessage.valueOf(
+//                    e.getMessage());
+//            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
+//                    exception);
+//            assertEquals(e.getExceptionElement().getFieldCausedBy(),
+//                    UniqueConstrainedField.PERSON_NATIONAL_ID.name());
 //        }
     }
 
     private void doTestCreatePerson() {
         PersonService personService = WebServiceClientFactory.getPersonService();
         Person person = new Person();
-        for (int i = 0; i < 10; i++) {            
+        for (int i = 0; i < 10; i++) {
             person.getFather().getName().setFirstName("FFN" + i);
             person.getFather().getName().setLastName("FLN" + i);
             person.getFather().getName().setMiddleInitial("FM" + i);
@@ -223,62 +380,140 @@ public class ClientTest extends TestCase {
 
             person.getAddress().setCity("Dhaka-" + i);
             person.getAddress().setCountry("Bangladesh-" + i);
-            person.setBirthDay(new Date(System.currentTimeMillis() - new Long("788400000000") + i * 86400000));
+            person.setBirthDay(new Date(System.currentTimeMillis() - new Long(
+                    "788400000000") + i * 86400000));
             person.setCellPhoneNumber("01712345678-" + i);
             person.setFaxNumber("+8801254876932" + i);
             person.setPhoneNumber("+880123654789" + i);
             person.setPrimaryEmail("email-" + i + "@email.com");
             person.setSecondaryEmail("sec-email-" + i + "@email.com");
-            personService.create(person);           
+            personService.create(person);
         }
         try {
             personService.create(person);
             fail("Should have failed!");
-        }
-        catch(SmartException ex) {
-            ExceptionMessage exception = ExceptionMessage.valueOf(ex.getMessage());
-            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION, exception);
-            assertEquals(ex.getExceptionElement().getFieldCausedBy(), UniqueConstrainedField.PERSON_EMAIL.name());
+        } catch (SmartException ex) {
+            ExceptionMessage exception = ExceptionMessage.valueOf(
+                    ex.getMessage());
+            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
+                    exception);
+            assertEquals(ex.getExceptionElement().getFieldCausedBy(),
+                    UniqueConstrainedField.PERSON_EMAIL.name());
         }
         try {
-            person.setPrimaryEmail("another_"+person.getPrimaryEmail());
+            person.setPrimaryEmail("another_" + person.getPrimaryEmail());
             personService.create(person);
             fail("Should have failed!");
-        }
-        catch(SmartException ex) {
-            ExceptionMessage exception = ExceptionMessage.valueOf(ex.getMessage());
-            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION, exception);
-            assertEquals(ex.getExceptionElement().getFieldCausedBy(), UniqueConstrainedField.PERSON_NATIONAL_ID.name());
-        }
-        catch(Exception ex) {
+        } catch (SmartException ex) {
+            ExceptionMessage exception = ExceptionMessage.valueOf(
+                    ex.getMessage());
+            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
+                    exception);
+            assertEquals(ex.getExceptionElement().getFieldCausedBy(),
+                    UniqueConstrainedField.PERSON_NATIONAL_ID.name());
+        } catch (Exception ex) {
             fail("Unexpected exception: " + ex.getMessage());
         }
+        try {
+            person.getSelf().setNationalID("another_" + person.getSelf().
+                    getNationalID());
+            personService.create(person);
+            fail("Should have failed!");
+        } catch (SmartException ex) {
+            ExceptionMessage exception = ExceptionMessage.valueOf(
+                    ex.getMessage());
+            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
+                    exception);
+            assertEquals(ex.getExceptionElement().getFieldCausedBy(),
+                    UniqueConstrainedField.PERSON_SPOUSE_NATIONAL_ID.name());
+        } catch (Exception ex) {
+            fail("Unexpected exception: " + ex.getMessage());
+        }
+        try {
+            person.getSpouse().setNationalID("another_" + person.getSpouse().
+                    getNationalID());
+            personService.create(person);
+            fail("Should have failed!");
+        } catch (SmartException ex) {
+            ExceptionMessage exception = ExceptionMessage.valueOf(
+                    ex.getMessage());
+            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
+                    exception);
+            assertEquals(ex.getExceptionElement().getFieldCausedBy(),
+                    UniqueConstrainedField.PERSON_FATHER_NATIONAL_ID.name());
+        } catch (Exception ex) {
+            fail("Unexpected exception: " + ex.getMessage());
+        }
+        try {
+            person.getFather().setNationalID("another_" + person.getFather().
+                    getNationalID());
+            personService.create(person);
+            fail("Should have failed!");
+        } catch (SmartException ex) {
+            ExceptionMessage exception = ExceptionMessage.valueOf(
+                    ex.getMessage());
+            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
+                    exception);
+            assertEquals(ex.getExceptionElement().getFieldCausedBy(),
+                    UniqueConstrainedField.PERSON_MOTHER_NATIONAL_ID.name());
+        } catch (Exception ex) {
+            fail("Unexpected exception: " + ex.getMessage());
+        }
+
     }
 
     private void doTestCreatePrivilege() {
         UserService userService = WebServiceClientFactory.getUserService();
+        Privilege privilege = new Privilege();
         for (int i = 0; i < 20; i++) {
-            Privilege privilege = new Privilege();
             privilege.setDisplayName("Display Privilege-" + i);
             privilege.setName("Privilege-" + i);
             privilege.setShortDescription("No Description");
             userService.create(privilege);
         }
+        try {
+            userService.create(privilege);
+            fail("Should have failed!");
+        } catch (SmartException ex) {
+            ExceptionMessage exception = ExceptionMessage.valueOf(
+                    ex.getMessage());
+            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
+                    exception);
+            assertEquals(ex.getExceptionElement().getFieldCausedBy(),
+                    UniqueConstrainedField.PRIVILEGE_NAME.name());
+        } catch (Exception ex) {
+            fail("Unexpected exception: " + ex.getMessage());
+        }
     }
 
     private void doTestCreateRole() {
         UserService userService = WebServiceClientFactory.getUserService();
+        Role role = new Role();
         for (int i = 0; i < 10; i++) {
-            Role role = new Role();
             role.setDisplayName("Display Role-" + i);
             role.setName("Role-" + i);
             role.setShortDescription("No Description");
             Set<Privilege> privileges = new HashSet<Privilege>();
 
-            privileges.add(userService.getPrivilegeByName("Privilege-" + (2 * i)));
-            privileges.add(userService.getPrivilegeByName("Privilege-" + (2 * i + 1)));
+            privileges.add(
+                    userService.getPrivilegeByName("Privilege-" + (2 * i)));
+            privileges.add(userService.getPrivilegeByName("Privilege-" +
+                    (2 * i + 1)));
             role.setPrivileges(privileges);
             userService.create(role);
+        }
+        try {
+            userService.create(role);
+            fail("Should have failed!");
+        } catch (SmartException ex) {
+            ExceptionMessage exception = ExceptionMessage.valueOf(
+                    ex.getMessage());
+            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
+                    exception);
+            assertEquals(ex.getExceptionElement().getFieldCausedBy(),
+                    UniqueConstrainedField.ROLE_NAME.name());
+        } catch (Exception ex) {
+            fail("Unexpected exception: " + ex.getMessage());
         }
     }
 
@@ -292,7 +527,8 @@ public class ClientTest extends TestCase {
 
     private void doTestReadPerson() {
         PersonService personService = WebServiceClientFactory.getPersonService();
-        List<Person> listPerson = new ArrayList<Person>(personService.getAllPerson());
+        List<Person> listPerson = new ArrayList<Person>(personService.
+                getAllPerson());
         System.out.println(listPerson.size());
         for (Person person : listPerson) {
             System.out.println(person.getBirthDay());
@@ -300,10 +536,17 @@ public class ClientTest extends TestCase {
         assertTrue(listPerson.size() == 10);
 
     }
-
+    
+    private void doTestReadUser(){
+        UserService userService = WebServiceClientFactory.getUserService();
+        List<User> listUser = new ArrayList<User>(userService.getAllUser());
+        assertEquals(2, listUser.size());
+    }
+    
     private void doTestReadUserPerson() {
         UserService userService = WebServiceClientFactory.getUserService();
-        List<UserPerson> list = new ArrayList<UserPerson>(userService.getAllUserPerson());
+        List<UserPerson> list = new ArrayList<UserPerson>(userService.
+                getAllUserPerson());
         System.out.println(list.size());
         for (UserPerson userPerson : list) {
             System.out.println(userPerson.getUser().getUsername());
@@ -362,7 +605,8 @@ public class ClientTest extends TestCase {
         name.setFirstName("PersonFN");
         personFilter.setName(name);
         personFilter.setEmail("email-6@email.com");
-        List<Person> listPerson = new ArrayList<Person>(personService.search(personFilter));
+        List<Person> listPerson = new ArrayList<Person>(personService.search(
+                personFilter));
         for (Person person : listPerson) {
             System.out.println(person.getBirthDay());
         }
@@ -375,10 +619,12 @@ public class ClientTest extends TestCase {
 
     private void doTestUpdatePerson() {
         PersonService personService = WebServiceClientFactory.getPersonService();
-        List<Person> listPerson = new ArrayList<Person>(personService.getAllPerson());
+        List<Person> listPerson = new ArrayList<Person>(personService.
+                getAllPerson());
         Person person = new Person();
         person = listPerson.get(5);
-        person.getSelf().getName().setFirstName(person.getSelf().getName().getFirstName() + " updated");
+        person.getSelf().getName().setFirstName(person.getSelf().getName().
+                getFirstName() + " updated");
         personService.update(person);
 
         listPerson = new ArrayList<Person>(personService.getAllPerson());
@@ -387,6 +633,23 @@ public class ClientTest extends TestCase {
             System.out.println(personR.getSelf().getName().getFirstName());
         }
         assertTrue(listPerson.size() == 10);
+        person = listPerson.get(6);
+        person.setId(null);
+        person.setPrimaryEmail("no-email");
+
+        try {
+            personService.update(person);
+            fail("Should have failed!");
+        } catch (SmartException ex) {
+            ExceptionMessage exception = ExceptionMessage.valueOf(
+                    ex.getMessage());
+            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
+                    exception);
+            assertEquals(ex.getExceptionElement().getFieldCausedBy(),
+                    UniqueConstrainedField.PERSON_NATIONAL_ID.name());
+        } catch (Exception ex) {
+            fail("Unexpected exception: " + ex.getMessage());
+        }
     }
 
     private void doTestUpdatePrivilege() {
@@ -396,7 +659,22 @@ public class ClientTest extends TestCase {
         userService.update(privilege);
         privilege = userService.getPrivilegeByName("Privilege-6");
         assertNotNull(privilege);
-        System.out.println("Display Name: " + privilege.getDisplayName());
+        assertEquals("Display Privilege-6-updated", privilege.getDisplayName());
+
+        privilege.setName("Privilege-5");
+        try {
+            userService.update(privilege);
+            fail("Should have failed!");
+        } catch (SmartException ex) {
+            ExceptionMessage exception = ExceptionMessage.valueOf(
+                    ex.getMessage());
+            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
+                    exception);
+            assertEquals(ex.getExceptionElement().getFieldCausedBy(),
+                    UniqueConstrainedField.PRIVILEGE_NAME.name());
+        } catch (Exception ex) {
+            fail("Unexpected exception: " + ex.getMessage());
+        }
     }
 
     private void doTestUpdateRole() {
@@ -405,6 +683,42 @@ public class ClientTest extends TestCase {
         role.getPrivileges().add(userService.getPrivilegeByName("Privilege-18"));
         userService.update(role);
         role = userService.getRoleByName("Role-4");
-        System.out.println(role.getPrivileges().size());
+        assertEquals(3, role.getPrivileges().size());
+        role.setName("Role-3");
+        try {
+            userService.update(role);
+            fail("Should have failed!");
+        } catch (SmartException ex) {
+            ExceptionMessage exception = ExceptionMessage.valueOf(
+                    ex.getMessage());
+            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
+                    exception);
+            assertEquals(ex.getExceptionElement().getFieldCausedBy(),
+                    UniqueConstrainedField.ROLE_NAME.name());
+        } catch (Exception ex) {
+            fail("Unexpected exception: " + ex.getMessage());
+        }
     }
+    
+    private void doTestUpdateUser(){
+        UserService userService = WebServiceClientFactory.getUserService();
+        User user = userService.getUserByUsername("imyousuf");
+        user.setPassword("new" + user.getPassword());
+        userService.update(user);
+        user.setUsername("modhu7");
+        try{
+            userService.update(user);
+            fail("Should have failed");
+        }catch (SmartException ex) {
+            ExceptionMessage exception = ExceptionMessage.valueOf(
+                    ex.getMessage());
+            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
+                    exception);
+            assertEquals(ex.getExceptionElement().getFieldCausedBy(),
+                    UniqueConstrainedField.USER_USERNAME.name());
+        } catch (Exception ex) {
+            fail("Unexpected exception: " + ex.getMessage());
+        }
+    }
+    
 }
