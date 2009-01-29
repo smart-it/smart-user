@@ -131,8 +131,8 @@ public class UserServiceImpl implements UserService {
         QueryParameter qp;
         List<QueryParameter> queryParameters = new ArrayList<QueryParameter>();
         if (!StringUtils.isEmpty(filter.getUsername())) {
-            qp = QueryParameterFactory.getStringLikePropertyParam("username",
-                    filter.getUsername(), MatchMode.ANYWHERE);
+            qp = QueryParameterFactory.getEqualPropertyParam("username",
+                    filter.getUsername());
             queryParameters.add(qp);
         }
         Collection<User> users = new HashSet<User>();
@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
         QueryParameter qp;
         List<QueryParameter> queryParameters = new ArrayList<QueryParameter>();
         if (!StringUtils.isEmpty(filter.getUsername())) {
-            qp = QueryParameterFactory.getNestedParametersParam("User",
+            qp = QueryParameterFactory.getNestedParametersParam("user",
                     FetchMode.DEFAULT,
                     QueryParameterFactory.getStringLikePropertyParam("username",
                     filter.getUsername(), MatchMode.ANYWHERE));
@@ -257,6 +257,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public Collection<Role> getRolesByName(String name) {
+        System.out.println(name);
         QueryParameter qp;
         qp = QueryParameterFactory.getStringLikePropertyParam("name", name,
                 MatchMode.ANYWHERE);
