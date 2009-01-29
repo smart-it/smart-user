@@ -78,12 +78,10 @@ public class PersonResource {
     @DELETE
     @Path("{email}")
     @Consumes("application/xml")
-    public Response deletePerson(@PathParam("email") String email) {
+    public void deletePerson(@PathParam("email") String email) {
         try {
-            personService.delete(personService.getPersonByEmail(email));
-            return Response.ok().build();
-        } catch (Exception e) {
-            return Response.ok().build();
+            personService.delete(personService.getPersonByEmail(email));            
+        } catch (Exception e) {            
         }
     }
 
