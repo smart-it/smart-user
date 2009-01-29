@@ -15,16 +15,17 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author modhu7
  */
+
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public class RoleElements {
     private Collection<Role> roles;
 
-    public Collection getRoles() {
+    public Collection<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Collection roles) {
+    public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
 }
