@@ -66,14 +66,7 @@ public class UserServiceClientImpl extends AbstractClientImpl implements UserSer
     public void delete(User user) {
         UserElement userElement = new UserElement();
         userElement.setUser(user);
-        final Builder type = getWebResource().path("user").type("application/xml");
-        try {
-            type.delete(userElement);
-        }catch(UniformInterfaceException ex) {
-            ExceptionElement message = ex.getResponse().getEntity(ExceptionElement.class);
-            int status = ex.getResponse().getStatus();
-            throw new SmartException(message, status, ex);
-        }
+        getWebResource().path("user/" + user.getUsername()).delete();
     }
 
     public void update(UserPerson userPerson) {
@@ -92,8 +85,7 @@ public class UserServiceClientImpl extends AbstractClientImpl implements UserSer
     public void delete(UserPerson userPerson) {
         UserPersonElement userPersonElement = new UserPersonElement();
         userPersonElement.setUserPerson(userPerson);
-        final Builder type = getWebResource().path("userperson").type("application/xml");
-        type.delete(userPersonElement);
+        getWebResource().path("userperson/"+ userPerson.getUser().getUsername()).delete();
     }
 
     public Collection<User> search(UserFilter filter) {
@@ -167,8 +159,7 @@ public class UserServiceClientImpl extends AbstractClientImpl implements UserSer
     public void delete(Role role) {
         RoleElement roleElement = new RoleElement();
         roleElement.setRole(role);
-        final Builder type = getWebResource().path("role").type("application/xml");
-        type.delete(roleElement);
+        getWebResource().path("role/" + role.getName()).delete();
     }
 
     public Role getRoleByName(String name) {
@@ -206,8 +197,7 @@ public class UserServiceClientImpl extends AbstractClientImpl implements UserSer
     public void delete(Privilege privilege) {
         PrivilegeElement privilegeElement = new PrivilegeElement();
         privilegeElement.setPrivilege(privilege);
-        final Builder type = getWebResource().path("privilege").type("application/xml");
-        type.delete(privilegeElement);
+        getWebResource().path("privilege/" + privilege.getName()).delete();
     }
 
     public Privilege getPrivilegeByName(String name) {
@@ -220,6 +210,8 @@ public class UserServiceClientImpl extends AbstractClientImpl implements UserSer
     public Collection<Role> getRolesByName(String name) {
         WebResource resource = getWebResource().path("role/"+"search/"+name);
         final RoleElements roleElements = resource.get(RoleElements.class);
+        System.out.println("I m at client impl:" );
+        System.out.println(roleElements.getRoles().size());
         return roleElements.getRoles();
         
         
