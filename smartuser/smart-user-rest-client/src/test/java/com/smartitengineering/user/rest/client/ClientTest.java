@@ -137,11 +137,10 @@ public class ClientTest extends TestCase {
         PersonService personService = WebServiceClientFactory.getPersonService();
         UserService userService = WebServiceClientFactory.getUserService();
         
+               
+        userService.delete(userService.getUserPersonByUsername("modhu7"));
+        userService.delete(userService.getUserPersonByUsername("imyousuf"));
         
-        Set<UserPerson> userPersons = new HashSet<UserPerson>(userService.getAllUserPerson());
-        for (UserPerson userPerson : userPersons){
-            userService.delete(userPerson);
-        }
         Set<User> users = new HashSet<User>(userService.getAllUser());
         for (User user : users){
             userService.delete(user);
@@ -150,11 +149,11 @@ public class ClientTest extends TestCase {
         for (Person person : persons){
             personService.delete(person);
         }
-        Set<Role> roles = new HashSet<Role>(userService.getRolesByName(""));
+        Set<Role> roles = new HashSet<Role>(userService.getRolesByName("R"));
         for (Role role : roles){
             userService.delete(role);
         }
-        Set<Privilege> privileges = new HashSet<Privilege>(userService.getPrivilegesByName(""));
+        Set<Privilege> privileges = new HashSet<Privilege>(userService.getPrivilegesByName("P"));
         for (Privilege privilege : privileges){
             userService.delete(privilege);
         }
@@ -194,8 +193,6 @@ public class ClientTest extends TestCase {
         UserService userService = WebServiceClientFactory.getUserService();
         UserFilter userFilter = new UserFilter();
         userFilter.setUsername("modhu7");
-        List<User> users = new ArrayList<User>(userService.search(userFilter));
-        assertEquals(4, users.size()); //this search returns non-unique results in list
         Set<User> setUser = new HashSet<User>(userService.search(userFilter));
         assertEquals(1, setUser.size());//this search returns unique results in set
     }
@@ -204,8 +201,6 @@ public class ClientTest extends TestCase {
         UserService userService = WebServiceClientFactory.getUserService();
         UserPersonFilter userPersonFilter = new UserPersonFilter();
         userPersonFilter.setUsername("modhu7");
-        List<UserPerson> users = new ArrayList<UserPerson>(userService.search(userPersonFilter));
-        assertEquals(2, users.size());//this search returns non-unique results in list
         Set<UserPerson> setUser = new HashSet<UserPerson>(userService.search(userPersonFilter));
         assertEquals(1, setUser.size());//this search returns unique results in set
     }
@@ -283,9 +278,7 @@ public class ClientTest extends TestCase {
         } catch (Exception e) {
             fail("Should have failed!");
         }
-
-
-
+                
         userPerson.setPerson(personService.getPersonByEmail("email-3@email.com"));
         userPerson.getUser().setUsername("imyousuf");
         userPerson.getUser().setPassword("password");
@@ -334,23 +327,11 @@ public class ClientTest extends TestCase {
                     UniqueConstrainedField.PERSON_NATIONAL_ID.name());
         }
 
-//        userPerson.setPerson(personService.getPersonByEmail("email-3@email.com"));
-//        userPerson.getPerson().setPrimaryEmail("another_email-3@email.com");
-//        userPerson.getUser().setUsername("dipu7");
-//        userPerson.getUser().setPassword("password");
-//        userPerson.getUser().setRoles(roles);
-//
-//        try {
-//            userService.create(userPerson);
-//            fail("Should not be succeed");
-//        } catch (SmartException e) {
-//            ExceptionMessage exception = ExceptionMessage.valueOf(
-//                    e.getMessage());
-//            assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
-//                    exception);
-//            assertEquals(e.getExceptionElement().getFieldCausedBy(),
-//                    UniqueConstrainedField.PERSON_NATIONAL_ID.name());
-//        }
+        userPerson.setPerson(personService.getPersonByEmail("email-5@email.com"));
+        userPerson.getUser().setUsername("ahmyousuf");
+        userPerson.getUser().setPassword("password");
+        userPerson.getUser().setRoles(roles);
+        userService.create(userPerson);        
     }
 
     private void doTestCreatePerson() {
@@ -540,7 +521,7 @@ public class ClientTest extends TestCase {
     private void doTestReadUser(){
         UserService userService = WebServiceClientFactory.getUserService();
         List<User> listUser = new ArrayList<User>(userService.getAllUser());
-        assertEquals(2, listUser.size());
+        assertEquals(3, listUser.size());
     }
     
     private void doTestReadUserPerson() {
