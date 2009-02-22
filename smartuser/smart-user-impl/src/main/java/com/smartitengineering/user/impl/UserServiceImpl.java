@@ -16,6 +16,8 @@ import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.filter.UserFilter;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.PersonService;
+import com.smartitengineering.user.service.PrivilegeService;
+import com.smartitengineering.user.service.RoleService;
 import com.smartitengineering.user.service.UserService;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,7 +31,7 @@ import org.hibernate.exception.ConstraintViolationException;
  *
  * @author modhu7
  */
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, RoleService, PrivilegeService {
 
     private CommonReadDao<User> userReadDao;
     private CommonWriteDao<User> userWriteDao;

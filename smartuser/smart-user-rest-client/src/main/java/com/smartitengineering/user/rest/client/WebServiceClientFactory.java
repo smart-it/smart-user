@@ -6,6 +6,8 @@
 package com.smartitengineering.user.rest.client;
 
 import com.smartitengineering.user.service.PersonService;
+import com.smartitengineering.user.service.PrivilegeService;
+import com.smartitengineering.user.service.RoleService;
 import com.smartitengineering.user.service.UserPersonService;
 import com.smartitengineering.user.service.UserService;
 
@@ -41,5 +43,19 @@ public final class WebServiceClientFactory {
             personService = new PersonServiceClientImpl();
         }
         return personService;
+    }
+    
+    public static RoleService getRoleService() {
+        if(userService == null) {
+            userService = new UserServiceClientImpl();
+        }
+        return userService;
+    }
+    
+    public static PrivilegeService getPrivilegeService() {
+        if(userService == null) {
+            userService = new UserServiceClientImpl();
+        }
+        return userService;
     }
 }

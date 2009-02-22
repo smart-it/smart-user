@@ -17,6 +17,8 @@ import com.smartitengineering.user.filter.UserPersonFilter;
 import com.smartitengineering.user.rest.client.exception.SmartException;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.PersonService;
+import com.smartitengineering.user.service.PrivilegeService;
+import com.smartitengineering.user.service.RoleService;
 import com.smartitengineering.user.service.UserPersonService;
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.user.service.UserServiceFactory;
@@ -138,6 +140,8 @@ public class ClientTest extends TestCase {
         PersonService personService = WebServiceClientFactory.getPersonService();
         UserService userService = WebServiceClientFactory.getUserService();
         UserPersonService userPersonService = WebServiceClientFactory.getUserPersonService();
+        PrivilegeService privilegeService = WebServiceClientFactory.getPrivilegeService();
+        RoleService roleService = WebServiceClientFactory.getRoleService();
         
                
         userPersonService.delete(userPersonService.getUserPersonByUsername("modhu7"));
@@ -168,13 +172,13 @@ public class ClientTest extends TestCase {
                 fail(ex.getMessage());
             }
         }
-        Set<Role> roles = new HashSet<Role>(userService.getRolesByName("R"));
+        Set<Role> roles = new HashSet<Role>(roleService.getRolesByName("R"));
         for (Role role : roles){
-            userService.delete(role);
+            roleService.delete(role);
         }
-        Set<Privilege> privileges = new HashSet<Privilege>(userService.getPrivilegesByName("P"));
+        Set<Privilege> privileges = new HashSet<Privilege>(privilegeService.getPrivilegesByName("P"));
         for (Privilege privilege : privileges){
-            userService.delete(privilege);
+            privilegeService.delete(privilege);
         }
         
     }
@@ -267,9 +271,10 @@ public class ClientTest extends TestCase {
         UserService userService = WebServiceClientFactory.getUserService();
         PersonService personService = WebServiceClientFactory.getPersonService();
         UserPersonService userPersonService = WebServiceClientFactory.getUserPersonService();
+        RoleService roleService = WebServiceClientFactory.getRoleService();
         Set<Role> roles = new HashSet<Role>();
-        roles.add(userService.getRoleByName("Role-5"));
-        roles.add(userService.getRoleByName("Role-9"));
+        roles.add(roleService.getRoleByName("Role-5"));
+        roles.add(roleService.getRoleByName("Role-9"));
         UserPerson userPerson = new UserPerson();
         userPerson.setPerson(personService.getPersonByEmail("email-1@email.com"));
         userPerson.getUser().setUsername("modhu7");
@@ -467,16 +472,16 @@ public class ClientTest extends TestCase {
     }
 
     private void doTestCreatePrivilege() {
-        UserService userService = WebServiceClientFactory.getUserService();
+        PrivilegeService privilegeService = WebServiceClientFactory.getPrivilegeService();
         Privilege privilege = new Privilege();
         for (int i = 0; i < 20; i++) {
             privilege.setDisplayName("Display Privilege-" + i);
             privilege.setName("Privilege-" + i);
             privilege.setShortDescription("No Description");
-            userService.create(privilege);
+            privilegeService.create(privilege);
         }
         try {
-            userService.create(privilege);
+            privilegeService.create(privilege);
             fail("Should have failed!");
         } catch (SmartException ex) {
             ExceptionMessage exception = ExceptionMessage.valueOf(
@@ -491,7 +496,8 @@ public class ClientTest extends TestCase {
     }
 
     private void doTestCreateRole() {
-        UserService userService = WebServiceClientFactory.getUserService();
+        PrivilegeService privilegeService = WebServiceClientFactory.getPrivilegeService();
+        RoleService roleService = WebServiceClientFactory.getRoleService();
         Role role = new Role();
         for (int i = 0; i < 10; i++) {
             role.setDisplayName("Display Role-" + i);
@@ -500,14 +506,14 @@ public class ClientTest extends TestCase {
             Set<Privilege> privileges = new HashSet<Privilege>();
 
             privileges.add(
-                    userService.getPrivilegeByName("Privilege-" + (2 * i)));
-            privileges.add(userService.getPrivilegeByName("Privilege-" +
+                    privilegeService.getPrivilegeByName("Privilege-" + (2 * i)));
+            privileges.add(privilegeService.getPrivilegeByName("Privilege-" +
                     (2 * i + 1)));
             role.setPrivileges(privileges);
-            userService.create(role);
+            roleService.create(role);
         }
         try {
-            userService.create(role);
+            roleService.create(role);
             fail("Should have failed!");
         } catch (SmartException ex) {
             ExceptionMessage exception = ExceptionMessage.valueOf(
@@ -558,45 +564,46 @@ public class ClientTest extends TestCase {
 
     }
 
-    private void doTestReadPrivilege() {
-        UserService userService = WebServiceClientFactory.getUserService();
-        Privilege privilege = userService.getPrivilegeByName("Privilege-5");
+    private void doTestReadPrivilege() {        
+        PrivilegeService privilegeService = WebServiceClientFactory.getPrivilegeService();
+        
+        Privilege privilege = privilegeService.getPrivilegeByName("Privilege-5");
         assertNotNull(privilege);
         System.out.println(privilege.getDisplayName());
 
-        privilege = userService.getPrivilegeByName("Privilege-1");
+        privilege = privilegeService.getPrivilegeByName("Privilege-1");
         assertNotNull(privilege);
         assertTrue(privilege.getName().equals("Privilege-1"));
         System.out.println(privilege.getDisplayName());
 
-        privilege = userService.getPrivilegeByName("Privilege-2");
+        privilege = privilegeService.getPrivilegeByName("Privilege-2");
         assertNotNull(privilege);
         assertTrue(privilege.getName().equals("Privilege-2"));
         System.out.println(privilege.getDisplayName());
 
-        privilege = userService.getPrivilegeByName("Privilege-3");
+        privilege = privilegeService.getPrivilegeByName("Privilege-3");
         assertNotNull(privilege);
         assertTrue(privilege.getName().equals("Privilege-3"));
         System.out.println(privilege.getDisplayName());
 
-        privilege = userService.getPrivilegeByName("Privilege-17");
+        privilege = privilegeService.getPrivilegeByName("Privilege-17");
         assertNotNull(privilege);
         assertTrue(privilege.getName().equals("Privilege-17"));
         System.out.println(privilege.getDisplayName());
 
-        privilege = userService.getPrivilegeByName("Privilege-0");
+        privilege = privilegeService.getPrivilegeByName("Privilege-0");
         assertNotNull(privilege);
         assertTrue(privilege.getName().equals("Privilege-0"));
         System.out.println(privilege.getDisplayName());
     }
 
     private void doTestReadRole() {
-        UserService userService = WebServiceClientFactory.getUserService();
-        Role role = userService.getRoleByName("Role-1");
+        RoleService roleService =  WebServiceClientFactory.getRoleService();
+        Role role = roleService.getRoleByName("Role-1");
         assertNotNull(role);
         assertTrue(role.getName().equals("Role-1"));
 
-        role = userService.getRoleByName("Role-0");
+        role = roleService.getRoleByName("Role-0");
         assertNotNull(role);
         assertTrue(role.getName().equals("Role-0"));
 
@@ -657,17 +664,17 @@ public class ClientTest extends TestCase {
     }
 
     private void doTestUpdatePrivilege() {
-        UserService userService = WebServiceClientFactory.getUserService();
-        Privilege privilege = userService.getPrivilegeByName("Privilege-6");
+        PrivilegeService privilegeService = WebServiceClientFactory.getPrivilegeService();
+        Privilege privilege = privilegeService.getPrivilegeByName("Privilege-6");
         privilege.setDisplayName(privilege.getDisplayName() + "-updated");
-        userService.update(privilege);
-        privilege = userService.getPrivilegeByName("Privilege-6");
+        privilegeService.update(privilege);
+        privilege = privilegeService.getPrivilegeByName("Privilege-6");
         assertNotNull(privilege);
         assertEquals("Display Privilege-6-updated", privilege.getDisplayName());
 
         privilege.setName("Privilege-5");
         try {
-            userService.update(privilege);
+            privilegeService.update(privilege);
             fail("Should have failed!");
         } catch (SmartException ex) {
             ExceptionMessage exception = ExceptionMessage.valueOf(
@@ -682,15 +689,16 @@ public class ClientTest extends TestCase {
     }
 
     private void doTestUpdateRole() {
-        UserService userService = WebServiceClientFactory.getUserService();
-        Role role = userService.getRoleByName("Role-4");
-        role.getPrivileges().add(userService.getPrivilegeByName("Privilege-18"));
-        userService.update(role);
-        role = userService.getRoleByName("Role-4");
+        RoleService roleService = WebServiceClientFactory.getRoleService();
+        PrivilegeService privilegeService = WebServiceClientFactory.getPrivilegeService();
+        Role role = roleService.getRoleByName("Role-4");
+        role.getPrivileges().add(privilegeService.getPrivilegeByName("Privilege-18"));
+        roleService.update(role);
+        role = roleService.getRoleByName("Role-4");
         assertEquals(3, role.getPrivileges().size());
         role.setName("Role-3");
         try {
-            userService.update(role);
+            roleService.update(role);
             fail("Should have failed!");
         } catch (SmartException ex) {
             ExceptionMessage exception = ExceptionMessage.valueOf(

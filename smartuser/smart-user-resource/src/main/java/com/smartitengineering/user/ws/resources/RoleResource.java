@@ -6,6 +6,7 @@
 package com.smartitengineering.user.ws.resources;
 
 
+import com.smartitengineering.user.service.RoleService;
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.user.ws.element.ExceptionElement;
 import com.smartitengineering.user.ws.element.RoleElement;
@@ -33,13 +34,13 @@ import org.springframework.stereotype.Component;
 @Scope(value = "singleton")
 public class RoleResource {
     @Resource(name = "userService")
-    private UserService userService;
+    private RoleService roleService;
     
     @POST
     @Consumes("application/xml")
     public Response createRole(RoleElement roleElement) {
         try {
-            userService.create(roleElement.getRole());
+            roleService.create(roleElement.getRole());
             return Response.ok().build();
         }catch (RuntimeException e) {            
             String group = e.getMessage().split("-")[0];            
@@ -55,7 +56,7 @@ public class RoleResource {
     @Consumes("application/xml")
     public Response updateRole(RoleElement roleElement) {
         try {
-            userService.update(roleElement.getRole());
+            roleService.update(roleElement.getRole());
             return Response.ok().build();
         }catch (RuntimeException e) {            
             String group = e.getMessage().split("-")[0];            
@@ -72,7 +73,7 @@ public class RoleResource {
     @Consumes("application/xml")
     public void deleteRole(@PathParam("name") String name) {
         try {
-            userService.delete(userService.getRoleByName(name));
+            roleService.delete(roleService.getRoleByName(name));
         } catch (Exception e) {
         }
     }
@@ -85,7 +86,7 @@ public class RoleResource {
             @PathParam("name") String name) {
         RoleElement roleElement = new RoleElement();
         try {
-            roleElement.setRole(userService.getRoleByName(name));
+            roleElement.setRole(roleService.getRoleByName(name));
         } catch (Exception e) {
         }
         return roleElement;
@@ -98,7 +99,7 @@ public class RoleResource {
             @PathParam("name") String name) {
         RoleElements roleElements = new RoleElements();
         try {
-            roleElements.setRoles(userService.getRolesByName(name));
+            roleElements.setRoles(roleService.getRolesByName(name));
         } catch (Exception e) {
         }
         return roleElements;

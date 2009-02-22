@@ -6,7 +6,7 @@
 package com.smartitengineering.user.ws.resources;
 
 
-import com.smartitengineering.user.service.UserService;
+import com.smartitengineering.user.service.PrivilegeService;
 import com.smartitengineering.user.ws.element.ExceptionElement;
 import com.smartitengineering.user.ws.element.PrivilegeElement;
 import com.smartitengineering.user.ws.element.PrivilegeElements;
@@ -33,13 +33,13 @@ import org.springframework.stereotype.Component;
 @Scope(value = "singleton")
 public class PrivilegeResource {
     @Resource(name = "userService")
-    private UserService userService;
+    private PrivilegeService privilegeService;
     
     @POST
     @Consumes("application/xml")
     public Response createPrivilege(PrivilegeElement privilegeElement) {
         try {
-            userService.create(privilegeElement.getPrivilege());
+            privilegeService.create(privilegeElement.getPrivilege());
             return Response.ok().build();
         } catch (RuntimeException e) {            
             String group = e.getMessage().split("-")[0];            
@@ -55,7 +55,7 @@ public class PrivilegeResource {
     @Consumes("application/xml")
     public Response updatePrivilege(PrivilegeElement privilegeElement) {
         try {
-            userService.update(privilegeElement.getPrivilege());
+            privilegeService.update(privilegeElement.getPrivilege());
             return Response.ok().build();
         }catch (RuntimeException e) {            
             String group = e.getMessage().split("-")[0];            
@@ -72,7 +72,7 @@ public class PrivilegeResource {
     @Consumes("application/xml")
     public void deletePrivilege(@PathParam("name") String name) {
         try {
-            userService.delete(userService.getPrivilegeByName(name));
+            privilegeService.delete(privilegeService.getPrivilegeByName(name));
         } catch (Exception e) {
         }
     }
@@ -85,7 +85,7 @@ public class PrivilegeResource {
             @PathParam("name") String name) {
         PrivilegeElement privilegeElement = new PrivilegeElement();
         try {
-            privilegeElement.setPrivilege(userService.getPrivilegeByName(name));
+            privilegeElement.setPrivilege(privilegeService.getPrivilegeByName(name));
         } catch (Exception e) {
         }
         return privilegeElement;
@@ -98,7 +98,7 @@ public class PrivilegeResource {
             @PathParam("name") String name) {
         PrivilegeElements privilegeElements = new PrivilegeElements();
         try {
-            privilegeElements.setPrivileges(userService.getPrivilegesByName(name));
+            privilegeElements.setPrivileges(privilegeService.getPrivilegesByName(name));
         } catch (Exception e) {
         }
         return privilegeElements;

@@ -14,6 +14,8 @@ import com.smartitengineering.user.filter.UserFilter;
 import com.smartitengineering.user.filter.UserPersonFilter;
 
 import com.smartitengineering.user.rest.client.exception.SmartException;
+import com.smartitengineering.user.service.PrivilegeService;
+import com.smartitengineering.user.service.RoleService;
 import com.smartitengineering.user.service.UserPersonService;
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.user.ws.element.ExceptionElement;
@@ -36,7 +38,8 @@ import javax.ws.rs.core.MultivaluedMap;
  *
  * @author modhu7
  */
-public class UserServiceClientImpl extends AbstractClientImpl implements UserService, UserPersonService{
+public class UserServiceClientImpl extends AbstractClientImpl implements 
+        UserService, UserPersonService, PrivilegeService, RoleService{
 
     public void create(UserPerson userPerson) {
         UserPersonElement userPersonElement = new UserPersonElement();
