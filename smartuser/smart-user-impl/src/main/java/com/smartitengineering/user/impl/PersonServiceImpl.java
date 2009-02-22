@@ -84,6 +84,9 @@ public class PersonServiceImpl implements PersonService {
         try {
             getPersonWriteDao().delete(person);
         } catch (RuntimeException e) {
+            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
+                    name() + "-" + UniqueConstrainedField.PERSON;
+            throw new RuntimeException(message, e);
         }
     }
 

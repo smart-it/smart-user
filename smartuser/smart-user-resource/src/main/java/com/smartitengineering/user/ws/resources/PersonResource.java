@@ -78,11 +78,19 @@ public class PersonResource {
     @DELETE
     @Path("{email}")
     @Consumes("application/xml")
-    public void deletePerson(@PathParam("email") String email) {
+    public Response deletePerson(@PathParam("email") String email) {
         try {
             personService.delete(personService.getPersonByEmail(email));            
-        } catch (Exception e) {            
+        } catch (Exception e) {
+            e.printStackTrace();
+            String group = e.getMessage().split("-")[0];            
+            String field = e.getMessage().split("-")[1];
+            ExceptionElement exceptionElement = new ExceptionElement();
+            exceptionElement.setGroup(group);
+            exceptionElement.setFieldCausedBy(field);
+            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).entity(exceptionElement).build();            
         }
+        return Response.ok().build();
     }
 
     @POST

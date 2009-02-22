@@ -53,7 +53,14 @@ public class PersonServiceClientImpl extends AbstractClientImpl implements Perso
     public void delete(Person person) {
         PersonElement personElement = new PersonElement();
         personElement.setPerson(person);
-        getWebResource().path("person/" + person.getPrimaryEmail()).delete();
+        try {
+            getWebResource().path("person/" + person.getPrimaryEmail()).delete();
+        }
+        catch(UniformInterfaceException ex) {
+            ExceptionElement message = ex.getResponse().getEntity(ExceptionElement.class);
+            int status = ex.getResponse().getStatus();
+            throw new SmartException(message, status, ex);
+        }
     }
 
     public Collection<Person> search(PersonFilter filter) {
