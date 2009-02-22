@@ -122,7 +122,7 @@
     <bean id="userPersonDao" class="com.smartitengineering.user.dao.UserPersonDaoImpl" parent="abstractDao"/>
     <bean id="roleDao" class="com.smartitengineering.user.dao.RoleDaoImpl" parent="abstractDao"/>
     <bean id="privilegeDao" class="com.smartitengineering.user.dao.PrivilegeDaoImpl" parent="abstractDao"/>
-    <bean id="personService" class="com.smartitengineering.user.impl.PersonServiceImpl">
+    <bean id="personServiceTarget" class="com.smartitengineering.user.impl.PersonServiceImpl">
         <property name="personReadDao">
             <ref local="personDao" />
         </property>
@@ -133,18 +133,12 @@
             <ref local="basicIdentityReadDao" />
         </property>
     </bean>
-    <bean id="userService" class="com.smartitengineering.user.impl.UserServiceImpl">
+    <bean id="userServiceTarget" class="com.smartitengineering.user.impl.UserServiceImpl">
         <property name="userReadDao">
             <ref local="userDao" />
         </property>
         <property name="userWriteDao">
             <ref local="userDao" />
-        </property>
-        <property name="userPersonReadDao">
-            <ref local="userPersonDao" />
-        </property>
-        <property name="userPersonWriteDao">
-            <ref local="userPersonDao" />
         </property>
         <property name="roleReadDao">
             <ref local="roleDao" />
@@ -161,6 +155,48 @@
         <property name="personService">
             <ref local="personService" />
         </property>
+    </bean>
+    <bean id="userPersonService" class="com.smartitengineering.user.impl.UserPersonServiceImpl">
+        <property name="personService">
+            <ref local="personService" />
+        </property>
+        <property name="userService">
+            <ref local="userService" />
+        </property>
+        <property name="userPersonReadDao">
+            <ref local="userPersonDao" />
+        </property>
+        <property name="userPersonWriteDao">
+            <ref local="userPersonDao" />
+        </property>
+    </bean>
+    
+    <bean id="personDeleteAdvice" class="com.smartitengineering.user.advice.PersonDeleteAdvice">
+        <property name="userPersonService">
+            <ref local="userPersonService"/>
+        </property>
+    </bean>
+    <bean id="personDeleteAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <property name="advice" ref="personDeleteAdvice"/>
+        <property name="pattern" value=".*PersonServiceImpl.delete" />
+    </bean>
+    <bean id="personService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target" ref="personServiceTarget" />
+        <property name="interceptorNames" value="personDeleteAdvisor" />
+    </bean>
+    
+    <bean id="userDeleteAdvice" class="com.smartitengineering.user.advice.UserDeleteAdvice">
+        <property name="userPersonService">
+            <ref local="userPersonService"/>
+        </property>
+    </bean>
+    <bean id="userDeleteAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <property name="advice" ref="userDeleteAdvice"/>
+        <property name="pattern" value=".*UserServiceImpl.delete" />
+    </bean>
+    <bean id="userService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target" ref="userServiceTarget" />
+        <property name="interceptorNames" value="userDeleteAdvisor" />
     </bean>
     <bean id="beanRegistrar" class="com.smartitengineering.util.spring.BeanFactoryRegistrar">
         <property name="beanFactoryContextName">
