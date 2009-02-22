@@ -18,7 +18,10 @@ import com.smartitengineering.user.service.UserService;
 public final class WebServiceClientFactory {
     
     private static PersonService personService; 
-    private static UserServiceClientImpl userService;
+    private static UserService userService;
+    private static UserPersonService userPersonService;
+    private static RoleService roleService;
+    private static PrivilegeService privilegeService;
     
     private WebServiceClientFactory() {
         throw new AssertionError();
@@ -32,10 +35,10 @@ public final class WebServiceClientFactory {
     }
 
     public static UserPersonService getUserPersonService() {
-        if(userService == null) {
-            userService = new UserServiceClientImpl();
+        if(userPersonService == null) {
+            userPersonService = new UserPersonServiceClientImpl();
         }
-        return userService;
+        return userPersonService;
     }
     
     public static PersonService getPersonService() {
@@ -46,16 +49,16 @@ public final class WebServiceClientFactory {
     }
     
     public static RoleService getRoleService() {
-        if(userService == null) {
-            userService = new UserServiceClientImpl();
+        if(roleService == null) {
+            roleService = new RoleServiceClientImpl();
         }
-        return userService;
+        return roleService;
     }
     
     public static PrivilegeService getPrivilegeService() {
-        if(userService == null) {
-            userService = new UserServiceClientImpl();
+        if(privilegeService == null) {
+            privilegeService = new PrivilegeServiceClientImpl();
         }
-        return userService;
+        return privilegeService;
     }
 }
