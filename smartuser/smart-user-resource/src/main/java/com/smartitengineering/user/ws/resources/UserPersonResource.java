@@ -5,7 +5,7 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.filter.UserPersonFilter;
-import com.smartitengineering.user.service.UserService;
+import com.smartitengineering.user.service.UserPersonService;
 import com.smartitengineering.user.ws.element.ExceptionElement;
 import com.smartitengineering.user.ws.element.UserPersonElement;
 import com.smartitengineering.user.ws.element.UserPersonElements;
@@ -36,14 +36,14 @@ import org.springframework.stereotype.Component;
 @Scope(value = "singleton")
 public class UserPersonResource {
 
-    @Resource(name = "userService")
-    private UserService userService;
+    @Resource(name = "userPersonService")
+    private UserPersonService userPersonService;
 
     @POST
     @Consumes("application/xml")
     public Response create(UserPersonElement userPersonElement) {
         try {
-            userService.create(userPersonElement.getUserPerson());
+            userPersonService.create(userPersonElement.getUserPerson());
             return Response.ok().build();
         } catch (Exception e) {            
             String group = e.getMessage().split("-")[0];            
@@ -59,7 +59,7 @@ public class UserPersonResource {
     @Consumes("application/xml")
     public Response updateUserPerson(UserPersonElement userPersonElement) {
         try {
-            userService.update(userPersonElement.getUserPerson());
+            userPersonService.update(userPersonElement.getUserPerson());
             return Response.ok().build();
         }catch (RuntimeException e) {            
             String group = e.getMessage().split("-")[0];            
@@ -76,7 +76,7 @@ public class UserPersonResource {
     @Consumes("application/xml")
     public void deleteUserPerson(@PathParam("username") String username) {
         try {
-            userService.delete(userService.getUserPersonByUsername(username));
+            userPersonService.delete(userPersonService.getUserPersonByUsername(username));
         } catch (Exception e) {
         }
     }
@@ -95,7 +95,7 @@ public class UserPersonResource {
             userPersonFilter = new UserPersonFilter();
         }
         try {
-            userPersonElements.setUserPersons(userService.search(userPersonFilter));
+            userPersonElements.setUserPersons(userPersonService.search(userPersonFilter));
         } catch (Exception e) {
         }
         return userPersonElements;
@@ -108,7 +108,7 @@ public class UserPersonResource {
             @PathParam("username") String username) {
         UserPersonElement userPersonElement = new UserPersonElement();
         try {
-            userPersonElement.setUserPerson(userService.getUserPersonByUsername(username));
+            userPersonElement.setUserPerson(userPersonService.getUserPersonByUsername(username));
         } catch (Exception e) {
         }
         return userPersonElement;
@@ -120,7 +120,7 @@ public class UserPersonResource {
     public UserPersonElements getAllUser() {
         UserPersonElements userPersonElements = new UserPersonElements();
         try {
-            userPersonElements.setUserPersons(userService.getAllUserPerson());
+            userPersonElements.setUserPersons(userPersonService.getAllUserPerson());
         } catch (Exception e) {
         }
         return userPersonElements;
@@ -134,17 +134,18 @@ public class UserPersonResource {
         filter.setUsername(username);
         UserPersonElements userPersonElements = new UserPersonElements();
         try {
-            userPersonElements.setUserPersons(userService.search(filter));
+            userPersonElements.setUserPersons(userPersonService.search(filter));
         } catch (Exception e) {
         }
         return userPersonElements;
     }
 
-    public UserService getUserService() {
-        return userService;
+    public UserPersonService getUserPersonService() {
+        return userPersonService;
     }
 
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    public void setUserPersonService(UserPersonService userPersonService) {
+        this.userPersonService = userPersonService;
     }
+
 }

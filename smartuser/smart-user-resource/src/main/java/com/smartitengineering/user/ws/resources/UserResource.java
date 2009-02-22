@@ -45,24 +45,34 @@ public class UserResource {
         try {
             userService.update(userElement.getUser());
             return Response.ok().build();
-        } catch (RuntimeException e) {            
-            String group = e.getMessage().split("-")[0];            
+        } catch (RuntimeException e) {
+            String group = e.getMessage().split("-")[0];
             String field = e.getMessage().split("-")[1];
             ExceptionElement exceptionElement = new ExceptionElement();
             exceptionElement.setGroup(group);
             exceptionElement.setFieldCausedBy(field);
-            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).entity(exceptionElement).build();            
+            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).
+                    entity(exceptionElement).build();
         }
     }
 
     @DELETE
     @Path("{username}")
     @Consumes("application/xml")
-    public void deleteUser(@PathParam("username") String username) {
+    public Response deleteUser(@PathParam("username") String username) {
         try {
             userService.delete(userService.getUserByUsername(username));
         } catch (Exception e) {
+            e.printStackTrace();
+            String group = e.getMessage().split("-")[0];
+            String field = e.getMessage().split("-")[1];
+            ExceptionElement exceptionElement = new ExceptionElement();
+            exceptionElement.setGroup(group);
+            exceptionElement.setFieldCausedBy(field);
+            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).
+                    entity(exceptionElement).build();
         }
+        return Response.ok().build();
     }
 
     @POST
@@ -73,7 +83,8 @@ public class UserResource {
             UserFilterElement userFilterElement) {
         UserElements userElements = new UserElements();
         UserFilter userFilter;
-        if (userFilterElement != null && userFilterElement.getUserFilter() != null) {
+        if (userFilterElement != null && userFilterElement.getUserFilter() !=
+                null) {
             userFilter = userFilterElement.getUserFilter();
         } else {
             userFilter = new UserFilter();

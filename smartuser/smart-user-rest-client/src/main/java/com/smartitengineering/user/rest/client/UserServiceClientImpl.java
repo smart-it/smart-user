@@ -5,6 +5,7 @@
 
 package com.smartitengineering.user.rest.client;
 
+import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.User;
@@ -13,6 +14,7 @@ import com.smartitengineering.user.filter.UserFilter;
 import com.smartitengineering.user.filter.UserPersonFilter;
 
 import com.smartitengineering.user.rest.client.exception.SmartException;
+import com.smartitengineering.user.service.UserPersonService;
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.user.ws.element.ExceptionElement;
 import com.smartitengineering.user.ws.element.PrivilegeElement;
@@ -34,7 +36,7 @@ import javax.ws.rs.core.MultivaluedMap;
  *
  * @author modhu7
  */
-public class UserServiceClientImpl extends AbstractClientImpl implements UserService{
+public class UserServiceClientImpl extends AbstractClientImpl implements UserService, UserPersonService{
 
     public void create(UserPerson userPerson) {
         UserPersonElement userPersonElement = new UserPersonElement();
@@ -66,7 +68,13 @@ public class UserServiceClientImpl extends AbstractClientImpl implements UserSer
     public void delete(User user) {
         UserElement userElement = new UserElement();
         userElement.setUser(user);
-        getWebResource().path("user/" + user.getUsername()).delete();
+        try {
+            getWebResource().path("user/" + user.getUsername()).delete();
+        } catch (UniformInterfaceException ex) {
+            ExceptionElement message = ex.getResponse().getEntity(ExceptionElement.class);
+            int status = ex.getResponse().getStatus();
+            throw new SmartException(message, status, ex);
+        }
     }
 
     public void update(UserPerson userPerson) {
@@ -221,6 +229,18 @@ public class UserServiceClientImpl extends AbstractClientImpl implements UserSer
         WebResource resource = getWebResource().path("privilege/"+"search/"+name);
         final PrivilegeElements privilegeElements = resource.get(PrivilegeElements.class);
         return privilegeElements.getPrivileges();
+    }
+
+    public void validateUser(User user) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void deleteByPerson(Person person) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void deleteByUser(User user) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

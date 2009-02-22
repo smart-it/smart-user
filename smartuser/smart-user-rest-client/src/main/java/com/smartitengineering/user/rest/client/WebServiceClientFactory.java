@@ -6,6 +6,7 @@
 package com.smartitengineering.user.rest.client;
 
 import com.smartitengineering.user.service.PersonService;
+import com.smartitengineering.user.service.UserPersonService;
 import com.smartitengineering.user.service.UserService;
 
 /**
@@ -15,7 +16,7 @@ import com.smartitengineering.user.service.UserService;
 public final class WebServiceClientFactory {
     
     private static PersonService personService; 
-    private static UserService userService;
+    private static UserServiceClientImpl userService;
     
     private WebServiceClientFactory() {
         throw new AssertionError();
@@ -28,7 +29,12 @@ public final class WebServiceClientFactory {
         return userService;
     }
 
-    
+    public static UserPersonService getUserPersonService() {
+        if(userService == null) {
+            userService = new UserServiceClientImpl();
+        }
+        return userService;
+    }
     
     public static PersonService getPersonService() {
         if(personService == null) {
