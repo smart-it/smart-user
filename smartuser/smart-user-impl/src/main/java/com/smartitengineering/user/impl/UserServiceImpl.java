@@ -31,7 +31,8 @@ import org.hibernate.exception.ConstraintViolationException;
  *
  * @author modhu7
  */
-public class UserServiceImpl implements UserService, RoleService, PrivilegeService {
+public class UserServiceImpl implements UserService, RoleService,
+        PrivilegeService {
 
     private CommonReadDao<User> userReadDao;
     private CommonWriteDao<User> userWriteDao;
@@ -59,7 +60,8 @@ public class UserServiceImpl implements UserService, RoleService, PrivilegeServi
             throw new RuntimeException(message, e);
         } catch (StaleStateException e) {
             String message =
-                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name();
+                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
+                    UniqueConstrainedField.OTHER;
             throw new RuntimeException(message, e);
         }
     }
@@ -121,7 +123,8 @@ public class UserServiceImpl implements UserService, RoleService, PrivilegeServi
             throw new RuntimeException(message, e);
         } catch (StaleStateException e) {
             String message =
-                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name();
+                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
+                    UniqueConstrainedField.OTHER;
             throw new RuntimeException(message, e);
         }
     }
@@ -136,7 +139,8 @@ public class UserServiceImpl implements UserService, RoleService, PrivilegeServi
             throw new RuntimeException(message, e);
         } catch (StaleStateException e) {
             String message =
-                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name();
+                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
+                    UniqueConstrainedField.OTHER;
             throw new RuntimeException(message, e);
         }
     }
@@ -174,16 +178,17 @@ public class UserServiceImpl implements UserService, RoleService, PrivilegeServi
 
     //Privilege services
     public void create(Privilege privilege) {
-        validatePrivilege(privilege);        
-        try {          
+        validatePrivilege(privilege);
+        try {
             getPrivilegeWriteDao().save(privilege);
-        }catch (ConstraintViolationException e) {
+        } catch (ConstraintViolationException e) {
             String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
                     name() + "-" + UniqueConstrainedField.OTHER;
             throw new RuntimeException(message, e);
         } catch (StaleStateException e) {
             String message =
-                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name();
+                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
+                    UniqueConstrainedField.OTHER;
             throw new RuntimeException(message, e);
         }
     }
@@ -198,7 +203,8 @@ public class UserServiceImpl implements UserService, RoleService, PrivilegeServi
             throw new RuntimeException(message, e);
         } catch (StaleStateException e) {
             String message =
-                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name();
+                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
+                    UniqueConstrainedField.OTHER;
             throw new RuntimeException(message, e);
         }
     }
@@ -287,7 +293,7 @@ public class UserServiceImpl implements UserService, RoleService, PrivilegeServi
         System.out.println("Privilege validation : " + privilege.getName());
         if (privilege.getId() == null) {
             Integer count = (Integer) getPrivilegeReadDao().getOther(
-                    QueryParameterFactory.getElementCountParam("name"), 
+                    QueryParameterFactory.getElementCountParam("name"),
                     QueryParameterFactory.getStringLikePropertyParam("name",
                     privilege.getName(), MatchMode.EXACT));
             System.out.println(count);
@@ -316,7 +322,7 @@ public class UserServiceImpl implements UserService, RoleService, PrivilegeServi
     private void validateRole(Role role) {
         if (role.getId() == null) {
             Integer count = (Integer) getRoleReadDao().getOther(
-                    QueryParameterFactory.getElementCountParam("name"), 
+                    QueryParameterFactory.getElementCountParam("name"),
                     QueryParameterFactory.getStringLikePropertyParam("name",
                     role.getName()));
             if (count.intValue() > 0) {

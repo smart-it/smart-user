@@ -60,7 +60,8 @@ public class PersonServiceImpl implements PersonService {
             throw new RuntimeException(message, e);
         } catch (StaleStateException e) {
             String message =
-                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name();
+                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
+                    UniqueConstrainedField.OTHER;
             throw new RuntimeException(message, e);
         }
     }
@@ -75,7 +76,8 @@ public class PersonServiceImpl implements PersonService {
             throw new RuntimeException(message, e);
         } catch (StaleStateException e) {
             String message =
-                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name();
+                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
+                    UniqueConstrainedField.OTHER;
             throw new RuntimeException(message, e);
         }
     }

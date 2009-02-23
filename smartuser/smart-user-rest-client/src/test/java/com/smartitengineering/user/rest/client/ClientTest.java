@@ -714,7 +714,10 @@ public class ClientTest extends TestCase {
     
     private void doTestUpdateUser(){
         UserService userService = WebServiceClientFactory.getUserService();
-        User user = userService.getUserByUsername("imyousuf");
+        User oldUser = new User();
+        oldUser = userService.getUserByUsername("imyousuf");
+        User user = new User();
+        user = userService.getUserByUsername("imyousuf");
         user.setPassword("new" + user.getPassword());
         userService.update(user);
         user.setUsername("modhu7");
@@ -722,12 +725,27 @@ public class ClientTest extends TestCase {
             userService.update(user);
             fail("Should have failed");
         }catch (SmartException ex) {
+            ex.printStackTrace();
             ExceptionMessage exception = ExceptionMessage.valueOf(
                     ex.getMessage());
             assertEquals(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION,
                     exception);
             assertEquals(ex.getExceptionElement().getFieldCausedBy(),
                     UniqueConstrainedField.USER_USERNAME.name());
+        } catch (Exception ex) {
+            fail("Unexpected exception: " + ex.getMessage());
+        }
+        try{
+            userService.update(oldUser);
+            fail("Should have failed");
+        }catch (SmartException ex) {
+            ex.printStackTrace();
+            ExceptionMessage exception = ExceptionMessage.valueOf(
+                    ex.getMessage());
+            assertEquals(ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION,
+                    exception);
+            assertEquals(ex.getExceptionElement().getFieldCausedBy(),
+                    UniqueConstrainedField.OTHER.name());
         } catch (Exception ex) {
             fail("Unexpected exception: " + ex.getMessage());
         }
