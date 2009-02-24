@@ -2,12 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.ws.resources;
 
-
 import com.smartitengineering.user.service.RoleService;
-import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.user.ws.element.ExceptionElement;
 import com.smartitengineering.user.ws.element.RoleElement;
 import com.smartitengineering.user.ws.element.RoleElements;
@@ -33,38 +30,41 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(value = "singleton")
 public class RoleResource {
+
     @Resource(name = "userService")
     private RoleService roleService;
-    
+
     @POST
     @Consumes("application/xml")
     public Response createRole(RoleElement roleElement) {
         try {
             roleService.create(roleElement.getRole());
             return Response.ok().build();
-        }catch (RuntimeException e) {            
-            String group = e.getMessage().split("-")[0];            
+        } catch (RuntimeException e) {
+            String group = e.getMessage().split("-")[0];
             String field = e.getMessage().split("-")[1];
             ExceptionElement exceptionElement = new ExceptionElement();
             exceptionElement.setGroup(group);
             exceptionElement.setFieldCausedBy(field);
-            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).entity(exceptionElement).build();            
+            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).
+                    entity(exceptionElement).build();
         }
     }
-    
+
     @PUT
     @Consumes("application/xml")
     public Response updateRole(RoleElement roleElement) {
         try {
             roleService.update(roleElement.getRole());
             return Response.ok().build();
-        }catch (RuntimeException e) {            
-            String group = e.getMessage().split("-")[0];            
+        } catch (RuntimeException e) {
+            String group = e.getMessage().split("-")[0];
             String field = e.getMessage().split("-")[1];
             ExceptionElement exceptionElement = new ExceptionElement();
             exceptionElement.setGroup(group);
             exceptionElement.setFieldCausedBy(field);
-            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).entity(exceptionElement).build();            
+            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).
+                    entity(exceptionElement).build();
         }
     }
 
@@ -78,7 +78,6 @@ public class RoleResource {
         }
     }
 
-
     @GET
     @Path("{name}")
     @Produces("application/xml")
@@ -91,7 +90,7 @@ public class RoleResource {
         }
         return roleElement;
     }
-    
+
     @GET
     @Path("search/{name}")
     @Produces("application/xml")
@@ -104,5 +103,4 @@ public class RoleResource {
         }
         return roleElements;
     }
-
 }

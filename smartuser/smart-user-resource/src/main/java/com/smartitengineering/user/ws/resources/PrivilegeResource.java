@@ -2,9 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.ws.resources;
-
 
 import com.smartitengineering.user.service.PrivilegeService;
 import com.smartitengineering.user.ws.element.ExceptionElement;
@@ -32,38 +30,41 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(value = "singleton")
 public class PrivilegeResource {
+
     @Resource(name = "userService")
     private PrivilegeService privilegeService;
-    
+
     @POST
     @Consumes("application/xml")
     public Response createPrivilege(PrivilegeElement privilegeElement) {
         try {
             privilegeService.create(privilegeElement.getPrivilege());
             return Response.ok().build();
-        } catch (RuntimeException e) {            
-            String group = e.getMessage().split("-")[0];            
+        } catch (RuntimeException e) {
+            String group = e.getMessage().split("-")[0];
             String field = e.getMessage().split("-")[1];
             ExceptionElement exceptionElement = new ExceptionElement();
             exceptionElement.setGroup(group);
             exceptionElement.setFieldCausedBy(field);
-            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).entity(exceptionElement).build();            
+            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).
+                    entity(exceptionElement).build();
         }
     }
-    
+
     @PUT
     @Consumes("application/xml")
     public Response updatePrivilege(PrivilegeElement privilegeElement) {
         try {
             privilegeService.update(privilegeElement.getPrivilege());
             return Response.ok().build();
-        }catch (RuntimeException e) {            
-            String group = e.getMessage().split("-")[0];            
+        } catch (RuntimeException e) {
+            String group = e.getMessage().split("-")[0];
             String field = e.getMessage().split("-")[1];
             ExceptionElement exceptionElement = new ExceptionElement();
             exceptionElement.setGroup(group);
             exceptionElement.setFieldCausedBy(field);
-            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).entity(exceptionElement).build();            
+            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).
+                    entity(exceptionElement).build();
         }
     }
 
@@ -77,7 +78,6 @@ public class PrivilegeResource {
         }
     }
 
-
     @GET
     @Path("{name}")
     @Produces("application/xml")
@@ -85,12 +85,13 @@ public class PrivilegeResource {
             @PathParam("name") String name) {
         PrivilegeElement privilegeElement = new PrivilegeElement();
         try {
-            privilegeElement.setPrivilege(privilegeService.getPrivilegeByName(name));
+            privilegeElement.setPrivilege(privilegeService.getPrivilegeByName(
+                    name));
         } catch (Exception e) {
         }
         return privilegeElement;
     }
-    
+
     @GET
     @Path("search/{name}")
     @Produces("application/xml")
@@ -98,7 +99,8 @@ public class PrivilegeResource {
             @PathParam("name") String name) {
         PrivilegeElements privilegeElements = new PrivilegeElements();
         try {
-            privilegeElements.setPrivileges(privilegeService.getPrivilegesByName(name));
+            privilegeElements.setPrivileges(privilegeService.getPrivilegesByName(
+                    name));
         } catch (Exception e) {
         }
         return privilegeElements;

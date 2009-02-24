@@ -49,13 +49,14 @@ public class PersonResource {
         try {
             personService.create(personElement.getPerson());
             return Response.ok().build();
-        } catch (RuntimeException e) {            
-            String group = e.getMessage().split("-")[0];            
+        } catch (RuntimeException e) {
+            String group = e.getMessage().split("-")[0];
             String field = e.getMessage().split("-")[1];
             ExceptionElement exceptionElement = new ExceptionElement();
             exceptionElement.setGroup(group);
             exceptionElement.setFieldCausedBy(field);
-            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).entity(exceptionElement).build();            
+            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).
+                    entity(exceptionElement).build();
         }
     }
 
@@ -65,13 +66,14 @@ public class PersonResource {
         try {
             personService.update(personElement.getPerson());
             return Response.ok().build();
-        }catch (RuntimeException e) {            
-            String group = e.getMessage().split("-")[0];            
+        } catch (RuntimeException e) {
+            String group = e.getMessage().split("-")[0];
             String field = e.getMessage().split("-")[1];
             ExceptionElement exceptionElement = new ExceptionElement();
             exceptionElement.setGroup(group);
             exceptionElement.setFieldCausedBy(field);
-            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).entity(exceptionElement).build();            
+            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).
+                    entity(exceptionElement).build();
         }
     }
 
@@ -80,15 +82,16 @@ public class PersonResource {
     @Consumes("application/xml")
     public Response deletePerson(@PathParam("email") String email) {
         try {
-            personService.delete(personService.getPersonByEmail(email));            
+            personService.delete(personService.getPersonByEmail(email));
         } catch (Exception e) {
             e.printStackTrace();
-            String group = e.getMessage().split("-")[0];            
+            String group = e.getMessage().split("-")[0];
             String field = e.getMessage().split("-")[1];
             ExceptionElement exceptionElement = new ExceptionElement();
             exceptionElement.setGroup(group);
             exceptionElement.setFieldCausedBy(field);
-            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).entity(exceptionElement).build();            
+            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).
+                    entity(exceptionElement).build();
         }
         return Response.ok().build();
     }
@@ -101,7 +104,8 @@ public class PersonResource {
             PersonFilterElement personFilterElement) {
         PersonElements personElements = new PersonElements();
         PersonFilter personFilter;
-        if (personFilterElement != null && personFilterElement.getPersonFilter() != null) {
+        if (personFilterElement != null &&
+                personFilterElement.getPersonFilter() != null) {
             personFilter = personFilterElement.getPersonFilter();
         } else {
             personFilter = new PersonFilter();
@@ -130,9 +134,12 @@ public class PersonResource {
     @Produces("application/xml")
     public PersonElements searchPersonByGet(
             @DefaultValue(value = "NO EMAIL") @QueryParam(value = "email") final String email,
-            @DefaultValue(value = "NO FIRSTNAME") @QueryParam(value = "firstName") final String firstName,
-            @DefaultValue(value = "NO SECONDNAME") @QueryParam(value = "lastName") final String lastName,
-            @DefaultValue(value = "NO MIDDLEINITIAL") @QueryParam(value = "middleInitial") final String middleInitial) {
+            @DefaultValue(value = "NO FIRSTNAME") @QueryParam(value =
+            "firstName") final String firstName,
+            @DefaultValue(value = "NO SECONDNAME") @QueryParam(value =
+            "lastName") final String lastName,
+            @DefaultValue(value = "NO MIDDLEINITIAL") @QueryParam(value =
+            "middleInitial") final String middleInitial) {
         PersonFilter filter = new PersonFilter();
         Name name = new Name();
         name.setFirstName(firstName);
@@ -154,14 +161,12 @@ public class PersonResource {
     public PersonElements getAllPerson() {
         PersonElements personElements = new PersonElements();
         try {
-            personElements.setPersons(new HashSet<Person>(personService.getAllPerson()));
-            System.out.println(personElements.getPersons());
-            for (Person person : personElements.getPersons()) {
-                System.out.println(person);
+            personElements.setPersons(new HashSet<Person>(personService.
+                    getAllPerson()));            
+            for (Person person : personElements.getPersons()) {                
                 Field[] fields = person.getClass().getDeclaredFields();
                 for (Field field : fields) {
-                    field.setAccessible(true);
-                    System.out.println(field.getName() + " " + field.get(person));
+                    field.setAccessible(true);                    
                 }
             }
         } catch (Exception e) {

@@ -4,7 +4,6 @@
  */
 package com.smartitengineering.user.ws.resources;
 
-
 import com.smartitengineering.user.ws.element.PersonElement;
 import com.smartitengineering.user.ws.element.PersonElements;
 import com.smartitengineering.user.ws.element.PersonFilterElement;
@@ -34,9 +33,11 @@ public class JAXBContextResolver implements ContextResolver<JAXBContext> {
 
     private final JAXBContext context;
     private final Set<Class> types;
-    private final Class[] cTypes = {PersonElement.class, PersonElements.class, PersonFilterElement.class,
+    private final Class[] cTypes = {PersonElement.class, PersonElements.class,
+        PersonFilterElement.class,
         UserElement.class, UserElements.class, UserFilterElement.class,
-        UserPersonElement.class, UserPersonElements.class, UserPersonFilterElement.class,
+        UserPersonElement.class, UserPersonElements.class,
+        UserPersonFilterElement.class,
         RoleElement.class, PrivilegeElement.class,
         RoleElements.class, PrivilegeElements.class
     };

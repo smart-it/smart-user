@@ -45,13 +45,14 @@ public class UserPersonResource {
         try {
             userPersonService.create(userPersonElement.getUserPerson());
             return Response.ok().build();
-        } catch (Exception e) {            
-            String group = e.getMessage().split("-")[0];            
+        } catch (Exception e) {
+            String group = e.getMessage().split("-")[0];
             String field = e.getMessage().split("-")[1];
             ExceptionElement exceptionElement = new ExceptionElement();
             exceptionElement.setGroup(group);
-            exceptionElement.setFieldCausedBy(field);            
-            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).entity(exceptionElement).build();
+            exceptionElement.setFieldCausedBy(field);
+            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).
+                    entity(exceptionElement).build();
         }
     }
 
@@ -61,13 +62,14 @@ public class UserPersonResource {
         try {
             userPersonService.update(userPersonElement.getUserPerson());
             return Response.ok().build();
-        }catch (RuntimeException e) {            
-            String group = e.getMessage().split("-")[0];            
+        } catch (RuntimeException e) {
+            String group = e.getMessage().split("-")[0];
             String field = e.getMessage().split("-")[1];
             ExceptionElement exceptionElement = new ExceptionElement();
             exceptionElement.setGroup(group);
             exceptionElement.setFieldCausedBy(field);
-            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).entity(exceptionElement).build();            
+            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).
+                    entity(exceptionElement).build();
         }
     }
 
@@ -76,7 +78,8 @@ public class UserPersonResource {
     @Consumes("application/xml")
     public void deleteUserPerson(@PathParam("username") String username) {
         try {
-            userPersonService.delete(userPersonService.getUserPersonByUsername(username));
+            userPersonService.delete(userPersonService.getUserPersonByUsername(
+                    username));
         } catch (Exception e) {
         }
     }
@@ -89,13 +92,15 @@ public class UserPersonResource {
             UserPersonFilterElement userPersonFilterElement) {
         UserPersonElements userPersonElements = new UserPersonElements();
         UserPersonFilter userPersonFilter;
-        if (userPersonFilterElement != null && userPersonFilterElement.getUserPersonFilter() != null) {
+        if (userPersonFilterElement != null && userPersonFilterElement.
+                getUserPersonFilter() != null) {
             userPersonFilter = userPersonFilterElement.getUserPersonFilter();
         } else {
             userPersonFilter = new UserPersonFilter();
         }
         try {
-            userPersonElements.setUserPersons(userPersonService.search(userPersonFilter));
+            userPersonElements.setUserPersons(userPersonService.search(
+                    userPersonFilter));
         } catch (Exception e) {
         }
         return userPersonElements;
@@ -108,7 +113,8 @@ public class UserPersonResource {
             @PathParam("username") String username) {
         UserPersonElement userPersonElement = new UserPersonElement();
         try {
-            userPersonElement.setUserPerson(userPersonService.getUserPersonByUsername(username));
+            userPersonElement.setUserPerson(userPersonService.
+                    getUserPersonByUsername(username));
         } catch (Exception e) {
         }
         return userPersonElement;
@@ -120,7 +126,8 @@ public class UserPersonResource {
     public UserPersonElements getAllUser() {
         UserPersonElements userPersonElements = new UserPersonElements();
         try {
-            userPersonElements.setUserPersons(userPersonService.getAllUserPerson());
+            userPersonElements.setUserPersons(
+                    userPersonService.getAllUserPerson());
         } catch (Exception e) {
         }
         return userPersonElements;
@@ -147,5 +154,4 @@ public class UserPersonResource {
     public void setUserPersonService(UserPersonService userPersonService) {
         this.userPersonService = userPersonService;
     }
-
 }

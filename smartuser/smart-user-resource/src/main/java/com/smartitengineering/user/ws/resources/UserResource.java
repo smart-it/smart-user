@@ -62,8 +62,7 @@ public class UserResource {
     public Response deleteUser(@PathParam("username") String username) {
         try {
             userService.delete(userService.getUserByUsername(username));
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e) {            
             String group = e.getMessage().split("-")[0];
             String field = e.getMessage().split("-")[1];
             ExceptionElement exceptionElement = new ExceptionElement();
