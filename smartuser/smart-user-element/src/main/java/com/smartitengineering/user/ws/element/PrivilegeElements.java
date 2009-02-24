@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.ws.element;
 
 import com.smartitengineering.user.domain.Privilege;
@@ -18,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public class PrivilegeElements {
-    
+
     Collection<Privilege> privileges;
 
     public Collection<Privilege> getPrivileges() {
@@ -28,5 +27,4 @@ public class PrivilegeElements {
     public void setPrivileges(Collection<Privilege> privileges) {
         this.privileges = privileges;
     }
-    
 }

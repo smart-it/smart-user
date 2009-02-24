@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.ws.element;
 
 import com.smartitengineering.user.filter.UserFilter;
@@ -17,7 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public class UserFilterElement {
-         
+
     private UserFilter userFilter;
 
     public UserFilter getUserFilter() {
@@ -27,5 +26,4 @@ public class UserFilterElement {
     public void setUserFilter(UserFilter userFilter) {
         this.userFilter = userFilter;
     }
-    
 }

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.ws.element;
 
 import com.smartitengineering.user.domain.Role;
@@ -17,6 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public class RoleElement {
+
     private Role role;
 
     public Role getRole() {
@@ -26,5 +26,4 @@ public class RoleElement {
     public void setRole(Role role) {
         this.role = role;
     }
-
 }

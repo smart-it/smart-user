@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.ws.element;
 
 import com.smartitengineering.user.domain.User;
@@ -17,6 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public class UserElement {
+
     private User user;
 
     public User getUser() {
@@ -26,5 +26,4 @@ public class UserElement {
     public void setUser(User user) {
         this.user = user;
     }
-    
 }
