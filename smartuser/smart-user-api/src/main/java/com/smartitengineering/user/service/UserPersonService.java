@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.service;
 
 import com.smartitengineering.user.domain.Person;
@@ -20,9 +19,9 @@ public interface UserPersonService {
     void create(UserPerson userPerson);
 
     void delete(UserPerson userPerson);
-    
+
     void deleteByPerson(Person person);
-    
+
     void deleteByUser(User user);
 
     Collection<UserPerson> getAllUserPerson();
@@ -32,5 +31,4 @@ public interface UserPersonService {
     Collection<UserPerson> search(UserPersonFilter filter);
 
     void update(UserPerson userPerson);
-
 }

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.service;
 
 import com.smartitengineering.user.domain.Privilege;
@@ -23,5 +22,4 @@ public interface PrivilegeService {
     Collection<Privilege> getPrivilegesByName(String name);
 
     void update(Privilege privilege);
-
 }

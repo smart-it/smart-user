@@ -167,7 +167,7 @@ public class Person extends AbstractPersistentDTO<Person> {
     }
 
     public BasicIdentity getSelf() {
-        if(self == null){
+        if (self == null) {
             self = new BasicIdentity();
         }
         return self;
