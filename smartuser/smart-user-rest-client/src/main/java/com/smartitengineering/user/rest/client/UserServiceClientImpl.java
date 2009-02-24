@@ -6,7 +6,6 @@ package com.smartitengineering.user.rest.client;
 
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.filter.UserFilter;
-
 import com.smartitengineering.user.rest.client.exception.SmartException;
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.user.ws.element.ExceptionElement;
@@ -23,7 +22,8 @@ import javax.ws.rs.core.MultivaluedMap;
  *
  * @author modhu7
  */
-public class UserServiceClientImpl extends AbstractClientImpl implements UserService {
+public class UserServiceClientImpl extends AbstractClientImpl implements
+        UserService {
 
     public void update(User user) {
         UserElement userElement = new UserElement();

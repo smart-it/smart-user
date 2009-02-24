@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.rest.client;
 
 import com.smartitengineering.user.domain.Person;
@@ -25,7 +24,8 @@ import javax.ws.rs.core.MultivaluedMap;
  *
  * @author modhu7
  */
-public class UserPersonServiceClientImpl extends AbstractClientImpl implements UserPersonService {
+public class UserPersonServiceClientImpl extends AbstractClientImpl implements
+        UserPersonService {
 
     public void create(UserPerson userPerson) {
         UserPersonElement userPersonElement = new UserPersonElement();
@@ -98,5 +98,4 @@ public class UserPersonServiceClientImpl extends AbstractClientImpl implements U
             throw new SmartException(message, status, ex);
         }
     }
-
 }

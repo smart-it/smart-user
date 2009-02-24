@@ -6,12 +6,8 @@ package com.smartitengineering.user.rest.client;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
-import java.util.Properties;
 import javax.ws.rs.core.UriBuilder;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -28,8 +24,7 @@ public abstract class AbstractClientImpl {
         if (null != port) {
             try {
                 return Integer.parseInt(port);
-            }
-            catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
             }
         }
         return defaultPort;
@@ -37,18 +32,17 @@ public abstract class AbstractClientImpl {
 
     private static URI getBaseURI() {
         new ClassPathXmlApplicationContext(
-            "client-context.xml");
+                "client-context.xml");
         final ConnectionConfig connectionConfig =
-            ConfigFactory.getInstance().getConnectionConfig();
+                ConfigFactory.getInstance().getConnectionConfig();
         return UriBuilder.fromUri(connectionConfig.getBasicUrl()).port(getPort(connectionConfig.
-            getPort())).path(connectionConfig.getContextPath()).build();
+                getPort())).path(connectionConfig.getContextPath()).build();
     }
 
     protected AbstractClientImpl() {
         Client c = Client.create();
         webResource =
-            c.resource(BASE_URI);
-        System.out.println(BASE_URI);
+                c.resource(BASE_URI);        
     }
 
     public WebResource getWebResource() {

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.rest.client;
 
 import com.smartitengineering.user.domain.Role;
@@ -20,7 +19,8 @@ import java.util.Collection;
  *
  * @author modhu7
  */
-public class RoleServiceClientImpl extends AbstractClientImpl implements RoleService {
+public class RoleServiceClientImpl extends AbstractClientImpl implements
+        RoleService {
 
     public void create(Role role) {
         RoleElement roleElement = new RoleElement();
@@ -55,8 +55,6 @@ public class RoleServiceClientImpl extends AbstractClientImpl implements RoleSer
         WebResource resource = getWebResource().path("role/" + "search/" + name);
         final RoleElements roleElements =
                 resource.get(RoleElements.class);
-        System.out.println("I m at client impl:");
-        System.out.println(roleElements.getRoles().size());
         return roleElements.getRoles();
     }
 
@@ -75,5 +73,4 @@ public class RoleServiceClientImpl extends AbstractClientImpl implements RoleSer
             throw new SmartException(message, status, ex);
         }
     }
-
 }

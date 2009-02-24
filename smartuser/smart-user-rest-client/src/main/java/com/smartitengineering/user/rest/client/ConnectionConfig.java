@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.rest.client;
 
 /**
@@ -10,6 +9,7 @@ package com.smartitengineering.user.rest.client;
  * @author imyousuf
  */
 public class ConnectionConfig {
+
     private String basicUrl;
     private int port;
     private String contextPath;
