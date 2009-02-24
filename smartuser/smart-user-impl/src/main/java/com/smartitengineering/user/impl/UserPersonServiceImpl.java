@@ -49,13 +49,10 @@ public class UserPersonServiceImpl implements UserPersonService {
     public void create(UserPerson userPerson) {
         getUserService().validateUser(userPerson.getUser());
         if (userPerson.getPerson().getId() != null) {
-            System.out.println("Checking person");
-            System.out.println("Person ID : " + userPerson.getPerson().getId());
             Integer count = (Integer) getUserPersonReadDao().getOther(
                     QueryParameterFactory.getElementCountParam("person.id"),
                     QueryParameterFactory.getEqualPropertyParam(
                     "person.id", userPerson.getPerson().getId()));
-            System.out.println(count);
             if (count.intValue() > 0) {
                 throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
                         name() + "-" +
@@ -71,7 +68,8 @@ public class UserPersonServiceImpl implements UserPersonService {
             throw new RuntimeException(message, e);
         } catch (StaleStateException e) {
             String message =
-                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name();
+                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
+                    UniqueConstrainedField.OTHER;
             throw new RuntimeException(message, e);
         }
     }
@@ -87,7 +85,8 @@ public class UserPersonServiceImpl implements UserPersonService {
             throw new RuntimeException(message, e);
         } catch (StaleStateException e) {
             String message =
-                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name();
+                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
+                    UniqueConstrainedField.OTHER;
             throw new RuntimeException(message, e);
         }
     }

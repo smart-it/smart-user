@@ -164,7 +164,6 @@ public class UserServiceImpl implements UserService, RoleService,
     }
 
     public Collection<Role> getRolesByName(String name) {
-        System.out.println(name);
         QueryParameter qp;
         qp = QueryParameterFactory.getStringLikePropertyParam("name", name,
                 MatchMode.ANYWHERE);
@@ -223,7 +222,6 @@ public class UserServiceImpl implements UserService, RoleService,
             privilege = getPrivilegeReadDao().getSingle(
                     QueryParameterFactory.getEqualPropertyParam("name", name));
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return privilege;
     }
@@ -236,7 +234,6 @@ public class UserServiceImpl implements UserService, RoleService,
                     QueryParameterFactory.getStringLikePropertyParam("name",
                     name, MatchMode.ANYWHERE));
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return privileges;
     }
@@ -290,13 +287,11 @@ public class UserServiceImpl implements UserService, RoleService,
     }
 
     private void validatePrivilege(Privilege privilege) {
-        System.out.println("Privilege validation : " + privilege.getName());
         if (privilege.getId() == null) {
             Integer count = (Integer) getPrivilegeReadDao().getOther(
                     QueryParameterFactory.getElementCountParam("name"),
                     QueryParameterFactory.getStringLikePropertyParam("name",
                     privilege.getName(), MatchMode.EXACT));
-            System.out.println(count);
             if (count.intValue() > 0) {
                 throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
                         name() + "-" +
@@ -315,7 +310,6 @@ public class UserServiceImpl implements UserService, RoleService,
                         name() + "-" +
                         UniqueConstrainedField.PRIVILEGE_NAME.name());
             }
-
         }
     }
 

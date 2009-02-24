@@ -13,7 +13,7 @@ import org.springframework.aop.MethodBeforeAdvice;
  *
  * @author modhu7
  */
-public class UserDeleteAdvice implements MethodBeforeAdvice{
+public class UserDeleteAdvice implements MethodBeforeAdvice {
 
     private UserPersonService userPersonService;
 
@@ -23,10 +23,8 @@ public class UserDeleteAdvice implements MethodBeforeAdvice{
                 parameters[0] instanceof User && method.getName().contains(
                 "delete")) {
             User user = (User) parameters[0];
-            System.out.println("I am advisor!!!!!!!!");
             userPersonService.deleteByUser(user);
         }
-        System.out.println("I am advisor!!!!!!!!");
     }
 
     public UserPersonService getUserPersonService() {

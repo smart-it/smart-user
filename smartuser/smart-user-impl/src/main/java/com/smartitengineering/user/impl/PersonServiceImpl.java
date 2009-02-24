@@ -96,7 +96,6 @@ public class PersonServiceImpl implements PersonService {
         QueryParameter qp = null;
         List<QueryParameter> queryParameters = new ArrayList<QueryParameter>();
         if (!StringUtils.isEmpty(filter.getEmail())) {
-            System.out.println("Mail");
             qp = QueryParameterFactory.getEqualPropertyParam("primaryEmail",
                     filter.getEmail());
             queryParameters.add(qp);
@@ -104,11 +103,9 @@ public class PersonServiceImpl implements PersonService {
         if (!(StringUtils.isEmpty(filter.getName().getFirstName()) &&
                 StringUtils.isEmpty(filter.getName().getLastName()) &&
                 StringUtils.isEmpty(filter.getName().getMiddleInitial()))) {
-            System.out.println("Name");
             QueryParameter qpConjunction = null;
 
             if (!StringUtils.isEmpty(filter.getName().getFirstName())) {
-                System.out.println("First Name");
                 QueryParameter qpFirstName;
                 qpFirstName = QueryParameterFactory.getNestedParametersParam(
                         "self",
@@ -117,10 +114,8 @@ public class PersonServiceImpl implements PersonService {
                         "name.firstName", filter.getName().getFirstName(),
                         MatchMode.ANYWHERE));
                 qpConjunction = qpFirstName;
-                System.out.println(qpConjunction.toString());
             }
             if (!StringUtils.isEmpty(filter.getName().getLastName())) {
-                System.out.println("Last Name");
                 QueryParameter qpLastName;
                 qpLastName = QueryParameterFactory.getNestedParametersParam(
                         "self",
@@ -136,7 +131,6 @@ public class PersonServiceImpl implements PersonService {
 
             }
             if (!StringUtils.isEmpty(filter.getName().getMiddleInitial())) {
-                System.out.println("Middle");
                 QueryParameter qpMiddleInitial;
                 qpMiddleInitial = QueryParameterFactory.getNestedParametersParam("self",
                         FetchMode.DEFAULT,
@@ -155,20 +149,13 @@ public class PersonServiceImpl implements PersonService {
         Collection<Person> persons = new HashSet<Person>();
         if (queryParameters.size() == 0) {
             try {
-                System.out.println("All");
                 persons = getPersonReadDao().getAll();
             } catch (Exception e) {
             }
         } else {
             try {
-                System.out.println("Not All");
-                System.out.println(queryParameters.size());
-                System.out.println(queryParameters.get(0).toString());
-
                 persons = getPersonReadDao().getList(queryParameters);
-                System.out.println("SIZE: " + persons.size());
             } catch (Exception e) {
-                e.printStackTrace();
             }
         }
         return persons;
@@ -200,11 +187,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     public void validatePerson(Person person) {
-        QueryParameter qp;
 
         if (person.getId() != null) {
-
-
             Integer count = (Integer) getPersonReadDao().getOther(QueryParameterFactory.getElementCountParam(
                     "primaryEmail"), QueryParameterFactory.getConjunctionParam(
                     QueryParameterFactory.getNotEqualPropertyParam("id",
@@ -264,7 +248,7 @@ public class PersonServiceImpl implements PersonService {
                         name() + "-" +
                         UniqueConstrainedField.PERSON_MOTHER_NATIONAL_ID.name());
             }
-        }else{
+        } else {
             Integer count = (Integer) getPersonReadDao().getOther(QueryParameterFactory.getElementCountParam(
                     "primaryEmail"), QueryParameterFactory.
                     getStringLikePropertyParam(
@@ -275,7 +259,7 @@ public class PersonServiceImpl implements PersonService {
                         UniqueConstrainedField.PERSON_EMAIL.name());
             }
             count = (Integer) getBasicIdentityReadDao().getOther(QueryParameterFactory.getElementCountParam(
-                    "nationalID"),  QueryParameterFactory.
+                    "nationalID"), QueryParameterFactory.
                     getStringLikePropertyParam(
                     "nationalID", person.getSelf().getNationalID(),
                     MatchMode.EXACT));

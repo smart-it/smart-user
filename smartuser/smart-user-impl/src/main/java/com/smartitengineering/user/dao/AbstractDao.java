@@ -13,6 +13,6 @@ import com.smartitengineering.domain.PersistentDTO;
  * @author modhu7
  */
 public abstract class AbstractDao<T extends PersistentDTO>
-    extends AbstractCommonDaoImpl<T>
-    implements CommonDao<T> {
+        extends AbstractCommonDaoImpl<T>
+        implements CommonDao<T> {
 }
