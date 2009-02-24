@@ -56,9 +56,20 @@
         <module>smart-user-rest-client</module>
     </modules>
     <properties>
-        <jersey.version>1.0.1</jersey.version>
-        <abstract-dao-version>0.4-SNAPSHOT</abstract-dao-version>
+        <junit-version>3.8.1</junit-version>
+        <jersey-version>1.0.3-SNAPSHOT</jersey-version>
+        <smart-dao-version>0.4-SNAPSHOT</smart-dao-version>
         <smart-util-version>0.1-SNAPSHOT</smart-util-version>
-        <spring.version>2.5.6</spring.version>
+        <spring-version>2.5.6</spring-version>
+        <glassfish-dist-version>10.0-build-20080430</glassfish-dist-version>
+        <glassfish-embedded-version>1.0-alpha-4</glassfish-embedded-version>
+        <hibernate-version>3.2.6.ga</hibernate-version>
+        <derby-version>10.4.2.0</derby-version>
+        <c3p0-version>0.9.1.2</c3p0-version>
+        <javax-version>1.0</javax-version>
+        <cglib-version>2.1_3</cglib-version>
+        <mysql-version>5.1.6</mysql-version>
+        <commons-lang-version>2.3</commons-lang-version>
+        <aspectj-weaver-version>1.6.2</aspectj-weaver-version>
     </properties>
 </project>
