@@ -12,10 +12,10 @@
         com.smartitengineering.dao.dialect
         com.smartitengineering.dao.show_sql
     -->
-    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
+    <bean id="propertyConfigurer" class="com.smartitengineering.util.spring.PropertiesLocatorConfigurer">
+        <property name="smartLocations">
             <list>
-                <value>classpath:db-config.properties</value>
+                <value>db-config.properties</value>
             </list>
         </property>
         <property name="properties" >

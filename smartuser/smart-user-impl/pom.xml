@@ -91,7 +91,12 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>${aspectj-weaver-version}</version>
-            <scope>compile</scope>
+            <scope>compile</scope>            
+        </dependency>
+        <dependency>
+            <groupId>com.smartitengineering.smart-util</groupId>
+            <artifactId>smart-spring-util</artifactId>
+            <version>${smart-util-version}</version>
         </dependency>
     </dependencies>
     <build>
