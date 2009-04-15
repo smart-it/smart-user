@@ -54,7 +54,8 @@
         <module>smart-user-element</module>
         <module>smart-user-resource</module>
         <module>smart-user-rest-client</module>
-    </modules>
+    <module>smart-user-ui</module>
+  </modules>
     <properties>
         <junit-version>3.8.1</junit-version>
         <jersey-version>1.0.3-SNAPSHOT</jersey-version>
