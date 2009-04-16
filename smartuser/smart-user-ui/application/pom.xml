@@ -37,6 +37,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
+                <version>${nbm-maven-plugin-version}</version>
             </plugin>
         </plugins>
     </build>
@@ -49,6 +50,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>nbm-maven-plugin</artifactId>
+                        <version>${nbm-maven-plugin-version}</version>
                         <executions>
                             <execution>
                                 <id>updatesite</id>

@@ -13,13 +13,38 @@
             <name>Java.net Repository for Maven</name>
             <url>http://download.java.net/maven/2/</url>
             <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
         </pluginRepository>
         <pluginRepository>
             <id>maven-repository.dev.java.net</id>
             <name>Java.net Maven 1 Repository (legacy)</name>
             <url>http://download.java.net/maven/1</url>
             <layout>legacy</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
         </pluginRepository>
+        <!--
+        <pluginRepository>
+            <id>codehaus-snapshot</id>
+            <name>Codehaus Snapshot Repository</name>
+            <url>http://snapshots.repository.codehaus.org/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+        -->
     </pluginRepositories>
     <repositories>
         <repository>
@@ -54,8 +79,8 @@
         <module>smart-user-element</module>
         <module>smart-user-resource</module>
         <module>smart-user-rest-client</module>
-    <module>smart-user-ui</module>
-  </modules>
+        <module>smart-user-ui</module>
+    </modules>
     <properties>
         <junit-version>3.8.1</junit-version>
         <jersey-version>1.0.3-SNAPSHOT</jersey-version>
