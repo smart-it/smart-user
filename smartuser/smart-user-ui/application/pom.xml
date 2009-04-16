@@ -10,7 +10,7 @@
     <artifactId>application</artifactId>
     <packaging>nbm-application</packaging>
     <version>0.1-SNAPSHOT</version>
-    <name>smart-user-ui - NetBeans Platform based application</name>
+    <name>application</name>
     <dependencies>
         <dependency>
             <groupId>org.netbeans.cluster</groupId>

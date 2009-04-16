@@ -9,7 +9,7 @@
   <artifactId>branding</artifactId>
   <packaging>nbm</packaging>
   <version>0.1-SNAPSHOT</version>
-  <name>smart-user-ui - Platform application branding resources</name>
+  <name>branding</name>
   <dependencies>
     <dependency>
       <groupId>org.netbeans.api</groupId>
