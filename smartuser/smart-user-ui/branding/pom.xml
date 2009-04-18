@@ -7,6 +7,7 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <groupId>com.smartitengineering.smart-user.smart-user-ui</groupId>
     <artifactId>branding</artifactId>
     <packaging>nbm</packaging>
     <version>0.1-SNAPSHOT</version>

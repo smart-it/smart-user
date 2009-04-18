@@ -7,6 +7,7 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <groupId>com.smartitengineering.smart-user.smart-user-ui</groupId>
     <artifactId>application</artifactId>
     <packaging>nbm-application</packaging>
     <version>0.1-SNAPSHOT</version>
@@ -20,13 +21,13 @@
         </dependency>
       
         <dependency>
-            <groupId>com.smartitengineering.smart-user</groupId>
-            <artifactId>module1</artifactId>
+            <groupId>com.smartitengineering.smart-user.smart-user-ui</groupId>
+            <artifactId>module</artifactId>
             <version>0.1-SNAPSHOT</version>
             <type>nbm</type>
         </dependency>
         <dependency>
-            <groupId>com.smartitengineering.smart-user</groupId>
+            <groupId>com.smartitengineering.smart-user.smart-user-ui</groupId>
             <artifactId>branding</artifactId>
             <version>0.1-SNAPSHOT</version>
             <type>nbm</type>
