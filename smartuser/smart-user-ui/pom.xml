@@ -10,7 +10,7 @@
     <artifactId>smart-user-ui</artifactId>
     <packaging>pom</packaging>
     <version>0.1-SNAPSHOT</version>
-    <name>smart-user-ui - NetBeans Platform Application</name>
+    <name>smart-user-ui</name>
     <repositories>
         <!-- this is a remote repository hosting the netbeans api artifacts.
          the versions of the artifacts are netbeans IDE release based, eg. RELEASE65
