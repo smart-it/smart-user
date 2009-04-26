@@ -48,6 +48,7 @@ final class AddUserTopComponent extends TopComponent {
         addUserTabbedPane = new javax.swing.JTabbedPane();
         userInformationPanel = new javax.swing.JPanel();
         basicIdentityPanel1 = new BasicIdentityPanel("Personal Information");
+        userInformationPanel1 = new com.smartitengineering.ui.component.UserInformationPanel();
         additionalInformationPanel = new javax.swing.JPanel();
 
         baseScrollPane.setFont(baseScrollPane.getFont());
@@ -84,13 +85,17 @@ final class AddUserTopComponent extends TopComponent {
 
         basicIdentityPanel1.setFont(basicIdentityPanel1.getFont());
 
+        userInformationPanel1.setFont(userInformationPanel1.getFont());
+
         javax.swing.GroupLayout userInformationPanelLayout = new javax.swing.GroupLayout(userInformationPanel);
         userInformationPanel.setLayout(userInformationPanelLayout);
         userInformationPanelLayout.setHorizontalGroup(
             userInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(userInformationPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(basicIdentityPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(userInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(basicIdentityPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(userInformationPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(466, Short.MAX_VALUE))
         );
         userInformationPanelLayout.setVerticalGroup(
@@ -98,7 +103,9 @@ final class AddUserTopComponent extends TopComponent {
             .addGroup(userInformationPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(basicIdentityPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(285, Short.MAX_VALUE))
+                .addGap(48, 48, 48)
+                .addComponent(userInformationPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(90, Short.MAX_VALUE))
         );
 
         addUserTabbedPane.addTab(org.openide.util.NbBundle.getMessage(AddUserTopComponent.class, "AddUserTopComponent.userInformationPanel.TabConstraints.tabTitle"), new javax.swing.ImageIcon(getClass().getResource("/com/smartitengineering/user/ui/user_information_icon.gif")), userInformationPanel); // NOI18N
@@ -170,6 +177,7 @@ final class AddUserTopComponent extends TopComponent {
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton saveButton;
     private javax.swing.JPanel userInformationPanel;
+    private com.smartitengineering.ui.component.UserInformationPanel userInformationPanel1;
     // End of variables declaration//GEN-END:variables
     /**
      * Gets default instance. Do not use directly: reserved for *.settings files only,

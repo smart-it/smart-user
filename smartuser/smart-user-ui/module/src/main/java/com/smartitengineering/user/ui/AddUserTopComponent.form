@@ -162,9 +162,12 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="basicIdentityPanel1" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="basicIdentityPanel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="userInformationPanel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
                               <EmptySpace pref="466" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -174,7 +177,9 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="basicIdentityPanel1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="285" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+                              <Component id="userInformationPanel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="90" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -191,6 +196,15 @@
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new BasicIdentityPanel(&quot;Personal Information&quot;);"/>
                       </AuxValues>
+                    </Component>
+                    <Component class="com.smartitengineering.ui.component.UserInformationPanel" name="userInformationPanel1">
+                      <Properties>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.editors2.FontEditor">
+                          <FontInfo relative="true">
+                            <Font component="userInformationPanel1" property="font" relativeSize="true" size="0"/>
+                          </FontInfo>
+                        </Property>
+                      </Properties>
                     </Component>
                   </SubComponents>
                 </Container>
