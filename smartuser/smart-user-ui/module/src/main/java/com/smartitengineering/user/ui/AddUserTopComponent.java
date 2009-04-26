@@ -47,7 +47,7 @@ final class AddUserTopComponent extends TopComponent {
         cancelButton = new javax.swing.JButton();
         addUserTabbedPane = new javax.swing.JTabbedPane();
         userInformationPanel = new javax.swing.JPanel();
-        basicIdentityPanel1 = new com.smartitengineering.ui.component.BasicIdentityPanel();
+        basicIdentityPanel1 = new BasicIdentityPanel("Personal Information");
         additionalInformationPanel = new javax.swing.JPanel();
 
         baseScrollPane.setFont(baseScrollPane.getFont());
