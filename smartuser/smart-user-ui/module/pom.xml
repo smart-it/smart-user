@@ -32,6 +32,11 @@
             <artifactId>org-jdesktop-layout</artifactId>
             <version>${netbeans.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.smartitengineering</groupId>
+            <artifactId>smart-ui-component</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -50,5 +55,5 @@
                 </configuration>
             </plugin>
         </plugins>
-    </build>
+    </build>    
 </project>
