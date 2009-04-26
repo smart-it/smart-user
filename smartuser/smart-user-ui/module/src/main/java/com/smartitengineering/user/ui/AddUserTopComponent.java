@@ -50,6 +50,7 @@ final class AddUserTopComponent extends TopComponent {
         basicIdentityPanel1 = new BasicIdentityPanel("Personal Information");
         userInformationPanel1 = new com.smartitengineering.ui.component.UserInformationPanel();
         additionalInformationPanel = new javax.swing.JPanel();
+        addressPanel1 = new com.smartitengineering.ui.component.AddressPanel();
 
         baseScrollPane.setFont(baseScrollPane.getFont());
 
@@ -116,11 +117,17 @@ final class AddUserTopComponent extends TopComponent {
         additionalInformationPanel.setLayout(additionalInformationPanelLayout);
         additionalInformationPanelLayout.setHorizontalGroup(
             additionalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 858, Short.MAX_VALUE)
+            .addGroup(additionalInformationPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(addressPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(378, Short.MAX_VALUE))
         );
         additionalInformationPanelLayout.setVerticalGroup(
             additionalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 429, Short.MAX_VALUE)
+            .addGroup(additionalInformationPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(addressPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(235, Short.MAX_VALUE))
         );
 
         addUserTabbedPane.addTab(org.openide.util.NbBundle.getMessage(AddUserTopComponent.class, "AddUserTopComponent.additionalInformationPanel.TabConstraints.tabTitle"), new javax.swing.ImageIcon(getClass().getResource("/com/smartitengineering/user/ui/additional_information_icon.gif")), additionalInformationPanel); // NOI18N
@@ -170,6 +177,7 @@ final class AddUserTopComponent extends TopComponent {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane addUserTabbedPane;
     private javax.swing.JPanel additionalInformationPanel;
+    private com.smartitengineering.ui.component.AddressPanel addressPanel1;
     private javax.swing.JPanel basePanel;
     private javax.swing.JScrollPane baseScrollPane;
     private com.smartitengineering.ui.component.BasicIdentityPanel basicIdentityPanel1;
