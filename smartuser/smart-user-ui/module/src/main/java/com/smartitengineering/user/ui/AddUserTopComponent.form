@@ -18,7 +18,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="baseScrollPane" pref="896" max="32767" attributes="0"/>
+              <Component id="baseScrollPane" pref="950" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -60,7 +60,7 @@
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="addUserTabbedPane" alignment="0" pref="870" max="32767" attributes="0"/>
+                          <Component id="addUserTabbedPane" alignment="0" pref="924" max="32767" attributes="0"/>
                           <Component id="bottomPanel" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -93,7 +93,7 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="520" max="32767" attributes="0"/>
+                          <EmptySpace pref="574" max="32767" attributes="0"/>
                           <Component id="cancelButton" min="-2" pref="155" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="saveButton" min="-2" pref="165" max="-2" attributes="0"/>
@@ -168,7 +168,7 @@
                                   <Component id="basicIdentityPanel1" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="userInformationPanel1" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="466" max="32767" attributes="0"/>
+                              <EmptySpace pref="520" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -235,15 +235,25 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="addressPanel1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="378" max="32767" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="basicIdentityPanel2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="34" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="addressPanel1" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="addressPanel1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                                      <Component id="basicIdentityPanel2" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
                               <EmptySpace pref="235" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -251,6 +261,11 @@
                   </Layout>
                   <SubComponents>
                     <Component class="com.smartitengineering.ui.component.AddressPanel" name="addressPanel1">
+                    </Component>
+                    <Component class="com.smartitengineering.ui.component.BasicIdentityPanel" name="basicIdentityPanel2">
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new BasicIdentityPanel(&quot;Father&apos;s Information&quot;);"/>
+                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>

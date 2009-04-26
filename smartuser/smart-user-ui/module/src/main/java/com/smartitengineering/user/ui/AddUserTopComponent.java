@@ -51,6 +51,7 @@ final class AddUserTopComponent extends TopComponent {
         userInformationPanel1 = new com.smartitengineering.ui.component.UserInformationPanel();
         additionalInformationPanel = new javax.swing.JPanel();
         addressPanel1 = new com.smartitengineering.ui.component.AddressPanel();
+        basicIdentityPanel2 = new BasicIdentityPanel("Father's Information");
 
         baseScrollPane.setFont(baseScrollPane.getFont());
 
@@ -67,7 +68,7 @@ final class AddUserTopComponent extends TopComponent {
         bottomPanelLayout.setHorizontalGroup(
             bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bottomPanelLayout.createSequentialGroup()
-                .addContainerGap(520, Short.MAX_VALUE)
+                .addContainerGap(574, Short.MAX_VALUE)
                 .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -97,7 +98,7 @@ final class AddUserTopComponent extends TopComponent {
                 .addGroup(userInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(basicIdentityPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(userInformationPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(466, Short.MAX_VALUE))
+                .addContainerGap(520, Short.MAX_VALUE))
         );
         userInformationPanelLayout.setVerticalGroup(
             userInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,13 +121,20 @@ final class AddUserTopComponent extends TopComponent {
             .addGroup(additionalInformationPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(addressPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(378, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(basicIdentityPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         additionalInformationPanelLayout.setVerticalGroup(
             additionalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(additionalInformationPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(addressPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(additionalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(additionalInformationPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(addressPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(additionalInformationPanelLayout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(basicIdentityPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(235, Short.MAX_VALUE))
         );
 
@@ -139,7 +147,7 @@ final class AddUserTopComponent extends TopComponent {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, basePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(basePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(addUserTabbedPane, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 870, Short.MAX_VALUE)
+                    .addComponent(addUserTabbedPane, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 924, Short.MAX_VALUE)
                     .addComponent(bottomPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -161,7 +169,7 @@ final class AddUserTopComponent extends TopComponent {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(baseScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 896, Short.MAX_VALUE)
+                .addComponent(baseScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 950, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -181,6 +189,7 @@ final class AddUserTopComponent extends TopComponent {
     private javax.swing.JPanel basePanel;
     private javax.swing.JScrollPane baseScrollPane;
     private com.smartitengineering.ui.component.BasicIdentityPanel basicIdentityPanel1;
+    private com.smartitengineering.ui.component.BasicIdentityPanel basicIdentityPanel2;
     private javax.swing.JPanel bottomPanel;
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton saveButton;
