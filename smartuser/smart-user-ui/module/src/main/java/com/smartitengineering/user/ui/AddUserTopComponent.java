@@ -6,6 +6,7 @@
 package com.smartitengineering.user.ui;
 
 import com.smartitengineering.ui.component.BasicIdentityPanel;
+import com.smartitengineering.ui.component.DatePanel;
 import java.io.Serializable;
 import java.util.logging.Logger;
 import org.openide.util.NbBundle;
@@ -46,12 +47,23 @@ final class AddUserTopComponent extends TopComponent {
         saveButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         addUserTabbedPane = new javax.swing.JTabbedPane();
-        userInformationPanel = new javax.swing.JPanel();
-        basicIdentityPanel1 = new BasicIdentityPanel("Personal Information");
-        userInformationPanel1 = new com.smartitengineering.ui.component.UserInformationPanel();
-        additionalInformationPanel = new javax.swing.JPanel();
+        userInformationTabPanel = new javax.swing.JPanel();
+        selfBasicIdentityPanel = new BasicIdentityPanel("Personal Information");
+        userInformationPanel = new com.smartitengineering.ui.component.UserInformationPanel();
+        additionalInformationTabPanel = new DatePanel("Date of Birth");
         addressPanel1 = new com.smartitengineering.ui.component.AddressPanel();
-        basicIdentityPanel2 = new BasicIdentityPanel("Father's Information");
+        fatherBasicIdentityPanel = new BasicIdentityPanel("Father's Information");
+        motherBasicIdentityPanel = new com.smartitengineering.ui.component.BasicIdentityPanel("Mother's Information");
+        spouseBasicIdentityPanel = new com.smartitengineering.ui.component.BasicIdentityPanel("Spouse's Information");
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        secondaryEmailAddressTextField = new javax.swing.JTextField();
+        phoneNumberTextField = new javax.swing.JTextField();
+        cellPhoneNumberTextField = new javax.swing.JTextField();
+        faxNumberTextField = new javax.swing.JTextField();
+        datePanel1 = new com.smartitengineering.ui.component.DatePanel();
 
         baseScrollPane.setFont(baseScrollPane.getFont());
 
@@ -68,7 +80,7 @@ final class AddUserTopComponent extends TopComponent {
         bottomPanelLayout.setHorizontalGroup(
             bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bottomPanelLayout.createSequentialGroup()
-                .addContainerGap(574, Short.MAX_VALUE)
+                .addContainerGap(598, Short.MAX_VALUE)
                 .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -83,62 +95,135 @@ final class AddUserTopComponent extends TopComponent {
 
         addUserTabbedPane.setFont(addUserTabbedPane.getFont());
 
+        userInformationTabPanel.setFont(userInformationTabPanel.getFont());
+
+        selfBasicIdentityPanel.setFont(selfBasicIdentityPanel.getFont());
+
         userInformationPanel.setFont(userInformationPanel.getFont());
 
-        basicIdentityPanel1.setFont(basicIdentityPanel1.getFont());
-
-        userInformationPanel1.setFont(userInformationPanel1.getFont());
-
-        javax.swing.GroupLayout userInformationPanelLayout = new javax.swing.GroupLayout(userInformationPanel);
-        userInformationPanel.setLayout(userInformationPanelLayout);
-        userInformationPanelLayout.setHorizontalGroup(
-            userInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(userInformationPanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout userInformationTabPanelLayout = new javax.swing.GroupLayout(userInformationTabPanel);
+        userInformationTabPanel.setLayout(userInformationTabPanelLayout);
+        userInformationTabPanelLayout.setHorizontalGroup(
+            userInformationTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(userInformationTabPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(userInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(basicIdentityPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(userInformationPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(520, Short.MAX_VALUE))
+                .addGroup(userInformationTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(selfBasicIdentityPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(userInformationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(544, Short.MAX_VALUE))
         );
-        userInformationPanelLayout.setVerticalGroup(
-            userInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(userInformationPanelLayout.createSequentialGroup()
+        userInformationTabPanelLayout.setVerticalGroup(
+            userInformationTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(userInformationTabPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(basicIdentityPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(selfBasicIdentityPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(48, 48, 48)
-                .addComponent(userInformationPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(90, Short.MAX_VALUE))
+                .addComponent(userInformationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(126, Short.MAX_VALUE))
         );
 
-        addUserTabbedPane.addTab(org.openide.util.NbBundle.getMessage(AddUserTopComponent.class, "AddUserTopComponent.userInformationPanel.TabConstraints.tabTitle"), new javax.swing.ImageIcon(getClass().getResource("/com/smartitengineering/user/ui/user_information_icon.gif")), userInformationPanel); // NOI18N
+        addUserTabbedPane.addTab(org.openide.util.NbBundle.getMessage(AddUserTopComponent.class, "AddUserTopComponent.userInformationTabPanel.TabConstraints.tabTitle"), new javax.swing.ImageIcon(getClass().getResource("/com/smartitengineering/user/ui/user_information_icon.gif")), userInformationTabPanel); // NOI18N
 
-        additionalInformationPanel.setFont(additionalInformationPanel.getFont());
+        additionalInformationTabPanel.setFont(additionalInformationTabPanel.getFont());
 
-        javax.swing.GroupLayout additionalInformationPanelLayout = new javax.swing.GroupLayout(additionalInformationPanel);
-        additionalInformationPanel.setLayout(additionalInformationPanelLayout);
-        additionalInformationPanelLayout.setHorizontalGroup(
-            additionalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(additionalInformationPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(addressPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(basicIdentityPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
-        );
-        additionalInformationPanelLayout.setVerticalGroup(
-            additionalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(additionalInformationPanelLayout.createSequentialGroup()
-                .addGroup(additionalInformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(additionalInformationPanelLayout.createSequentialGroup()
+        addressPanel1.setFont(addressPanel1.getFont());
+
+        fatherBasicIdentityPanel.setFont(fatherBasicIdentityPanel.getFont());
+
+        motherBasicIdentityPanel.setFont(motherBasicIdentityPanel.getFont());
+
+        spouseBasicIdentityPanel.setFont(spouseBasicIdentityPanel.getFont());
+
+        jLabel1.setFont(jLabel1.getFont());
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(AddUserTopComponent.class, "AddUserTopComponent.jLabel1.text")); // NOI18N
+
+        jLabel2.setFont(jLabel2.getFont());
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(AddUserTopComponent.class, "AddUserTopComponent.jLabel2.text")); // NOI18N
+
+        jLabel3.setFont(jLabel3.getFont());
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(AddUserTopComponent.class, "AddUserTopComponent.jLabel3.text")); // NOI18N
+
+        jLabel4.setFont(jLabel4.getFont());
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel4, org.openide.util.NbBundle.getMessage(AddUserTopComponent.class, "AddUserTopComponent.jLabel4.text")); // NOI18N
+
+        secondaryEmailAddressTextField.setFont(secondaryEmailAddressTextField.getFont());
+        secondaryEmailAddressTextField.setText(org.openide.util.NbBundle.getMessage(AddUserTopComponent.class, "AddUserTopComponent.secondaryEmailAddressTextField.text")); // NOI18N
+
+        phoneNumberTextField.setFont(phoneNumberTextField.getFont());
+        phoneNumberTextField.setText(org.openide.util.NbBundle.getMessage(AddUserTopComponent.class, "AddUserTopComponent.phoneNumberTextField.text_1")); // NOI18N
+
+        cellPhoneNumberTextField.setFont(cellPhoneNumberTextField.getFont());
+        cellPhoneNumberTextField.setText(org.openide.util.NbBundle.getMessage(AddUserTopComponent.class, "AddUserTopComponent.cellPhoneNumberTextField.text_1")); // NOI18N
+
+        faxNumberTextField.setFont(faxNumberTextField.getFont());
+        faxNumberTextField.setText(org.openide.util.NbBundle.getMessage(AddUserTopComponent.class, "AddUserTopComponent.faxNumberTextField.text_1")); // NOI18N
+
+        javax.swing.GroupLayout additionalInformationTabPanelLayout = new javax.swing.GroupLayout(additionalInformationTabPanel);
+        additionalInformationTabPanel.setLayout(additionalInformationTabPanelLayout);
+        additionalInformationTabPanelLayout.setHorizontalGroup(
+            additionalInformationTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(additionalInformationTabPanelLayout.createSequentialGroup()
+                .addGroup(additionalInformationTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(addressPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, additionalInformationTabPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(addressPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(additionalInformationPanelLayout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(basicIdentityPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(235, Short.MAX_VALUE))
+                        .addGroup(additionalInformationTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, additionalInformationTabPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(secondaryEmailAddressTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, additionalInformationTabPanelLayout.createSequentialGroup()
+                                .addGroup(additionalInformationTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2))
+                                .addGap(52, 52, 52)
+                                .addGroup(additionalInformationTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(phoneNumberTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+                                    .addComponent(cellPhoneNumberTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+                                    .addComponent(faxNumberTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)))))
+                    .addComponent(datePanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(additionalInformationTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(spouseBasicIdentityPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fatherBasicIdentityPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(motherBasicIdentityPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(82, 82, 82))
+        );
+        additionalInformationTabPanelLayout.setVerticalGroup(
+            additionalInformationTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(additionalInformationTabPanelLayout.createSequentialGroup()
+                .addGroup(additionalInformationTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, additionalInformationTabPanelLayout.createSequentialGroup()
+                        .addComponent(addressPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)
+                        .addComponent(datePanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(additionalInformationTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(secondaryEmailAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(additionalInformationTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(phoneNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(additionalInformationTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(cellPhoneNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(additionalInformationTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(faxNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, additionalInformationTabPanelLayout.createSequentialGroup()
+                        .addComponent(fatherBasicIdentityPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(motherBasicIdentityPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spouseBasicIdentityPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
-        addUserTabbedPane.addTab(org.openide.util.NbBundle.getMessage(AddUserTopComponent.class, "AddUserTopComponent.additionalInformationPanel.TabConstraints.tabTitle"), new javax.swing.ImageIcon(getClass().getResource("/com/smartitengineering/user/ui/additional_information_icon.gif")), additionalInformationPanel); // NOI18N
+        addUserTabbedPane.addTab(org.openide.util.NbBundle.getMessage(AddUserTopComponent.class, "AddUserTopComponent.additionalInformationTabPanel.TabConstraints.tabTitle"), new javax.swing.ImageIcon(getClass().getResource("/com/smartitengineering/user/ui/additional_information_icon.gif")), additionalInformationTabPanel); // NOI18N
 
         javax.swing.GroupLayout basePanelLayout = new javax.swing.GroupLayout(basePanel);
         basePanel.setLayout(basePanelLayout);
@@ -147,15 +232,14 @@ final class AddUserTopComponent extends TopComponent {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, basePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(basePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(addUserTabbedPane, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 924, Short.MAX_VALUE)
+                    .addComponent(addUserTabbedPane, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 948, Short.MAX_VALUE)
                     .addComponent(bottomPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         basePanelLayout.setVerticalGroup(
             basePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, basePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(addUserTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
+                .addComponent(addUserTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bottomPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -167,34 +251,39 @@ final class AddUserTopComponent extends TopComponent {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(baseScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 950, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(baseScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 974, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(baseScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(baseScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane addUserTabbedPane;
-    private javax.swing.JPanel additionalInformationPanel;
+    private javax.swing.JPanel additionalInformationTabPanel;
     private com.smartitengineering.ui.component.AddressPanel addressPanel1;
     private javax.swing.JPanel basePanel;
     private javax.swing.JScrollPane baseScrollPane;
-    private com.smartitengineering.ui.component.BasicIdentityPanel basicIdentityPanel1;
-    private com.smartitengineering.ui.component.BasicIdentityPanel basicIdentityPanel2;
     private javax.swing.JPanel bottomPanel;
     private javax.swing.JButton cancelButton;
+    private javax.swing.JTextField cellPhoneNumberTextField;
+    private com.smartitengineering.ui.component.DatePanel datePanel1;
+    private com.smartitengineering.ui.component.BasicIdentityPanel fatherBasicIdentityPanel;
+    private javax.swing.JTextField faxNumberTextField;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private com.smartitengineering.ui.component.BasicIdentityPanel motherBasicIdentityPanel;
+    private javax.swing.JTextField phoneNumberTextField;
     private javax.swing.JButton saveButton;
-    private javax.swing.JPanel userInformationPanel;
-    private com.smartitengineering.ui.component.UserInformationPanel userInformationPanel1;
+    private javax.swing.JTextField secondaryEmailAddressTextField;
+    private com.smartitengineering.ui.component.BasicIdentityPanel selfBasicIdentityPanel;
+    private com.smartitengineering.ui.component.BasicIdentityPanel spouseBasicIdentityPanel;
+    private com.smartitengineering.ui.component.UserInformationPanel userInformationPanel;
+    private javax.swing.JPanel userInformationTabPanel;
     // End of variables declaration//GEN-END:variables
     /**
      * Gets default instance. Do not use directly: reserved for *.settings files only,
