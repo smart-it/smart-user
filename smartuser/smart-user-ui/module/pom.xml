@@ -37,6 +37,11 @@
             <artifactId>smart-ui-component</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.smartitengineering.smart-user</groupId>
+            <artifactId>smart-user-rest-client</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
