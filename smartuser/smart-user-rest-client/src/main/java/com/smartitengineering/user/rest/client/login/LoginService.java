@@ -21,7 +21,7 @@ import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
  */
 public class LoginService extends AbstractClientImpl {
 
-    public void login(String username, String password) {
+    public static void login(String username, String password) {
         DefaultApacheHttpClientConfig clientConfig = new DefaultApacheHttpClientConfig();
         clientConfig.getState().setCredentials(null, null, -1, username, password);
         clientConfig.getProperties().put(ApacheHttpClientConfig.PROPERTY_PREEMPTIVE_AUTHENTICATION,
