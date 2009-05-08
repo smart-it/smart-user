@@ -22,24 +22,27 @@ import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
 public class LoginService extends AbstractClientImpl {
 
     public static void login(String username, String password) {
+        System.out.println(username);
+        System.out.println(password);
+        System.out.println(BASE_URI);
         DefaultApacheHttpClientConfig clientConfig = new DefaultApacheHttpClientConfig();
         clientConfig.getState().setCredentials(null, null, -1, username, password);
         clientConfig.getProperties().put(ApacheHttpClientConfig.PROPERTY_PREEMPTIVE_AUTHENTICATION,
-            Boolean.TRUE);
+                Boolean.TRUE);
         Client client = ApacheHttpClient.create(clientConfig);
-        WebResource resource = client.resource(BASE_URI);
-        resource = resource.path("user/alluser");
-
-        UserElements userElements = new UserElements();
+        WebResource resource = client.resource(BASE_URI);                
 
         try {
-            userElements = resource.get(UserElements.class);
-            LoginCenter.setUsername(username);
-            LoginCenter.setPassword(password);
+            resource.get(UserElements.class);
         } catch (UniformInterfaceException ex) {
-            ExceptionElement message = ex.getResponse().getEntity(ExceptionElement.class);
             int status = ex.getResponse().getStatus();
-            throw new SmartException(message, status, ex);
+            if (status == 404) {
+                LoginCenter.setUsername(username);
+                LoginCenter.setPassword(password);
+            }else{
+                throw new SmartException(new ExceptionElement(), status, ex);
+            }
         }
+
     }
 }
