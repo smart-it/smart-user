@@ -15,6 +15,8 @@ import com.smartitengineering.user.filter.PersonFilter;
 import com.smartitengineering.user.filter.UserFilter;
 import com.smartitengineering.user.filter.UserPersonFilter;
 import com.smartitengineering.user.rest.client.exception.SmartException;
+import com.smartitengineering.user.rest.client.login.LoginCenter;
+import com.smartitengineering.user.rest.client.login.LoginService;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.PersonService;
 import com.smartitengineering.user.service.PrivilegeService;
@@ -23,7 +25,6 @@ import com.smartitengineering.user.service.UserPersonService;
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.user.service.UserServiceFactory;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -33,8 +34,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ws.rs.core.UriBuilder;
 import junit.framework.TestCase;
 import org.glassfish.embed.GlassFish;
@@ -135,6 +134,9 @@ public class ClientTest extends TestCase {
     }
 
     public void testResources() {
+        doTestLogin();
+        LoginCenter.setUsername("superadmin");
+        LoginCenter.setPassword("superadmin");
         doTestPersonService();
         doTestPrivilegeService();
         doTestRoleService();
@@ -202,6 +204,35 @@ public class ClientTest extends TestCase {
         System.out.println(userPerson.getPerson().getSelf().getName().
                 getFirstName());
         System.out.println(userPerson.getUser().getRoles().size());
+    }
+
+    private void doTestLogin() {
+        //wrong password
+        //should not be able to login
+        try{
+            LoginService.login("modhu", "xxx");
+            fail("Should be failed");
+        }catch(SmartException ex){
+            assertTrue(ex.getStatus()==401);
+        }
+
+        //imyousuf is a valid user
+        //imyousuf should get 404
+        // imyousuf should be able to login
+        try{
+            LoginService.login("imyousuf", "imyousuf");
+            assertTrue(LoginCenter.getUsername().equals("imyousuf"));
+            assertTrue(LoginCenter.getPassword().equals("imyousuf"));
+        }catch(SmartException ex){
+
+        }
+        try{
+            LoginService.login("modhu", "modhu");
+            assertTrue(LoginCenter.getUsername().equals("modhu"));
+            assertTrue(LoginCenter.getPassword().equals("modhu"));
+        }catch(SmartException ex){
+            fail("should not throw exception");
+        }
     }
 
     private void doTestPersonService() {
