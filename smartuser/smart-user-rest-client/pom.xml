@@ -65,6 +65,11 @@
             <version>${jersey-version}</version>
         </dependency>
         <dependency>
+            <groupId>com.sun.jersey.contribs</groupId>
+            <artifactId>jersey-apache-client</artifactId>
+            <version>${jersey-version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.smartitengineering.smart-user</groupId>
             <artifactId>smart-user-api</artifactId>
             <version>${project.version}</version>
