@@ -22,6 +22,8 @@ import org.openide.windows.TopComponent;
  */
 public class AddUserAction extends AbstractAction {
 
+    Lookup.Result<LoginNode> result = CentralLookup.getDefault().lookupResult(LoginNode.class);
+
     public AddUserAction() {
         super(NbBundle.getMessage(AddUserAction.class, "CTL_AddUserAction"));
         putValue(SMALL_ICON, new ImageIcon(Utilities.loadImage(AddUserTopComponent.ICON_PATH, true)));
@@ -31,7 +33,7 @@ public class AddUserAction extends AbstractAction {
         CentralLookup.getDefault().setLoginNode(ln);
 
         //final Lookup lookup = CentralLookup.getDefault();
-        Lookup.Result<LoginNode> result = CentralLookup.getDefault().lookupResult(LoginNode.class);
+        
 
         Collection<LoginNode> loginNodes = (Collection<LoginNode>) result.allInstances();
 
