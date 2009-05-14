@@ -42,6 +42,11 @@
             <artifactId>smart-user-rest-client</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-filesystems</artifactId>
+            <version>RELEASE65</version>
+        </dependency>        
     </dependencies>
     <build>
         <plugins>
