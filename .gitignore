@@ -5,3 +5,4 @@ generated
 target
 *.properties
 *~
+!Bundle.properties
