@@ -40,34 +40,69 @@ final class LoginWindowTopComponent extends TopComponent {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        loginButton = new javax.swing.JButton();
+        usernameTextField = new javax.swing.JTextField();
+        usernameLabel = new javax.swing.JLabel();
+        passwordLabel = new javax.swing.JLabel();
+        passwordTextField = new javax.swing.JTextField();
+        cancelButton = new javax.swing.JButton();
 
-        org.openide.awt.Mnemonics.setLocalizedText(jButton1, org.openide.util.NbBundle.getMessage(LoginWindowTopComponent.class, "LoginWindowTopComponent.jButton1.text")); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        org.openide.awt.Mnemonics.setLocalizedText(loginButton, org.openide.util.NbBundle.getMessage(LoginWindowTopComponent.class, "LoginWindowTopComponent.loginButton.text")); // NOI18N
+        loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                loginButtonActionPerformed(evt);
             }
         });
+
+        usernameTextField.setText(org.openide.util.NbBundle.getMessage(LoginWindowTopComponent.class, "LoginWindowTopComponent.usernameTextField.text")); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(usernameLabel, org.openide.util.NbBundle.getMessage(LoginWindowTopComponent.class, "LoginWindowTopComponent.usernameLabel.text")); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(passwordLabel, org.openide.util.NbBundle.getMessage(LoginWindowTopComponent.class, "LoginWindowTopComponent.passwordLabel.text")); // NOI18N
+
+        passwordTextField.setText(org.openide.util.NbBundle.getMessage(LoginWindowTopComponent.class, "LoginWindowTopComponent.passwordTextField.text")); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(cancelButton, org.openide.util.NbBundle.getMessage(LoginWindowTopComponent.class, "LoginWindowTopComponent.cancelButton.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(143, 143, 143)
-                .addComponent(jButton1)
-                .addContainerGap(191, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(usernameLabel)
+                    .addComponent(passwordLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cancelButton, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(passwordTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+                    .addComponent(usernameTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE))
+                .addGap(137, 137, 137))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(119, 119, 119)
-                .addComponent(jButton1)
-                .addContainerGap(152, Short.MAX_VALUE))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(usernameLabel)
+                    .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(passwordLabel)
+                    .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(loginButton)
+                    .addComponent(cancelButton))
+                .addContainerGap(165, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
         System.out.print("I m ready to lookup");
         loginNode = new LoginNode("modhu", "modhupassword");
@@ -75,10 +110,15 @@ final class LoginWindowTopComponent extends TopComponent {
         CentralLookup.getDefault().setLoginNode(loginNode);
         System.out.print("I m published");
         Logger.getLogger(this.PREFERRED_ID).warning("published");
+}//GEN-LAST:event_loginButtonActionPerformed
 
-    }//GEN-LAST:event_jButton1ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JButton loginButton;
+    private javax.swing.JLabel passwordLabel;
+    private javax.swing.JTextField passwordTextField;
+    private javax.swing.JLabel usernameLabel;
+    private javax.swing.JTextField usernameTextField;
     // End of variables declaration//GEN-END:variables
 
     /**
