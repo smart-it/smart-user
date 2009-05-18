@@ -16,7 +16,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="baseScrollPane" alignment="0" pref="974" max="32767" attributes="0"/>
+          <Component id="baseScrollPane" alignment="0" pref="1085" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -49,13 +49,13 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="addUserTabbedPane" alignment="0" pref="948" max="32767" attributes="0"/>
-                          <Component id="bottomPanel" alignment="0" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="bottomPanel" alignment="0" max="32767" attributes="1"/>
+                          <Component id="addUserTabbedPane" alignment="0" pref="873" max="32767" attributes="1"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace pref="198" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -84,7 +84,7 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="598" max="32767" attributes="0"/>
+                          <EmptySpace pref="523" max="32767" attributes="0"/>
                           <Component id="cancelButton" min="-2" pref="155" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="saveButton" min="-2" pref="165" max="-2" attributes="0"/>
@@ -159,7 +159,7 @@
                                   <Component id="selfBasicIdentityPanel" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="userInformationPanel" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="544" max="32767" attributes="0"/>
+                              <EmptySpace pref="469" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -257,10 +257,10 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="spouseBasicIdentityPanel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="fatherBasicIdentityPanel" min="-2" max="-2" attributes="0"/>
                                   <Component id="motherBasicIdentityPanel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fatherBasicIdentityPanel" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="193" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
