@@ -4,11 +4,11 @@
  */
 package com.smartitengineering.user.ui;
 
+import java.awt.Image;
 import java.io.Serializable;
 import java.util.logging.Logger;
-import org.openide.util.Lookup;
 import org.openide.util.NbBundle;
-import org.openide.util.lookup.Lookups;
+import org.openide.util.Utilities;
 import org.openide.windows.TopComponent;
 import org.openide.windows.WindowManager;
 //import org.openide.util.Utilities;
@@ -20,7 +20,7 @@ final class LoginWindowTopComponent extends TopComponent {
 
     private static LoginWindowTopComponent instance;
     /** path to the icon used by the component and its open action */
-//    static final String ICON_PATH = "SET/PATH/TO/ICON/HERE";
+    static final String ICON_PATH = "com/smartitengineering/user/ui/login.gif";
     private static final String PREFERRED_ID = "LoginWindowTopComponent";
     LoginNode loginNode;
 
@@ -28,7 +28,7 @@ final class LoginWindowTopComponent extends TopComponent {
         initComponents();
         setName(NbBundle.getMessage(LoginWindowTopComponent.class, "CTL_LoginWindowTopComponent"));
         setToolTipText(NbBundle.getMessage(LoginWindowTopComponent.class, "HINT_LoginWindowTopComponent"));
-//        setIcon(Utilities.loadImage(ICON_PATH, true));
+        setIcon(Utilities.loadImage(ICON_PATH, true));
         putClientProperty("netbeans.winsys.tc.keep_preferred_size_when_slided_in", Boolean.TRUE);
     }
 
@@ -182,7 +182,7 @@ final class LoginWindowTopComponent extends TopComponent {
 
     @Override
     public int getPersistenceType() {
-        return TopComponent.PERSISTENCE_ALWAYS;
+        return TopComponent.PERSISTENCE_NEVER;
     }
 
     @Override
@@ -214,5 +214,4 @@ final class LoginWindowTopComponent extends TopComponent {
             return LoginWindowTopComponent.getDefault();
         }
     }
-
 }

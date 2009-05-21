@@ -27,7 +27,9 @@
         <folder name="Add">
             <file name="AddUserAction.shadow">
                 <attr name="originalFile" stringvalue="Actions/Window/com-smartitengineering-user-ui-AddUserAction.instance"/>
-            </file>
+            </file>            
+        </folder>
+        <folder name="Login">
             <file name="LoginWindowAction.shadow">
                 <attr name="originalFile" stringvalue="Actions/Window/com-smartitengineering-user-ui-LoginWindowAction.instance"/>
             </file>
@@ -40,6 +42,11 @@
         <folder name="Add">
             <file name="AddUserAction.shadow">
                 <attr name="originalFile" stringvalue="Actions/Window/com-smartitengineering-user-ui-AddUserAction.instance"/>
+            </file>
+        </folder>
+        <folder name="Login">
+            <file name="LoginWindowAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Window/com-smartitengineering-user-ui-LoginWindowAction.instance"/>
             </file>
         </folder>
     </folder>

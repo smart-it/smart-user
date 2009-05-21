@@ -21,7 +21,7 @@ public class LoginWindowAction extends AbstractAction {
 
     public LoginWindowAction() {
         super(NbBundle.getMessage(LoginWindowAction.class, "CTL_LoginWindowAction"));
-//        putValue(SMALL_ICON, new ImageIcon(Utilities.loadImage(LoginWindowTopComponent.ICON_PATH, true)));        
+        putValue(SMALL_ICON, new ImageIcon(Utilities.loadImage(LoginWindowTopComponent.ICON_PATH, true)));        
     }
 
     public void actionPerformed(ActionEvent evt) {
