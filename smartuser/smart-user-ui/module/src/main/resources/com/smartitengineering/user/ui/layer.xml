@@ -2,6 +2,9 @@
 <!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.0//EN" "http://www.netbeans.org/dtds/filesystem-1_0.dtd">
 <filesystem>    
     <folder name="Actions">
+        <folder name="BpelNodes">
+            <file name="com-smartitengineering-user-ui-LogoutAction.instance"/>
+        </folder>
         <folder name="Window">
             <file name="com-smartitengineering-user-ui-AddUserAction.instance"/>
             <file name="com-smartitengineering-user-ui-LoginWindowAction.instance"/>
@@ -29,9 +32,12 @@
                 <attr name="originalFile" stringvalue="Actions/Window/com-smartitengineering-user-ui-AddUserAction.instance"/>
             </file>            
         </folder>
-        <folder name="Login">
+        <folder name="Login">            
             <file name="LoginWindowAction.shadow">
                 <attr name="originalFile" stringvalue="Actions/Window/com-smartitengineering-user-ui-LoginWindowAction.instance"/>
+            </file>
+            <file name="com-smartitengineering-user-ui-LogoutAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/BpelNodes/com-smartitengineering-user-ui-LogoutAction.instance"/>
             </file>
         </folder>
     </folder>
@@ -44,9 +50,12 @@
                 <attr name="originalFile" stringvalue="Actions/Window/com-smartitengineering-user-ui-AddUserAction.instance"/>
             </file>
         </folder>
-        <folder name="Login">
+        <folder name="Login">            
             <file name="LoginWindowAction.shadow">
                 <attr name="originalFile" stringvalue="Actions/Window/com-smartitengineering-user-ui-LoginWindowAction.instance"/>
+            </file>
+            <file name="com-smartitengineering-user-ui-LogoutAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/BpelNodes/com-smartitengineering-user-ui-LogoutAction.instance"/>
             </file>
         </folder>
     </folder>
