@@ -6,7 +6,9 @@ package com.smartitengineering.user.ui;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import org.openide.util.Lookup;
@@ -14,6 +16,7 @@ import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 import org.openide.util.NbBundle;
 import org.openide.util.Utilities;
+import org.openide.windows.TopComponent;
 
 public final class LogoutAction extends AbstractAction {
 
@@ -47,6 +50,12 @@ public final class LogoutAction extends AbstractAction {
 
     public void actionPerformed(ActionEvent e) {
         CentralLookup.getDefault().setLoginNode(new LoginNode("", ""));
+        TopComponent.Registry register = TopComponent.getRegistry();
+        Set<TopComponent> setOpenedComponent = new HashSet(register.getOpened());
+        for (TopComponent t : setOpenedComponent){
+            t.close();
+        }
+
     }
 
 }
