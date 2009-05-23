@@ -58,6 +58,11 @@ final class LoginWindowTopComponent extends TopComponent {
         org.openide.awt.Mnemonics.setLocalizedText(passwordLabel, org.openide.util.NbBundle.getMessage(LoginWindowTopComponent.class, "LoginWindowTopComponent.passwordLabel.text")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(cancelButton, org.openide.util.NbBundle.getMessage(LoginWindowTopComponent.class, "LoginWindowTopComponent.cancelButton.text")); // NOI18N
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
         org.openide.awt.Mnemonics.setLocalizedText(loginButton, org.openide.util.NbBundle.getMessage(LoginWindowTopComponent.class, "LoginWindowTopComponent.loginButton.text")); // NOI18N
         loginButton.addActionListener(new java.awt.event.ActionListener() {
@@ -159,7 +164,14 @@ final class LoginWindowTopComponent extends TopComponent {
 
     private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
         // TODO add your handling code here:
+        loginButtonActionPerformed(evt);
 }//GEN-LAST:event_passwordFieldActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+        usernameTextField.setText("");
+        passwordField.setText("");
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
