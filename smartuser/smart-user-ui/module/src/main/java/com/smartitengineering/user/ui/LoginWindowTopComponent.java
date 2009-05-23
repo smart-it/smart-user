@@ -6,8 +6,9 @@ package com.smartitengineering.user.ui;
 
 import com.smartitengineering.user.rest.client.exception.SmartException;
 import com.smartitengineering.user.rest.client.login.LoginService;
-import java.awt.Image;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.openide.util.NbBundle;
@@ -139,7 +140,11 @@ final class LoginWindowTopComponent extends TopComponent {
         try {
             LoginService.login(loginNode.getUsername(), loginNode.getPassword().toString());
             CentralLookup.getDefault().setLoginNode(loginNode);
-            JOptionPane.showMessageDialog(this, "You have successfully logged in....");            
+            JOptionPane.showMessageDialog(this, "You have successfully logged in....");
+            usernameTextField.setText("");
+            passwordField.setText("");
+            TopComponent.Registry register = TopComponent.getRegistry();
+            register.getActivated().close();
 
         } catch (SmartException e) {
             if (e.getStatus() == 401) {
