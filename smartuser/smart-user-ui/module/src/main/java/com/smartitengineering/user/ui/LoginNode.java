@@ -20,6 +20,13 @@ public class LoginNode{
         setPassword(password);
     }
 
+    public LoginNode() {
+        setUsername("");
+        setPassword("");
+    }
+
+
+
     public String getPassword() {
         return password;
     }

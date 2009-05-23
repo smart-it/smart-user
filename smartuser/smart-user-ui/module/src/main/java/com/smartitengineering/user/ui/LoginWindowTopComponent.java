@@ -4,9 +4,12 @@
  */
 package com.smartitengineering.user.ui;
 
+import com.smartitengineering.user.rest.client.exception.SmartException;
+import com.smartitengineering.user.rest.client.login.LoginService;
 import java.awt.Image;
 import java.io.Serializable;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.openide.util.NbBundle;
 import org.openide.util.Utilities;
 import org.openide.windows.TopComponent;
@@ -22,7 +25,6 @@ final class LoginWindowTopComponent extends TopComponent {
     /** path to the icon used by the component and its open action */
     static final String ICON_PATH = "com/smartitengineering/user/ui/login.gif";
     private static final String PREFERRED_ID = "LoginWindowTopComponent";
-    LoginNode loginNode;
 
     private LoginWindowTopComponent() {
         initComponents();
@@ -126,12 +128,27 @@ final class LoginWindowTopComponent extends TopComponent {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        // TODO add your handling code here:
-        System.out.print("I m ready to lookup");
-        loginNode = new LoginNode("modhu", "modhupassword");
-        //Lookup simple = Lookups.singleton(loginNode);
-        CentralLookup.getDefault().setLoginNode(loginNode);
-        System.out.print("I m published");
+        LoginNode loginNode = new LoginNode();
+        char[] password;
+        loginNode.setUsername(usernameTextField.getText());
+        password = passwordField.getPassword();
+        String passwordString = new String(password);
+        loginNode.setPassword(passwordString);
+        Logger.getLogger(LoginWindowTopComponent.PREFERRED_ID).warning("username " + loginNode.getUsername());
+        Logger.getLogger(LoginWindowTopComponent.PREFERRED_ID).warning("password " + loginNode.getPassword());
+        try {
+            LoginService.login(loginNode.getUsername(), loginNode.getPassword().toString());
+            CentralLookup.getDefault().setLoginNode(loginNode);
+            JOptionPane.showMessageDialog(this, "You have successfully logged in....");            
+
+        } catch (SmartException e) {
+            if (e.getStatus() == 401) {
+                JOptionPane.showMessageDialog(this, "Invalid username or password");
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "You are not connected with the server or the server is not valid");
+        }
+
         Logger.getLogger(this.PREFERRED_ID).warning("published");
 }//GEN-LAST:event_loginButtonActionPerformed
 
