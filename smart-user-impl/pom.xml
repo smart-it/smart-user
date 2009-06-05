@@ -18,7 +18,7 @@
             <version>${junit-version}</version>
             <scope>test</scope>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>com.smartitengineering.smart-user</groupId>
             <artifactId>smart-user-api</artifactId>
             <version>${project.version}</version>
@@ -55,6 +55,10 @@
                     <groupId>cglib</groupId>
                     <artifactId>cglib</artifactId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>commons-collections</artifactId>
+                    <groupId>commons-collections</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -87,16 +91,26 @@
             <artifactId>commons-lang</artifactId>
             <version>${commons-lang-version}</version>
         </dependency>
-        <dependency>            
+        <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>${aspectj-weaver-version}</version>
-            <scope>compile</scope>            
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.smartitengineering.smart-util</groupId>
             <artifactId>smart-spring-util</artifactId>
             <version>${smart-util-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.opensymphony.quartz</groupId>
+            <artifactId>quartz</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2</version>
         </dependency>
     </dependencies>
     <build>
