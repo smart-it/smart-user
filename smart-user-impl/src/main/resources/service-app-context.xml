@@ -198,9 +198,19 @@
         <property name="target" ref="userServiceTarget" />
         <property name="interceptorNames" value="userDeleteAdvisor" />
     </bean>
+    <bean id="initialRoleFactory" class="com.smartitengineering.user.server.InitialRoleFactory">
+        <property name="privilegeService">
+            <ref local="userService"/>
+        </property>
+    </bean>
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="initialRoleFactory"/>
+        <property name="targetMethod" value="intialPrivileges" />
+    </bean>
     <bean id="beanRegistrar" class="com.smartitengineering.util.spring.BeanFactoryRegistrar">
         <property name="beanFactoryContextName">
             <value>userServiceContext</value>
         </property>
     </bean>
+    
 </beans>
