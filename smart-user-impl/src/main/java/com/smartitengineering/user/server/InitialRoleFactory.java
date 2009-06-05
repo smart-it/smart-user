@@ -3,7 +3,7 @@ package com.smartitengineering.user.server;
 
 import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.service.PrivilegeService;
-import java.io.File;
+import java.io.InputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
@@ -27,10 +27,11 @@ public class InitialRoleFactory {
     public void intialPrivileges() {
         
         try {
-            File file = new File("Privileges.xml");
+            InputStream privilegesStream = getClass().getClassLoader()
+                .getResourceAsStream("Privileges.xml");
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
-            Document doc = db.parse(file);
+            Document doc = db.parse(privilegesStream);
             doc.getDocumentElement().normalize();
             System.out.println("Root element " + doc.getDocumentElement().getNodeName());
             NodeList nodeLst = doc.getElementsByTagName("Privilege");
