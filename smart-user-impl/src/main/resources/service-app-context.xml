@@ -198,6 +198,9 @@
         <property name="target" ref="userServiceTarget" />
         <property name="interceptorNames" value="userDeleteAdvisor" />
     </bean>
+    <!-- **************************************************************** -->
+    <!-- ******************** Initialize Roles ************************** -->
+    <!-- **************************************************************** -->
     <bean id="initialRoleFactory" class="com.smartitengineering.user.server.InitialRoleFactory">
         <property name="privilegeService">
             <ref local="userService"/>
@@ -207,6 +210,22 @@
         <property name="targetObject" ref="initialRoleFactory"/>
         <property name="targetMethod" value="intialPrivileges" />
     </bean>
+    <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="jobDetail" />
+        <property name="startDelay" value="500" />
+        <property name="repeatInterval" value="500" />
+        <property name="repeatCount" value="0" />
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="simpleTrigger" />
+            </list>
+        </property>
+    </bean>
+    <!-- **************************************************************** -->
+    <!-- ********************* Smart Util Reg *************************** -->
+    <!-- **************************************************************** -->
     <bean id="beanRegistrar" class="com.smartitengineering.util.spring.BeanFactoryRegistrar">
         <property name="beanFactoryContextName">
             <value>userServiceContext</value>
