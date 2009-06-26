@@ -81,7 +81,8 @@
         <module>smart-user-rest-client</module>
         <module>smart-user-ui</module>
         <module>smart-user-server</module>
-    </modules>
+    <module>smart-user-security</module>
+  </modules>
 
     <properties>
         <junit-version>3.8.1</junit-version>
