@@ -100,5 +100,6 @@
         <mysql-version>5.1.6</mysql-version>
         <commons-lang-version>2.3</commons-lang-version>
         <aspectj-weaver-version>1.6.2</aspectj-weaver-version>
+        <spring-security-version>2.0.4</spring-security-version>
     </properties>
 </project>
