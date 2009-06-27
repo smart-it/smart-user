@@ -14,6 +14,11 @@
     <dependencies>
         <dependency>
             <groupId>com.smartitengineering.smart-user</groupId>
+            <artifactId>smart-user-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.smartitengineering.smart-user</groupId>
             <artifactId>smart-user-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -29,4 +34,16 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <inherited>true</inherited>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
