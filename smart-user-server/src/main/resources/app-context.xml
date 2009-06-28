@@ -16,5 +16,31 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
     <import resource="service-app-context.xml" />
-    <context:component-scan base-package="com.smartitengineering.user.ws.resources"/>        
+    <context:component-scan base-package="com.smartitengineering.user.ws.resources"/>
+
+    <!-- **************************************************************** -->
+    <!-- ******************** Initialize Roles ************************** -->
+    <!-- **************************************************************** -->
+    <bean id="initialRoleFactory" class="com.smartitengineering.user.server.InitialRoleFactory">
+        <property name="privilegeService">
+            <ref local="userService"/>
+        </property>
+    </bean>
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="initialRoleFactory"/>
+        <property name="targetMethod" value="intialPrivileges" />
+    </bean>
+    <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="jobDetail" />
+        <property name="startDelay" value="500" />
+        <property name="repeatInterval" value="500" />
+        <property name="repeatCount" value="0" />
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="simpleTrigger" />
+            </list>
+        </property>
+    </bean>
 </beans>

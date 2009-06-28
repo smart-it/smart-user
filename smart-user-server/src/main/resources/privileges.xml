@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : privileges.xml
+    Created on : May 26, 2009, 7:53 PM
+    Author     : modhu7
+    Description:
+        Purpose of the document follows.
+-->
+
+<privileges>
+    <privilege>
+        <name>user-${oid}</name>
+        <displayName>Object Operation Privelege</displayName>
+        <shortDescription>User can create, update and delete an object if user posseses this privilege</shortDescription>
+    </privilege>
+</privileges>
