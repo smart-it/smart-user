@@ -1,6 +1,5 @@
 package com.smartitengineering.user.parser;
 
-
 import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.service.PrivilegeService;
 import java.io.InputStream;
@@ -13,7 +12,7 @@ import org.w3c.dom.NodeList;
 
 public class InitialRoleFactory {
 
-   private PrivilegeService privilegeService;   
+    private PrivilegeService privilegeService;
 
     public PrivilegeService getPrivilegeService() {
         return privilegeService;
@@ -22,13 +21,11 @@ public class InitialRoleFactory {
     public void setPrivilegeService(PrivilegeService privilegeService) {
         this.privilegeService = privilegeService;
     }
-   
 
     public void intialPrivileges() {
-        
+
         try {
-            InputStream privilegesStream = getClass().getClassLoader()
-                .getResourceAsStream("privileges.xml");
+            InputStream privilegesStream = getClass().getClassLoader().getResourceAsStream("privileges.xml");
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse(privilegesStream);
@@ -36,7 +33,7 @@ public class InitialRoleFactory {
             System.out.println("Root element " + doc.getDocumentElement().getNodeName());
             NodeList nodeLst = doc.getElementsByTagName("privilege");
             System.out.println("Information of all Priveleges");
-            Privilege privilege = new Privilege();            
+            Privilege privilege = new Privilege();
 
             for (int s = 0; s < nodeLst.getLength(); s++) {
 
