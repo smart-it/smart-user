@@ -16,14 +16,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
     <import resource="service-app-context.xml" />
+    <import resource="app-context-datasource.xml" />
     <context:component-scan base-package="com.smartitengineering.user.ws.resources"/>
 
     <!-- **************************************************************** -->
     <!-- ******************** Initialize Roles ************************** -->
     <!-- **************************************************************** -->
-    <bean id="initialRoleFactory" class="com.smartitengineering.user.server.InitialRoleFactory">
+    <bean id="initialRoleFactory" class="com.smartitengineering.user.parser.InitialRoleFactory">
         <property name="privilegeService">
-            <ref local="userService"/>
+            <ref bean="userService"/>
         </property>
     </bean>
     <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
