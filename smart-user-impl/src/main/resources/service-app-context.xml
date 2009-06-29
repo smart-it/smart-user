@@ -3,88 +3,11 @@
 
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "spring-beans.dtd"  >
 <beans>
-    <!-- 
-        Please make sure the following properties are availabe to the context
-        com.smartitengineering.dao.connection.driver_class
-        com.smartitengineering.dao.connection.url
-        com.smartitengineering.dao.connection.username
-        com.smartitengineering.dao.connection.password
-        com.smartitengineering.dao.dialect
-        com.smartitengineering.dao.show_sql
-    -->
-    <bean id="propertyConfigurer" class="com.smartitengineering.util.spring.PropertiesLocatorConfigurer">
-        <property name="smartLocations">
-            <list>
-                <value>db-config.properties</value>
-            </list>
-        </property>
-        <property name="properties" >
-            <props>
-                <prop key="hibernate.connection.driver_class">${com.smartitengineering.dao.connection.driver_class}
-                </prop>
-                <prop key="hibernate.connection.url">${com.smartitengineering.dao.connection.url}
-                </prop>
-                <prop key="hibernate.connection.username">${com.smartitengineering.dao.connection.username}
-                </prop>
-                <prop key="hibernate.connection.password">${com.smartitengineering.dao.connection.password}
-                </prop>
-                <prop key="hibernate.dialect">${com.smartitengineering.dao.dialect}
-                </prop>
-                <prop key="hibernate.show_sql">${com.smartitengineering.dao.show_sql}
-                </prop>
-            </props>
-        </property>
-    </bean>
-
-    <!-- Local C3P0 DataSource that works in any environment -->
-    <!-- (Both DataSource implementations have a "close" method to be called on shutdown) -->
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-        <property name="driverClass">
-            <value>${hibernate.connection.driver_class}</value>
-        </property>
-        <property name="jdbcUrl">
-            <value>${hibernate.connection.url}</value>
-        </property>
-        <property name="user">
-            <value>${hibernate.connection.username}</value>
-        </property>
-        <property name="password">
-            <value>${hibernate.connection.password}</value>
-        </property>
-        <property name="acquireIncrement">
-            <value>5</value>
-        </property>
-        <property name="checkoutTimeout">
-            <value>5000</value>
-        </property>
-        <property name="initialPoolSize">
-            <value>5</value>
-        </property>
-        <property name="maxIdleTime">
-            <value>120</value>
-        </property>
-        <!-- Will never expire (seconds)-->
-        <property name="maxPoolSize">
-            <value>30</value>
-        </property>
-        <property name="maxStatements">
-            <value>500</value>
-        </property>
-        <property name="maxStatementsPerConnection">
-            <value>12</value>
-        </property>
-        <property name="minPoolSize">
-            <value>3</value>
-        </property>
-        <property name="numHelperThreads">
-            <value>4</value>
-        </property>
-    </bean>
     
     <!-- Hibernate SessionFactory -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="dataSource">
-            <ref local="dataSource" />
+            <ref bean="dataSource" />
         </property>
         <property name="mappingResources">
             <list>
@@ -197,32 +120,7 @@
     <bean id="userService" class="org.springframework.aop.framework.ProxyFactoryBean">
         <property name="target" ref="userServiceTarget" />
         <property name="interceptorNames" value="userDeleteAdvisor" />
-    </bean>
-    <!-- **************************************************************** -->
-    <!-- ******************** Initialize Roles ************************** -->
-    <!-- **************************************************************** -->
-    <bean id="initialRoleFactory" class="com.smartitengineering.user.server.InitialRoleFactory">
-        <property name="privilegeService">
-            <ref local="userService"/>
-        </property>
-    </bean>
-    <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="initialRoleFactory"/>
-        <property name="targetMethod" value="intialPrivileges" />
-    </bean>
-    <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-        <property name="jobDetail" ref="jobDetail" />
-        <property name="startDelay" value="500" />
-        <property name="repeatInterval" value="500" />
-        <property name="repeatCount" value="0" />
-    </bean>
-    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <property name="triggers">
-            <list>
-                <ref bean="simpleTrigger" />
-            </list>
-        </property>
-    </bean>
+    </bean>    
     <!-- **************************************************************** -->
     <!-- ********************* Smart Util Reg *************************** -->
     <!-- **************************************************************** -->
