@@ -112,8 +112,8 @@ public class ClientTest extends TestCase {
             glassfish = new GlassFish(getBaseURI().getPort());
             // Deploy Glassfish referencing the web.xml
             ScatteredWar war = new ScatteredWar(getBaseURI().getRawPath(),
-                    new File("./src/test/webapp"),
-                    new File("./src/test/webapp/WEB-INF/web.xml"),
+                    new File("../smart-user-server/src/main/webapp"),
+                    new File("../smart-user-server/src/main/webapp/WEB-INF/web.xml"),
                     Collections.singleton(new File("target/classes").toURI().
                     toURL()));
             System.out.println(war.name);

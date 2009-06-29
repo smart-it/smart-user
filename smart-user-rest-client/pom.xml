@@ -105,7 +105,7 @@
         <dependency>
             <groupId>com.sun.jersey.contribs</groupId>
             <artifactId>jersey-spring</artifactId>
-            <version>${jersey-version}</version>            
+            <version>${jersey-version}</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -124,9 +124,19 @@
             <artifactId>spring-security-core</artifactId>
             <version>2.0.4</version>
             <scope>test</scope>
-        </dependency>
+        </dependency>        
     </dependencies>
-    <build>
+    <build>        
+        <testResources>            
+            <testResource>
+                <directory>../smart-user-server/src/main/resources</directory>
+                <filtering>false</filtering>
+            </testResource>            
+            <testResource>
+                <directory>./src/test/resources</directory>
+                <filtering>false</filtering>
+            </testResource>
+        </testResources>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
