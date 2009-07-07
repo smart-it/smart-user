@@ -26,10 +26,16 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
         <property name="privilegeService">
             <ref bean="userService"/>
         </property>
+        <property name="roleService">
+            <ref bean="userService"/>
+        </property>
+        <property name="userPersonService">
+            <ref bean="userPersonService"/>
+        </property>
     </bean>
     <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="initialRoleFactory"/>
-        <property name="targetMethod" value="intialPrivileges" />
+        <property name="targetMethod" value="initializeInformation" />
     </bean>
     <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
         <property name="jobDetail" ref="jobDetail" />
