@@ -50,13 +50,12 @@ public class PersonServiceImpl implements PersonService {
         this.personWriteDao = personWriteDao;
     }
 
-    public void create(Person person) {
+    public void create(Person person) {        
         validatePerson(person);
         try {
             getPersonWriteDao().save(person);
         } catch (ConstraintViolationException e) {
-            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                    name() + "-" + UniqueConstrainedField.OTHER;
+            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
             throw new RuntimeException(message, e);
         } catch (StaleStateException e) {
             String message =
@@ -71,8 +70,7 @@ public class PersonServiceImpl implements PersonService {
         try {
             getPersonWriteDao().update(person);
         } catch (ConstraintViolationException e) {
-            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                    name() + "-" + UniqueConstrainedField.OTHER;
+            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
             throw new RuntimeException(message, e);
         } catch (StaleStateException e) {
             String message =
@@ -86,8 +84,7 @@ public class PersonServiceImpl implements PersonService {
         try {
             getPersonWriteDao().delete(person);
         } catch (RuntimeException e) {
-            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                    name() + "-" + UniqueConstrainedField.PERSON;
+            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.PERSON;
             throw new RuntimeException(message, e);
         }
     }
@@ -172,8 +169,7 @@ public class PersonServiceImpl implements PersonService {
 
     public Person getPersonByEmail(String email) {
         Person person = new Person();
-        person = getPersonReadDao().getSingle(QueryParameterFactory.
-                getEqualPropertyParam("primaryEmail", email));
+        person = getPersonReadDao().getSingle(QueryParameterFactory.getEqualPropertyParam("primaryEmail", email));
         return person;
     }
 
@@ -192,111 +188,104 @@ public class PersonServiceImpl implements PersonService {
             Integer count = (Integer) getPersonReadDao().getOther(QueryParameterFactory.getElementCountParam(
                     "primaryEmail"), QueryParameterFactory.getConjunctionParam(
                     QueryParameterFactory.getNotEqualPropertyParam("id",
-                    person.getId()), QueryParameterFactory.
-                    getStringLikePropertyParam(
+                    person.getId()), QueryParameterFactory.getStringLikePropertyParam(
                     "primaryEmail", person.getPrimaryEmail(), MatchMode.EXACT)));
             if (count.intValue() > 0) {
-                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                        name() + "-" +
+                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
                         UniqueConstrainedField.PERSON_EMAIL.name());
             }
             count = (Integer) getBasicIdentityReadDao().getOther(QueryParameterFactory.getElementCountParam(
                     "nationalID"), QueryParameterFactory.getConjunctionParam(
                     QueryParameterFactory.getNotEqualPropertyParam("id",
-                    person.getSelf().getId()), QueryParameterFactory.
-                    getStringLikePropertyParam(
+                    person.getSelf().getId()), QueryParameterFactory.getStringLikePropertyParam(
                     "nationalID", person.getSelf().getNationalID(),
                     MatchMode.EXACT)));
             if (count.intValue() > 0) {
-                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                        name() + "-" +
+                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
                         UniqueConstrainedField.PERSON_NATIONAL_ID.name());
             }
-            count = (Integer) getBasicIdentityReadDao().getOther(QueryParameterFactory.getElementCountParam(
-                    "nationalID"), QueryParameterFactory.getConjunctionParam(
-                    QueryParameterFactory.getNotEqualPropertyParam("id",
-                    person.getSpouse().getId()), QueryParameterFactory.
-                    getStringLikePropertyParam(
-                    "nationalID", person.getSpouse().getNationalID(),
-                    MatchMode.EXACT)));
-            if (count.intValue() > 0) {
-                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                        name() + "-" +
-                        UniqueConstrainedField.PERSON_SPOUSE_NATIONAL_ID.name());
+            if (person.getSpouse() != null) {
+                count = (Integer) getBasicIdentityReadDao().getOther(QueryParameterFactory.getElementCountParam(
+                        "nationalID"), QueryParameterFactory.getConjunctionParam(
+                        QueryParameterFactory.getNotEqualPropertyParam("id",
+                        person.getSpouse().getId()), QueryParameterFactory.getStringLikePropertyParam(
+                        "nationalID", person.getSpouse().getNationalID(),
+                        MatchMode.EXACT)));
+                if (count.intValue() > 0) {
+                    throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
+                            UniqueConstrainedField.PERSON_SPOUSE_NATIONAL_ID.name());
+                }
             }
-            count = (Integer) getBasicIdentityReadDao().getOther(QueryParameterFactory.getElementCountParam(
-                    "nationalID"), QueryParameterFactory.getConjunctionParam(
-                    QueryParameterFactory.getNotEqualPropertyParam("id",
-                    person.getFather().getId()), QueryParameterFactory.
-                    getStringLikePropertyParam(
-                    "nationalID", person.getFather().getNationalID(),
-                    MatchMode.EXACT)));
-            if (count.intValue() > 0) {
-                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                        name() + "-" +
-                        UniqueConstrainedField.PERSON_FATHER_NATIONAL_ID.name());
+            if (person.getFather() != null) {
+                count = (Integer) getBasicIdentityReadDao().getOther(QueryParameterFactory.getElementCountParam(
+                        "nationalID"), QueryParameterFactory.getConjunctionParam(
+                        QueryParameterFactory.getNotEqualPropertyParam("id",
+                        person.getFather().getId()), QueryParameterFactory.getStringLikePropertyParam(
+                        "nationalID", person.getFather().getNationalID(),
+                        MatchMode.EXACT)));
+                if (count.intValue() > 0) {
+                    throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
+                            UniqueConstrainedField.PERSON_FATHER_NATIONAL_ID.name());
+                }
+            } else {
             }
-            count = (Integer) getBasicIdentityReadDao().getOther(QueryParameterFactory.getElementCountParam(
-                    "nationalID"), QueryParameterFactory.getConjunctionParam(
-                    QueryParameterFactory.getNotEqualPropertyParam("id",
-                    person.getMother().getId()), QueryParameterFactory.
-                    getStringLikePropertyParam(
-                    "nationalID", person.getMother().getNationalID(),
-                    MatchMode.EXACT)));
-            if (count.intValue() > 0) {
-                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                        name() + "-" +
-                        UniqueConstrainedField.PERSON_MOTHER_NATIONAL_ID.name());
+            if (person.getMother() != null) {
+                count = (Integer) getBasicIdentityReadDao().getOther(QueryParameterFactory.getElementCountParam(
+                        "nationalID"), QueryParameterFactory.getConjunctionParam(
+                        QueryParameterFactory.getNotEqualPropertyParam("id",
+                        person.getMother().getId()), QueryParameterFactory.getStringLikePropertyParam(
+                        "nationalID", person.getMother().getNationalID(),
+                        MatchMode.EXACT)));
+                if (count.intValue() > 0) {
+                    throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
+                            UniqueConstrainedField.PERSON_MOTHER_NATIONAL_ID.name());
+                }
             }
         } else {
             Integer count = (Integer) getPersonReadDao().getOther(QueryParameterFactory.getElementCountParam(
-                    "primaryEmail"), QueryParameterFactory.
-                    getStringLikePropertyParam(
+                    "primaryEmail"), QueryParameterFactory.getStringLikePropertyParam(
                     "primaryEmail", person.getPrimaryEmail(), MatchMode.EXACT));
             if (count.intValue() > 0) {
-                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                        name() + "-" +
+                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
                         UniqueConstrainedField.PERSON_EMAIL.name());
             }
             count = (Integer) getBasicIdentityReadDao().getOther(QueryParameterFactory.getElementCountParam(
-                    "nationalID"), QueryParameterFactory.
-                    getStringLikePropertyParam(
+                    "nationalID"), QueryParameterFactory.getStringLikePropertyParam(
                     "nationalID", person.getSelf().getNationalID(),
                     MatchMode.EXACT));
             if (count.intValue() > 0) {
-                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                        name() + "-" +
+                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
                         UniqueConstrainedField.PERSON_NATIONAL_ID.name());
             }
-            count = (Integer) getBasicIdentityReadDao().getOther(QueryParameterFactory.getElementCountParam(
-                    "nationalID"), QueryParameterFactory.
-                    getStringLikePropertyParam(
-                    "nationalID", person.getSpouse().getNationalID(),
-                    MatchMode.EXACT));
-            if (count.intValue() > 0) {
-                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                        name() + "-" +
-                        UniqueConstrainedField.PERSON_SPOUSE_NATIONAL_ID.name());
+            if (person.getSpouse() != null) {
+                count = (Integer) getBasicIdentityReadDao().getOther(QueryParameterFactory.getElementCountParam(
+                        "nationalID"), QueryParameterFactory.getStringLikePropertyParam(
+                        "nationalID", person.getSpouse().getNationalID(),
+                        MatchMode.EXACT));
+                if (count.intValue() > 0) {
+                    throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
+                            UniqueConstrainedField.PERSON_SPOUSE_NATIONAL_ID.name());
+                }
             }
-            count = (Integer) getBasicIdentityReadDao().getOther(QueryParameterFactory.getElementCountParam(
-                    "nationalID"), QueryParameterFactory.
-                    getStringLikePropertyParam(
-                    "nationalID", person.getFather().getNationalID(),
-                    MatchMode.EXACT));
-            if (count.intValue() > 0) {
-                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                        name() + "-" +
-                        UniqueConstrainedField.PERSON_FATHER_NATIONAL_ID.name());
+            if (person.getFather() != null) {
+                count = (Integer) getBasicIdentityReadDao().getOther(QueryParameterFactory.getElementCountParam(
+                        "nationalID"), QueryParameterFactory.getStringLikePropertyParam(
+                        "nationalID", person.getFather().getNationalID(),
+                        MatchMode.EXACT));
+                if (count.intValue() > 0) {
+                    throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
+                            UniqueConstrainedField.PERSON_FATHER_NATIONAL_ID.name());
+                }
             }
-            count = (Integer) getBasicIdentityReadDao().getOther(QueryParameterFactory.getElementCountParam(
-                    "nationalID"), QueryParameterFactory.
-                    getStringLikePropertyParam(
-                    "nationalID", person.getMother().getNationalID(),
-                    MatchMode.EXACT));
-            if (count.intValue() > 0) {
-                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                        name() + "-" +
-                        UniqueConstrainedField.PERSON_MOTHER_NATIONAL_ID.name());
+            if (person.getMother() != null) {
+                count = (Integer) getBasicIdentityReadDao().getOther(QueryParameterFactory.getElementCountParam(
+                        "nationalID"), QueryParameterFactory.getStringLikePropertyParam(
+                        "nationalID", person.getMother().getNationalID(),
+                        MatchMode.EXACT));
+                if (count.intValue() > 0) {
+                    throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
+                            UniqueConstrainedField.PERSON_MOTHER_NATIONAL_ID.name());
+                }
             }
         }
     }

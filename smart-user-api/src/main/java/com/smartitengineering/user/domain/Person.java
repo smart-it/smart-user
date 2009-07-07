@@ -68,10 +68,7 @@ public class Person extends AbstractPersistentDTO<Person> {
         this.cellPhoneNumber = cellPhoneNumber;
     }
 
-    public BasicIdentity getFather() {
-        if (father == null) {
-            father = new BasicIdentity();
-        }
+    public BasicIdentity getFather() {        
         return father;
     }
 
@@ -97,9 +94,6 @@ public class Person extends AbstractPersistentDTO<Person> {
     }
 
     public BasicIdentity getMother() {
-        if (mother == null) {
-            mother = new BasicIdentity();
-        }
         return mother;
     }
 
@@ -153,9 +147,6 @@ public class Person extends AbstractPersistentDTO<Person> {
     }
 
     public BasicIdentity getSpouse() {
-        if (spouse == null) {
-            spouse = new BasicIdentity();
-        }
         return spouse;
     }
 
