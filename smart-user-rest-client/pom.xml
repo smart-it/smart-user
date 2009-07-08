@@ -124,14 +124,24 @@
             <artifactId>spring-security-core</artifactId>
             <version>2.0.4</version>
             <scope>test</scope>
-        </dependency>        
+        </dependency>
+        <dependency>
+            <groupId>com.smartitengineering.smart-user</groupId>
+            <artifactId>smart-user-security</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-    <build>        
-        <testResources>            
+    <build>
+        <testResources>
+            <testResource>
+                <directory>../smart-user-security/src/main/resources</directory>
+                <filtering>false</filtering>
+            </testResource>
             <testResource>
                 <directory>../smart-user-server/src/main/resources</directory>
                 <filtering>false</filtering>
-            </testResource>            
+            </testResource>
             <testResource>
                 <directory>./src/test/resources</directory>
                 <filtering>false</filtering>
