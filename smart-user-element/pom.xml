@@ -24,14 +24,15 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-    <build>        
+    <build>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin-version}</version>
                 <inherited>true</inherited>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>${java-source-version}</source>
+                    <target>${java-target-version}</target>
                 </configuration>
             </plugin>
         </plugins>

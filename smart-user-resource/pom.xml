@@ -39,13 +39,13 @@
             <version>${javax-version}</version>
         </dependency>
     </dependencies>
-    <build>        
+    <build>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <inherited>true</inherited>
                 <configuration>
-                    <source>1.5</source>
+                    <source>${java-source-version}</source>
                     <target>1.5</target>
                 </configuration>
             </plugin>
