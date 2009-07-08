@@ -160,35 +160,31 @@ public class ClientTest extends TestCase {
 
         Set<User> users = new HashSet<User>(userService.getAllUser());
 
-        for (User user : users) {
-            userService.delete(user);
-        }
-//        Set<User> checkUsers = new HashSet<User>(userService.getAllUser());        
-//        assertEquals(checkUsers.size(), 0);
+        //Delete all user except superadmin
 
+        for (User user : users) {
+            if(!user.getUsername().equals("superadmin"))
+                userService.delete(user);
+        }
+
+        //Delete all person Super Administrator
         Set<Person> persons = new HashSet<Person>(personService.getAllPerson());
         for (Person person : persons) {
-            personService.delete(person);
+            if(person.getSelf().getName().getFirstName().equals("Super"))
+                personService.delete(person);
         }
-//        Set<Person> checkPersons = new HashSet<Person>(personService.getAllPerson());
-//        assertEquals(checkPersons.size(), 0);
 
-        Set<Role> roles = new HashSet<Role>(roleService.getRolesByName("R"));
-        for (Role role : roles) {
+        //Delete all test created roles
+        Set<Role> roles = new HashSet<Role>(roleService.getRolesByName("Role-"));
+        for (Role role : roles) {            
             roleService.delete(role);
         }
-//        Set<Role> checkRoles = new HashSet<Role>(roleService.getRolesByName("R"));
-//        assertEquals(checkRoles.size(), 0);
 
 
         Set<Privilege> privileges = new HashSet<Privilege>(privilegeService.getPrivilegesByName("P"));
         for (Privilege privilege : privileges) {
             privilegeService.delete(privilege);
         }
-//        Set<Privilege> checkPrivileges = new HashSet<Privilege>(privilegeService.getPrivilegesByName("P"));
-//        assertEquals(checkPrivileges.size(), 0);
-
-
     }
 
     private void doTestGetUserPersonByUserName() {
