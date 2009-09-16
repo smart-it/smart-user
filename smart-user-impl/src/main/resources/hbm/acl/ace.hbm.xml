@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class dynamic-insert="false" dynamic-update="false" name="com.smartitengineering.user.security.domain.SmartAce" table="ace">
+    <id column="id" name="id" type="java.lang.Integer">
+      <generator class="increment">
+            </generator>
+    </id>
+    <version column="version" name="version"/>
+    <many-to-one cascade="none" column="sid" lazy="false" name="sid"/>
+    <many-to-one cascade="all" column="acl" lazy="false" name="acl"/>
+    
+    <property column="permission" length="255" name="permissionMask" type="java.lang.Integer"/>
+    <property column="is_granting" length="255" name="granting" type="java.lang.Boolean"/>
+  </class>
+</hibernate-mapping>
