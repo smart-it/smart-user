@@ -11,12 +11,12 @@
         </property>
         <property name="mappingResources">
             <list>
-                <value>hbm/BasicIdentity.hbm.xml</value>
-                <value>hbm/Privilege.hbm.xml</value>
-                <value>hbm/Role.hbm.xml</value>
-                <value>hbm/User.hbm.xml</value>
-                <value>hbm/UserPerson.hbm.xml</value>
-                <value>hbm/Person.hbm.xml</value>
+                <value>hbm/domain/BasicIdentity.hbm.xml</value>
+                <value>hbm/domain/Privilege.hbm.xml</value>
+                <value>hbm/domain/Role.hbm.xml</value>
+                <value>hbm/domain/User.hbm.xml</value>
+                <value>hbm/domain/UserPerson.hbm.xml</value>
+                <value>hbm/domain/Person.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">

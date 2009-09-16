@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class dynamic-insert="false" dynamic-update="false" name="com.smartitengineering.user.domain.UserPerson" table="userperson">
+    <id column="id" name="id" type="java.lang.Integer">
+      <generator class="increment">
+            </generator>
+    </id>
+    <version column="version" name="version"/>
+    <many-to-one cascade="save-update" column="user_id" lazy="false" name="user" unique="true"/>
+    <many-to-one cascade="save-update" column="person_id" lazy="false" name="person" unique="true"/>
+  </class>
+</hibernate-mapping>
