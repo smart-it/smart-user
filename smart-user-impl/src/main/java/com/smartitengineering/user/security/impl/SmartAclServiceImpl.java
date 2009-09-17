@@ -11,9 +11,11 @@ import com.smartitengineering.dao.common.queryparam.MatchMode;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
+import com.smartitengineering.user.filter.SmartAceFilter;
 import com.smartitengineering.user.filter.SmartAclFilter;
 import com.smartitengineering.user.security.domain.SmartAce;
 import com.smartitengineering.user.security.domain.SmartAcl;
+import com.smartitengineering.user.security.service.SmartAceService;
 import com.smartitengineering.user.security.service.SmartAclService;
 import com.smartitengineering.user.service.ExceptionMessage;
 import java.util.ArrayList;
@@ -32,6 +34,17 @@ public class SmartAclServiceImpl implements SmartAclService {
 
     private CommonReadDao<SmartAcl> smartAclReadDao;
     private CommonWriteDao<SmartAcl> smartAclWriteDao;
+    private SmartAceService smartAceService;
+
+    public SmartAceService getSmartAceService() {
+        return smartAceService;
+    }
+
+    public void setSmartAceService(SmartAceService smartAceService) {
+        this.smartAceService = smartAceService;
+    }
+
+
 
     public CommonReadDao<SmartAcl> getSmartAclReadDao() {
         return smartAclReadDao;
@@ -119,8 +132,10 @@ public class SmartAclServiceImpl implements SmartAclService {
         return aces;
     }
 
-    public Collection<SmartAce> getAceEntries() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Collection<SmartAce> getAceEntries(SmartAcl acl) {
+        SmartAceFilter filter = new SmartAceFilter();
+        filter.setObjectIdentity(acl.getObjectIdentity());
+        return smartAceService.search(filter);
     }
 
     public void validate(SmartAcl acl) {
