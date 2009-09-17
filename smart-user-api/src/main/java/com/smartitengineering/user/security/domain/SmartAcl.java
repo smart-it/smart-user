@@ -54,7 +54,10 @@ public class SmartAcl extends AbstractPersistentDTO{
     }
 
     public boolean isValid() {
-        return true;
+        if(objectIdentity.isValid()){
+            return true;
+        }else
+            return false;
     }
-
+    
 }

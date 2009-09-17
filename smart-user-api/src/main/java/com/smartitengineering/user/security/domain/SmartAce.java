@@ -52,7 +52,7 @@ public class SmartAce extends AbstractPersistentDTO{
     }
 
     public boolean isValid() {
-        if(sid.isValid() && oid.isValid())
+        if(sid.isValid() && acl.isValid())
             return true;
         else
             return false;

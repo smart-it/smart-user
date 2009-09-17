@@ -24,7 +24,7 @@ public interface SmartAclService {
 
     public Collection<SmartAcl> search(SmartAclFilter filter);
 
-    public Collection<SmartAce> getAceEntries();
+    public Collection<SmartAce> getAceEntries(SmartAcl acl);
 
     public void validate(SmartAcl acl);
 
