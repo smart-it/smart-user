@@ -19,5 +19,8 @@ public enum UniqueConstrainedField {
     USER_USERNAME,
     ROLE_NAME,
     PRIVILEGE_NAME,
+    OBJECT_IDENTITY,
+    ACL,
+    ACE,
     OTHER
 }
