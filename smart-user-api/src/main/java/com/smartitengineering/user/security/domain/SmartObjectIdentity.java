@@ -14,12 +14,12 @@ import org.apache.commons.lang.StringUtils;
 public class SmartObjectIdentity extends AbstractPersistentDTO {
 
     private String oid;
-    private String className;
+    private Class classType;
     private Integer objectIdentityId;
 
     public String getOid() {
-        if (className != null && objectIdentityId != null) {
-            return className +"_" + objectIdentityId.toString();
+        if (classType != null && objectIdentityId != null) {
+            return classType.getName() +"_" + objectIdentityId.toString();
         }
         return "";
     }
@@ -28,12 +28,12 @@ public class SmartObjectIdentity extends AbstractPersistentDTO {
         this.oid = oid;
     }
 
-    public String getClassName() {
-        return className;
+    public Class getClassType() {
+        return classType;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public void setClassType(Class classType) {
+        this.classType = classType;
     }
 
     public Integer getObjectIdentityId() {
@@ -45,7 +45,7 @@ public class SmartObjectIdentity extends AbstractPersistentDTO {
     }
 
     public boolean isValid() {
-        if (StringUtils.isEmpty(className) || objectIdentityId == null) {
+        if (StringUtils.isEmpty(classType.getName()) || objectIdentityId == null) {
             return false;
         } else {
             return true;
