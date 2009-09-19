@@ -7,8 +7,8 @@
             </generator>
     </id>
     <version column="version" name="version"/>
-    <many-to-one cascade="none" column="sid" lazy="false" name="sid"/>
-    <many-to-one cascade="all" column="acl" lazy="false" name="acl"/>
+    <many-to-one cascade="none" column="sid" lazy="false" name="sid" unique-key="oid_sid_key"/>
+    <many-to-one cascade="all" column="acl" lazy="false" name="acl" unique-key="oid_sid_key"/>
     
     <property column="permission" length="255" name="permissionMask" type="java.lang.Integer"/>
     <property column="is_granting" length="255" name="granting" type="java.lang.Boolean"/>
