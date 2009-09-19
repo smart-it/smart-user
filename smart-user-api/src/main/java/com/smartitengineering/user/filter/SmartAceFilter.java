@@ -16,10 +16,16 @@ public class SmartAceFilter {
     private String sidUsername;
 
     public SmartObjectIdentity getObjectIdentity() {
+        if(objectIdentity==null){
+            return new SmartObjectIdentity();
+        }
         return objectIdentity;
     }
 
-    public void setObjectidentity(SmartObjectIdentity oid) {
+    public void setObjectIdentity(SmartObjectIdentity oid) {
+        if(objectIdentity==null){
+            return;
+        }
         this.objectIdentity = oid;
     }
 

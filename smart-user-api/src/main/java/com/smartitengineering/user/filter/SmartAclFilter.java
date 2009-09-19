@@ -17,19 +17,31 @@ public class SmartAclFilter {
     private String ownerUsername;
 
     public SmartObjectIdentity getObjectIdentity() {
+        if(objectIdentity==null){
+            return new SmartObjectIdentity();
+        }
         return objectIdentity;
     }
 
     public void setObjectIdentity(SmartObjectIdentity objectIdentity) {
+        if(objectIdentity==null){
+            return;
+        }
         this.objectIdentity = objectIdentity;
     }
 
 
     public String getOwnerUsername() {
+        if(ownerUsername==null){
+            return "";
+        }
         return ownerUsername;
     }
 
     public void setOwnerUsername(String ownerUsername) {
+        if(ownerUsername==null){
+            return;
+        }
         this.ownerUsername = ownerUsername;
     }
 }
