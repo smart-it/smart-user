@@ -22,5 +22,6 @@ public enum UniqueConstrainedField {
     OBJECT_IDENTITY,
     ACL,
     ACE,
+    SID_OID,
     OTHER
 }
