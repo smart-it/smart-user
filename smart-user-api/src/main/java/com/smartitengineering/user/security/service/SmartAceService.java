@@ -22,7 +22,5 @@ public interface SmartAceService {
     public void delete(SmartAce ace);
 
     public Collection<SmartAce> search(SmartAceFilter filter);
-
-    public void validate(SmartAce ace);
-    
+   
 }
