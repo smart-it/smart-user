@@ -5,14 +5,13 @@
 
 package com.smartitengineering.user.security.acl.impl;
 
-import com.smartitengineering.user.domain.User;
-import org.springframework.security.acls.sid.Sid;
+import com.smartitengineering.user.security.acl.UserSid;
 
 /**
  *
  * @author modhu7
  */
-public class SidImpl implements Sid{
+public class SidImpl implements UserSid{
     String username;
 
     public SidImpl(String username) {
