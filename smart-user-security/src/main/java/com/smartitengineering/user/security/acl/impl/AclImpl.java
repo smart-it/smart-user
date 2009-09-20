@@ -2,13 +2,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.security.acl.impl;
 
+import com.smartitengineering.user.filter.SmartAceFilter;
+import com.smartitengineering.user.security.acl.UserSid;
 import com.smartitengineering.user.security.domain.SmartAce;
 import com.smartitengineering.user.security.domain.SmartAcl;
+import com.smartitengineering.user.security.service.SmartAceService;
 import com.smartitengineering.user.security.service.SmartAclService;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import org.springframework.security.acls.AccessControlEntry;
 import org.springframework.security.acls.Acl;
@@ -22,10 +27,19 @@ import org.springframework.security.acls.sid.Sid;
  *
  * @author modhu7
  */
-public class AclImpl implements Acl{
-    
+public class AclImpl implements Acl {
+
     private SmartAcl acl;
     private SmartAclService smartAclService;
+    private SmartAceService smartAceService;
+
+    public SmartAceService getSmartAceService() {
+        return smartAceService;
+    }
+
+    public void setSmartAceService(SmartAceService smartAceService) {
+        this.smartAceService = smartAceService;
+    }
 
     public AclImpl(SmartAcl acl) {
         this.acl = acl;
@@ -51,12 +65,11 @@ public class AclImpl implements Acl{
     public void setAcl(SmartAcl acl) {
         this.acl = acl;
     }
-    
-    
+
     public AccessControlEntry[] getEntries() {
         Set<SmartAce> smartAces = new HashSet(getSmartAclService().getAceEntries(acl));
         Set<AccessControlEntry> aces = new HashSet<AccessControlEntry>();
-        for(SmartAce ace : smartAces){
+        for (SmartAce ace : smartAces) {
             AceImpl smartAceAdapter = new AceImpl();
             smartAceAdapter.setAce(ace);
             aces.add(smartAceAdapter);
@@ -65,7 +78,7 @@ public class AclImpl implements Acl{
     }
 
     public ObjectIdentity getObjectIdentity() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new ObjectIdentityImpl(acl.getObjectIdentity());
     }
 
     public Sid getOwner() {
@@ -81,6 +94,26 @@ public class AclImpl implements Acl{
     }
 
     public boolean isGranted(Permission[] permissions, Sid[] sids, boolean administrativMode) throws NotFoundException, UnloadedSidException {
+        AccessControlEntry firstRejection = null;
+
+        for (int i = 0; i < permissions.length; i++) {
+            for (int x = 0; x < sids.length; x++) {
+                SmartAceFilter filter = new SmartAceFilter();
+                filter.getObjectIdentity().setClassType(getObjectIdentity().getJavaType());
+                filter.getObjectIdentity().setObjectIdentityId((Integer) getObjectIdentity().getIdentifier());
+                filter.setSidUsername(((UserSid)sids[x]).getUsername());
+                List<SmartAce> aceList = new ArrayList<SmartAce>();
+                aceList = (List<SmartAce>) getSmartAceService().search(filter);
+                if(aceList != null){
+                    SmartAce ace = aceList.get(0);
+                    if((ace.getPermissionMask() | permissions[i].getMask()) == ace.getPermissionMask()){
+                        if(ace.isGranting()){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
         return false;
     }
 
@@ -88,5 +121,4 @@ public class AclImpl implements Acl{
         //Don't know the need of this
         return true;
     }
-
 }
