@@ -2,11 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.security.acl.impl;
 
+import com.smartitengineering.user.parser.ParentParser;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import org.springframework.security.acls.Permission;
 import java.util.Iterator;
+import java.util.List;
 import org.springframework.security.Authentication;
 import org.springframework.security.ConfigAttribute;
 import org.springframework.security.ConfigAttributeDefinition;
@@ -73,10 +76,11 @@ public class SmartAclVoter extends AbstractAclVoter {
     }
 
     public boolean supports(ConfigAttribute arg0) {
-        if(arg0.getAttribute().equals(processConfigAttribute.getAttribute()))
+        if (arg0.getAttribute().equals(processConfigAttribute.getAttribute())) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     public int vote(Authentication authentication, Object object, ConfigAttributeDefinition config) {
@@ -90,45 +94,73 @@ public class SmartAclVoter extends AbstractAclVoter {
             }
             // Need to make an access decision on this invocation
             // Attempt to locate the domain object instance to process
-            Object domainObject = getDomainObjectInstance(object);
-
-            // If domain object is null, vote to abstain
-            if (domainObject == null) {
-                return AccessDecisionVoter.ACCESS_ABSTAIN;
-            }
 
 
+            return authorize(authentication, object);
 
-            // Obtain the OID applicable to the domain object
-            ObjectIdentity objectIdentity = objectIdentityRetrievalStrategy.getObjectIdentity(domainObject);
-
-            // Obtain the SIDs applicable to the principal
-            Sid[] sids = sidRetrievalStrategy.getSids(authentication);
-
-            Acl acl;
-
-            try {
-                // Lookup only ACLs for SIDs we're interested in
-                acl = aclService.readAclById(objectIdentity, sids);
-            } catch (NotFoundException nfe) {
-                return AccessDecisionVoter.ACCESS_DENIED;
-            }
-
-            try {
-                if (acl.isGranted(requirePermission,sids, false)) {
-                    return AccessDecisionVoter.ACCESS_GRANTED;
-                } else {
-                    return AccessDecisionVoter.ACCESS_DENIED;
-                }
-            } catch (NotFoundException nfe) {
-                return AccessDecisionVoter.ACCESS_DENIED;
-            }
         }
 
         // No configuration attribute matched, so abstain
         return AccessDecisionVoter.ACCESS_ABSTAIN;
     }
 
-    
+    private int authorize(Authentication authentication, Object object) {
+        Object domainObject = getDomainObjectInstance(object);
 
+        // If domain object is null, vote to abstain
+        if (domainObject == null) {
+            return AccessDecisionVoter.ACCESS_ABSTAIN;
+        }
+
+        // Obtain the OID applicable to the domain object
+        ObjectIdentity objectIdentity = objectIdentityRetrievalStrategy.getObjectIdentity(domainObject);
+
+        // Obtain the SIDs applicable to the principal
+        Sid[] sids = sidRetrievalStrategy.getSids(authentication);
+
+        Acl acl;
+
+        try {
+            // Lookup only ACLs for SIDs we're interested in
+            acl = aclService.readAclById(objectIdentity, sids);
+        } catch (NotFoundException nfe) {
+            return AccessDecisionVoter.ACCESS_DENIED;
+        }
+
+        try {
+            if (acl.isGranted(requirePermission, sids, false)) {
+                return AccessDecisionVoter.ACCESS_GRANTED;
+            } else {
+                List<String> listParent = ParentParser.getParentMethodName(object.getClass().getName());
+                for (String parent : listParent) {
+                    try {
+                        Class objectClass = Class.forName(object.getClass().getName());
+                        Class[] partypes = new Class[]{};
+                        Method method = objectClass.getMethod(parent, partypes);
+                        Object[] args = new Object[]{};
+                        Object parentObject = method .invoke(object, args);
+                        return authorize(authentication, parentObject);
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                        return AccessDecisionVoter.ACCESS_DENIED;
+                    } catch (NoSuchMethodException e){
+                        e.printStackTrace();
+                        return AccessDecisionVoter.ACCESS_DENIED;
+                    }catch (IllegalAccessException e){
+                        e.printStackTrace();
+                        return AccessDecisionVoter.ACCESS_DENIED;
+                    }catch (IllegalArgumentException e){
+                        e.printStackTrace();
+                        return AccessDecisionVoter.ACCESS_DENIED;
+                    }catch (InvocationTargetException e){
+                        e.printStackTrace();
+                        return AccessDecisionVoter.ACCESS_DENIED;
+                    }
+                }
+            }
+        } catch (NotFoundException nfe) {
+            return AccessDecisionVoter.ACCESS_DENIED;
+        }
+        return AccessDecisionVoter.ACCESS_DENIED;
+    }
 }
