@@ -8,12 +8,10 @@
     </id>
     <version column="version" name="version"/>
     <component name="objectIdentity">
-        <property column="oid" name="oid" length="255" type="java.lang.String" unique="true"/>
+      <property column="oid" length="255" name="oid" type="java.lang.String" unique="true"/>
     </component>
-    <many-to-one cascade="none" column="owner" lazy="false" name="owner"/>    
+    <many-to-one cascade="none" column="owner" lazy="false" name="owner"/>
     <many-to-one cascade="none" column="parent" lazy="false" name="parentAcl"/>
-
     <property column="is_entries_inheriting" length="255" name="entriesInheriting" type="java.lang.Boolean"/>
-    
   </class>
 </hibernate-mapping>

@@ -17,6 +17,8 @@
                 <value>hbm/domain/User.hbm.xml</value>
                 <value>hbm/domain/UserPerson.hbm.xml</value>
                 <value>hbm/domain/Person.hbm.xml</value>
+                <value>hbm/acl/ace.hbm.xml</value>
+                <value>hbm/acl/acl.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">
