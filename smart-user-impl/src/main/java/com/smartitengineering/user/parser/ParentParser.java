@@ -27,10 +27,10 @@ public class ParentParser {
 
     public ParentParser() {
         try {
-            InputStream privilegesStream = getClass().getClassLoader().getResourceAsStream("parentfinder.xml");
+            InputStream parentStream = getClass().getClassLoader().getResourceAsStream("parentfinder.xml");
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
-            Document doc = db.parse(privilegesStream);
+            Document doc = db.parse(parentStream);
             doc.getDocumentElement().normalize();
             System.out.println("Root element " + doc.getDocumentElement().getNodeName());
             NodeList nodeLst = doc.getElementsByTagName("class");
@@ -40,11 +40,11 @@ public class ParentParser {
 
             for (int s = 0; s < nodeLst.getLength(); s++) {
 
-                Node privilegeNode = nodeLst.item(s);                
+                Node parentNode = nodeLst.item(s);
 
-                if (privilegeNode.getNodeType() == Node.ELEMENT_NODE) {
+                if (parentNode.getNodeType() == Node.ELEMENT_NODE) {
 
-                    Element classElement = (Element) privilegeNode;
+                    Element classElement = (Element) parentNode;
 
                     NodeList nameElementList = classElement.getElementsByTagName("name");
                     Element nameElement = (Element) nameElementList.item(0);
@@ -58,8 +58,8 @@ public class ParentParser {
                     NodeList parentElementList = parentsElement.getElementsByTagName("parent");
                     
                     for (int p = 0; p < parentElementList.getLength(); p++) {
-                        NodeList privilegeNodeList = parentElementList.item(p).getChildNodes();
-                        String parent = ((Node) privilegeNodeList.item(0)).getNodeValue();
+                        NodeList parentNodeList = parentElementList.item(p).getChildNodes();
+                        String parent = ((Node) parentNodeList.item(0)).getNodeValue();
                         listParent.add(parent);
                     }
                     tempMapParent.put(name, listParent);
