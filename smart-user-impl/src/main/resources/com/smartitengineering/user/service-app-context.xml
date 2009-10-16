@@ -11,14 +11,14 @@
         </property>
         <property name="mappingResources">
             <list>
-                <value>hbm/domain/BasicIdentity.hbm.xml</value>
-                <value>hbm/domain/Privilege.hbm.xml</value>
-                <value>hbm/domain/Role.hbm.xml</value>
-                <value>hbm/domain/User.hbm.xml</value>
-                <value>hbm/domain/UserPerson.hbm.xml</value>
-                <value>hbm/domain/Person.hbm.xml</value>
-                <value>hbm/acl/ace.hbm.xml</value>
-                <value>hbm/acl/acl.hbm.xml</value>
+                <value>com/smartitengineering/user/hbm/domain/BasicIdentity.hbm.xml</value>
+                <value>com/smartitengineering/user/hbm/domain/Privilege.hbm.xml</value>
+                <value>com/smartitengineering/user/hbm/domain/Role.hbm.xml</value>
+                <value>com/smartitengineering/user/hbm/domain/User.hbm.xml</value>
+                <value>com/smartitengineering/user/hbm/domain/UserPerson.hbm.xml</value>
+                <value>com/smartitengineering/user/hbm/domain/Person.hbm.xml</value>
+                <value>com/smartitengineering/user/hbm/acl/ace.hbm.xml</value>
+                <value>com/smartitengineering/user/hbm/acl/acl.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">

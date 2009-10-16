@@ -5,8 +5,8 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            classpath:app-context.xml
-            classpath:app-context-security.xml
+            classpath:com/smartitengineering/user/server/app-context.xml
+            classpath:com/smartitengineering/user/security/app-context-security.xml
         </param-value>
     </context-param>
     <listener>
