@@ -16,6 +16,7 @@ import org.springframework.security.ConfigAttributeDefinition;
 import org.springframework.security.acls.Acl;
 import org.springframework.security.acls.AclService;
 import org.springframework.security.acls.NotFoundException;
+import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.objectidentity.ObjectIdentity;
 import org.springframework.security.acls.objectidentity.ObjectIdentityRetrievalStrategy;
 import org.springframework.security.acls.sid.Sid;
@@ -105,6 +106,13 @@ public class SmartAclVoter extends AbstractAclVoter {
     }
 
     private int authorize(Authentication authentication, Object object) {
+
+        if (getRequirePermission()[0].equals(BasePermission.CREATE)) {
+            Permission[] permissions = new Permission[1];
+            permissions[0] = BasePermission.WRITE;
+            return authorizeByParent(authentication, permissions , object);
+        }
+
         Object domainObject = getDomainObjectInstance(object);
 
         // If domain object is null, vote to abstain
@@ -113,6 +121,10 @@ public class SmartAclVoter extends AbstractAclVoter {
         }
 
         // Obtain the OID applicable to the domain object
+        return authorizeByAcl(authentication, getRequirePermission(), domainObject);
+    }
+
+    private int authorizeByAcl(Authentication authentication, Permission[] requirePermission, Object domainObject) {
         ObjectIdentity objectIdentity = objectIdentityRetrievalStrategy.getObjectIdentity(domainObject);
 
         // Obtain the SIDs applicable to the principal
@@ -131,35 +143,41 @@ public class SmartAclVoter extends AbstractAclVoter {
             if (acl.isGranted(requirePermission, sids, false)) {
                 return AccessDecisionVoter.ACCESS_GRANTED;
             } else {
-                List<String> listParent = ParentParser.getParentMethodName(object.getClass().getName());
-                for (String parent : listParent) {
-                    try {
-                        Class objectClass = Class.forName(object.getClass().getName());
-                        Class[] partypes = new Class[]{};
-                        Method method = objectClass.getMethod(parent, partypes);
-                        Object[] args = new Object[]{};
-                        Object parentObject = method .invoke(object, args);
-                        return authorize(authentication, parentObject);
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                        return AccessDecisionVoter.ACCESS_DENIED;
-                    } catch (NoSuchMethodException e){
-                        e.printStackTrace();
-                        return AccessDecisionVoter.ACCESS_DENIED;
-                    }catch (IllegalAccessException e){
-                        e.printStackTrace();
-                        return AccessDecisionVoter.ACCESS_DENIED;
-                    }catch (IllegalArgumentException e){
-                        e.printStackTrace();
-                        return AccessDecisionVoter.ACCESS_DENIED;
-                    }catch (InvocationTargetException e){
-                        e.printStackTrace();
-                        return AccessDecisionVoter.ACCESS_DENIED;
-                    }
-                }
+                return authorizeByParent(authentication, requirePermission, domainObject);
             }
         } catch (NotFoundException nfe) {
             return AccessDecisionVoter.ACCESS_DENIED;
+        }
+    }
+
+    private int authorizeByParent(Authentication authentication, Permission[] requirePermission, Object domainObject) {
+        List<String> listParent = ParentParser.getParentMethodName(domainObject.getClass().getName());
+        for (String parent : listParent) {
+            try {
+                Class objectClass = Class.forName(domainObject.getClass().getName());
+                Class[] partypes = new Class[]{};
+                Method method = objectClass.getMethod(parent, partypes);
+                Object[] args = new Object[]{};
+                Object parentObject = method.invoke(domainObject, args);
+                if (parentObject != null) {
+                    return authorizeByAcl(authentication, requirePermission, parentObject);
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                return AccessDecisionVoter.ACCESS_DENIED;
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+                return AccessDecisionVoter.ACCESS_DENIED;
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                return AccessDecisionVoter.ACCESS_DENIED;
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+                return AccessDecisionVoter.ACCESS_DENIED;
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+                return AccessDecisionVoter.ACCESS_DENIED;
+            }
         }
         return AccessDecisionVoter.ACCESS_DENIED;
     }
