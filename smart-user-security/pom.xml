@@ -11,12 +11,7 @@
     <name>smart-user-security</name>
     <version>0.1-SNAPSHOT</version>
     <url>http://maven.apache.org</url>
-    <dependencies>
-        <dependency>
-            <groupId>com.smartitengineering.smart-user</groupId>
-            <artifactId>smart-user-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+    <dependencies>        
         <dependency>
             <groupId>com.smartitengineering.smart-user</groupId>
             <artifactId>smart-user-impl</artifactId>

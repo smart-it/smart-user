@@ -32,36 +32,6 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring</artifactId>
-            <version>${spring-version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>c3p0</groupId>
-            <artifactId>c3p0</artifactId>
-            <version>${c3p0-version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.derby</groupId>
-            <artifactId>derby</artifactId>
-            <version>${derby-version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate</artifactId>
-            <version>${hibernate-version}</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-collections</artifactId>
-                    <groupId>commons-collections</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring-version}</version>
         </dependency>
@@ -74,18 +44,7 @@
             <groupId>com.sun.jersey.contribs</groupId>
             <artifactId>jersey-apache-client</artifactId>
             <version>${jersey-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.smartitengineering.smart-user</groupId>
-            <artifactId>smart-user-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.smartitengineering.smart-user</groupId>
-            <artifactId>smart-user-impl</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
+        </dependency>               
         <dependency>
             <groupId>com.smartitengineering.smart-user</groupId>
             <artifactId>smart-user-resource</artifactId>
@@ -112,19 +71,7 @@
             <artifactId>aspectjrt</artifactId>
             <version>${aspectjrt-version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>${aspectj-weaver-version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>${spring-security-version}</version>
-            <scope>test</scope>
-        </dependency>
+        </dependency>                
         <dependency>
             <groupId>com.smartitengineering.smart-user</groupId>
             <artifactId>smart-user-security</artifactId>
