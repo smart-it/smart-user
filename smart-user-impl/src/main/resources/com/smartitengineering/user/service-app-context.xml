@@ -15,6 +15,8 @@
     <bean id="userPersonDao" class="com.smartitengineering.user.dao.UserPersonDaoImpl" parent="abstractDao"/>
     <bean id="roleDao" class="com.smartitengineering.user.dao.RoleDaoImpl" parent="abstractDao"/>
     <bean id="privilegeDao" class="com.smartitengineering.user.dao.PrivilegeDaoImpl" parent="abstractDao"/>
+    <bean id="smartAceDao" class="com.smartitengineering.user.dao.SmartAceDaoImpl" parent="abstractDao"/>
+    <bean id="smartAclDao" class="com.smartitengineering.user.dao.SmartAclDaoImpl" parent="abstractDao"/>
     <bean id="personServiceTarget" class="com.smartitengineering.user.impl.PersonServiceImpl">
         <property name="personReadDao">
             <ref local="personDao" />
@@ -90,7 +92,29 @@
     <bean id="userService" class="org.springframework.aop.framework.ProxyFactoryBean">
         <property name="target" ref="userServiceTarget" />
         <property name="interceptorNames" value="userDeleteAdvisor" />
-    </bean>    
+    </bean>
+    <bean id="smartAceService" class="com.smartitengineering.user.security.impl.SmartAceServiceImpl">
+        <property name="smartAceReadDao">
+            <ref local="smartAceDao"/>
+        </property>
+        <property name="smartAceWriteDao">
+            <ref local="smartAceDao"/>
+        </property>
+        <property name="smartAclService">
+            <ref local="smartAclService"/>
+        </property>
+    </bean>
+    <bean id="smartAclService" class="com.smartitengineering.user.security.impl.SmartAclServiceImpl">
+        <property name="smartAclReadDao">
+            <ref local="smartAclDao"/>
+        </property>
+        <property name="smartAclWriteDao">
+            <ref local="smartAclDao"/>
+        </property>
+        <property name="smartAceService">
+            <ref local="smartAceService"/>
+        </property>
+    </bean>
     <!-- **************************************************************** -->
     <!-- ********************* Smart Util Reg *************************** -->
     <!-- **************************************************************** -->
