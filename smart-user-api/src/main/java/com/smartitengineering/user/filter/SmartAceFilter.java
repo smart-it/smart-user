@@ -5,28 +5,26 @@
 
 package com.smartitengineering.user.filter;
 
-import com.smartitengineering.user.security.domain.SmartObjectIdentity;
-
 /**
  *
  * @author modhu7
  */
 public class SmartAceFilter {
-    private SmartObjectIdentity objectIdentity;
+    private String oid;
     private String sidUsername;
 
-    public SmartObjectIdentity getObjectIdentity() {
-        if(objectIdentity==null){
-            return new SmartObjectIdentity();
+    public String getOid() {
+        if(oid==null){
+            return "";
         }
-        return objectIdentity;
+        return oid;
     }
 
-    public void setObjectIdentity(SmartObjectIdentity oid) {
-        if(objectIdentity==null){
+    public void setOid(String oid) {
+        if(oid==null){
             return;
         }
-        this.objectIdentity = oid;
+        this.oid = oid;
     }
 
     public String getSidUsername() {

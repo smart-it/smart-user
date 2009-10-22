@@ -13,23 +13,21 @@ import com.smartitengineering.user.security.domain.SmartObjectIdentity;
  */
 public class SmartAclFilter {
 
-    private SmartObjectIdentity objectIdentity;
+    private String oid;
     private String ownerUsername;
 
-    public SmartObjectIdentity getObjectIdentity() {
-        if(objectIdentity==null){
-            return new SmartObjectIdentity();
+    public String getOid() {
+        if(oid==null){
+            return "";
         }
-        return objectIdentity;
+        return oid;
     }
 
-    public void setObjectIdentity(SmartObjectIdentity objectIdentity) {
-        if(objectIdentity==null){
+    public void setOid(String oid) {
+        if(oid==null)
             return;
-        }
-        this.objectIdentity = objectIdentity;
+        this.oid = oid;
     }
-
 
     public String getOwnerUsername() {
         if(ownerUsername==null){
