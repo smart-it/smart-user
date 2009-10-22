@@ -103,11 +103,11 @@ public class SmartAclServiceImpl implements SmartAclService {
 
     public Collection<SmartAcl> search(SmartAclFilter filter) {
         QueryParameter qp = null;
+        System.out.println("At smart acl service impl");
         List<QueryParameter> queryParameters = new ArrayList<QueryParameter>();
-        if (!StringUtils.isEmpty(filter.getObjectIdentity().getOid())) {
-            QueryParameter oid;
-            qp = QueryParameterFactory.getEqualPropertyParam("objectIdentity.oid",
-                    filter.getObjectIdentity().getOid());
+        if (!StringUtils.isEmpty(filter.getOid())) {            
+            qp = QueryParameterFactory.getStringLikePropertyParam("objectIdentity.oid",
+                    filter.getOid(), MatchMode.ANYWHERE);
             queryParameters.add(qp);
         }
         if (!StringUtils.isEmpty(filter.getOwnerUsername())) {
@@ -116,25 +116,32 @@ public class SmartAclServiceImpl implements SmartAclService {
                     filter.getOwnerUsername()));
             queryParameters.add(qp);
         }
+        System.out.println(queryParameters.size());
 
-        Collection<SmartAcl> aces = new HashSet<SmartAcl>();
+        Collection<SmartAcl> acls = new HashSet<SmartAcl>();
         if (queryParameters.size() == 0) {
             try {
-                aces = getSmartAclReadDao().getAll();
+                acls = getSmartAclReadDao().getAll();
             } catch (Exception e) {
+                e.printStackTrace();
             }
         } else {
             try {
-                aces = getSmartAclReadDao().getList(queryParameters);
+                if(getSmartAclReadDao()==null)
+                    System.out.println("Read dao is null");
+                else
+                    System.out.println("Read dao is not null");
+                acls = getSmartAclReadDao().getList(queryParameters);
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-        return aces;
+        return acls;
     }
 
     public Collection<SmartAce> getAceEntries(SmartAcl acl) {
         SmartAceFilter filter = new SmartAceFilter();
-        filter.setObjectIdentity(acl.getObjectIdentity());
+        filter.setOid(acl.getObjectIdentity().getOid());
         return smartAceService.search(filter);
     }
 

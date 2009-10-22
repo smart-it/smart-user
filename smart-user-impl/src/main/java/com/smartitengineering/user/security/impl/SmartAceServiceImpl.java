@@ -61,11 +61,10 @@ public class SmartAceServiceImpl implements SmartAceService {
     public void create(SmartAce ace) {
         getSmartAclService().validate(ace.getAcl());
         SmartAceFilter filter = new SmartAceFilter();
-        filter.setObjectIdentity(ace.getAcl().getObjectIdentity());
-        filter.setSidUsername(ace.getSid().getUsername());
-        List<SmartAce> aces = new ArrayList<SmartAce>();
-        aces = (List<SmartAce>) search(filter);
-        if (aces != null) {
+        filter.setOid(ace.getAcl().getObjectIdentity().getOid());
+        filter.setSidUsername(ace.getSid().getUsername());        
+        List<SmartAce> aces = new ArrayList<SmartAce>(search(filter));
+        if (aces != null && aces.size()!=0) {
             SmartAce oldAce = aces.get(0);
             oldAce.setPermissionMask(ace.getPermissionMask() | oldAce.getPermissionMask());
             update(oldAce);
@@ -87,11 +86,11 @@ public class SmartAceServiceImpl implements SmartAceService {
     public void update(SmartAce ace) {
         getSmartAclService().validate(ace.getAcl());
         SmartAceFilter filter = new SmartAceFilter();
-        filter.setObjectIdentity(ace.getAcl().getObjectIdentity());
+        filter.setOid(ace.getAcl().getObjectIdentity().getOid());
         filter.setSidUsername(ace.getSid().getUsername());
         List<SmartAce> aces = new ArrayList<SmartAce>();
         aces = (List<SmartAce>) search(filter);
-        if (aces != null) {
+        if (aces != null && aces.size()!=0) {
             ace.setPermissionMask(aces.get(0).getPermissionMask() | ace.getPermissionMask());
         }
         try {
@@ -109,11 +108,11 @@ public class SmartAceServiceImpl implements SmartAceService {
 
     public void delete(SmartAce ace) {
         SmartAceFilter filter = new SmartAceFilter();
-        filter.setObjectIdentity(ace.getAcl().getObjectIdentity());
+        filter.setOid(ace.getAcl().getObjectIdentity().getOid());
         filter.setSidUsername(ace.getSid().getUsername());
         List<SmartAce> aces = new ArrayList<SmartAce>();
         aces = (List<SmartAce>) search(filter);
-        if (aces != null) {
+        if (aces != null && aces.size()!=0) {
             SmartAce oldAce = aces.get(0);
 
             if (oldAce.getPermissionMask() != ace.getPermissionMask()) {
@@ -140,10 +139,10 @@ public class SmartAceServiceImpl implements SmartAceService {
     public Collection<SmartAce> search(SmartAceFilter filter) {
         QueryParameter qp = null;
         List<QueryParameter> queryParameters = new ArrayList<QueryParameter>();
-        if (!StringUtils.isEmpty(filter.getObjectIdentity().getOid())) {
+        if (!StringUtils.isEmpty(filter.getOid())) {
             qp = QueryParameterFactory.getNestedParametersParam("acl", FetchMode.DEFAULT,
                     QueryParameterFactory.getEqualPropertyParam(
-                    "objectIdentity.oid", filter.getObjectIdentity().getOid()));
+                    "objectIdentity.oid", filter.getOid()));
             queryParameters.add(qp);
         }
         if (!StringUtils.isEmpty(filter.getSidUsername())) {
