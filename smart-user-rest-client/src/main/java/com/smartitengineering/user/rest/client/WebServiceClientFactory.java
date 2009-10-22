@@ -4,6 +4,8 @@
  */
 package com.smartitengineering.user.rest.client;
 
+import com.smartitengineering.user.security.service.SmartAceService;
+import com.smartitengineering.user.security.service.SmartAclService;
 import com.smartitengineering.user.service.PersonService;
 import com.smartitengineering.user.service.PrivilegeService;
 import com.smartitengineering.user.service.RoleService;
@@ -21,11 +23,31 @@ public final class WebServiceClientFactory {
     private static UserPersonService userPersonService;
     private static RoleService roleService;
     private static PrivilegeService privilegeService;
+    private static SmartAclService smartAclService;
+    private static SmartAceService smartAceService;
 
     private WebServiceClientFactory() {
         throw new AssertionError();
     }
 
+    public static SmartAceService getSmartAceService() {
+        if(smartAceService==null){
+            smartAceService = new SmartAceServiceClientImpl();
+        }
+        return smartAceService;
+    }
+
+    
+
+    public static SmartAclService getSmartAclService() {
+        if(smartAclService == null){
+            smartAclService=new SmartAclServiceClientImpl();
+        }
+        return smartAclService;
+    }
+
+    
+    
     public static UserService getUserService() {
         if (userService == null) {
             userService = new UserServiceClientImpl();
