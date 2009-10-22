@@ -9,6 +9,8 @@ import com.smartitengineering.user.security.acl.impl.ConfigAttributeImpl;
 import com.smartitengineering.user.security.acl.impl.SmartAclVoter;
 import com.smartitengineering.user.security.acl.impl.SmartObjectIdentityRetrievalStrategyImpl;
 import com.smartitengineering.user.security.acl.impl.SmartSidRetrievalStrategyImpl;
+import com.smartitengineering.user.security.impl.SmartAclServiceImpl;
+import com.smartitengineering.user.security.service.SmartAclService;
 import java.io.InputStream;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
@@ -28,12 +30,11 @@ import org.springframework.security.acls.domain.BasePermission;
  */
 public class VoterListProviderImpl {
 
-    private static List<SmartAclVoter> listVoter = new ArrayList<SmartAclVoter>();
+    private List<SmartAclVoter> listVoter = new ArrayList<SmartAclVoter>();
 
-    public VoterListProviderImpl() {
+    public VoterListProviderImpl(String xmlFileName) {
         try {
-            List<SmartAclVoter> tempListVoter = new ArrayList<SmartAclVoter>();
-            InputStream votersStream = getClass().getClassLoader().getResourceAsStream("voterlist.xml");
+            InputStream votersStream = getClass().getClassLoader().getResourceAsStream(xmlFileName);
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse(votersStream);
@@ -44,7 +45,10 @@ public class VoterListProviderImpl {
 
                 Node voterNode = nodeLst.item(s);
                 SmartAclVoter voter = new SmartAclVoter();
-                voter.setAclService(new AclServiceImpl());
+                SmartAclService smartAclService = new SmartAclServiceImpl();
+                AclServiceImpl aclServiceImpl = new AclServiceImpl();
+                aclServiceImpl.setSmartAclService(smartAclService);
+                voter.setAclService(aclServiceImpl);
                 voter.setObjectIdentityRetrievalStrategy(new SmartObjectIdentityRetrievalStrategyImpl());
                 voter.setSidRetrievalStrategy(new SmartSidRetrievalStrategyImpl());
 
@@ -65,6 +69,15 @@ public class VoterListProviderImpl {
                     String role = ((Node) roles.item(0)).getNodeValue();
                     ConfigAttribute attribute = new ConfigAttributeImpl(role);
                     voter.setProcessConfigAttribute(attribute);
+
+                    NodeList classList = voterElement.getElementsByTagName("class");
+                    Element classElement = (Element) classList.item(0);
+                    NodeList classes = classElement.getChildNodes();
+                    String className = ((Node) classes.item(0)).getNodeValue();
+                    Class domainClass = Class.forName(className);
+                    voter.setProcessDomainObjectClass(domainClass);
+                    System.out.println(domainClass.getName());
+
                     listVoter.add(voter);
                 }
             }
@@ -74,11 +87,16 @@ public class VoterListProviderImpl {
         }
     }
 
-    public static List<SmartAclVoter> getListVoter() {
+    public List<SmartAclVoter> getListVoter() {
         if (listVoter == null) {
             return new ArrayList<SmartAclVoter>();
         } else {
             return listVoter;
         }
+
+    }
+
+    public void setListVoter(List<SmartAclVoter> listVoter) {
+        this.listVoter = listVoter;
     }
 }

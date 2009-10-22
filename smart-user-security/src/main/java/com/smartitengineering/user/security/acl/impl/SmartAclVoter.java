@@ -5,11 +5,13 @@
 package com.smartitengineering.user.security.acl.impl;
 
 import com.smartitengineering.user.parser.ParentParser;
+import com.smartitengineering.user.security.domain.SmartAcl;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.springframework.security.acls.Permission;
 import java.util.Iterator;
 import java.util.List;
+import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.security.Authentication;
 import org.springframework.security.ConfigAttribute;
 import org.springframework.security.ConfigAttributeDefinition;
@@ -110,13 +112,19 @@ public class SmartAclVoter extends AbstractAclVoter {
         if (getRequirePermission()[0].equals(BasePermission.CREATE)) {
             Permission[] permissions = new Permission[1];
             permissions[0] = BasePermission.WRITE;
-            return authorizeByParent(authentication, permissions , object);
+            return authorizeByParent(authentication, permissions, object);
         }
 
         Object domainObject = getDomainObjectInstance(object);
 
+        System.out.println("Voter Information");
+        System.out.println(getProcessConfigAttribute().getAttribute());
+        System.out.println(getRequirePermission().toString());
+
+
         // If domain object is null, vote to abstain
         if (domainObject == null) {
+            System.out.println("Object is null at authorize");
             return AccessDecisionVoter.ACCESS_ABSTAIN;
         }
 
@@ -134,20 +142,24 @@ public class SmartAclVoter extends AbstractAclVoter {
 
         try {
             // Lookup only ACLs for SIDs we're interested in
-            acl = aclService.readAclById(objectIdentity, sids);
-        } catch (NotFoundException nfe) {
-            return AccessDecisionVoter.ACCESS_DENIED;
-        }
 
-        try {
-            if (acl.isGranted(requirePermission, sids, false)) {
-                return AccessDecisionVoter.ACCESS_GRANTED;
-            } else {
-                return authorizeByParent(authentication, requirePermission, domainObject);
+            if (aclService.readAclById(objectIdentity, sids) != null) {
+                acl = aclService.readAclById(objectIdentity, sids);
+                try {
+                    if (acl.isGranted(requirePermission, sids, false)) {
+                        return AccessDecisionVoter.ACCESS_GRANTED;
+                    } else {
+                        return authorizeByParent(authentication, requirePermission, domainObject);
+                    }
+                } catch (NotFoundException nfe) {
+                    return AccessDecisionVoter.ACCESS_DENIED;
+                }
             }
         } catch (NotFoundException nfe) {
             return AccessDecisionVoter.ACCESS_DENIED;
         }
+        return AccessDecisionVoter.ACCESS_DENIED;
+
     }
 
     private int authorizeByParent(Authentication authentication, Permission[] requirePermission, Object domainObject) {

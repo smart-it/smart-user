@@ -8,6 +8,7 @@ import com.smartitengineering.user.filter.SmartAceFilter;
 import com.smartitengineering.user.security.acl.UserSid;
 import com.smartitengineering.user.security.domain.SmartAce;
 import com.smartitengineering.user.security.domain.SmartAcl;
+import com.smartitengineering.user.security.domain.SmartObjectIdentity;
 import com.smartitengineering.user.security.service.SmartAceService;
 import com.smartitengineering.user.security.service.SmartAclService;
 import java.util.ArrayList;
@@ -98,15 +99,17 @@ public class AclImpl implements Acl {
         for (int i = 0; i < permissions.length; i++) {
             for (int x = 0; x < sids.length; x++) {
                 SmartAceFilter filter = new SmartAceFilter();
-                filter.getObjectIdentity().setClassType(getObjectIdentity().getJavaType());
-                filter.getObjectIdentity().setObjectIdentityId((Integer) getObjectIdentity().getIdentifier());
-                filter.setSidUsername(((UserSid)sids[x]).getUsername());
+                SmartObjectIdentity objectIdentity = new SmartObjectIdentity();
+                objectIdentity.setClassType(getObjectIdentity().getJavaType());
+                objectIdentity.setObjectIdentityId((Integer) getObjectIdentity().getIdentifier());
+                filter.setOid(objectIdentity.getOid());                
+                filter.setSidUsername(((UserSid) sids[x]).getUsername());
                 List<SmartAce> aceList = new ArrayList<SmartAce>();
                 aceList = (List<SmartAce>) getSmartAceService().search(filter);
-                if(aceList != null){
+                if (aceList != null) {
                     SmartAce ace = aceList.get(0);
-                    if((ace.getPermissionMask() | permissions[i].getMask()) == ace.getPermissionMask()){
-                        if(ace.isGranting()){
+                    if ((ace.getPermissionMask() | permissions[i].getMask()) == ace.getPermissionMask()) {
+                        if (ace.isGranting()) {
                             return true;
                         }
                     }

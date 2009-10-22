@@ -22,5 +22,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
         </property>
 
     </bean>
-    <sec:authentication-provider user-service-ref = "userDetailsService"/>
+    <sec:authentication-provider user-service-ref = "userDetailsService"/>  
+
 </beans>
