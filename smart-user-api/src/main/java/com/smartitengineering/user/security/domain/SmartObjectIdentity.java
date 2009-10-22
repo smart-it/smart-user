@@ -20,8 +20,10 @@ public class SmartObjectIdentity extends AbstractPersistentDTO {
     public String getOid() {
         if (classType != null && objectIdentityId != null) {
             return classType.getName() +"_" + objectIdentityId.toString();
-        }
-        return "";
+        }else if(oid!=null){
+            return oid;
+        }else
+            return "";
     }
 
     public void setOid(String oid) {
