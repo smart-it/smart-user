@@ -4,14 +4,14 @@
  */
 package com.smartitengineering.user.security.domain;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
+import java.util.StringTokenizer;
 import org.apache.commons.lang.StringUtils;
 
 /**
  *
  * @author modhu7
  */
-public class SmartObjectIdentity extends AbstractPersistentDTO {
+public class SmartObjectIdentity{
 
     private String oid;
     private Class classType;
@@ -26,8 +26,11 @@ public class SmartObjectIdentity extends AbstractPersistentDTO {
             return "";
     }
 
-    public void setOid(String oid) {
+    public void setOid(String oid) throws ClassNotFoundException {
         this.oid = oid;
+        StringTokenizer st = new StringTokenizer(oid, "_");
+        setClassType(Class.forName(st.nextToken()));
+        setObjectIdentityId(Integer.getInteger(st.nextToken()));
     }
 
     public Class getClassType() {
