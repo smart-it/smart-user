@@ -7,12 +7,12 @@ package com.smartitengineering.user.security.acl.impl;
 import com.smartitengineering.user.filter.SmartAclFilter;
 import com.smartitengineering.user.security.domain.SmartAcl;
 import com.smartitengineering.user.security.domain.SmartObjectIdentity;
+import com.smartitengineering.user.security.service.SmartAceService;
 import com.smartitengineering.user.security.service.SmartAclService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Resource;
 import org.springframework.security.acls.Acl;
 import org.springframework.security.acls.AclService;
 import org.springframework.security.acls.NotFoundException;
@@ -26,6 +26,15 @@ import org.springframework.security.acls.sid.Sid;
 public class AclServiceImpl implements AclService {
 
     private SmartAclService smartAclService;
+    private SmartAceService smartAceService;
+
+    public SmartAceService getSmartAceService() {
+        return smartAceService;
+    }
+
+    public void setSmartAceService(SmartAceService smartAceService) {
+        this.smartAceService = smartAceService;
+    }
 
     public SmartAclService getSmartAclService() {
         return smartAclService;
@@ -58,21 +67,21 @@ public class AclServiceImpl implements AclService {
 
     //for now i m not using the sids
     public Map readAclsById(ObjectIdentity[] objects, Sid[] sids) throws NotFoundException {
-        Map result = new HashMap();
+        Map<ObjectIdentity, Acl> result = new HashMap<ObjectIdentity, Acl>();
         for (int i = 0; i < objects.length; i++) {
             SmartAclFilter filter = new SmartAclFilter();
             SmartObjectIdentity objectIdentity = new SmartObjectIdentity();
             objectIdentity.setClassType(objects[i].getJavaType());
             objectIdentity.setObjectIdentityId((Integer) objects[i].getIdentifier());
-            System.out.println("This is from AclServiceImpl : class type" + objectIdentity.getClassType().getName());
-            System.out.println("This is from AclServiceImpl : id" + objectIdentity.getObjectIdentityId());
-            filter.setOid(objectIdentity.getOid());
-            System.out.println(filter.getOid());
-            List<SmartAcl> aclList = new ArrayList<SmartAcl>(getSmartAclService().search(filter));
+            filter.setOid(objectIdentity.getOid());            
+            List<SmartAcl> aclList = new ArrayList<SmartAcl>(getSmartAclService().search(filter));            
             if(aclList!=null && aclList.size() != 0){
-                System.out.println("Acl search is not null not empty");
+                System.out.println("Result of acl list reading "+ aclList.size());
                 System.out.println(aclList.get(0).getObjectIdentity().getOid());
-                result.put(objects[i], aclList.get(0));
+                
+                Acl acl = new AclImpl(aclList.get(0), getSmartAclService(), getSmartAceService());
+                
+                result.put(objects[i], acl);
             }
         }
         return result;

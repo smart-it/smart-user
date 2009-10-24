@@ -4,15 +4,16 @@
  */
 package com.smartitengineering.user.security.acl.impl;
 
-import com.smartitengineering.user.parser.ParentParser;
-import com.smartitengineering.user.security.domain.SmartAcl;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.springframework.security.acls.Permission;
 import java.util.Iterator;
 import java.util.List;
 import org.aopalliance.intercept.MethodInvocation;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.reflect.CodeSignature;
 import org.springframework.security.Authentication;
+import org.springframework.security.AuthorizationServiceException;
 import org.springframework.security.ConfigAttribute;
 import org.springframework.security.ConfigAttributeDefinition;
 import org.springframework.security.acls.Acl;
@@ -23,20 +24,36 @@ import org.springframework.security.acls.objectidentity.ObjectIdentity;
 import org.springframework.security.acls.objectidentity.ObjectIdentityRetrievalStrategy;
 import org.springframework.security.acls.sid.Sid;
 import org.springframework.security.acls.sid.SidRetrievalStrategy;
-import org.springframework.security.vote.AbstractAclVoter;
 import org.springframework.security.vote.AccessDecisionVoter;
 
 /**
  *
  * @author modhu7
  */
-public class SmartAclVoter extends AbstractAclVoter {
+public class SmartAclVoter implements AccessDecisionVoter {
 
-    private AclService aclService;
-    private ConfigAttribute processConfigAttribute;
-    private Permission[] requirePermission;
+    private AclService aclService;   
     private ObjectIdentityRetrievalStrategy objectIdentityRetrievalStrategy;
-    private SidRetrievalStrategy sidRetrievalStrategy;
+     private SidRetrievalStrategy sidRetrievalStrategy;
+    private VotingConfigProvider votingConfigProvider;
+    private ParentProvider parentProvider;
+
+    public ParentProvider getParentProvider() {
+        return parentProvider;
+    }
+
+    public void setParentProvider(ParentProvider parentProvider) {
+        this.parentProvider = parentProvider;
+    }
+
+    public VotingConfigProvider getVotingConfigProvider() {
+        return votingConfigProvider;
+    }
+
+    public void setVotingConfigProvider(VotingConfigProvider votingConfigProvider) {
+        this.votingConfigProvider = votingConfigProvider;
+    }
+   
 
     public ObjectIdentityRetrievalStrategy getObjectIdentityRetrievalStrategy() {
         return objectIdentityRetrievalStrategy;
@@ -62,28 +79,12 @@ public class SmartAclVoter extends AbstractAclVoter {
         this.aclService = aclService;
     }
 
-    public ConfigAttribute getProcessConfigAttribute() {
-        return processConfigAttribute;
-    }
-
-    public void setProcessConfigAttribute(ConfigAttribute processConfigAttribute) {
-        this.processConfigAttribute = processConfigAttribute;
-    }
-
-    public Permission[] getRequirePermission() {
-        return requirePermission;
-    }
-
-    public void setRequirePermission(Permission[] requirePermission) {
-        this.requirePermission = requirePermission;
-    }
-
     public boolean supports(ConfigAttribute arg0) {
-        if (arg0.getAttribute().equals(processConfigAttribute.getAttribute())) {
-            return true;
-        } else {
-            return false;
+        for(VotingConfig votingConfig : votingConfigProvider.getVotingConfigList()){
+            if(arg0.getAttribute().equals(votingConfig.getProcessConfigAttribute().getAttribute()))
+                return true;
         }
+        return false;
     }
 
     public int vote(Authentication authentication, Object object, ConfigAttributeDefinition config) {
@@ -99,7 +100,7 @@ public class SmartAclVoter extends AbstractAclVoter {
             // Attempt to locate the domain object instance to process
 
 
-            return authorize(authentication, object);
+            return authorize(authentication, object, getVotingConfig(attr));
 
         }
 
@@ -107,20 +108,15 @@ public class SmartAclVoter extends AbstractAclVoter {
         return AccessDecisionVoter.ACCESS_ABSTAIN;
     }
 
-    private int authorize(Authentication authentication, Object object) {
+    private int authorize(Authentication authentication, Object object, VotingConfig votingConfig) {
 
-        if (getRequirePermission()[0].equals(BasePermission.CREATE)) {
+        Object domainObject = getDomainObjectInstance(object , votingConfig);
+
+        if (votingConfig.getRequirePermission()[0].equals(BasePermission.CREATE)) {
             Permission[] permissions = new Permission[1];
             permissions[0] = BasePermission.WRITE;
-            return authorizeByParent(authentication, permissions, object);
+            return authorizeByParent(authentication, permissions, domainObject);
         }
-
-        Object domainObject = getDomainObjectInstance(object);
-
-        System.out.println("Voter Information");
-        System.out.println(getProcessConfigAttribute().getAttribute());
-        System.out.println(getRequirePermission().toString());
-
 
         // If domain object is null, vote to abstain
         if (domainObject == null) {
@@ -129,7 +125,7 @@ public class SmartAclVoter extends AbstractAclVoter {
         }
 
         // Obtain the OID applicable to the domain object
-        return authorizeByAcl(authentication, getRequirePermission(), domainObject);
+        return authorizeByAcl(authentication, votingConfig.getRequirePermission(), domainObject);
     }
 
     private int authorizeByAcl(Authentication authentication, Permission[] requirePermission, Object domainObject) {
@@ -145,10 +141,14 @@ public class SmartAclVoter extends AbstractAclVoter {
 
             if (aclService.readAclById(objectIdentity, sids) != null) {
                 acl = aclService.readAclById(objectIdentity, sids);
+                AclImpl aclImpl = (AclImpl) acl;
+                System.out.println("this is from smartaclvoter "+aclImpl.getAcl().getObjectIdentity().getOid());
+                
                 try {
                     if (acl.isGranted(requirePermission, sids, false)) {
                         return AccessDecisionVoter.ACCESS_GRANTED;
                     } else {
+                        System.out.println("Not Authorized directly.......... Checking with parents authorization");
                         return authorizeByParent(authentication, requirePermission, domainObject);
                     }
                 } catch (NotFoundException nfe) {
@@ -163,8 +163,10 @@ public class SmartAclVoter extends AbstractAclVoter {
     }
 
     private int authorizeByParent(Authentication authentication, Permission[] requirePermission, Object domainObject) {
-        List<String> listParent = ParentParser.getParentMethodName(domainObject.getClass().getName());
+        System.out.println("Parent Search is running  " + domainObject.getClass().getName() + " permission : " + requirePermission[0].getMask());
+        List<String> listParent = parentProvider.getParent(domainObject.getClass().getName());
         for (String parent : listParent) {
+            System.out.println("Parent is: " + parent);
             try {
                 Class objectClass = Class.forName(domainObject.getClass().getName());
                 Class[] partypes = new Class[]{};
@@ -192,5 +194,47 @@ public class SmartAclVoter extends AbstractAclVoter {
             }
         }
         return AccessDecisionVoter.ACCESS_DENIED;
+    }
+
+    public boolean supports(Class clazz) {
+        if (MethodInvocation.class.isAssignableFrom(clazz)) {
+            return true;
+        } else if (JoinPoint.class.isAssignableFrom(clazz)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private Object getDomainObjectInstance(Object secureObject, VotingConfig votingConfig) {
+        Object[] args;
+        Class[] params;
+
+        if (secureObject instanceof MethodInvocation) {
+            MethodInvocation invocation = (MethodInvocation) secureObject;
+            params = invocation.getMethod().getParameterTypes();
+            args = invocation.getArguments();
+        } else {
+            JoinPoint jp = (JoinPoint) secureObject;
+            params = ((CodeSignature) jp.getStaticPart().getSignature()).getParameterTypes();
+            args = jp.getArgs();
+        }
+
+        for (int i = 0; i < params.length; i++) {
+            if (votingConfig.getProcessDomainObjectClass().isAssignableFrom(params[i])) {
+                return args[i];
+            }
+        }
+
+        throw new AuthorizationServiceException("Secure object: " + secureObject
+            + " did not provide any argument of type: " + votingConfig.getProcessDomainObjectClass());
+    }
+
+    private VotingConfig getVotingConfig(ConfigAttribute attr) {
+        for(VotingConfig votingConfig : votingConfigProvider.getVotingConfigList()){
+            if(votingConfig.getProcessConfigAttribute().getAttribute().equals(attr.getAttribute()))
+                return votingConfig;
+        }
+        return new VotingConfig();
     }
 }
