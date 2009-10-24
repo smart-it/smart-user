@@ -19,6 +19,12 @@ import org.springframework.security.acls.sid.Sid;
  */
 public class AceImpl implements AccessControlEntry{
 
+    private Acl acl;
+
+    public AceImpl(Acl acl) {
+        this.acl = acl;
+    }
+
     private SmartAce ace;
 
     public SmartAce getAce() {
@@ -30,7 +36,7 @@ public class AceImpl implements AccessControlEntry{
     }
 
     public Acl getAcl() {
-        return new AclImpl(getAce().getAcl());
+        return acl;
     }
 
     public Permission getPermission() {
