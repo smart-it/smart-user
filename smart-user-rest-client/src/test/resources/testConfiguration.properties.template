@@ -1,4 +1,0 @@
-server=glassfish
-url=http://localhost/
-port=9998
-warname=smartuser

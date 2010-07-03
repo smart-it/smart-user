@@ -73,15 +73,7 @@
             </snapshots>
         </repository>
     </repositories>
-    <modules>
-        <module>smart-user-api</module>
-        <module>smart-user-impl</module>
-        <module>smart-user-element</module>
-        <module>smart-user-resource</module>
-        <module>smart-user-rest-client</module>
-        <module>smart-user-ui</module>
-        <module>smart-user-server</module>
-        <module>smart-user-security</module>
+    <modules>        
     </modules>
 
     <properties>
