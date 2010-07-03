@@ -75,6 +75,7 @@
     </repositories>
     <modules>
     <module>user-restful-common</module>
+    <module>user-restful-core</module>
   </modules>
 
     <properties>
