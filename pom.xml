@@ -73,8 +73,9 @@
             </snapshots>
         </repository>
     </repositories>
-    <modules>        
-    </modules>
+    <modules>
+    <module>user-restful-common</module>
+  </modules>
 
     <properties>
         <junit-version>3.8.1</junit-version>
