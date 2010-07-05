@@ -15,6 +15,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import com.smartitengineering.user.domain.User;
+import javax.ws.rs.POST;
+
 
 
 /**
@@ -22,7 +25,7 @@ import javax.ws.rs.core.UriInfo;
  * @author russel
  */
 
-
+@Path("{user}")
 public class UserResource {
 
     private UriInfo uriInfo;
@@ -32,17 +35,18 @@ public class UserResource {
     }
 
   @GET
-  @Produces(MediaType.APPLICATION_JSON)
-  @Path("{user}")
-  public Response getByUser() {
-      Response response = Response.created(uriInfo.getAbsolutePath()).build();
-      return response;
+  @Produces(MediaType.APPLICATION_JSON)  
+  public User getByUser(String userName) {
+      
+      return new User();
   }
 
-  @PUT
-  @Consumes("")
-  @Path()
-  public Response putUser(User )
+  @POST
+  @Consumes
+  @Path("users")
+  public void postUser(User user ){
+      
+  }
 
 
 }
