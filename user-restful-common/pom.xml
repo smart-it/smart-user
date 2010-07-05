@@ -19,5 +19,10 @@
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.smartitengineering.smart-user</groupId>
+            <artifactId>smart-user-api</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
     </dependencies>
 </project>
