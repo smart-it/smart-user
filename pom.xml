@@ -42,14 +42,7 @@
         </developer>
     </developers>
 
-    <dependencies>
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>jsr311-api</artifactId>
-            <version>${jaxrs.version}</version>
-        </dependency>        
-    </dependencies>
-
+    
 
     <pluginRepositories>
         <pluginRepository>
