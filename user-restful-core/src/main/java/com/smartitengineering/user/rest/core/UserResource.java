@@ -47,6 +47,4 @@ public class UserResource {
   public void postUser(User user ){
       
   }
-
-
 }
