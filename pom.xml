@@ -7,6 +7,50 @@
     <version>0.1-SNAPSHOT</version>
     <name>smart-user</name>
     <url>http://maven.apache.org</url>
+    <inceptionYear>2010</inceptionYear>
+    <description>
+        This project manages users of various application of smart it engineering. It can create user, assign roles to the user.
+    </description>
+    <organization>
+        <name>Smart IT Engineering</name>
+        <url>http://www.smartitengineering.com</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>frodooooo39</id>
+            <name>Mohiuddin K Russel</name>
+            <organization>Smart IT Engineering</organization>
+            <organizationUrl>http://www.smartitengineering.com</organizationUrl>
+            <email>mohiuddin.khosnoor@smartitengineering.com</email>
+            <roles>
+                <role>Architect</role>
+                <role>Developer</role>
+                <role>Maintainer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>modhu7</id>
+            <name>Subrata Sen Gupta</name>
+            <organization>Smart IT Engineering</organization>
+            <organizationUrl>http://www.smartitengineering.com</organizationUrl>
+            <email>modhu7@smartitengineering.com</email>
+            <roles>
+                <role>Architect</role>
+                <role>Developer</role>
+                <role>Maintainer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>jsr311-api</artifactId>
+            <version>${jaxrs.version}</version>
+        </dependency>        
+    </dependencies>
+
+
     <pluginRepositories>
         <pluginRepository>
             <id>maven2-repository.dev.java.net</id>
@@ -74,9 +118,11 @@
         </repository>
     </repositories>
     <modules>
-    <module>user-restful-common</module>
-    <module>user-restful-core</module>
-  </modules>
+        <module>smart-user-api</module>
+        <module>smart-user-impl</module>
+        <module>user-restful-common</module>
+        <module>user-restful-core</module>
+    </modules>
 
     <properties>
         <junit-version>3.8.1</junit-version>
@@ -93,6 +139,7 @@
         <cglib-version>2.1_3</cglib-version>
         <mysql-version>5.1.6</mysql-version>
         <commons-lang-version>2.3</commons-lang-version>
+        <commons-io-version>2.3</commons-io-version>
         <aspectj-weaver-version>1.6.2</aspectj-weaver-version>
         <spring-security-version>2.0.4</spring-security-version>
         <quartz-version>1.6.1</quartz-version>
@@ -103,5 +150,7 @@
         <maven-compiler-plugin-version>2.0.2</maven-compiler-plugin-version>
         <maven-jar-plugin-version>2.2</maven-jar-plugin-version>
         <maven-war-plugin-version>2.0.2</maven-war-plugin-version>
+        <atmosphere-version>0.5.7</atmosphere-version>
+        <jaxrs-version>1.1.1</jaxrs-version>
     </properties>
 </project>

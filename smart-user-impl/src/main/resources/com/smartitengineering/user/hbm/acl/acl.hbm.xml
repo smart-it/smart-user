@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class dynamic-insert="false" dynamic-update="false" name="com.smartitengineering.user.security.domain.SmartAcl" table="acl">
+    <id column="id" name="id" type="java.lang.Integer">
+      <generator class="increment">
+            </generator>
+    </id>
+    <version column="version" name="version"/>
+    <component name="objectIdentity">
+      <property column="oid" length="255" name="oid" type="java.lang.String" unique="true"/>
+    </component>
+    <many-to-one cascade="none" column="owner" lazy="false" name="owner"/>
+    <many-to-one cascade="none" column="parent" lazy="false" name="parentAcl"/>
+    <property column="is_entries_inheriting" length="255" name="entriesInheriting" type="java.lang.Boolean"/>
+  </class>
+</hibernate-mapping>
