@@ -3,14 +3,14 @@
     <parent>
         <artifactId>smart-user</artifactId>
         <groupId>com.smartitengineering</groupId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.smartitengineering.smart-user</groupId>
     <artifactId>smart-user-server</artifactId>
     <packaging>war</packaging>
     <name>smart-user-server</name>
-    <version>0.1-SNAPSHOT</version>
+    <version>${parent.version}</version>
     <url>http://maven.apache.org</url>
     <build>
         <finalName>smartuser</finalName>
@@ -46,12 +46,7 @@
             <groupId>com.smartitengineering.smart-user</groupId>
             <artifactId>smart-user-resource</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.smartitengineering.smart-user</groupId>
-            <artifactId>smart-user-element</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+        </dependency>        
         <dependency>
             <groupId>com.smartitengineering.smart-user</groupId>
             <artifactId>smart-user-security</artifactId>

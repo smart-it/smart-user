@@ -3,7 +3,7 @@
     <parent>
         <artifactId>smart-user</artifactId>
         <groupId>com.smartitengineering</groupId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.smartitengineering.smart-user</groupId>
@@ -22,11 +22,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring</artifactId>
             <version>${spring-version}</version>
-        </dependency>        
-        <dependency>
-            <groupId>com.smartitengineering.smart-user</groupId>
-            <artifactId>smart-user-element</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>
