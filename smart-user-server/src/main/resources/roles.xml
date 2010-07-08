@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : roles&privileges.xml
+    Created on : May 26, 2009, 6:30 PM
+    Author     : modhu7
+    Description:
+        Purpose of the document follows.
+-->
+
+
+
+<roles>
+    <role>
+        <name>ACL_USER_UPDATE</name>
+        <displayName>Update user</displayName>
+        <shortDescription>Role for updating user</shortDescription>
+        <privileges>
+            <privilege>user-${oid}</privilege>
+        </privileges>
+    </role>
+    <role>
+        <name>ACL_USER_DELETE</name>
+        <displayName>Delete user</displayName>
+        <shortDescription>Role for deleting user</shortDescription>
+        <privileges>
+            <privilege>user-${oid}</privilege>
+        </privileges>
+    </role>
+    <role>
+        <name>ACL_USER_READ</name>
+        <displayName>READ user</displayName>
+        <shortDescription>Role for reading user</shortDescription>
+        <privileges>
+            <privilege>user-${oid}</privilege>
+        </privileges>
+    </role>
+    <role>
+        <name>ROLE_GET</name>
+        <displayName>Get role</displayName>
+        <shortDescription>Role for requesting http get method</shortDescription>
+        <privileges></privileges>
+    </role>
+    <role>
+        <name>ROLE_PUT</name>
+        <displayName>Put role</displayName>
+        <shortDescription>Role for requesting http put method</shortDescription>
+        <privileges></privileges>
+    </role>
+    <role>
+        <name>ROLE_POST</name>
+        <displayName>Post role</displayName>
+        <shortDescription>Role for requesting http post method</shortDescription>
+        <privileges></privileges>
+    </role>
+    <role>
+        <name>ROLE_DELETE</name>
+        <displayName>Delete role</displayName>
+        <shortDescription>Role for requesting http get method</shortDescription>
+        <privileges></privileges>
+    </role>
+</roles>
