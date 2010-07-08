@@ -8,10 +8,6 @@ import com.smartitengineering.user.domain.Name;
 import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.filter.PersonFilter;
 import com.smartitengineering.user.service.PersonService;
-import com.smartitengineering.user.ws.element.ExceptionElement;
-import com.smartitengineering.user.ws.element.PersonElement;
-import com.smartitengineering.user.ws.element.PersonElements;
-import com.smartitengineering.user.ws.element.PersonFilterElement;
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import javax.annotation.Resource;
@@ -40,7 +36,7 @@ import org.springframework.stereotype.Component;
 @Scope(value = "singleton")
 public class PersonResource {
 
-    @Resource(name = "personService")
+    /*@Resource(name = "personService")
     private PersonService personService;
 
     @POST
@@ -181,4 +177,6 @@ public class PersonResource {
     public void setPersonService(PersonService personService) {
         this.personService = personService;
     }
+     * 
+     */
 }

@@ -7,10 +7,6 @@ package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.filter.SmartAclFilter;
 import com.smartitengineering.user.security.service.SmartAclService;
-import com.smartitengineering.user.ws.element.ExceptionElement;
-import com.smartitengineering.user.ws.element.SmartAclElement;
-import com.smartitengineering.user.ws.element.SmartAclElements;
-import com.smartitengineering.user.ws.element.SmartAclFilterElement;
 import javax.annotation.Resource;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -34,6 +30,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(value = "singleton")
 public class SmartAclResource {
+    /*
     @Resource(name = "smartAclService")
     private SmartAclService smartAclService;
 
@@ -128,4 +125,6 @@ public class SmartAclResource {
         }
         return smartAclElements;
     }
+     * 
+     */
 }

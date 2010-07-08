@@ -5,9 +5,6 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.service.RoleService;
-import com.smartitengineering.user.ws.element.ExceptionElement;
-import com.smartitengineering.user.ws.element.RoleElement;
-import com.smartitengineering.user.ws.element.RoleElements;
 import javax.annotation.Resource;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -30,7 +27,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(value = "singleton")
 public class RoleResource {
-
+/*
     @Resource(name = "userService")
     private RoleService roleService;
 
@@ -103,4 +100,6 @@ public class RoleResource {
         }
         return roleElements;
     }
+ * 
+ */
 }

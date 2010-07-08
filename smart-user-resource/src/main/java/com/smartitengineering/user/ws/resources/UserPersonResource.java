@@ -6,10 +6,6 @@ package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.filter.UserPersonFilter;
 import com.smartitengineering.user.service.UserPersonService;
-import com.smartitengineering.user.ws.element.ExceptionElement;
-import com.smartitengineering.user.ws.element.UserPersonElement;
-import com.smartitengineering.user.ws.element.UserPersonElements;
-import com.smartitengineering.user.ws.element.UserPersonFilterElement;
 import javax.annotation.Resource;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -35,7 +31,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(value = "singleton")
 public class UserPersonResource {
-
+/*
     @Resource(name = "userPersonService")
     private UserPersonService userPersonService;
 
@@ -154,4 +150,6 @@ public class UserPersonResource {
     public void setUserPersonService(UserPersonService userPersonService) {
         this.userPersonService = userPersonService;
     }
+ * 
+ */
 }

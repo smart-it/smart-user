@@ -5,9 +5,6 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.service.PrivilegeService;
-import com.smartitengineering.user.ws.element.ExceptionElement;
-import com.smartitengineering.user.ws.element.PrivilegeElement;
-import com.smartitengineering.user.ws.element.PrivilegeElements;
 import javax.annotation.Resource;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -30,7 +27,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(value = "singleton")
 public class PrivilegeResource {
-
+/*
     @Resource(name = "userService")
     private PrivilegeService privilegeService;
 
@@ -105,4 +102,6 @@ public class PrivilegeResource {
         }
         return privilegeElements;
     }
+ * 
+ */
 }
