@@ -5,6 +5,7 @@
 
 package com.smartitengineering.organization.services;
 
+import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.util.spring.BeanFactoryRegistrar;
 import com.smartitengineering.util.spring.annotations.InjectableField;
 
@@ -16,6 +17,7 @@ public class Services {
 
     @InjectableField
     private OrganizationService organizationService;
+    private UserService userService;
 
     private Services(){
         
@@ -23,6 +25,9 @@ public class Services {
 
     public OrganizationService getOrganizationService(){
         return organizationService;
+    }
+    public UserService getUserService(){
+        return userService;
     }
 
     private static Services services;
