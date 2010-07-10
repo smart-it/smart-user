@@ -18,7 +18,9 @@ public class Role extends AbstractPersistentDTO<Role> {
     private String name;
     private String displayName;
     private String shortDescription;
+    private Set<Permission> permissions;
     private Set<Role> roles;
+
 
     public Set<Role> getRoles() {
         if(roles == null){
@@ -33,20 +35,20 @@ public class Role extends AbstractPersistentDTO<Role> {
         }
         this.roles = roles;
     }
-    private Set<Privilege> privileges;
+    
 
-    public Set<Privilege> getPrivileges() {
-        if (privileges == null) {
-            privileges = new HashSet<Privilege>();
+    public Set<Permission> getPermissions() {
+        if (permissions == null) {
+            permissions = new HashSet<Permission>();
         }
-        return privileges;
+        return permissions;
     }
 
-    public void setPrivileges(Set<Privilege> privileges) {
-        if (privileges == null) {
+    public void setPermissions(Set<Permission> permissions) {
+        if (permissions == null) {
             return;
         }
-        this.privileges = privileges;
+        this.permissions = permissions;
     }
 
     public String getDisplayName() {
