@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.organization.resource;
+package com.smartitengineering.user.ws.resources;
 
 
 /**
@@ -25,6 +25,20 @@ import org.apache.abdera.model.Link;
 @Path("/organizations")
 public class OrganizationsResource {
 
+    static final UriBuilder ORGANIZATION_URI_BUILDER;
+    static final UriBuilder ORGANIZATION_AFTER_ID_BUILDER;
+    static final UriBuilder ORGANIZATION_BEFORE_ID_BUILDER;
+
+    static{
+        ORGANIZATION_URI_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
+        ORGANIZATION_BEFORE_ID_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
+        try{
+            ORGANIZATION_BEFORE_ID_BUILDER.path(OrganizationResource.class.getMethod("getBefore", String.class));
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
     @GET
     @Produces("")
 

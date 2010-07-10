@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.organization.resource;
+package com.smartitengineering.user.ws.resources;
 
 
 import java.util.Date;

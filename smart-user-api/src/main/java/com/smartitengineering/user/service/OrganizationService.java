@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.organization.services;
+package com.smartitengineering.user.service;
 
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.filter.OrganizationFilter;

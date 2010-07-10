@@ -3,12 +3,15 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.organization.resource;
+package com.smartitengineering.user.ws.resources;
 
-import com.smartitengineering.organization.services.Services;
+import com.smartitengineering.user.impl.Services;
 import com.smartitengineering.user.domain.User;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -16,6 +19,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
@@ -56,6 +60,18 @@ public class UsersResource extends AbstractResource{
         atomFeed.addLink(usersLink);
 
         Collection<User> users = Services.getInstance().getUserService().getAllUser();
+
+        if(users != null && !users.isEmpty()){
+
+            MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+            List<User> userList = new ArrayList<User>(users);
+
+            Link nextLink = abderaFactory.newLink();
+            nextLink.setRel(Link.REL_PREVIOUS);
+            
+        }
+
+        return responseBuilder.build();
     }
 
     @POST

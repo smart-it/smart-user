@@ -50,6 +50,21 @@ public class UserServiceImpl implements UserService, RoleService,
         this.personService = personService;
     }
 
+    public void save(User user){
+        validateUser(user);
+
+        try{
+            getUserWriteDao().save(user);
+        }catch(ConstraintViolationException e){
+            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-"+UniqueConstrainedField.OTHER;
+            throw new RuntimeException(message, e);
+        }catch(StaleStateException e){
+            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name()+"-"+UniqueConstrainedField.OTHER;
+            throw new RuntimeException(message, e);
+        }
+
+    }
+
     public void update(User user) {
         validateUser(user);
         try {

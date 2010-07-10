@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.organization.services;
+package com.smartitengineering.user.impl;
 
+import com.smartitengineering.user.service.OrganizationService;
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.util.spring.BeanFactoryRegistrar;
 import com.smartitengineering.util.spring.annotations.InjectableField;
