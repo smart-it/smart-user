@@ -17,6 +17,7 @@ public class User extends AbstractPersistentDTO<User> {
 
     private String username;
     private String password;
+    private Organization organization;
     private Set<Role> roles;
 
     public String getPassword() {
