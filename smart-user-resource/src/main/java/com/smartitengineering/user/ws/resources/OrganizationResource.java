@@ -3,9 +3,9 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.organization.resource;
+package com.smartitengineering.user.ws.resources;
 
-import com.smartitengineering.organization.services.Services;
+import com.smartitengineering.user.impl.Services;
 import com.smartitengineering.user.domain.Organization;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.MediaType;
