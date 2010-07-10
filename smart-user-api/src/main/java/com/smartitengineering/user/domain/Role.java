@@ -18,6 +18,21 @@ public class Role extends AbstractPersistentDTO<Role> {
     private String name;
     private String displayName;
     private String shortDescription;
+    private Set<Role> roles;
+
+    public Set<Role> getRoles() {
+        if(roles == null){
+            roles = new HashSet<Role>();
+        }
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        if(roles==null){
+            return;
+        }
+        this.roles = roles;
+    }
     private Set<Privilege> privileges;
 
     public Set<Privilege> getPrivileges() {
