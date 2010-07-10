@@ -33,6 +33,11 @@
             <artifactId>smart-user-api</artifactId>
             <version>${project.version}</version>            
         </dependency>
+        <dependency>
+            <groupId>com.smartitengineering.smart-user</groupId>
+            <artifactId>smart-user-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
