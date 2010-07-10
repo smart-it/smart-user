@@ -17,6 +17,15 @@ public class Address extends AbstractPersistentDTO<Address> {
     private String state;
     private String country;
     private String zip;
+    private GeoLocation geoLocation;
+
+    public GeoLocation getGeoLocation() {
+        return geoLocation;
+    }
+
+    public void setGeoLocation(GeoLocation geoLocation) {
+        this.geoLocation = geoLocation;
+    }
 
     public String getCountry() {
         if (country == null) {
