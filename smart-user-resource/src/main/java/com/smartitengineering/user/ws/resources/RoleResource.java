@@ -23,11 +23,12 @@ import org.springframework.stereotype.Component;
  *
  * @author modhu7
  */
+/*
 @Path("role")
 @Component
 @Scope(value = "singleton")
 public class RoleResource {
-/*
+
     @Resource(name = "userService")
     private RoleService roleService;
 
@@ -101,5 +102,6 @@ public class RoleResource {
         return roleElements;
     }
  * 
- */
+ 
 }
+*/

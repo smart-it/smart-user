@@ -23,11 +23,12 @@ import org.springframework.stereotype.Component;
  *
  * @author modhu7
  */
+/*
 @Path("privilege")
 @Component
 @Scope(value = "singleton")
 public class PrivilegeResource {
-/*
+
     @Resource(name = "userService")
     private PrivilegeService privilegeService;
 
@@ -103,5 +104,6 @@ public class PrivilegeResource {
         return privilegeElements;
     }
  * 
- */
+ 
 }
+*/

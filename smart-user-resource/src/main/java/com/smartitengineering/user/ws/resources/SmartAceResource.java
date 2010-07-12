@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
  *
  * @author modhu7
  */
+/*
 @Path("smartace")
 @Component
 @Scope(value = "singleton")
@@ -124,5 +125,6 @@ public class SmartAceResource {
         return smartAceElements;
     }
      * 
-     */
+     
 }
+*/

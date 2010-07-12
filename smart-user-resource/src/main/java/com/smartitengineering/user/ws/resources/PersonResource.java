@@ -31,12 +31,13 @@ import org.springframework.stereotype.Component;
  *
  * @author modhu7
  */
+/*
 @Path("person")
 @Component
 @Scope(value = "singleton")
 public class PersonResource {
 
-    /*@Resource(name = "personService")
+    @Resource(name = "personService")
     private PersonService personService;
 
     @POST
@@ -178,5 +179,6 @@ public class PersonResource {
         this.personService = personService;
     }
      * 
-     */
+     
 }
+*/

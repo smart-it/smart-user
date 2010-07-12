@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
  *
  * @author modhu7
  */
+/*
 @Path("userperson")
 @Component
 @Scope(value = "singleton")
@@ -151,5 +152,6 @@ public class UserPersonResource {
         this.userPersonService = userPersonService;
     }
  * 
- */
+ 
 }
+*/
