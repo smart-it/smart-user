@@ -6,8 +6,9 @@
 package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
-import com.smartitengineering.domain.PersistentDTO;
+import java.util.Date;
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 
 /**
@@ -16,9 +17,28 @@ import org.apache.commons.lang.StringUtils;
  */
 public class Organization extends AbstractPersistentDTO<Organization> {
 
-    private String organizationName;
+    private String name;
+    private String uniqueShortName;
     private String address;
     private String contactPerson;
+
+    private Date lastModifiedDate;
+
+    public Organization(String name, String uniqueShortName) {
+        this.name = name;
+        this.uniqueShortName = uniqueShortName;
+    }
+
+    @JsonIgnore
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    @JsonIgnore
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
 
     public String getAddress() {
         if(address == null)
@@ -38,20 +58,10 @@ public class Organization extends AbstractPersistentDTO<Organization> {
 
     public void setContactPerson(String contactPerson) {
         this.contactPerson = contactPerson;
-    }
-
-    public String getOrganizationName() {
-        if(organizationName == null)
-            organizationName = "";
-        return organizationName;
-    }
-
-    public void setOrganizationName(String organizationName) {
-        this.organizationName = organizationName;
-    }
+    }       
 
     public boolean isValid(){
-        return StringUtils.isNotBlank(address) && StringUtils.isNotBlank(organizationName) && StringUtils.isNotBlank(contactPerson);
+        return StringUtils.isNotBlank(address) && StringUtils.isNotBlank(name) && StringUtils.isNotBlank(contactPerson) && StringUtils.isNotBlank(uniqueShortName);
     }
 
 
