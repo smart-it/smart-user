@@ -15,6 +15,7 @@ import java.util.Collection;
  */
 public interface OrganizationService {
 
+    public void save(Organization organization);
     public void update(Organization organization);
     public void delete(Organization organization);
     public Collection<Organization> search(OrganizationFilter organizationFilter);
