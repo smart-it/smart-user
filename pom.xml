@@ -120,7 +120,7 @@
 
     <properties>
         <junit-version>3.8.1</junit-version>
-        <jersey-version>1.0.3</jersey-version>
+        <jersey-version>1.3</jersey-version>
         <smart-dao-version>0.4-SNAPSHOT</smart-dao-version>
         <smart-util-version>0.1</smart-util-version>
         <spring-version>2.5.6</spring-version>
