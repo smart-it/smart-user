@@ -32,12 +32,13 @@ public class OrganizationsResource {
     static{
         ORGANIZATION_URI_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
         ORGANIZATION_BEFORE_ID_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
-        try{
-            ORGANIZATION_BEFORE_ID_BUILDER.path(OrganizationResource.class.getMethod("getBefore", String.class));
-        }
-        catch(Exception ex){
-            ex.printStackTrace();
-        }
+        ORGANIZATION_AFTER_ID_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
+//        try{
+//            ORGANIZATION_BEFORE_ID_BUILDER.path(OrganizationResource.class.getMethod("getBefore", String.class));
+//        }
+//        catch(Exception ex){
+//            ex.printStackTrace();
+//        }
     }
     @GET
     @Produces("")
