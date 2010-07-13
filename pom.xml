@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>    
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.smartitengineering</groupId>
+        <artifactId>smart-core</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
     <groupId>com.smartitengineering</groupId>
     <artifactId>smart-user</artifactId>
     <packaging>pom</packaging>
     <version>0.2-SNAPSHOT</version>
     <name>smart-user</name>
-    <url>http://maven.apache.org</url>
+    <url>http://github.com/smart-it/smart-user</url>
     <inceptionYear>2010</inceptionYear>
     <description>
         This project manages users of various application of smart it engineering. It can create user, assign roles to the user.
@@ -41,75 +46,58 @@
             </roles>
         </developer>
     </developers>
-
-    
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>maven2-repository.dev.java.net</id>
-            <name>Java.net Repository for Maven</name>
-            <url>http://download.java.net/maven/2/</url>
-            <layout>default</layout>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </pluginRepository>
-        <pluginRepository>
-            <id>maven-repository.dev.java.net</id>
-            <name>Java.net Maven 1 Repository (legacy)</name>
-            <url>http://download.java.net/maven/1</url>
-            <layout>legacy</layout>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </pluginRepository>
-        <!--
-        <pluginRepository>
-            <id>codehaus-snapshot</id>
-            <name>Codehaus Snapshot Repository</name>
-            <url>http://snapshots.repository.codehaus.org/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </pluginRepository>
-        -->
-    </pluginRepositories>
-    <repositories>
-        <repository>
-            <id>maven2-repository.dev.java.net</id>
-            <name>Java.net Repository for Maven</name>
-            <url>http://download.java.net/maven/2/</url>
-            <layout>default</layout>
-        </repository>
-        <repository>
-            <id>maven-repository.dev.java.net</id>
-            <name>Java.net Maven 1 Repository (legacy)</name>
-            <url>http://download.java.net/maven/1</url>
-            <layout>legacy</layout>
-        </repository>
-        <repository>
-            <id>glassfish-repository</id>
-            <name>Java.net Repository for Glassfish</name>
-            <url>http://download.java.net/maven/glassfish</url>
-        </repository>
-        <repository>
-            <id>smart-it-snapshot-repo</id>
-            <name>Smart IT Engineering snapshot repo</name>
-            <url>http://dev.smartitengineering.com/maven-repo/snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+    <distributionManagement>
+        <!-- deploy site here -->
+        <site>
+          <id>smartit-googlecode</id>
+          <name>Smart IT Engineering GoogleCode repository</name>
+          <url>svn:https://imyousuf@smart-it.googlecode.com/svn/maven2/site/user</url>
+        </site>
+    </distributionManagement>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-changelog-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </reporting>
     <modules>
         <module>smart-user-api</module>
         <module>smart-user-impl</module>
@@ -117,34 +105,4 @@
         <module>smart-user-security</module>
         <module>smart-user-server</module>
     </modules>
-
-    <properties>
-        <junit-version>3.8.1</junit-version>
-        <jersey-version>1.0.3</jersey-version>
-        <smart-dao-version>0.4-SNAPSHOT</smart-dao-version>
-        <smart-util-version>0.1</smart-util-version>
-        <spring-version>2.5.6</spring-version>
-        <glassfish-dist-version>10.0-build-20080430</glassfish-dist-version>
-        <glassfish-embedded-version>1.0-alpha-4</glassfish-embedded-version>
-        <hibernate-version>3.2.6.ga</hibernate-version>
-        <derby-version>10.4.2.0</derby-version>
-        <c3p0-version>0.9.1.2</c3p0-version>
-        <javax-version>1.0</javax-version>
-        <cglib-version>2.1_3</cglib-version>
-        <mysql-version>5.1.6</mysql-version>
-        <commons-lang-version>2.3</commons-lang-version>
-        <commons-io-version>2.3</commons-io-version>
-        <aspectj-weaver-version>1.6.2</aspectj-weaver-version>
-        <spring-security-version>2.0.4</spring-security-version>
-        <quartz-version>1.6.1</quartz-version>
-        <commons-collections-version>3.2</commons-collections-version>
-        <aspectjrt-version>1.6.2</aspectjrt-version>
-        <java-source-version>1.5</java-source-version>
-        <java-target-version>1.5</java-target-version>
-        <maven-compiler-plugin-version>2.0.2</maven-compiler-plugin-version>
-        <maven-jar-plugin-version>2.2</maven-jar-plugin-version>
-        <maven-war-plugin-version>2.0.2</maven-war-plugin-version>
-        <atmosphere-version>0.5.7</atmosphere-version>
-        <jaxrs-version>1.1.1</jaxrs-version>
-    </properties>
 </project>

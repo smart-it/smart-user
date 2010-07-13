@@ -10,23 +10,18 @@
     <artifactId>smart-user-resource</artifactId>
     <name>smart-user-resource</name>
     <version>${parent.version}</version>
-    <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>${junit-version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring</artifactId>
-            <version>${spring-version}</version>
         </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>jsr311-api</artifactId>
-            <version>${javax-version}</version>
         </dependency>
         <dependency>
             <groupId>com.smartitengineering.smart-user</groupId>
@@ -39,16 +34,4 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <inherited>true</inherited>
-                <configuration>
-                    <source>${java-source-version}</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>
