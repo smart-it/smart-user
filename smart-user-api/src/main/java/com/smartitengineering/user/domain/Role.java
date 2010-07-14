@@ -33,6 +33,23 @@ public class Role extends AbstractPersistentDTO<Role> {
         this.shortDescription = shortDescription;
     }
 
+
+
+    public Set<Role> getRoles() {
+        if(roles == null){
+            roles = new HashSet<Role>();
+        }
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        if(roles==null){
+            return;
+        }
+        this.roles = roles;
+    }
+    
+
     public Set<Privilege> getPrivileges() {
         if (privileges == null) {
             privileges = new HashSet<Privilege>();
@@ -45,20 +62,7 @@ public class Role extends AbstractPersistentDTO<Role> {
             return;
         }
         this.privileges = privileges;
-    }
-
-    public Set<Role> getRoles() {
-        if(roles == null){
-            roles = new HashSet<Role>();
-        }
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        if(roles == null)
-            return;
-        this.roles = roles;
-    }
+    }   
 
 
 

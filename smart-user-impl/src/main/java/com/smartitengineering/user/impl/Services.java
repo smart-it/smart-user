@@ -11,8 +11,8 @@ import com.smartitengineering.user.service.OrganizationService;
 import com.smartitengineering.user.service.PrivilegeService;
 import com.smartitengineering.user.service.RoleService;
 import com.smartitengineering.user.service.UserService;
-import com.smartitengineering.util.spring.BeanFactoryRegistrar;
-import com.smartitengineering.util.spring.annotations.InjectableField;
+import com.smartitengineering.util.bean.BeanFactoryRegistrar;
+import com.smartitengineering.util.bean.annotations.InjectableField;
 
 /**
  *
