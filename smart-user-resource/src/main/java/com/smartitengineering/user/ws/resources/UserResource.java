@@ -4,8 +4,13 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.user.domain.User;
+import newpackage1.*;
 import com.smartitengineering.user.filter.UserFilter;
+import com.smartitengineering.user.impl.Services;
 import com.smartitengineering.user.service.UserService;
+import java.util.Calendar;
+import java.util.Date;
 import javax.annotation.Resource;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -18,8 +23,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriBuilderException;
+import org.apache.abdera.model.Feed;
+import org.apache.abdera.model.Link;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -27,116 +38,86 @@ import org.springframework.stereotype.Component;
  *
  * @author modhu7
  */
-@Path("user")
+
+@Path("/user/{username}")
 @Component
 @Scope(value = "singleton")
-public class UserResource {
-/*
-    @Resource(name = "userService")
-    private UserService userService;
+public class UserResource extends AbstractResource{
+
+    private User user;
+
+    static final UriBuilder USER_URI_BUILDER = UriBuilder.fromResource(UserResource.class);
+    static final UriBuilder USER_CONTENT_URI_BUILDER;
+
+    static{
+        USER_CONTENT_URI_BUILDER = USER_URI_BUILDER.clone();
+        try{
+            USER_CONTENT_URI_BUILDER.path(UserResource.class.getMethod("getUser"));
+        }catch(Exception ex){
+            ex.printStackTrace();
+            throw new InstantiationError();
+        }
+    }
+
+    public UserResource(){
+        
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_ATOM_XML)
+    public Response get(){
+        Feed userFeed = getUserFeed();
+        ResponseBuilder responseBuilder = Response.ok(userFeed);
+        return responseBuilder.build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/content")
+    public Response getOrganization() {
+        ResponseBuilder responseBuilder = Response.ok(user);
+        return responseBuilder.build();
+    }
 
     @PUT
-    @Consumes("application/xml")
-    public Response updateUser(UserElement userElement) {
-        try {
-            userService.update(userElement.getUser());
-            return Response.ok().build();
-        } catch (RuntimeException e) {
-            String group = e.getMessage().split("-")[0];
-            String field = e.getMessage().split("-")[1];
-            ExceptionElement exceptionElement = new ExceptionElement();
-            exceptionElement.setGroup(group);
-            exceptionElement.setFieldCausedBy(field);
-            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).
-                    entity(exceptionElement).build();
+    @Produces(MediaType.APPLICATION_ATOM_XML)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response update(User newUser) {
+        ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+        try {            
+            Services.getInstance().getUserService().save(newUser);
+            user = Services.getInstance().getUserService().getUserByUsername(newUser.getUsername());
+            responseBuilder = Response.ok(getUserFeed());
         }
+        catch (Exception ex) {
+            responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+            ex.printStackTrace();
+        }
+        return responseBuilder.build();
+    }
+
+    private Feed getUserFeed() throws UriBuilderException, IllegalArgumentException{
+        Feed userFeed = getFeed(user.getUsername(), new Date());
+        userFeed.addLink(getSelfLink());
+        Link editLink = abderaFactory.newLink();
+        editLink.setHref(uriInfo.getRequestUri().toString());
+        editLink.setRel(Link.REL_EDIT);
+        editLink.setMimeType(MediaType.APPLICATION_JSON);
+        Link altLink = abderaFactory.newLink();
+        altLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(user.getUsername()).toString());
+        altLink.setRel(Link.REL_ALTERNATE);
+        altLink.setMimeType(MediaType.APPLICATION_JSON);
+        userFeed.addLink(altLink);
+
+        return userFeed;
     }
 
     @DELETE
-    @Path("{username}")
-    @Consumes("application/xml")
-    public Response deleteUser(@PathParam("username") String username) {
-        try {
-            userService.delete(userService.getUserByUsername(username));
-        } catch (Exception e) {            
-            String group = e.getMessage().split("-")[0];
-            String field = e.getMessage().split("-")[1];
-            ExceptionElement exceptionElement = new ExceptionElement();
-            exceptionElement.setGroup(group);
-            exceptionElement.setFieldCausedBy(field);
-            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).
-                    entity(exceptionElement).build();
-        }
-        return Response.ok().build();
+    public Response delete() {
+        Services.getInstance().getUserService().delete(user);
+        ResponseBuilder responseBuilder = Response.ok();
+        return responseBuilder.build();
     }
-
-    @POST
-    @Path("search")
-    @Consumes("application/xml")
-    @Produces("application/xml")
-    public UserElements searchUserByPost(
-            UserFilterElement userFilterElement) {
-        UserElements userElements = new UserElements();
-        UserFilter userFilter;
-        if (userFilterElement != null && userFilterElement.getUserFilter() !=
-                null) {
-            userFilter = userFilterElement.getUserFilter();
-        } else {
-            userFilter = new UserFilter();
-        }
-        try {
-            userElements.setUsers(userService.search(userFilter));
-        } catch (Exception e) {
-        }
-        return userElements;
-    }
-
-    @GET
-    @Path("{username}")
-    @Produces("application/xml")
-    public UserElement getUserByID(
-            @PathParam("username") String username) {
-        UserElement userElement = new UserElement();
-        try {
-            userElement.setUser(userService.getUserByUsername(username));
-        } catch (Exception e) {
-        }
-        return userElement;
-    }
-
-    @GET
-    @Path("alluser")
-    @Produces("application/xml")
-    public UserElements getAllUser() {
-        UserElements userElements = new UserElements();
-        try {
-            userElements.setUsers(userService.getAllUser());
-        } catch (Exception e) {
-        }
-        return userElements;
-    }
-
-    @GET
-    @Produces("application/xml")
-    public UserElements searchUserByGet(
-            @DefaultValue(value = "NO USERNAME") @QueryParam(value = "username") final String username) {
-        UserFilter filter = new UserFilter();
-        filter.setUsername(username);
-        UserElements userElements = new UserElements();
-        try {
-            userElements.setUsers(userService.search(filter));
-        } catch (Exception e) {
-        }
-        return userElements;
-    }
-
-    public UserService getUserService() {
-        return userService;
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
- * 
- */
+  
+ 
 }

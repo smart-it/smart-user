@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
  *
  * @author modhu7
  */
+/*
 @Path("smartacl")
 @Component
 @Scope(value = "singleton")
@@ -126,5 +127,6 @@ public class SmartAclResource {
         return smartAclElements;
     }
      * 
-     */
+     
 }
+*/

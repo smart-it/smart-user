@@ -90,14 +90,14 @@ public class InitialRoleFactory {
                     NodeList displayNames = displayNameElement.getChildNodes();
                     String displayName = ((Node) displayNames.item(0)).getNodeValue();
                     System.out.println("Display Name : " + displayName);
-                    privilege.setDisplayName(displayName);
+                    //privilege.setDisplayName(displayName);
 
                     NodeList shortDescriptionList = privilegeElement.getElementsByTagName("shortDescription");
                     Element shortDescriptionElement = (Element) shortDescriptionList.item(0);
                     NodeList shortDescriptions = shortDescriptionElement.getChildNodes();
                     String description = ((Node) shortDescriptions.item(0)).getNodeValue();
                     System.out.println("Description: " + description);
-                    privilege.setShortDescription(description);
+                    //privilege.setShortDescription(description);
                     privilegeService.create(privilege);
                 }
 
@@ -160,8 +160,8 @@ public class InitialRoleFactory {
                         NodeList privilegeNodeList = privilegeElementList.item(p).getChildNodes();
                         String privilegeName = ((Node) privilegeNodeList.item(0)).getNodeValue();
                         System.out.println(privilegeName);
-                        Privilege privilege = privilegeService.getPrivilegeByName(privilegeName);
-                        System.out.print(privilege.getDisplayName());
+                        Privilege privilege = privilegeService.getPrivilegesByObjectID(privilegeName);
+                        System.out.print(privilege.getName());
                         privileges.add(privilege);
                     }
                     role.setPrivileges(privileges);
@@ -270,7 +270,7 @@ public class InitialRoleFactory {
                         NodeList roleNodeList = roleElementList.item(p).getChildNodes();
                         String roleName = ((Node) roleNodeList.item(0)).getNodeValue();
                         System.out.println(roleName);
-                        Role role = roleService.getRoleByName(roleName);
+                        Role role = roleService.getRoleByUserID(roleName);
                         System.out.print(role.getDisplayName());
                         roles.add(role);
                     }

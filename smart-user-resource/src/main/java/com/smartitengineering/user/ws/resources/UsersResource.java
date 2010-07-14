@@ -32,7 +32,7 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-@Path("/users")
+@Path("/organizations/{organizationName}/users")
 public class UsersResource extends AbstractResource{
 
     @QueryParam("username")

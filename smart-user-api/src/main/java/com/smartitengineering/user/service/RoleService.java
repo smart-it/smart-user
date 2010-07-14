@@ -17,9 +17,9 @@ public interface RoleService {
 
     void delete(Role role);
 
-    Role getRoleByName(String name);
+    Role getRoleByUserID(String userID);
 
-    Collection<Role> getRolesByName(String name);
+    Collection<Role> getRolesByOrganizationAndUser(String organization, String user);
 
     void update(Role role);
 }

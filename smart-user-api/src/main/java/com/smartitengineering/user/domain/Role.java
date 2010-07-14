@@ -5,6 +5,7 @@
 package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
@@ -18,8 +19,20 @@ public class Role extends AbstractPersistentDTO<Role> {
     private String name;
     private String displayName;
     private String shortDescription;
-    private Set<Permission> permissions;
+    private Set<Privilege> privileges;
     private Set<Role> roles;
+    private Date lastModifiedDate;
+
+    public Role(){
+
+    }
+
+    public Role(String name, String displayName, String shortDescription){
+        this.name = name;
+        this.displayName = displayName;
+        this.shortDescription = shortDescription;
+    }
+
 
 
     public Set<Role> getRoles() {
@@ -37,19 +50,21 @@ public class Role extends AbstractPersistentDTO<Role> {
     }
     
 
-    public Set<Permission> getPermissions() {
-        if (permissions == null) {
-            permissions = new HashSet<Permission>();
+    public Set<Privilege> getPrivileges() {
+        if (privileges == null) {
+            privileges = new HashSet<Privilege>();
         }
-        return permissions;
+        return privileges;
     }
 
-    public void setPermissions(Set<Permission> permissions) {
-        if (permissions == null) {
+    public void setPrivileges(Set<Privilege> privileges) {
+        if (privileges == null) {
             return;
         }
-        this.permissions = permissions;
-    }
+        this.privileges = privileges;
+    }   
+
+
 
     public String getDisplayName() {
         if (displayName == null) {
@@ -91,6 +106,14 @@ public class Role extends AbstractPersistentDTO<Role> {
             return;
         }
         this.shortDescription = shortDescription;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public boolean isValid() {

@@ -38,7 +38,7 @@ public class OrganizationResource extends AbstractResource {
     static {
         ORGANIZATION_CONTENT_URI_BUILDER = ORGANIZATION_URI_BUILDER.clone();
         try {
-            ORGANIZATION_CONTENT_URI_BUILDER.path(OrganizationResource.class.getMethod("getBook"));
+            ORGANIZATION_CONTENT_URI_BUILDER.path(OrganizationResource.class.getMethod("getOrganization"));
         }
         catch (Exception ex) {
             throw new InstantiationError();
@@ -98,8 +98,8 @@ public class OrganizationResource extends AbstractResource {
     }
 
     private Feed getOrganizationFeed() throws UriBuilderException, IllegalArgumentException {
-        Feed organizationFeed = getFeed(organization.getOrganizationName(), organization.getLastModifiedDate());
-        organizationFeed.setTitle(organization.getOrganizationName());
+        Feed organizationFeed = getFeed(organization.getAddress(), organization.getLastModifiedDate());
+        //organizationFeed.setTitle(organization.get);
         organizationFeed.addLink(getSelfLink());
         Link editLink = abderaFactory.newLink();
         editLink.setHref(uriInfo.getRequestUri().toString());

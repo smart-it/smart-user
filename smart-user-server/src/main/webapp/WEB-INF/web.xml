@@ -1,32 +1,42 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
-<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>
-            classpath:com/smartitengineering/user/server/app-context.xml
-            classpath:com/smartitengineering/user/security/app-context-security.xml
-        </param-value>
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <display-name>>Smart User Server</display-name>
+<!--    <context-param>
+        <param-name>classpathAppContextLocation</param-name>
+        <param-value>com/smartitengineering/roa-demo/app-max-context.xml</param-value>
     </context-param>
     <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
-    <servlet>
-        <servlet-name>Jersey Spring Web Application</servlet-name>
-        <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Jersey Spring Web Application</servlet-name>
-        <url-pattern>/*</url-pattern>
-    </servlet-mapping>
+        <listener-class>com.smartitengineering.util.bean.spring.ClasspathXmlContextLoader</listener-class>
+    </listener>-->
+
     <filter>
-        <filter-name>springSecurityFilterChain</filter-name>
-        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <filter-name>Jersey Filter</filter-name>
+        <filter-class>com.sun.jersey.spi.container.servlet.ServletContainer</filter-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.feature.Redirect</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>com.sun.jersey.config.feature.ImplicitViewables</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>com.smartitengineering.user.ws.resources</param-value>
+        </init-param>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
+            <param-value>/(images|css|jsp)/.*</param-value>
+        </init-param>
     </filter>
     <filter-mapping>
-        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-name>Jersey Filter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
 </web-app>

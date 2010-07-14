@@ -26,6 +26,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
@@ -89,8 +90,8 @@ public class OrganizationsResource extends AbstractResource{
     }
 
 
-    @GET
-    @Produces(MediaType.APPLICATION_ATOM_XML)
+//    @GET
+//    @Produces(MediaType.APPLICATION_ATOM_XML)
     public Response get(String organizationName, boolean isBefore)
     {
         ResponseBuilder responseBuilder = Response.ok();
@@ -100,7 +101,11 @@ public class OrganizationsResource extends AbstractResource{
         organizationsLink.setRel("root");
         atomFeed.addLink(organizationsLink);
 
-        Collection<Organization> organizations = Services.getInstance().getOrganizationService().getAllOrganization();
+        //Collection<Organization> organizations = Services.getInstance().getOrganizationService().getAllOrganization();
+        List<Organization> serviceOrganization = new ArrayList<Organization>();
+        serviceOrganization.add(new Organization("Sitel", "1"));
+        serviceOrganization.add(new Organization("mehmood equity", "2"));
+        Collection<Organization> organizations = serviceOrganization;
 
         if(organizations != null && !organizations.isEmpty()){
 
@@ -119,21 +124,21 @@ public class OrganizationsResource extends AbstractResource{
                 nextUri.queryParam(key, values);
                 previousUri.queryParam(key, values);
             }
-            nextLink.setHref(nextUri.build(lastOrganization.getOrganizationName()).toString());
+            //nextLink.setHref(nextUri.build(lastOrganization.getOrganizationName()).toString());
             atomFeed.addLink(nextLink);
             Link prevLink = abderaFactory.newLink();
             prevLink.setRel(Link.REL_NEXT);
             Organization firstOrganization = organizationList.get(organizations.size() - 1);
-            prevLink.setHref(previousUri.build(firstOrganization.getOrganizationName()).toString());
+            //prevLink.setHref(previousUri.build(firstOrganization.getOrganizationName()).toString());
             atomFeed.addLink(prevLink);
             for (Organization organization : organizations) {
               Entry organizationEntry = abderaFactory.newEntry();
               organizationEntry.setId(organization.getId().toString());
-              organizationEntry.setTitle(organization.getOrganizationName());
-              organizationEntry.setSummary(organization.getOrganizationName());
+              //organizationEntry.setTitle(organization.getOrganizationName());
+              //organizationEntry.setSummary(organization.getOrganizationName());
               organizationEntry.setUpdated(organization.getLastModifiedDate());
               Link organizationLink = abderaFactory.newLink();
-              organizationLink.setHref(OrganizationsResource.ORGANIZATION_URI_BUILDER.clone().build(organization.getOrganizationName()).toString());
+              //organizationLink.setHref(OrganizationsResource.ORGANIZATION_URI_BUILDER.clone().build(organization.getOrganizationName()).toString());
               organizationLink.setRel(Link.REL_ALTERNATE);
               organizationLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
               organizationEntry.addLink(organizationLink);
@@ -149,10 +154,11 @@ public class OrganizationsResource extends AbstractResource{
     public Response post(Organization organization) {
     ResponseBuilder responseBuilder;
     try {
-      Services.getInstance().getOrganizationService().populateAuthor(organization);
+      //Services.getInstance().getOrganizationService().populateAuthor(organization);
       Services.getInstance().getOrganizationService().save(organization);
       responseBuilder = Response.status(Response.Status.CREATED);
-      responseBuilder.location(OrganizationResource.ORGANIZATION_URI_BUILDER.clone().build(organization.getOrganizationName()));
+      //responseBuilder.location(OrganizationResource.ORGANIZATION_URI_BUILDER.clone().build(organization.getOrganizationName()));
+      
     }    
     catch (Exception ex) {
       responseBuilder = Response.status(Response.Status.INTERNAL_SERVER_ERROR);

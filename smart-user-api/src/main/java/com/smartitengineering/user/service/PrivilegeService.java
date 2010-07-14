@@ -17,9 +17,10 @@ public interface PrivilegeService {
 
     void delete(Privilege privilege);
 
-    Privilege getPrivilegeByName(String name);
+    //Privilege getPrivilegeByName(String name);
 
-    Collection<Privilege> getPrivilegesByName(String name);
+    //Collection<Privilege> getPrivilegesByObjectID(String objectID);
+    Privilege getPrivilegesByObjectID(String objectID);
 
     void update(Privilege privilege);
 }
