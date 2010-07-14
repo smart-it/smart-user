@@ -19,19 +19,19 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <inherited>true</inherited>
                 <configuration>
-                    <source>${java-source-version}</source>
-                    <target>${java-target-version}</target>
+                    <source>${compiler.source.version}</source>
+                    <target>${compiler.target.version}</target>
                 </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>${maven-war-plugin-version}</version>
+                <version>${plugin.war.version}</version>
                 <inherited>true</inherited>
             </plugin>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>7.1.4.v20100610</version>
+                <version>${plugin.jetty.version}</version>
                 <configuration>
                     <connectors>
                         <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
@@ -101,7 +101,7 @@
             <version>0.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
-    <build>
+<!--    <build>
         <finalName>smartuser</finalName>
         <plugins>
             <plugin>
@@ -109,5 +109,5 @@
               <artifactId>jetty-maven-plugin</artifactId>
             </plugin>
         </plugins>
-    </build>
+    </build>-->
 </project>

@@ -5,7 +5,6 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.User;
-import newpackage1.*;
 import com.smartitengineering.user.filter.UserFilter;
 import com.smartitengineering.user.impl.Services;
 import com.smartitengineering.user.service.UserService;
