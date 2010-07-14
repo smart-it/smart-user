@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class dynamic-insert="false" dynamic-update="false" name="com.smartitengineering.user.security.domain.SmartAce" table="ace">
+    <id column="id" name="id" type="java.lang.Integer">
+      <generator class="increment">
+            </generator>
+    </id>
+    <version column="version" name="version"/>    
+    <property column="name" length="255" name="name" type="java.lang.String"/>
+    <property column="unique_short_name" length="255" name="uniqueShortName" type="java.lang.String" unique="true"/>
+  </class>
+</hibernate-mapping>
