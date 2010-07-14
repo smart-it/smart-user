@@ -45,6 +45,7 @@ public class OrganizationsResource extends AbstractResource{
     static{
         ORGANIZATION_URI_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
         ORGANIZATION_BEFORE_ID_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
+
         try{
             ORGANIZATION_BEFORE_ID_BUILDER.path(OrganizationResource.class.getMethod("getBefore", String.class));
         }
@@ -78,7 +79,7 @@ public class OrganizationsResource extends AbstractResource{
     @Produces(MediaType.APPLICATION_ATOM_XML)
     @Path("/after/{afterOrganization}")
     public Response getAfter(@PathParam("afterOrganization") String afterOrganization) {
-      return get(afterOrganization, false);
+      return get(afterOrganization, false);        
     }
 
     @GET
