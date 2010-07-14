@@ -21,5 +21,7 @@ public interface RoleService {
 
     Collection<Role> getRolesByOrganizationAndUser(String organization, String user);
 
+    Collection<Role> getRolesByOrganization(String organization);
+
     void update(Role role);
 }
