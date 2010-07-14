@@ -15,15 +15,15 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
-    <import resource="classpath:com/smartitengineering/user/service-app-context.xml" />
+<!--    <import resource="classpath:com/smartitengineering/user/service-app-context.xml" />
     <import resource="classpath:com/smartitengineering/user/app-context-datasource.xml" />
-    <import resource="classpath:com/smartitengineering/user/app-context-hibernate-definition.xml" />
+    <import resource="classpath:com/smartitengineering/user/app-context-hibernate-definition.xml" />-->
     <context:component-scan base-package="com.smartitengineering.user.ws.resources"/>
 
     <!-- **************************************************************** -->
     <!-- ******************** Initialize Roles ************************** -->
     <!-- **************************************************************** -->
-    <bean id="initialRoleFactory" class="com.smartitengineering.user.parser.InitialRoleFactory">
+<!--    <bean id="initialRoleFactory" class="com.smartitengineering.user.parser.InitialRoleFactory">
         <property name="privilegeService">
             <ref bean="userService"/>
         </property>
@@ -50,5 +50,5 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
                 <ref bean="simpleTrigger" />
             </list>
         </property>
-    </bean>
+    </bean>-->
 </beans>
