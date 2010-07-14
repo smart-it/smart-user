@@ -10,6 +10,7 @@ import com.smartitengineering.user.impl.Services;
 import java.util.Collection;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -26,24 +27,25 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-@Path("/organizations/{organizationName}/roles")
-public class OrganizationRolesResource extends AbstractResource{
+@Path("/organizations/{organizationName}/users/{userName}/roles")
+public class UserRolesResource extends AbstractResource{
 
     private String organizationName;
+    private String userName;
 
-    public OrganizationRolesResource(@PathParam("organizationName") String organizationName){
+    public UserRolesResource(@PathParam("organizationName") String organizationName, @PathParam("userName") String userName){
         this.organizationName = organizationName;
+        this.userName = userName;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
     public Response get(){
         ResponseBuilder responseBuilder;
-        try{
 
+        try{
             responseBuilder = Response.status(Status.OK);
             
-
             Feed atomFeed = abderaFactory.newFeed();
             atomFeed.setId(UriBuilder.fromResource(OrganizationRolesResource.class).build().toString());
             atomFeed.setTitle(organizationName + " Roles");
@@ -52,7 +54,7 @@ public class OrganizationRolesResource extends AbstractResource{
             newLink.setRel(Link.REL_ALTERNATE);
 
 
-            Collection<Role> roles = Services.getInstance().getRoleService().getRolesByOrganization(organizationName);
+            Collection<Role> roles = Services.getInstance().getRoleService().getRolesByOrganizationAndUser(organizationName, userName);
 
             for(Role role:roles){
                 Entry roleEntry = abderaFactory.newEntry();
@@ -70,18 +72,16 @@ public class OrganizationRolesResource extends AbstractResource{
                 roleEntry.addLink(roleLink);
                 atomFeed.addEntry(roleEntry);
             }
-            
 
         }catch(Exception ex){
             ex.printStackTrace();
-            responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+            responseBuilder = Response.status(Status.BAD_REQUEST);
         }
         return responseBuilder.build();
     }
 
-    @GET
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
-
     public Response post(Role role){
         ResponseBuilder responseBuilder;
         try{
@@ -93,5 +93,4 @@ public class OrganizationRolesResource extends AbstractResource{
         }
         return responseBuilder.build();
     }
-
 }

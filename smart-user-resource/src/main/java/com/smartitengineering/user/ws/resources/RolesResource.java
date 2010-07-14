@@ -34,8 +34,8 @@ import org.apache.abdera.model.Link;
  * @author russel
  */
 
-//@Path("/organizations/{organizationName}")
-@Path("/test")
+@Path("/roles")
+
 public class RolesResource extends AbstractResource{
 
     static final UriBuilder ROLE_URI_BUILDER;
@@ -50,18 +50,10 @@ public class RolesResource extends AbstractResource{
 
     public RolesResource(){
         
-    }
+    }    
 
     @GET
-    @Produces(MediaType.APPLICATION_ATOM_XML)
-    @Path("/organizations/{organizationName}/roles")
-    public Response getForSuperAdmin(@PathParam("organizationName") String organizationName){
-        return get(organizationName, null);
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_ATOM_XML)
-    @Path("/organizations/{organizationName}/users/{userName}/roles")
+    @Produces(MediaType.APPLICATION_ATOM_XML)    
     public Response getForAdmin(@PathParam("organizationName") String organizationName, @PathParam("userName") String userName){
         return get(organizationName, userName);
     }
