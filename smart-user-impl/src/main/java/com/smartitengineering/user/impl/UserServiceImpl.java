@@ -16,9 +16,7 @@ import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.filter.UserFilter;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.PersonService;
-import com.smartitengineering.user.service.PrivilegeService;
-import com.smartitengineering.user.service.RoleService;
-import com.smartitengineering.user.service.UserService;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -31,8 +29,8 @@ import org.hibernate.exception.ConstraintViolationException;
  *
  * @author modhu7
  */
-public class UserServiceImpl implements UserService, RoleService,
-        PrivilegeService {
+public class UserServiceImpl //implements UserService, RoleService,
+        /*PrivilegeService*/ {
 
     private CommonReadDao<User> userReadDao;
     private CommonWriteDao<User> userWriteDao;
@@ -120,7 +118,7 @@ public class UserServiceImpl implements UserService, RoleService,
         return users;
     }
 
-    public User getUserByUsername(String username) {
+    public User getUserByUserID(String username) {
         QueryParameter qp;
         qp = QueryParameterFactory.getEqualPropertyParam("username", username);
         User user = getUserReadDao().getSingle(qp);

@@ -5,6 +5,7 @@
 package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
@@ -19,6 +20,18 @@ public class Role extends AbstractPersistentDTO<Role> {
     private String displayName;
     private String shortDescription;
     private Set<Privilege> privileges;
+    private Set<Role> roles;
+    private Date lastModifiedDate;
+
+    public Role(){
+
+    }
+
+    public Role(String name, String displayName, String shortDescription){
+        this.name = name;
+        this.displayName = displayName;
+        this.shortDescription = shortDescription;
+    }
 
     public Set<Privilege> getPrivileges() {
         if (privileges == null) {
@@ -33,6 +46,21 @@ public class Role extends AbstractPersistentDTO<Role> {
         }
         this.privileges = privileges;
     }
+
+    public Set<Role> getRoles() {
+        if(roles == null){
+            roles = new HashSet<Role>();
+        }
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        if(roles == null)
+            return;
+        this.roles = roles;
+    }
+
+
 
     public String getDisplayName() {
         if (displayName == null) {
@@ -74,6 +102,14 @@ public class Role extends AbstractPersistentDTO<Role> {
             return;
         }
         this.shortDescription = shortDescription;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public boolean isValid() {

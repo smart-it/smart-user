@@ -14,53 +14,36 @@ import org.apache.commons.lang.StringUtils;
 public class Privilege extends AbstractPersistentDTO<Privilege> {
 
     private String name;
-    private String displayName;
-    private String shortDescription;
-
-    public String getDisplayName() {
-        if (displayName == null) {
-            displayName = "";
-        }
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        if (displayName == null) {
-            return;
-        }
-        this.displayName = displayName;
-    }
+    private String objectID;
+    private Integer permissionMask;
 
     public String getName() {
-        if (name == null) {
-            name = "";
-        }
         return name;
     }
 
     public void setName(String name) {
-        if (name == null) {
-            return;
-        }
         this.name = name;
     }
 
-    public String getShortDescription() {
-        if (shortDescription == null) {
-            shortDescription = "";
-        }
-        return shortDescription;
+    public String getObjectID() {
+        return objectID;
     }
 
-    public void setShortDescription(String shortDescription) {
-        if (shortDescription == null) {
-            return;
-        }
-        this.shortDescription = shortDescription;
+    public void setObjectID(String objectID) {
+        this.objectID = objectID;
     }
+
+    public Integer getPermissionMask() {
+        return permissionMask;
+    }
+
+    public void setPermissionMask(Integer permissionMask) {
+        this.permissionMask = permissionMask;
+    }
+        
 
     public boolean isValid() {
-        if (StringUtils.isEmpty(name) || StringUtils.isEmpty(displayName)) {
+        if (StringUtils.isEmpty(objectID) || !(permissionMask<0)) {
             return false;
         }
         return true;

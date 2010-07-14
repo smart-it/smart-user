@@ -8,6 +8,8 @@ package com.smartitengineering.user.impl;
 
 
 import com.smartitengineering.user.service.OrganizationService;
+import com.smartitengineering.user.service.PrivilegeService;
+import com.smartitengineering.user.service.RoleService;
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.util.spring.BeanFactoryRegistrar;
 import com.smartitengineering.util.spring.annotations.InjectableField;
@@ -21,6 +23,8 @@ public class Services {
     @InjectableField
     private OrganizationService organizationService;
     private UserService userService;
+    private PrivilegeService privilegeService;
+    private RoleService roleService;
 
     private Services(){
         
@@ -31,6 +35,12 @@ public class Services {
     }
     public UserService getUserService(){
         return userService;
+    }
+    public PrivilegeService getPrivilegeService(){
+        return privilegeService;
+    }
+    public RoleService getRoleService(){
+        return roleService;
     }
 
     private static Services services;
