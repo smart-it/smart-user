@@ -19,6 +19,7 @@
                 <value>com/smartitengineering/user/hbm/domain/Person.hbm.xml</value>
                 <value>com/smartitengineering/user/hbm/acl/ace.hbm.xml</value>
                 <value>com/smartitengineering/user/hbm/acl/acl.hbm.xml</value>
+                <value>com/smartitengineering/user/hbm/domain/Organization.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">

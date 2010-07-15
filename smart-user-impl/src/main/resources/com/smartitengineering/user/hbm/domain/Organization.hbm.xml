@@ -9,5 +9,6 @@
     <version column="version" name="version"/>    
     <property column="name" length="255" name="name" type="java.lang.String"/>
     <property column="unique_short_name" length="255" name="uniqueShortName" type="java.lang.String" unique="true"/>
+    <many-to-one cascade="all" column="address_id" lazy="false" name="address"/>
   </class>
 </hibernate-mapping>

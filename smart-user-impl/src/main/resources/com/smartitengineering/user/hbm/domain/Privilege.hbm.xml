@@ -10,5 +10,7 @@
     <property column="name" length="255" name="name" type="java.lang.String" unique="true"/>
     <property column="display_name" length="255" name="displayName" type="java.lang.String"/>
     <property column="short_description" length="255" name="shortDescription" type="java.lang.String"/>
+    <property column="object_id" length="255" name="objectID" type="java.lang.String"/>
+    <property column="permission_mask" name="permissionMask" type="java.lang.Integer"/>
   </class>
 </hibernate-mapping>

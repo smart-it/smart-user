@@ -13,5 +13,9 @@
       <key column="user_id"/>
       <many-to-many class="com.smartitengineering.user.domain.Role" column="role_id" lazy="false" outer-join="true"/>
     </set>
+    <set cascade="none" inverse="false" lazy="false" name="privileges" outer-join="true" table="user_privileges">
+      <key column="user-id"/>
+      <many-to-many class="com.smartitengineering.user.domain.Privilege" column="privilge_id" lazy="false" outer-join="true"/>
+    </set>
   </class>
 </hibernate-mapping>

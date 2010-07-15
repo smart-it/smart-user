@@ -11,13 +11,8 @@
     <many-to-one cascade="all" column="father_id" lazy="false" name="father"/>
     <many-to-one cascade="all" column="mother_id" lazy="false" name="mother"/>
     <many-to-one cascade="all" column="spouse_id" lazy="false" name="spouse"/>
-    <component name="address">
-      <property column="street_address" length="255" name="streetAddress" type="java.lang.String"/>
-      <property column="city" length="255" name="city" type="java.lang.String"/>
-      <property column="state" length="255" name="state" type="java.lang.String"/>
-      <property column="country" length="255" name="country" type="java.lang.String"/>
-      <property column="zip" length="255" name="zip" type="java.lang.String"/>
-    </component>
+    <many-to-one cascade="all" column="address_id" lazy="false" name="address"/>
+   
     <property column="primary_email" length="255" name="primaryEmail" type="java.lang.String" unique="true"/>
     <property column="birth_day" name="birthDay" type="java.util.Date"/>
     <property column="secondary_email" length="255" name="secondaryEmail" type="java.lang.String"/>
