@@ -14,7 +14,7 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author russel
  */
-public class Object extends AbstractPersistentDTO<Object>{
+public class SecuredObject extends AbstractPersistentDTO<SecuredObject>{
 
     private String objectID;
     private String parentObjectID;

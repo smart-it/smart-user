@@ -10,6 +10,7 @@ package com.smartitengineering.user.impl;
 import com.smartitengineering.user.service.OrganizationService;
 import com.smartitengineering.user.service.PrivilegeService;
 import com.smartitengineering.user.service.RoleService;
+import com.smartitengineering.user.service.SecuredObjectService;
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.util.bean.BeanFactoryRegistrar;
 import com.smartitengineering.util.bean.annotations.InjectableField;
@@ -25,6 +26,7 @@ public class Services {
     private UserService userService;
     private PrivilegeService privilegeService;
     private RoleService roleService;
+    private SecuredObjectService securedObjectService;
 
     private Services(){
         
@@ -42,6 +44,15 @@ public class Services {
     public RoleService getRoleService(){
         return roleService;
     }
+
+    public SecuredObjectService getSecuredObjectService() {
+        return securedObjectService;
+    }
+
+    public void setSecuredObjectService(SecuredObjectService securedObjectService) {
+        this.securedObjectService = securedObjectService;
+    }
+    
 
     private static Services services;
     public static Services getInstance(){
