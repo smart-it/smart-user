@@ -24,6 +24,9 @@ public class Organization extends AbstractPersistentDTO<Organization> {
 
     private Date lastModifiedDate;
 
+    private Organization() {
+    }
+    
     public Organization(String name, String uniqueShortName) {
         this.name = name;
         this.uniqueShortName = uniqueShortName;
@@ -33,6 +36,7 @@ public class Organization extends AbstractPersistentDTO<Organization> {
         return name;
     }
 
+    @JsonIgnore
     public void setName(String name) {
         this.name = name;
     }
@@ -41,6 +45,7 @@ public class Organization extends AbstractPersistentDTO<Organization> {
         return uniqueShortName;
     }
 
+    @JsonIgnore
     public void setUniqueShortName(String uniqueShortName) {
         this.uniqueShortName = uniqueShortName;
     }
@@ -62,6 +67,7 @@ public class Organization extends AbstractPersistentDTO<Organization> {
         return address;
     }
 
+    @JsonIgnore
     public void setAddress(String address) {
         this.address = address;
     }
@@ -72,6 +78,7 @@ public class Organization extends AbstractPersistentDTO<Organization> {
         return contactPerson;
     }
 
+    @JsonIgnore
     public void setContactPerson(String contactPerson) {
         this.contactPerson = contactPerson;
     }       

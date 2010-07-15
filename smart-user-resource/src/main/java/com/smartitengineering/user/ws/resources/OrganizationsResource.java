@@ -48,14 +48,14 @@ public class OrganizationsResource extends AbstractResource{
         ORGANIZATION_BEFORE_ID_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
 
         try{
-            ORGANIZATION_BEFORE_ID_BUILDER.path(OrganizationResource.class.getMethod("getBefore", String.class));
+            ORGANIZATION_BEFORE_ID_BUILDER.path(OrganizationsResource.class.getMethod("getBefore", String.class));
         }
         catch(Exception ex){
             ex.printStackTrace();
         }
         ORGANIZATION_AFTER_ID_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
         try{
-            ORGANIZATION_AFTER_ID_BUILDER.path(OrganizationResource.class.getMethod("getAfter", String.class));
+            ORGANIZATION_AFTER_ID_BUILDER.path(OrganizationsResource.class.getMethod("getAfter", String.class));
         }
         catch(Exception ex){
             ex.printStackTrace();
@@ -145,7 +145,7 @@ public class OrganizationsResource extends AbstractResource{
               atomFeed.addEntry(organizationEntry);
             }
         }
-
+        com.sun.jersey.atom.abdera.impl.provider.entity.EntryProvider e;
         return responseBuilder.build();
     }
 
@@ -157,7 +157,7 @@ public class OrganizationsResource extends AbstractResource{
       //Services.getInstance().getOrganizationService().populateAuthor(organization);
       Services.getInstance().getOrganizationService().save(organization);
       responseBuilder = Response.status(Response.Status.CREATED);
-      //responseBuilder.location(OrganizationResource.ORGANIZATION_URI_BUILDER.clone().build(organization.getOrganizationName()));
+      responseBuilder.location(OrganizationResource.ORGANIZATION_URI_BUILDER.clone().build(organization.getName()));
       
     }    
     catch (Exception ex) {
