@@ -23,5 +23,7 @@ public enum UniqueConstrainedField {
     ACL,
     ACE,
     SID_OID,
+    ORGANIZATION,
+    ORGANIZATION_UNIQUE_SHORT_NAME,
     OTHER
 }
