@@ -14,8 +14,27 @@ import org.apache.commons.lang.StringUtils;
 public class Privilege extends AbstractPersistentDTO<Privilege> {
 
     private String name;
+    private String displayName;
+    private String shortDescription;
     private String objectID;
     private Integer permissionMask;
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
 
     public String getName() {
         return name;

@@ -20,7 +20,7 @@ public class Organization extends AbstractPersistentDTO<Organization> {
     private String name;
     private String uniqueShortName;
     private String address;
-    private String contactPerson;
+    //private String contactPerson;
 
     private Date lastModifiedDate;
 
@@ -66,18 +66,18 @@ public class Organization extends AbstractPersistentDTO<Organization> {
         this.address = address;
     }
 
-    public String getContactPerson() {
-        if(contactPerson == null)
-            contactPerson = "";
-        return contactPerson;
-    }
-
-    public void setContactPerson(String contactPerson) {
-        this.contactPerson = contactPerson;
-    }       
+//    public String getContactPerson() {
+//        if(contactPerson == null)
+//            contactPerson = "";
+//        return contactPerson;
+//    }
+//
+//    public void setContactPerson(String contactPerson) {
+//        this.contactPerson = contactPerson;
+//    }
 
     public boolean isValid(){
-        return StringUtils.isNotBlank(address) && StringUtils.isNotBlank(name) && StringUtils.isNotBlank(contactPerson) && StringUtils.isNotBlank(uniqueShortName);
+        return StringUtils.isNotBlank(name) && StringUtils.isNotBlank(uniqueShortName);
     }
 
 
