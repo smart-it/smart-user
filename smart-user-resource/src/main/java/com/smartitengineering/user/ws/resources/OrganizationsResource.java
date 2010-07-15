@@ -124,21 +124,21 @@ public class OrganizationsResource extends AbstractResource{
                 nextUri.queryParam(key, values);
                 previousUri.queryParam(key, values);
             }
-            //nextLink.setHref(nextUri.build(lastOrganization.getOrganizationName()).toString());
+            nextLink.setHref(nextUri.build(lastOrganization.getName()).toString());
             atomFeed.addLink(nextLink);
             Link prevLink = abderaFactory.newLink();
             prevLink.setRel(Link.REL_NEXT);
             Organization firstOrganization = organizationList.get(organizations.size() - 1);
-            //prevLink.setHref(previousUri.build(firstOrganization.getOrganizationName()).toString());
+            prevLink.setHref(previousUri.build(firstOrganization.getName()).toString());
             atomFeed.addLink(prevLink);
             for (Organization organization : organizations) {
               Entry organizationEntry = abderaFactory.newEntry();
               organizationEntry.setId(organization.getId().toString());
-              //organizationEntry.setTitle(organization.getOrganizationName());
-              //organizationEntry.setSummary(organization.getOrganizationName());
+              organizationEntry.setTitle(organization.getName());
+              organizationEntry.setSummary(organization.getName());
               organizationEntry.setUpdated(organization.getLastModifiedDate());
               Link organizationLink = abderaFactory.newLink();
-              //organizationLink.setHref(OrganizationsResource.ORGANIZATION_URI_BUILDER.clone().build(organization.getOrganizationName()).toString());
+              organizationLink.setHref(OrganizationsResource.ORGANIZATION_URI_BUILDER.clone().build(organization.getName()).toString());
               organizationLink.setRel(Link.REL_ALTERNATE);
               organizationLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
               organizationEntry.addLink(organizationLink);

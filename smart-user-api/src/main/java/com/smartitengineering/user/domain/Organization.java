@@ -29,6 +29,22 @@ public class Organization extends AbstractPersistentDTO<Organization> {
         this.uniqueShortName = uniqueShortName;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUniqueShortName() {
+        return uniqueShortName;
+    }
+
+    public void setUniqueShortName(String uniqueShortName) {
+        this.uniqueShortName = uniqueShortName;
+    }
+
     @JsonIgnore
     public Date getLastModifiedDate() {
         return lastModifiedDate;

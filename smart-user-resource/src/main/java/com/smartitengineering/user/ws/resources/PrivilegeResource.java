@@ -2,10 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package com.smartitengineering.user.ws.resources;
 
-import com.smartitengineering.user.service.PrivilegeService;
-import javax.annotation.Resource;
+import com.smartitengineering.user.domain.Privilege;
+import com.smartitengineering.user.impl.Services;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -14,96 +15,110 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriBuilderException;
+import org.apache.abdera.model.Feed;
+import org.apache.abdera.model.Link;
 
 /**
  *
- * @author modhu7
+ * @author russel
  */
-/*
-@Path("privilege")
-@Component
-@Scope(value = "singleton")
-public class PrivilegeResource {
+@Path("/privileges/{privilegeName}")
+public class PrivilegeResource extends AbstractResource{
 
-    @Resource(name = "userService")
-    private PrivilegeService privilegeService;
+    private Privilege privilege;
 
-    @POST
-    @Consumes("application/xml")
-    public Response createPrivilege(PrivilegeElement privilegeElement) {
-        try {
-            privilegeService.create(privilegeElement.getPrivilege());
-            return Response.ok().build();
-        } catch (RuntimeException e) {
-            String group = e.getMessage().split("-")[0];
-            String field = e.getMessage().split("-")[1];
-            ExceptionElement exceptionElement = new ExceptionElement();
-            exceptionElement.setGroup(group);
-            exceptionElement.setFieldCausedBy(field);
-            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).
-                    entity(exceptionElement).build();
-        }
+    public PrivilegeResource(@PathParam("privilegeName") String privilegeName){
+        
+        privilege = Services.getInstance().getPrivilegeService().getPrivilegesByObjectID(privilegeName);
     }
 
-    @PUT
-    @Consumes("application/xml")
-    public Response updatePrivilege(PrivilegeElement privilegeElement) {
-        try {
-            privilegeService.update(privilegeElement.getPrivilege());
-            return Response.ok().build();
-        } catch (RuntimeException e) {
-            String group = e.getMessage().split("-")[0];
-            String field = e.getMessage().split("-")[1];
-            ExceptionElement exceptionElement = new ExceptionElement();
-            exceptionElement.setGroup(group);
-            exceptionElement.setFieldCausedBy(field);
-            return Response.serverError().status(Status.INTERNAL_SERVER_ERROR).
-                    entity(exceptionElement).build();
+    @GET
+    @Produces(MediaType.APPLICATION_ATOM_XML)
+    public Response get(){
+        ResponseBuilder responseBuilder;
+        try{
+            responseBuilder = Response.status(Status.OK);
+            Feed privilegeFeed = getPrivilegeFeed();
+            responseBuilder = Response.ok(privilegeFeed);
+        }catch(Exception ex){
+            ex.printStackTrace();
+            responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
         }
+        return responseBuilder.build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+
+    public Response post(Privilege privilege){
+        ResponseBuilder responseBuilder;
+        try{
+            responseBuilder = Response.status(Status.CREATED);
+            Services.getInstance().getPrivilegeService().create(privilege);
+        }catch(Exception ex){
+            ex.printStackTrace();
+            responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+        }
+        return responseBuilder.build();
     }
 
     @DELETE
-    @Path("{name}")
-    @Consumes("application/xml")
-    public void deletePrivilege(@PathParam("name") String name) {
-        try {
-            privilegeService.delete(privilegeService.getPrivilegeByName(name));
-        } catch (Exception e) {
+    public Response delete(){
+        ResponseBuilder responseBuilder;
+        try{
+            responseBuilder = Response.status(Status.OK);
+            Services.getInstance().getPrivilegeService().delete(privilege);
+        }catch(Exception ex){
+            ex.printStackTrace();
+            responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
         }
+        return responseBuilder.build();
     }
 
-    @GET
-    @Path("{name}")
-    @Produces("application/xml")
-    public PrivilegeElement getPrivilegeByName(
-            @PathParam("name") String name) {
-        PrivilegeElement privilegeElement = new PrivilegeElement();
-        try {
-            privilegeElement.setPrivilege(privilegeService.getPrivilegeByName(
-                    name));
-        } catch (Exception e) {
+    @PUT
+    @Produces(MediaType.APPLICATION_ATOM_XML)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response update(Privilege newPrivilege){
+        ResponseBuilder responseBuilder;
+        try{
+            responseBuilder = Response.status(Status.OK);
+            Services.getInstance().getPrivilegeService().delete(newPrivilege);
+        }catch(Exception ex){
+            ex.printStackTrace();
+            responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
         }
-        return privilegeElement;
+        return responseBuilder.build();
     }
 
-    @GET
-    @Path("search/{name}")
-    @Produces("application/xml")
-    public PrivilegeElements getPrivilegesByName(
-            @PathParam("name") String name) {
-        PrivilegeElements privilegeElements = new PrivilegeElements();
-        try {
-            privilegeElements.setPrivileges(privilegeService.getPrivilegesByName(
-                    name));
-        } catch (Exception e) {
-        }
-        return privilegeElements;
+
+    private Feed getPrivilegeFeed() throws UriBuilderException, IllegalArgumentException{
+
+        Feed privilegeFeed = abderaFactory.newFeed();
+
+        privilegeFeed.setId(privilege.getObjectID());
+        privilegeFeed.setTitle(privilege.getName());
+        privilegeFeed.addLink(getSelfLink());
+
+        Link editLink = abderaFactory.newLink();
+        editLink.setHref(uriInfo.getRequestUri().toString());
+        editLink.setRel(Link.REL_EDIT);
+        editLink.setMimeType(MediaType.APPLICATION_JSON);
+
+
+        Link altLink = abderaFactory.newLink();
+        altLink.setHref(UriBuilder.fromResource(PrivilegeResource.class).build(privilege.getObjectID()).toString());
+        altLink.setRel(Link.REL_ALTERNATE);
+        altLink.setMimeType(MediaType.APPLICATION_JSON);
+
+        privilegeFeed.addLink(editLink);
+        privilegeFeed.addLink(altLink);
+
+        return privilegeFeed;
     }
- * 
- 
 }
-*/

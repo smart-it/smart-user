@@ -38,7 +38,7 @@ import org.springframework.stereotype.Component;
  * @author modhu7
  */
 
-@Path("/user/{username}")
+@Path("/organizations/{organizationName}/users/{username}")
 @Component
 @Scope(value = "singleton")
 public class UserResource extends AbstractResource{

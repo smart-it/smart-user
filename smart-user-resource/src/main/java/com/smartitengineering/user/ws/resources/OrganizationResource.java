@@ -47,7 +47,8 @@ public class OrganizationResource extends AbstractResource {
     private Organization organization;
 
     public OrganizationResource(@PathParam("organizationName") String organizationName) {
-        organization = Services.getInstance().getOrganizationService().getOrganizationByOrganizationName(organizationName);
+        //organization = Services.getInstance().getOrganizationService().getOrganizationByOrganizationName(organizationName);
+        organization = new Organization(organizationName, organizationName);
     }
 
     @GET

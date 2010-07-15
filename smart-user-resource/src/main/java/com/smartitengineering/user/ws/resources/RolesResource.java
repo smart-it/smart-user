@@ -34,7 +34,8 @@ import org.apache.abdera.model.Link;
  * @author russel
  */
 
-@Path("/organizations/{organizationName}/roles")
+@Path("/roles")
+
 public class RolesResource extends AbstractResource{
 
     static final UriBuilder ROLE_URI_BUILDER;
@@ -49,18 +50,10 @@ public class RolesResource extends AbstractResource{
 
     public RolesResource(){
         
-    }
+    }    
 
     @GET
-    @Produces(MediaType.APPLICATION_ATOM_XML)
-    //@Path("/organizations/{organizationName}/roles")
-    public Response getForSuperAdmin(@PathParam("organizationName") String organizationName){
-        return get(organizationName, null);
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_ATOM_XML)
-    @Path("/organizations/{organizationName}/users/{userName}/roles")    
+    @Produces(MediaType.APPLICATION_ATOM_XML)    
     public Response getForAdmin(@PathParam("organizationName") String organizationName, @PathParam("userName") String userName){
         return get(organizationName, userName);
     }
@@ -74,7 +67,6 @@ public class RolesResource extends AbstractResource{
         }
 
 
-
         ResponseBuilder responseBuilder = Response.status(Status.OK);
         Feed atomFeed = getFeed("roles", new Date());
         Link rolesLink = abderaFactory.newLink();
@@ -86,7 +78,8 @@ public class RolesResource extends AbstractResource{
         //Collection<Role> roles = Services.getInstance().getRoleService().getRolesByOrganizationAndUser(organizationName, userName);
         List<Role> testList = new ArrayList<Role>();
         testList.add(new Role("Role 1","D Role 1","S Role 1"));
-        testList.add(new Role("Role 2","Role 2","S Role 2"));
+        testList.add(new Role("Role 2","D Role 2","S Role 2"));
+        testList.add(new Role("Role 3","D Role 3","S Role 3"));
 
         Collection<Role> roles = testList;
 
