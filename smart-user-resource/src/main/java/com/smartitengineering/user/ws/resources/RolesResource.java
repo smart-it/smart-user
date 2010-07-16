@@ -39,9 +39,25 @@ import org.apache.abdera.model.Link;
 public class RolesResource extends AbstractResource{
 
     static final UriBuilder ROLE_URI_BUILDER;
+    static final UriBuilder ROLE_AFTER_ROLE_NAME_URI_BUILDER;
+    static final UriBuilder ROLE_BEFORE_ROLE_NAME_URI_BUILDER;
     
     static{
         ROLE_URI_BUILDER = UriBuilder.fromResource(RoleResource.class);
+
+        ROLE_AFTER_ROLE_NAME_URI_BUILDER = UriBuilder.fromResource(RolesResource.class);
+        try{
+            ROLE_AFTER_ROLE_NAME_URI_BUILDER.path(RolesResource.class.getMethod("getAfter", String.class));
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+        ROLE_BEFORE_ROLE_NAME_URI_BUILDER = UriBuilder.fromResource(RolesResource.class);
+        try{
+            ROLE_BEFORE_ROLE_NAME_URI_BUILDER.path(RolesResource.class.getMethod("getBefore", String.class));
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     
@@ -50,32 +66,41 @@ public class RolesResource extends AbstractResource{
 
     public RolesResource(){
         
-    }    
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_ATOM_XML)
+    @Path("/after/{roleName}")
+    public Response getAfter(@PathParam("roleName") String roleName){
+        return get(roleName, false);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_ATOM_XML)
+    @Path("/before/{roleName}")
+    public Response getBefore(@PathParam("roleName") String roleName){
+        return get(roleName, true);
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)    
-    public Response getForAdmin(@PathParam("organizationName") String organizationName, @PathParam("userName") String userName){
-        return get(organizationName, userName);
+    public Response get(){
+        return get(null, true);
     }
 
-    public Response get(String organizationName, String userName){
-        boolean forSuperAdmin = false;
+    public Response get(String roleName, boolean isBefore){        
         if(count == null)
-            count = 10;
-        if(userName == null){
-            forSuperAdmin = true;
-        }
-
+            count = 10;        
 
         ResponseBuilder responseBuilder = Response.status(Status.OK);
         Feed atomFeed = getFeed("roles", new Date());
         Link rolesLink = abderaFactory.newLink();
 
-        rolesLink.setHref(UriBuilder.fromResource(OrganizationsResource.class).build().toString());
-        rolesLink.setRel("organizations");
+        rolesLink.setHref(UriBuilder.fromResource(RootResource.class).build().toString());
+        rolesLink.setRel("parent");
         atomFeed.addLink(rolesLink);
-
-        //Collection<Role> roles = Services.getInstance().getRoleService().getRolesByOrganizationAndUser(organizationName, userName);
+        
+        //Collection<Role> roles = Services.getInstance().getRoleService().getAllRoles();
         List<Role> testList = new ArrayList<Role>();
         testList.add(new Role("Role 1","D Role 1","S Role 1"));
         testList.add(new Role("Role 2","D Role 2","S Role 2"));
@@ -84,27 +109,16 @@ public class RolesResource extends AbstractResource{
         Collection<Role> roles = testList;
 
         if(roles != null && !roles.isEmpty()){
-
-            Link nextLink = abderaFactory.newLink();
-            nextLink.setRel(Link.REL_NEXT);
-
-            UriBuilder nextRoleUri = null;
-            UriBuilder previousRoleUri = null;
-
-            try{
-                if(forSuperAdmin){
-                    nextRoleUri = UriBuilder.fromResource(RolesResource.class).path(RolesResource.class.getMethod("getForSuperAdmin", String.class));
-                    previousRoleUri = UriBuilder.fromResource(RolesResource.class).path(RolesResource.class.getMethod("getForSuperAdmin", String.class));
-                }else{
-                    nextRoleUri = UriBuilder.fromResource(RolesResource.class).path(RolesResource.class.getMethod("getForAdmin", String.class));
-                    previousRoleUri = UriBuilder.fromResource(RolesResource.class).path(RolesResource.class.getMethod("getForAdmin", String.class));
-                }
-            }catch(Exception ex){
-                ex.printStackTrace();
-                responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
-            }
+            
+            // uri builder for next and previous uri according to the count value
+            UriBuilder nextRoleUri = ROLE_AFTER_ROLE_NAME_URI_BUILDER.clone();
+            UriBuilder previousRoleUri = ROLE_BEFORE_ROLE_NAME_URI_BUILDER.clone();            
 
             List<Role> roleList = new ArrayList<Role>();
+
+            // link to the next uri according to the count value
+            Link nextLink = abderaFactory.newLink();
+            nextLink.setRel(Link.REL_NEXT);
 
             Role firstRole = roleList.get(0);
             nextLink.setHref(nextRoleUri.build(firstRole.getName()).toString());
@@ -112,6 +126,7 @@ public class RolesResource extends AbstractResource{
 
             Role lastRole = roleList.get(roleList.size() -1);
 
+            // link to the previous uri according to the count value
             Link previousLink = abderaFactory.newLink();
             previousLink.setRel(Link.REL_PREVIOUS);
             previousLink.setHref(previousRoleUri.build(lastRole.getName()).toString());
@@ -126,6 +141,7 @@ public class RolesResource extends AbstractResource{
                 roleEntry.setSummary(role.getShortDescription());
                 roleEntry.setUpdated(role.getLastModifiedDate());
 
+                // setting link to each individual role
                 Link roleLink = abderaFactory.newLink();
                 roleLink.setRel(Link.REL_ALTERNATE);
                 roleLink.setHref(RolesResource.ROLE_URI_BUILDER.build(role.getName()).toString());

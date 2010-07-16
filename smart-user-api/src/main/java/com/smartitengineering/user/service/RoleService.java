@@ -23,7 +23,11 @@ public interface RoleService {
 
     Collection<Role> getRolesByOrganization(String organization);
 
+    Collection<Role> getAllRoles();
+
     Role getRoleByOrganizationAndUserAndUserID(String organization, String user, String userID);
+
+    Role getRoleByOrganizationAndRoleName(String organization, String roleName);
 
     void update(Role role);
 }
