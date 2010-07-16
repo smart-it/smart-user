@@ -40,22 +40,22 @@ import org.apache.abdera.model.Link;
 public class OrganizationsResource extends AbstractResource{
 
     static final UriBuilder ORGANIZATION_URI_BUILDER;
-    static final UriBuilder ORGANIZATION_AFTER_ID_BUILDER;
-    static final UriBuilder ORGANIZATION_BEFORE_ID_BUILDER;
+    static final UriBuilder ORGANIZATION_AFTER_SHORTNAME_URI_BUILDER;
+    static final UriBuilder ORGANIZATION_BEFORE_SHORTNAME_URI_BUILDER;
 
     static{
         ORGANIZATION_URI_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
-        ORGANIZATION_BEFORE_ID_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
+        ORGANIZATION_BEFORE_SHORTNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
 
         try{
-            ORGANIZATION_BEFORE_ID_BUILDER.path(OrganizationsResource.class.getMethod("getBefore", String.class));
+            ORGANIZATION_BEFORE_SHORTNAME_URI_BUILDER.path(OrganizationsResource.class.getMethod("getBefore", String.class));
         }
         catch(Exception ex){
             ex.printStackTrace();
         }
-        ORGANIZATION_AFTER_ID_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
+        ORGANIZATION_AFTER_SHORTNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
         try{
-            ORGANIZATION_AFTER_ID_BUILDER.path(OrganizationsResource.class.getMethod("getAfter", String.class));
+            ORGANIZATION_AFTER_SHORTNAME_URI_BUILDER.path(OrganizationsResource.class.getMethod("getAfter", String.class));
         }
         catch(Exception ex){
             ex.printStackTrace();
@@ -64,23 +64,23 @@ public class OrganizationsResource extends AbstractResource{
     
     @QueryParam("name")
     private String nameLike;
-    @QueryParam("author_nick")
-    private String authorNickName;
+//    @QueryParam("author_nick")
+//    private String authorNickName;
     @QueryParam("count")
     private Integer count;
 
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
     @Path("/before/{beforeOrganization}")
-    public Response getBefore(@PathParam("beforeOrganization") String beforeOrganization) {
-        return get(beforeOrganization, true);
+    public Response getBefore(@PathParam("beforeOrganization") String beforeShortName) {
+        return get(beforeShortName, true);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
     @Path("/after/{afterOrganization}")
-    public Response getAfter(@PathParam("afterOrganization") String afterOrganization) {
-      return get(afterOrganization, false);        
+    public Response getAfter(@PathParam("afterOrganization") String afterShortName) {
+      return get(afterShortName, false);
     }
 
     @GET
@@ -95,13 +95,20 @@ public class OrganizationsResource extends AbstractResource{
     public Response get(String organizationName, boolean isBefore)
     {
         ResponseBuilder responseBuilder = Response.ok();
-        Feed atomFeed = Abdera.getNewFactory().newFeed();
-        Link organizationsLink = Abdera.getNewFactory().newLink();
-        //organizationsLink.setHref(UriBuilder.fromResource());
-        organizationsLink.setRel("root");
-        atomFeed.addLink(organizationsLink);
 
+        // create a new atom feed
+        Feed atomFeed = Abdera.getNewFactory().newFeed();
+
+        // create a link to parent resource, in this case now it is linked to root resource
+        Link parentResourceLink = Abdera.getNewFactory().newLink();
+        parentResourceLink.setHref(UriBuilder.fromResource(RootResource.class).build().toString());
+        parentResourceLink.setRel("root");
+        atomFeed.addLink(parentResourceLink);
+
+        // get the organizations accoring to the query
         //Collection<Organization> organizations = Services.getInstance().getOrganizationService().getAllOrganization();
+
+        // for testing purpose we manually add organization to the list.
         List<Organization> serviceOrganization = new ArrayList<Organization>();
         serviceOrganization.add(new Organization("Sitel", "1"));
         serviceOrganization.add(new Organization("mehmood equity", "2"));
@@ -112,40 +119,55 @@ public class OrganizationsResource extends AbstractResource{
             MultivaluedMap<String, String> queryParam = uriInfo.getQueryParameters();
             List<Organization> organizationList = new ArrayList<Organization>(organizations);
 
+            // uri builder for next and previous organizations according to count
+            final UriBuilder nextUri = ORGANIZATION_AFTER_SHORTNAME_URI_BUILDER.clone();
+            final UriBuilder previousUri = ORGANIZATION_BEFORE_SHORTNAME_URI_BUILDER.clone();
+
+            // link to the next organizations based on count
             Link nextLink = abderaFactory.newLink();
-            nextLink.setRel(Link.REL_PREVIOUS);
+            nextLink.setRel(Link.REL_NEXT);
             Organization lastOrganization = organizationList.get(0);
             
-            final UriBuilder nextUri = ORGANIZATION_AFTER_ID_BUILDER.clone();
-            final UriBuilder previousUri = ORGANIZATION_BEFORE_ID_BUILDER.clone();
-
+            
             for(String key:queryParam.keySet()){
                 final Object[] values = queryParam.get(key).toArray();
                 nextUri.queryParam(key, values);
                 previousUri.queryParam(key, values);
             }
-            nextLink.setHref(nextUri.build(lastOrganization.getName()).toString());
+            nextLink.setHref(nextUri.build(lastOrganization.getUniqueShortName()).toString());
+            //nextLink.setHref(UriBuilder.fromResource(OrganizationsResource.class).build(lastOrganization.getUniqueShortName()).toString());
+
             atomFeed.addLink(nextLink);
+
+            /* link to the previous organizations based on count */
             Link prevLink = abderaFactory.newLink();
-            prevLink.setRel(Link.REL_NEXT);
+            prevLink.setRel(Link.REL_PREVIOUS);
             Organization firstOrganization = organizationList.get(organizations.size() - 1);
-            prevLink.setHref(previousUri.build(firstOrganization.getName()).toString());
+            
+            prevLink.setHref(previousUri.build(firstOrganization.getUniqueShortName()).toString());
+            //prevLink.setHref(nameLike)
             atomFeed.addLink(prevLink);
+            
+            // add entry of individual organization
             for (Organization organization : organizations) {
               Entry organizationEntry = abderaFactory.newEntry();
-              organizationEntry.setId(organization.getId().toString());
+              
+              organizationEntry.setId(organization.getUniqueShortName().toString());
               organizationEntry.setTitle(organization.getName());
               organizationEntry.setSummary(organization.getName());
               organizationEntry.setUpdated(organization.getLastModifiedDate());
-              Link organizationLink = abderaFactory.newLink();
-              organizationLink.setHref(OrganizationsResource.ORGANIZATION_URI_BUILDER.clone().build(organization.getName()).toString());
+
+              /* setting link to the individual organization resource*/
+              
+              Link organizationLink = abderaFactory.newLink();              
+              organizationLink.setHref(OrganizationsResource.ORGANIZATION_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
               organizationLink.setRel(Link.REL_ALTERNATE);
               organizationLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
               organizationEntry.addLink(organizationLink);
+              
               atomFeed.addEntry(organizationEntry);
             }
-        }
-        com.sun.jersey.atom.abdera.impl.provider.entity.EntryProvider e;
+        }        
         return responseBuilder.build();
     }
 
@@ -166,5 +188,4 @@ public class OrganizationsResource extends AbstractResource{
     }
     return responseBuilder.build();
   }
-
 }
