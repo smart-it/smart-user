@@ -19,6 +19,7 @@ public class User extends AbstractPersistentDTO<User> {
     private String password;
     private Organization organization;
     private Set<Role> roles;
+    private Set<Privilege> privileges;
 
     public String getPassword() {
         if (password == null) {
@@ -62,6 +63,7 @@ public class User extends AbstractPersistentDTO<User> {
         this.username = username;
     }
 
+    @Override
     public boolean isValid() {
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             return false;
