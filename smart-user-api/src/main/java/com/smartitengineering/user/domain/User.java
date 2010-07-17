@@ -35,6 +35,33 @@ public class User extends AbstractPersistentDTO<User> {
         this.password = password;
     }
 
+    public Organization getOrganization() {
+        if(organization==null){
+            organization = new Organization("", "");
+        }
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        if(organization==null)
+            return;
+        this.organization = organization;
+    }
+
+    public Set<Privilege> getPrivileges() {
+        if(privileges==null){
+            privileges = new HashSet<Privilege>();
+        }
+        return privileges;
+    }
+
+    public void setPrivileges(Set<Privilege> privileges) {
+        if(privileges==null){
+            return;
+        }
+        this.privileges = privileges;
+    }
+
     public Set<Role> getRoles() {
         if (roles == null) {
             roles = new HashSet<Role>();
