@@ -5,20 +5,18 @@
 
 package com.smartitengineering.user.ws.resources;
 
-import com.smartitengineering.user.impl.Services;
 import com.smartitengineering.user.domain.User;
+import com.smartitengineering.user.impl.Services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -29,60 +27,57 @@ import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 
-
 /**
  *
  * @author russel
  */
-@Path("/users")
-public class UsersResource extends AbstractResource{
+@Path("/organizations/{uniqueShortName}/users")
+public class OrganizationUsersResource extends AbstractResource{
 
-    static final UriBuilder USERS_URI_BUILDER;
-    static final UriBuilder USERS_AFTER_USERNAME_URI_BUILDER;
-    static final UriBuilder USERS_BEFORE_USERNAME_URI_BUILDER;
+    static final UriBuilder ORGANIZATION_USERS_URI_BUILDER;
+    static final UriBuilder ORGANIZATION_USERS_BEFORE_USERNAME_URI_BUILDER;
+    static final UriBuilder ORGANIZATION_USERS_AFTER_USERNAME_URI_BUILDER;
 
     static{
-        USERS_URI_BUILDER = UriBuilder.fromResource(UsersResource.class);
+        ORGANIZATION_USERS_URI_BUILDER = UriBuilder.fromResource(OrganizationUsersResource.class);
 
-        USERS_AFTER_USERNAME_URI_BUILDER = UriBuilder.fromResource(UsersResource.class);
+        ORGANIZATION_USERS_AFTER_USERNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationUsersResource.class);
         try{
-            USERS_AFTER_USERNAME_URI_BUILDER.path(UsersResource.class.getMethod("getAfter", String.class));
+            ORGANIZATION_USERS_AFTER_USERNAME_URI_BUILDER.path(OrganizationUsersResource.class.getMethod("getAfter", String.class));
         }catch(Exception ex){
             ex.printStackTrace();
         }
-        USERS_BEFORE_USERNAME_URI_BUILDER = UriBuilder.fromResource(UsersResource.class);
+
+        ORGANIZATION_USERS_BEFORE_USERNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationUsersResource.class);
         try{
-            USERS_BEFORE_USERNAME_URI_BUILDER.path(UsersResource.class.getMethod("getBefore", String.class));
+            ORGANIZATION_USERS_BEFORE_USERNAME_URI_BUILDER.path(OrganizationUsersResource.class.getMethod("getBefore", String.class));
         }catch(Exception ex){
             ex.printStackTrace();
         }
     }
 
-    @QueryParam("username")
-    private String userName;
-    @QueryParam("count")
+    @PathParam("count")
     private Integer count;
 
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
-    @Path("/after/{userName}")
-    public Response getAfter(@PathParam("userName") String userName){
-        return get(userName, false);
+    @Path("/before/{beforeUserName}")
+    public Response getBefore(@PathParam("beforeUserName") String beforeUserName) {
+        return get(beforeUserName, true);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
-    @Path("/before/{userName}")
-    public Response getBefore(@PathParam("userName") String userName){
-        return get(userName, true);
+    @Path("/after/{afterUserName}")
+    public Response getAfter(@PathParam("afterUserName") String afterUserName) {
+      return get(afterUserName, false);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
-    public Response get(){
-        return get(null, true);
+    public Response get() {
+      return get(null, true);
     }
-
 
     private Response get(String userName, boolean isBefore){
 
@@ -97,7 +92,7 @@ public class UsersResource extends AbstractResource{
         parentLink.setRel("parent");
         atomFeed.addLink(parentLink);
 
-              
+
         Collection<User> users = Services.getInstance().getUserService().getAllUser();
 
         if(users != null && !users.isEmpty()){
@@ -106,8 +101,8 @@ public class UsersResource extends AbstractResource{
             List<User> userList = new ArrayList<User>(users);
 
             // uri builder for next and previous organizations according to count
-            final UriBuilder nextUri = USERS_AFTER_USERNAME_URI_BUILDER.clone();
-            final UriBuilder previousUri = USERS_BEFORE_USERNAME_URI_BUILDER.clone();
+            final UriBuilder nextUri = ORGANIZATION_USERS_AFTER_USERNAME_URI_BUILDER.clone();
+            final UriBuilder previousUri = ORGANIZATION_USERS_BEFORE_USERNAME_URI_BUILDER.clone();
 
             // link to the next organizations based on count
             Link nextLink = abderaFactory.newLink();
@@ -121,7 +116,7 @@ public class UsersResource extends AbstractResource{
                 previousUri.queryParam(key, values);
             }
             nextLink.setHref(nextUri.build(lastUser.getUsername()).toString());
-            
+
 
             atomFeed.addLink(nextLink);
 
@@ -130,7 +125,7 @@ public class UsersResource extends AbstractResource{
             prevLink.setRel(Link.REL_PREVIOUS);
             User firstUser = userList.get(users.size() - 1);
 
-            prevLink.setHref(previousUri.build(firstUser.getUsername()).toString());            
+            prevLink.setHref(previousUri.build(firstUser.getUsername()).toString());
             atomFeed.addLink(prevLink);
 
             for(User user: users){
@@ -151,7 +146,7 @@ public class UsersResource extends AbstractResource{
                 userEntry.addLink(userLink);
 
                 atomFeed.addEntry(userEntry);
-            }                       
+            }
         }
         return responseBuilder.build();
     }
@@ -171,4 +166,5 @@ public class UsersResource extends AbstractResource{
         }
         return responseBuilder.build();
     }
+
 }

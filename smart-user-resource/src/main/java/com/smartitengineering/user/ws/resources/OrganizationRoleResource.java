@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Role;
@@ -15,43 +16,41 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 
-
 /**
  *
  * @author russel
  */
+@Path("/organizations/{organizationName}/roles/rolename/{roleName}")
+public class OrganizationRoleResource extends AbstractResource{
 
-@Path("/roles/rolename/{roleName}")
-public class RoleResource extends AbstractResource{
-
-    static final UriBuilder ROLE_URI_BUILDER = UriBuilder.fromResource(RoleResource.class);
-    static final UriBuilder ROLE_CONTENT_URI_BUILDER;
+    static final UriBuilder ORGANIZATION_ROLE_URI_BUILDER = UriBuilder.fromResource(OrganizationRoleResource.class);
+    static final UriBuilder ORGANIZATION_ROLE_CONTENT_URI_BUILDER;
 
     static{
-        ROLE_CONTENT_URI_BUILDER = ROLE_URI_BUILDER.clone();
+        ORGANIZATION_ROLE_CONTENT_URI_BUILDER = ORGANIZATION_ROLE_URI_BUILDER.clone();
         try {
-            ROLE_CONTENT_URI_BUILDER.path(RoleResource.class.getMethod("getRole"));
+            ORGANIZATION_ROLE_CONTENT_URI_BUILDER.path(RoleResource.class.getMethod("getRole"));
         }
         catch (Exception ex) {
             throw new InstantiationError();
         }
     }
-    
+
     private Role role;
 
-    public RoleResource(@PathParam("roleName")String roleName){
-        role = Services.getInstance().getRoleService().getRoleByUserID(roleName);
+    public OrganizationRoleResource(@PathParam("organizationName") String organizationName, @PathParam("roleName")String roleName){
+        role = Services.getInstance().getRoleService().getRoleByOrganizationAndRoleName(organizationName, roleName);
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_ATOM_XML)    
+    @Produces(MediaType.APPLICATION_ATOM_XML)
     public Response get(){
 
         Feed roleFeed = getRoleFeed();
@@ -92,14 +91,14 @@ public class RoleResource extends AbstractResource{
         roleFeed.addLink(getSelfLink());
 
         // add a edit link
-        Link editLink = abderaFactory.newLink();                
+        Link editLink = abderaFactory.newLink();
         editLink.setHref(uriInfo.getRequestUri().toString());
         editLink.setRel(Link.REL_EDIT);
         editLink.setMimeType(MediaType.APPLICATION_JSON);
 
         // add alternate link
         Link altLink = abderaFactory.newLink();
-        altLink.setHref(ROLE_CONTENT_URI_BUILDER.clone().build(role.getName()).toString());
+        altLink.setHref(ORGANIZATION_ROLE_CONTENT_URI_BUILDER.clone().build(role.getName()).toString());
         altLink.setRel(Link.REL_ALTERNATE);
         altLink.setMimeType(MediaType.APPLICATION_JSON);
         roleFeed.addLink(altLink);

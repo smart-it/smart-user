@@ -5,7 +5,6 @@
 
 package com.smartitengineering.user.ws.resources;
 
-
 import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.impl.Services;
 import java.util.ArrayList;
@@ -33,39 +32,41 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
+@Path("/organizations/{organizationName}/users/{userName}/roles")
+public class OrganizationUserRolesResource extends AbstractResource{
 
-@Path("/roles")
+    private String organizationName;
+    private String userName;
 
-public class RolesResource extends AbstractResource{
+    static final UriBuilder ORGANIZATIN_USER_ROLE_URI_BUILDER;
+    static final UriBuilder ORGANIZATIN_USER_ROLE_AFTER_ROLE_NAME_URI_BUILDER;
+    static final UriBuilder ORGANIZATIN_USER_ROLE_BEFORE_ROLE_NAME_URI_BUILDER;
 
-    static final UriBuilder ROLE_URI_BUILDER;
-    static final UriBuilder ROLE_AFTER_ROLE_NAME_URI_BUILDER;
-    static final UriBuilder ROLE_BEFORE_ROLE_NAME_URI_BUILDER;
-    
     static{
-        ROLE_URI_BUILDER = UriBuilder.fromResource(RoleResource.class);
+        ORGANIZATIN_USER_ROLE_URI_BUILDER = UriBuilder.fromResource(OrganizationUserRolesResource.class);
 
-        ROLE_AFTER_ROLE_NAME_URI_BUILDER = UriBuilder.fromResource(RolesResource.class);
+        ORGANIZATIN_USER_ROLE_AFTER_ROLE_NAME_URI_BUILDER = UriBuilder.fromResource(OrganizationUserRolesResource.class);
         try{
-            ROLE_AFTER_ROLE_NAME_URI_BUILDER.path(RolesResource.class.getMethod("getAfter", String.class));
+            ORGANIZATIN_USER_ROLE_AFTER_ROLE_NAME_URI_BUILDER.path(RolesResource.class.getMethod("getAfter", String.class));
         }catch(Exception ex){
             ex.printStackTrace();
         }
 
-        ROLE_BEFORE_ROLE_NAME_URI_BUILDER = UriBuilder.fromResource(RolesResource.class);
+        ORGANIZATIN_USER_ROLE_BEFORE_ROLE_NAME_URI_BUILDER = UriBuilder.fromResource(RolesResource.class);
         try{
-            ROLE_BEFORE_ROLE_NAME_URI_BUILDER.path(RolesResource.class.getMethod("getBefore", String.class));
+            ORGANIZATIN_USER_ROLE_BEFORE_ROLE_NAME_URI_BUILDER.path(RolesResource.class.getMethod("getBefore", String.class));
         }catch(Exception ex){
             ex.printStackTrace();
         }
     }
 
-    
+
     @QueryParam("count")
     private Integer count;
 
-    public RolesResource(){
-        
+    public OrganizationUserRolesResource(@PathParam("organizationName")String organizationName, @PathParam("userName") String userName){
+        this.organizationName = organizationName;
+        this.userName = userName;
     }
 
     @GET
@@ -83,36 +84,37 @@ public class RolesResource extends AbstractResource{
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_ATOM_XML)    
+    @Produces(MediaType.APPLICATION_ATOM_XML)
     public Response get(){
         return get(null, true);
     }
 
-    public Response get(String roleName, boolean isBefore){        
+    public Response get(String roleName, boolean isBefore){
         if(count == null)
-            count = 10;        
+            count = 10;
 
         ResponseBuilder responseBuilder = Response.status(Status.OK);
         Feed atomFeed = getFeed("roles", new Date());
         Link rolesLink = abderaFactory.newLink();
 
-        rolesLink.setHref(UriBuilder.fromResource(RootResource.class).build().toString());
+        rolesLink.setHref(UriBuilder.fromResource(OrganizationUsersResource.class).build().toString());
         rolesLink.setRel("parent");
         atomFeed.addLink(rolesLink);
-        
-        //Collection<Role> roles = Services.getInstance().getRoleService().getAllRoles();
-        List<Role> testList = new ArrayList<Role>();
-        testList.add(new Role("Role 1","D Role 1","S Role 1"));
-        testList.add(new Role("Role 2","D Role 2","S Role 2"));
-        testList.add(new Role("Role 3","D Role 3","S Role 3"));
 
-        Collection<Role> roles = testList;
+        //Collection<Role> roles = Services.getInstance().getRoleService().getAllRoles();
+        Collection<Role> roles = Services.getInstance().getRoleService().getRolesByOrganizationAndUser(organizationName, userName);
+//        List<Role> testList = new ArrayList<Role>();
+//        testList.add(new Role("Role 1","D Role 1","S Role 1"));
+//        testList.add(new Role("Role 2","D Role 2","S Role 2"));
+//        testList.add(new Role("Role 3","D Role 3","S Role 3"));
+//
+//        Collection<Role> roles = testList;
 
         if(roles != null && !roles.isEmpty()){
-            
+
             // uri builder for next and previous uri according to the count value
-            UriBuilder nextRoleUri = ROLE_AFTER_ROLE_NAME_URI_BUILDER.clone();
-            UriBuilder previousRoleUri = ROLE_BEFORE_ROLE_NAME_URI_BUILDER.clone();            
+            UriBuilder nextRoleUri = ORGANIZATIN_USER_ROLE_AFTER_ROLE_NAME_URI_BUILDER.clone();
+            UriBuilder previousRoleUri = ORGANIZATIN_USER_ROLE_BEFORE_ROLE_NAME_URI_BUILDER.clone();
 
             List<Role> roleList = new ArrayList<Role>();
 
@@ -149,7 +151,7 @@ public class RolesResource extends AbstractResource{
                 roleEntry.addLink(roleLink)                        ;
                 atomFeed.addEntry(roleEntry);
             }
-            
+
         }
         return responseBuilder.build();
     }
@@ -168,6 +170,4 @@ public class RolesResource extends AbstractResource{
         }
         return responseBuilder.build();
     }
-
-
 }

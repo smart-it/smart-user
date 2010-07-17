@@ -2,7 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package com.smartitengineering.user.ws.resources;
+
 
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.impl.Services;
@@ -27,16 +29,14 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+
 
 /**
  *
- * @author modhu7
+ * @author russel
  */
-
-@Path("/users/username/{userName}")
-public class UserResource extends AbstractResource{
+@Path("/organizations/{organizationShortName}/users/username/{userName}")
+public class OrganizationUserResource extends AbstractResource{
 
     private User user;
 
@@ -53,8 +53,8 @@ public class UserResource extends AbstractResource{
         }
     }
 
-    public UserResource(@PathParam("userName") String userName){
-        user = Services.getInstance().getUserService().getUserByUsername(userName);
+    public OrganizationUserResource(@PathParam("organizationShortName") String organizationShortName,@PathParam("userName") String userName){
+        user = Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationShortName, userName);
     }
 
     @GET
@@ -78,7 +78,7 @@ public class UserResource extends AbstractResource{
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(User newUser) {
         ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-        try {            
+        try {
             Services.getInstance().getUserService().save(newUser);
             user = Services.getInstance().getUserService().getUserByUsername(newUser.getUsername());
             responseBuilder = Response.ok(getUserFeed());
@@ -118,5 +118,5 @@ public class UserResource extends AbstractResource{
         Services.getInstance().getUserService().delete(user);
         ResponseBuilder responseBuilder = Response.ok();
         return responseBuilder.build();
-    }   
+    }
 }

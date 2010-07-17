@@ -7,12 +7,16 @@ package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.impl.Services;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -29,7 +33,32 @@ import org.apache.abdera.model.Link;
 @Path("/organizations/{organizationName}/roles")
 public class OrganizationRolesResource extends AbstractResource{
 
+    static final UriBuilder ORGANIZATION_ROLE_URI_BUILDER;
+    static final UriBuilder ORGANIZATION_ROLE_AFTER_ROLE_NAME_URI_BUILDER;
+    static final UriBuilder ORGANIZATION_ROLE_BEFORE_ROLE_NAME_URI_BUILDER;
+
+    static{
+        ORGANIZATION_ROLE_URI_BUILDER = UriBuilder.fromResource(OrganizationRolesResource.class);
+
+        ORGANIZATION_ROLE_AFTER_ROLE_NAME_URI_BUILDER = UriBuilder.fromResource(OrganizationRolesResource.class);
+        try{
+            ORGANIZATION_ROLE_AFTER_ROLE_NAME_URI_BUILDER.path(RolesResource.class.getMethod("getAfter", String.class));
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+        ORGANIZATION_ROLE_BEFORE_ROLE_NAME_URI_BUILDER = UriBuilder.fromResource(OrganizationRolesResource.class);
+        try{
+            ORGANIZATION_ROLE_BEFORE_ROLE_NAME_URI_BUILDER.path(RolesResource.class.getMethod("getBefore", String.class));
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
     private String organizationName;
+
+    @QueryParam("count")
+    private Integer count;
 
     public OrganizationRolesResource(@PathParam("organizationName") String organizationName){
         this.organizationName = organizationName;
@@ -37,22 +66,66 @@ public class OrganizationRolesResource extends AbstractResource{
 
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
+    @Path("/after/{roleName}")
+    public Response getAfter(@PathParam("roleName") String roleName){
+        return get(roleName, false);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_ATOM_XML)
+    @Path("/before/{roleName}")
+    public Response getBefore(@PathParam("roleName") String roleName){
+        return get(roleName, true);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_ATOM_XML)
     public Response get(){
-        ResponseBuilder responseBuilder;
-        try{
+        return get(null, true);
+    }
+   
+    private Response get(String roleName, boolean isBefore){
 
-            responseBuilder = Response.status(Status.OK);
-            
+        if(count == null){
+            count = 10;
+        }
+        ResponseBuilder responseBuilder = Response.status(Status.OK);;
+        
+                        
+        Feed atomFeed = abderaFactory.newFeed();
+        atomFeed.setId(UriBuilder.fromResource(OrganizationRolesResource.class).build().toString());
+        atomFeed.setTitle(organizationName + " Roles");
+        Link newLink = abderaFactory.newLink();
+        newLink.setHref(UriBuilder.fromResource(OrganizationRolesResource.class).build().toString());
+        newLink.setRel(Link.REL_ALTERNATE);
 
-            Feed atomFeed = abderaFactory.newFeed();
-            atomFeed.setId(UriBuilder.fromResource(OrganizationRolesResource.class).build().toString());
-            atomFeed.setTitle(organizationName + " Roles");
-            Link newLink = abderaFactory.newLink();
-            newLink.setHref(UriBuilder.fromResource(OrganizationRolesResource.class).build().toString());
-            newLink.setRel(Link.REL_ALTERNATE);
 
+        Collection<Role> roles = Services.getInstance().getRoleService().getRolesByOrganization(organizationName);
 
-            Collection<Role> roles = Services.getInstance().getRoleService().getRolesByOrganization(organizationName);
+        if(roles != null && !roles.isEmpty()){
+
+            // uri builder for next and previous uri according to the count value
+            UriBuilder nextRoleUri = ORGANIZATION_ROLE_AFTER_ROLE_NAME_URI_BUILDER.clone();
+            UriBuilder previousRoleUri = ORGANIZATION_ROLE_BEFORE_ROLE_NAME_URI_BUILDER.clone();
+
+            List<Role> roleList = new ArrayList<Role>();
+
+            // link to the next uri according to the count value
+            Link nextLink = abderaFactory.newLink();
+            nextLink.setRel(Link.REL_NEXT);
+
+            Role firstRole = roleList.get(0);
+            nextLink.setHref(nextRoleUri.build(firstRole.getName()).toString());
+            atomFeed.addLink(nextLink);
+
+            Role lastRole = roleList.get(roleList.size() -1);
+
+            // link to the previous uri according to the count value
+            Link previousLink = abderaFactory.newLink();
+            previousLink.setRel(Link.REL_PREVIOUS);
+            previousLink.setHref(previousRoleUri.build(lastRole.getName()).toString());
+
+            atomFeed.addLink(previousLink);
 
             for(Role role:roles){
                 Entry roleEntry = abderaFactory.newEntry();
@@ -69,17 +142,12 @@ public class OrganizationRolesResource extends AbstractResource{
 
                 roleEntry.addLink(roleLink);
                 atomFeed.addEntry(roleEntry);
-            }
-            
-
-        }catch(Exception ex){
-            ex.printStackTrace();
-            responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+            }            
         }
         return responseBuilder.build();
     }
 
-    @GET
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
 
     public Response post(Role role){
