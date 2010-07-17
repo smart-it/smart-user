@@ -44,8 +44,8 @@ public class OrganizationsResource extends AbstractResource{
     static final UriBuilder ORGANIZATION_BEFORE_SHORTNAME_URI_BUILDER;
 
     static{
-        ORGANIZATION_URI_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
-        ORGANIZATION_BEFORE_SHORTNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
+        ORGANIZATION_URI_BUILDER = UriBuilder.fromResource(OrganizationsResource.class);
+        ORGANIZATION_BEFORE_SHORTNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationsResource.class);
 
         try{
             ORGANIZATION_BEFORE_SHORTNAME_URI_BUILDER.path(OrganizationsResource.class.getMethod("getBefore", String.class));
@@ -53,7 +53,7 @@ public class OrganizationsResource extends AbstractResource{
         catch(Exception ex){
             ex.printStackTrace();
         }
-        ORGANIZATION_AFTER_SHORTNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
+        ORGANIZATION_AFTER_SHORTNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationsResource.class);
         try{
             ORGANIZATION_AFTER_SHORTNAME_URI_BUILDER.path(OrganizationsResource.class.getMethod("getAfter", String.class));
         }
@@ -71,15 +71,15 @@ public class OrganizationsResource extends AbstractResource{
 
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
-    @Path("/before/{beforeOrganization}")
-    public Response getBefore(@PathParam("beforeOrganization") String beforeShortName) {
+    @Path("/before/{beforeShortName}")
+    public Response getBefore(@PathParam("beforeShortName") String beforeShortName) {
         return get(beforeShortName, true);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
-    @Path("/after/{afterOrganization}")
-    public Response getAfter(@PathParam("afterOrganization") String afterShortName) {
+    @Path("/after/{afterShortName}")
+    public Response getAfter(@PathParam("afterShortName") String afterShortName) {
       return get(afterShortName, false);
     }
 
@@ -160,14 +160,15 @@ public class OrganizationsResource extends AbstractResource{
               /* setting link to the individual organization resource*/
               
               Link organizationLink = abderaFactory.newLink();              
-              organizationLink.setHref(OrganizationsResource.ORGANIZATION_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
+              organizationLink.setHref(OrganizationResource.ORGANIZATION_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
               organizationLink.setRel(Link.REL_ALTERNATE);
               organizationLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
               organizationEntry.addLink(organizationLink);
               
               atomFeed.addEntry(organizationEntry);
             }
-        }        
+        }
+        responseBuilder.entity(atomFeed);
         return responseBuilder.build();
     }
 

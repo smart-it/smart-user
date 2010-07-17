@@ -151,6 +151,7 @@ public class RolesResource extends AbstractResource{
             }
             
         }
+        responseBuilder.entity(atomFeed);
         return responseBuilder.build();
     }
 

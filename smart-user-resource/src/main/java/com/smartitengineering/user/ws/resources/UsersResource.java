@@ -98,7 +98,20 @@ public class UsersResource extends AbstractResource{
         atomFeed.addLink(parentLink);
 
               
-        Collection<User> users = Services.getInstance().getUserService().getAllUser();
+        //Collection<User> users = Services.getInstance().getUserService().getAllUser();
+        Collection<User> users;
+        List<User> serverList = new ArrayList<User>();
+        User user1 = new User();
+        user1.setUsername("russel");
+        user1.setPassword("russel");
+        serverList.add(user1);
+
+        User user2 = new User();
+        user2.setUsername("atiq");
+        user2.setPassword("atiq");
+        serverList.add(user2);
+
+        users = serverList;
 
         if(users != null && !users.isEmpty()){
 
@@ -140,7 +153,7 @@ public class UsersResource extends AbstractResource{
                 userEntry.setId(user.getUsername());
                 userEntry.setTitle(user.getUsername());
                 userEntry.setSummary(user.getUsername());
-                userEntry.setUpdated("Not available");
+                //userEntry.setUpdated("Not available");
 
                 // setting link to the each individual user
                 Link userLink = abderaFactory.newLink();
@@ -153,6 +166,7 @@ public class UsersResource extends AbstractResource{
                 atomFeed.addEntry(userEntry);
             }                       
         }
+        responseBuilder.entity(atomFeed);
         return responseBuilder.build();
     }
 

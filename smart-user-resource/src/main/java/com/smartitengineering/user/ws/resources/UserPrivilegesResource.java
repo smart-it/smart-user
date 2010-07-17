@@ -73,11 +73,13 @@ public class UserPrivilegesResource extends AbstractResource{
                 roleEntry.addLink(roleLink);
                 atomFeed.addEntry(roleEntry);
             }
+            responseBuilder.entity(atomFeed);
 
         }catch(Exception ex){
             ex.printStackTrace();
             responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
         }
+        
         return responseBuilder.build();
     }
 

@@ -144,6 +144,7 @@ public class OrganizationRolesResource extends AbstractResource{
                 atomFeed.addEntry(roleEntry);
             }            
         }
+        responseBuilder.entity(atomFeed);
         return responseBuilder.build();
     }
 

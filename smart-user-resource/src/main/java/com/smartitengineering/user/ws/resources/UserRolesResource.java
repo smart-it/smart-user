@@ -27,7 +27,7 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-@Path("/organizations/{organizationName}/users/{userName}/roles")
+@Path("/notapplicable/organizations/{organizationName}/users/{userName}/roles")
 public class UserRolesResource extends AbstractResource{
 
     private String organizationName;
@@ -72,6 +72,7 @@ public class UserRolesResource extends AbstractResource{
                 roleEntry.addLink(roleLink);
                 atomFeed.addEntry(roleEntry);
             }
+            responseBuilder.entity(atomFeed);
 
         }catch(Exception ex){
             ex.printStackTrace();

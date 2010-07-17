@@ -153,6 +153,7 @@ public class OrganizationUserRolesResource extends AbstractResource{
             }
 
         }
+        responseBuilder.entity(atomFeed);
         return responseBuilder.build();
     }
 

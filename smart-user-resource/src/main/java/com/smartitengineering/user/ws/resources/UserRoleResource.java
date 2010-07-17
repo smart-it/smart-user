@@ -24,7 +24,7 @@ import org.apache.abdera.model.Feed;
  *
  * @author russel
  */
-@Path("/organizations/{organizationName}/users/{userName}/roles/{roleName}")
+@Path("/notapplicable/organizations/{organizationName}/users/{userName}/roles/{roleName}")
 public class UserRoleResource extends AbstractResource{
 
     private String organizationName;

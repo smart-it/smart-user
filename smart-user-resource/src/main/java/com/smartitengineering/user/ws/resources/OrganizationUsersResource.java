@@ -148,6 +148,7 @@ public class OrganizationUsersResource extends AbstractResource{
                 atomFeed.addEntry(userEntry);
             }
         }
+        responseBuilder.entity(atomFeed);
         return responseBuilder.build();
     }
 
