@@ -53,4 +53,8 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public User getUserByOrganizationAndUserName(String organization, String userName){
+        return new User();
+    }
+
 }
