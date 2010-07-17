@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class dynamic-insert="false" dynamic-update="false" name="com.smartitengineering.user.domain.Address" table="address">
-        <id column="id" name="id" type="java.lang.Integer">
-            <generator class="increment">
+  <class dynamic-insert="false" dynamic-update="false" name="com.smartitengineering.user.domain.Address" table="address">
+    <id column="id" name="id" type="java.lang.Integer">
+      <generator class="increment">
             </generator>
-        </id>
-        <version column="version" name="version"/>
-        
-        <property column="street_address" length="255" name="streetAddress" type="java.lang.String"/>
-        <property column="city" length="255" name="city" type="java.lang.String"/>
-        <property column="state" length="255" name="state" type="java.lang.String"/>
-        <property column="country" length="255" name="country" type="java.lang.String"/>
-        <property column="zip" length="255" name="zip" type="java.lang.String"/>
-
-        <component name="geoLoacation">
-            <property column="longitude" length="255" name="longitude" type="java.lang.Double"/>
-            <property column="latitude" length="255" name="latitude" type="java.lang.Double"/>
-        </component>
-    </class>
+    </id>
+    <version column="version" name="version"/>
+    <property column="street_address" length="255" name="streetAddress" type="java.lang.String"/>
+    <property column="city" length="255" name="city" type="java.lang.String"/>
+    <property column="state" length="255" name="state" type="java.lang.String"/>
+    <property column="country" length="255" name="country" type="java.lang.String"/>
+    <property column="zip" length="255" name="zip" type="java.lang.String"/>
+    <component name="geoLoacation">
+      <property column="longitude" length="255" name="longitude" type="java.lang.Double"/>
+      <property column="latitude" length="255" name="latitude" type="java.lang.Double"/>
+    </component>
+  </class>
 </hibernate-mapping>
