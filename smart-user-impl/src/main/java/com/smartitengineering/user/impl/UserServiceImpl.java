@@ -162,8 +162,6 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
                QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationShortName)));
     }
 
-    public User getUserByOrganizationAndUserName(String organizationName, String userName){
-        return new User();
-    }
+    
 
 }
