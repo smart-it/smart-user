@@ -47,7 +47,7 @@ public class OrganizationUserRoleResource extends AbstractResource {
     private Role role;
 
     public OrganizationUserRoleResource(@PathParam("organizationName")String organizationName, @PathParam("userName")String userName, @PathParam("roleName")String roleName){
-        role = Services.getInstance().getRoleService().getRoleByOrganizationAndUserAndUserID(organizationName, userName, roleName);
+        role = Services.getInstance().getRoleService().getRoleByOrganizationAndUserAndRole(organizationName, userName, roleName);
     }
 
     @GET
