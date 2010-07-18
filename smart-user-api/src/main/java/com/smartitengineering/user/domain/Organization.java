@@ -19,7 +19,7 @@ public class Organization extends AbstractPersistentDTO<Organization> {
 
     private String name;
     private String uniqueShortName;
-    private String address;
+    private Address address;
     //private String contactPerson;
 
     private Date lastModifiedDate;
@@ -60,17 +60,20 @@ public class Organization extends AbstractPersistentDTO<Organization> {
         this.lastModifiedDate = lastModifiedDate;
     }
 
-
-    public String getAddress() {
-        if(address == null)
-            address="";
+    public Address getAddress() {
+        if(address==null)
+            address = new Address();
         return address;
     }
 
-    @JsonIgnore
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
+        if(address==null)
+            return;
         this.address = address;
     }
+
+
+   
 
 
 //    public String getContactPerson() {

@@ -124,9 +124,9 @@
     <!-- **************************************************************** -->
     <!-- ********************* Smart Util Reg *************************** -->
     <!-- **************************************************************** -->
-    <bean id="beanRegistrar" class="com.smartitengineering.util.spring.BeanFactoryRegistrar">
+    <bean id="beanRegistrar" class="com.smartitengineering.util.bean.spring.SpringBeanRegistrar">
         <property name="beanFactoryContextName">
-            <value>userServiceContext</value>
+            <value>com.smartitengineering.user.impl</value>
         </property>
     </bean>
     
