@@ -39,7 +39,7 @@ public class UserRoleResource extends AbstractResource{
         this.userName = userName;
         this.roleName = roleName;
 
-        role = Services.getInstance().getRoleService().getRoleByOrganizationAndUserAndUserID(organizationName, userName, roleName);        
+        role = Services.getInstance().getRoleService().getRoleByOrganizationAndRoleName(organizationName, userName, roleName);
     }
 
     @GET

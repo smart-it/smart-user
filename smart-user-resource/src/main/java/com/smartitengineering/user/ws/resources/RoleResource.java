@@ -47,7 +47,7 @@ public class RoleResource extends AbstractResource{
     private Role role;
 
     public RoleResource(@PathParam("roleName")String roleName){
-        role = Services.getInstance().getRoleService().getRoleByUserID(roleName);
+        role = Services.getInstance().getRoleService().getRoleByName(roleName);
     }
 
     @GET
