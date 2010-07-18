@@ -162,6 +162,4 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
                QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationShortName)));
     }
 
-    
-
 }

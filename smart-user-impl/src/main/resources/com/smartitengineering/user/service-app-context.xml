@@ -4,7 +4,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "spring-beans.dtd"  >
 <beans>
     
-    <bean id="abstractDao" class="com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl" abstract="true">
+<!--    <bean id="abstractDao" class="com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl" abstract="true">
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
         </property>
@@ -114,7 +114,13 @@
         <property name="smartAceService">
             <ref local="smartAceService"/>
         </property>
+    </bean>-->
+    <bean id="abstractDao" class="com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl" abstract="true">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
     </bean>
+    <bean id="organizationService" class="com.smartitengineering.user.impl.OrganizationServiceImpl" parent="abstractDao"/>
     <!-- **************************************************************** -->
     <!-- ********************* Smart Util Reg *************************** -->
     <!-- **************************************************************** -->

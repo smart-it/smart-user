@@ -270,7 +270,7 @@ public class InitialRoleFactory {
                         NodeList roleNodeList = roleElementList.item(p).getChildNodes();
                         String roleName = ((Node) roleNodeList.item(0)).getNodeValue();
                         System.out.println(roleName);
-                        Role role = roleService.getRoleByUserID(roleName);
+                        Role role = roleService.getRoleByName(roleName);
                         System.out.print(role.getDisplayName());
                         roles.add(role);
                     }

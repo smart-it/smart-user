@@ -106,13 +106,13 @@ public class OrganizationsResource extends AbstractResource{
         atomFeed.addLink(parentResourceLink);
 
         // get the organizations accoring to the query
-        //Collection<Organization> organizations = Services.getInstance().getOrganizationService().getAllOrganization();
+        Collection<Organization> organizations = Services.getInstance().getOrganizationService().getAllOrganization();
 
         // for testing purpose we manually add organization to the list.
-        List<Organization> serviceOrganization = new ArrayList<Organization>();
-        serviceOrganization.add(new Organization("Sitel", "1"));
-        serviceOrganization.add(new Organization("mehmood equity", "2"));
-        Collection<Organization> organizations = serviceOrganization;
+//        List<Organization> serviceOrganization = new ArrayList<Organization>();
+//        serviceOrganization.add(new Organization("Sitel", "1"));
+//        serviceOrganization.add(new Organization("mehmood equity", "2"));
+//        Collection<Organization> organizations = serviceOrganization;
 
         if(organizations != null && !organizations.isEmpty()){
 
