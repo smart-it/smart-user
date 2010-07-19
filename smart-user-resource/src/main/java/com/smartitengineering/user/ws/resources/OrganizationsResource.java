@@ -12,7 +12,6 @@ package com.smartitengineering.user.ws.resources;
  */
 
 import com.smartitengineering.user.domain.Organization;
-import com.smartitengineering.user.impl.Services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

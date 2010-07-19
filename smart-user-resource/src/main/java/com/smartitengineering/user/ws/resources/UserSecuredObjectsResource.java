@@ -6,7 +6,6 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.SecuredObject;
-import com.smartitengineering.user.impl.Services;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;

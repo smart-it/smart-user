@@ -111,7 +111,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
     public void validateOrganization(Organization organization) {
         if (organization.getId() == null) {
             Integer count = (Integer) super.getOther(
-                    QueryParameterFactory.getElementCountParam("username"), QueryParameterFactory.getStringLikePropertyParam(
+                    QueryParameterFactory.getElementCountParam("uniqueShortName"), QueryParameterFactory.getStringLikePropertyParam(
                     "uniqueShortName",
                     organization.getUniqueShortName()));
             if (count.intValue() > 0) {

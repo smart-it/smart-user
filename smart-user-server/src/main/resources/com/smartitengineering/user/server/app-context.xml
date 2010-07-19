@@ -18,7 +18,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     <import resource="classpath:com/smartitengineering/user/service-app-context.xml" />
     <import resource="classpath:com/smartitengineering/user/app-context-datasource.xml" />
     <import resource="classpath:com/smartitengineering/user/app-context-hibernate-definition.xml" />
-    <context:component-scan base-package="com.smartitengineering.user.ws.resources"/>
+<!--    <context:component-scan base-package="com.smartitengineering.user.ws.resources"/>-->
 
     <!-- **************************************************************** -->
     <!-- ******************** Initialize Roles ************************** -->

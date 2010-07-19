@@ -126,7 +126,7 @@
     <!-- **************************************************************** -->
     <bean id="beanRegistrar" class="com.smartitengineering.util.bean.spring.SpringBeanRegistrar">
         <property name="beanFactoryContextName">
-            <value>com.smartitengineering.user.impl</value>
+            <value>com.smartitengineering.user.service</value>
         </property>
     </bean>
     

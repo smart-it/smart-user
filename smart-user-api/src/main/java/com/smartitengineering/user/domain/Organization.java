@@ -36,7 +36,7 @@ public class Organization extends AbstractPersistentDTO<Organization> {
         return name;
     }
 
-    @JsonIgnore
+    
     public void setName(String name) {
         this.name = name;
     }
@@ -45,7 +45,7 @@ public class Organization extends AbstractPersistentDTO<Organization> {
         return uniqueShortName;
     }
 
-    @JsonIgnore
+    
     public void setUniqueShortName(String uniqueShortName) {
         this.uniqueShortName = uniqueShortName;
     }
