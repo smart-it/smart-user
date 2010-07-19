@@ -149,6 +149,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
         try {
             organization = super.getSingle(qp);
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return organization;
     }
