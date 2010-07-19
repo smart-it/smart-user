@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.user.impl;
+package com.smartitengineering.user.service.impl;
 
 import com.smartitengineering.dao.common.CommonReadDao;
 import com.smartitengineering.dao.common.CommonWriteDao;
@@ -30,6 +30,11 @@ import org.hibernate.exception.ConstraintViolationException;
  * @author modhu7
  */
 public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization> implements OrganizationService{
+
+    public OrganizationServiceImpl() {
+        setEntityClass(Organization.class);
+    }
+
     
 
     @Override
