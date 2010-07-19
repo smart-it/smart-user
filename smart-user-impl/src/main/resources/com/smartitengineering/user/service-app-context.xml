@@ -120,7 +120,7 @@
             <ref bean="sessionFactory" />
         </property>
     </bean>
-    <bean id="organizationService" class="com.smartitengineering.user.impl.OrganizationServiceImpl" parent="abstractDao"/>
+    <bean id="organizationService" class="com.smartitengineering.user.service.impl.OrganizationServiceImpl" parent="abstractDao"/>
     <!-- **************************************************************** -->
     <!-- ********************* Smart Util Reg *************************** -->
     <!-- **************************************************************** -->
