@@ -54,31 +54,41 @@ public class OrganizationUsersResource extends AbstractResource{
             ex.printStackTrace();
         }
     }
-
+    
     @PathParam("count")
     private Integer count;
+    @PathParam("uniqueShortName")
+    private String organizationUniqueShortName;
+
+    public OrganizationUsersResource(@PathParam("uniqueShortName")String organizationUniqueShortName){
+        this.organizationUniqueShortName = organizationUniqueShortName;
+    }
+
+    
+    
+    
 
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
     @Path("/before/{beforeUserName}")
     public Response getBefore(@PathParam("beforeUserName") String beforeUserName) {
-        return get(beforeUserName, true);
+        return get(organizationUniqueShortName, beforeUserName, true);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
     @Path("/after/{afterUserName}")
     public Response getAfter(@PathParam("afterUserName") String afterUserName) {
-      return get(afterUserName, false);
+      return get(organizationUniqueShortName,afterUserName, false);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
     public Response get() {
-      return get(null, true);
+      return get(organizationUniqueShortName, null, true);
     }
 
-    private Response get(String userName, boolean isBefore){
+    private Response get(String uniqueOrganizationName, String userName, boolean isBefore){
 
         if(count == null){
             count = 10;
@@ -92,7 +102,8 @@ public class OrganizationUsersResource extends AbstractResource{
         atomFeed.addLink(parentLink);
 
 
-        Collection<User> users = Services.getInstance().getUserService().getAllUser();
+        Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(uniqueOrganizationName);
+        
 
         if(users != null && !users.isEmpty()){
 

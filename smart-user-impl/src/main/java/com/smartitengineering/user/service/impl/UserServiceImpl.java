@@ -32,6 +32,10 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
 
     private OrganizationService OrganizationService;
 
+    public UserServiceImpl(){
+        setEntityClass(User.class);
+    }
+
     public OrganizationService getOrganizationService() {
         return OrganizationService;
     }
@@ -113,6 +117,13 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
         } catch (Exception e) {
         }
         return users;
+    }
+
+    public Collection<User> getUserByOrganization(String organizationShortName){
+        Collection<User> users = new HashSet<User>();
+
+        QueryParameter qp = QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT,QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationShortName));
+        return super.getList(qp);        
     }
 
     @Override
