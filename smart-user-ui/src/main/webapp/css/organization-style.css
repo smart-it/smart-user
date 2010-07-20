@@ -1,0 +1,68 @@
+/* 
+    Document   : organization-style
+    Created on : Jul 20, 2010, 10:21:41 AM
+    Author     : uzzal
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+body{
+    background-color: #ffffff;
+
+}
+#main{
+        border-style: inset;
+        width:80%;
+        background-position: center;
+
+
+}
+#header_organization{
+}
+
+#form_organizationentry{
+    background-color:#348781;
+    
+}
+
+label{
+    font-family: vardana, sans-serif;
+    font-size: large;
+    font-weight: 500;
+    font-style: normal;
+    color:aqua;
+}
+
+.inner-left{
+    padding: 10px 2px 10px 10px;
+    width: 50%;
+    float:left;
+
+/*    float:left;
+    width:50%;
+    border-style: inset;*/
+
+
+}
+
+.inner-right{
+
+    padding: 10px 10px 10px 10px;
+    width: 50%;
+/*    margin-left:50%;
+    float: right;*/
+/*    margin-left:50%;
+    width:50%;
+    border-style: inset;*/
+    
+
+}
