@@ -33,8 +33,8 @@ public class PrivilegeResource extends AbstractResource{
     private Privilege privilege;
 
     public PrivilegeResource(@PathParam("privilegeName") String privilegeName){
-        
-        privilege = Services.getInstance().getPrivilegeService().getPrivilegesByObjectID(privilegeName);
+                
+        privilege = Services.getInstance().getPrivilegeService().getPrivilegeByName(privilegeName);
     }
 
     @GET

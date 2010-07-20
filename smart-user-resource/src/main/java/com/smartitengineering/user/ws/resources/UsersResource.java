@@ -97,20 +97,20 @@ public class UsersResource extends AbstractResource{
         atomFeed.addLink(parentLink);
 
               
-        //Collection<User> users = Services.getInstance().getUserService().getAllUser();
-        Collection<User> users;
-        List<User> serverList = new ArrayList<User>();
-        User user1 = new User();
-        user1.setUsername("russel");
-        user1.setPassword("russel");
-        serverList.add(user1);
-
-        User user2 = new User();
-        user2.setUsername("atiq");
-        user2.setPassword("atiq");
-        serverList.add(user2);
-
-        users = serverList;
+        Collection<User> users = Services.getInstance().getUserService().getAllUser();
+//        Collection<User> users;
+//        List<User> serverList = new ArrayList<User>();
+//        User user1 = new User();
+//        user1.setUsername("russel");
+//        user1.setPassword("russel");
+//        serverList.add(user1);
+//
+//        User user2 = new User();
+//        user2.setUsername("atiq");
+//        user2.setPassword("atiq");
+//        serverList.add(user2);
+//
+//        users = serverList;
 
         if(users != null && !users.isEmpty()){
 
@@ -175,6 +175,15 @@ public class UsersResource extends AbstractResource{
 
         ResponseBuilder responseBuilder;
         try{
+
+            if(user.getRoleIDs() != null){
+                Services.getInstance().getRoleService().populateRole(user);
+            }
+
+            if(user.getPrivilegeIDs() != null){
+                
+            }
+
             Services.getInstance().getUserService().save(user);
             responseBuilder = Response.status(Status.OK);
         }
