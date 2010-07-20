@@ -7,6 +7,7 @@ package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
 import com.smartitengineering.domain.PersistentDTO;
+import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 
 
@@ -16,27 +17,84 @@ import org.apache.commons.lang.StringUtils;
  */
 public class SecuredObject extends AbstractPersistentDTO<SecuredObject>{
 
+    private String name;
     private String objectID;
-    private String parentObjectID;
+    private SecuredObject parentObjectID;
+    private Organization organization;
+    private Date lastModifiedDate;
 
+    public Date getLastModifiedDate() {
+        if(lastModifiedDate == null){
+            lastModifiedDate = new Date();
+        }
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        if(lastModifiedDate == null){
+            return;
+        }
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getName() {
+        if(name==null){
+            name="";
+        }
+        return name;
+    }
+
+    public void setName(String name) {
+        if(name==null){
+            return;
+        }
+        this.name = name;
+    }
+
+    public Organization getOrganization() {
+        if(organization == null){
+            organization = new Organization("", "");
+        }
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        if(organization==null){
+            return;
+        }
+        this.organization = organization;
+    }
+
+    public SecuredObject getParentObjectID() {
+        if(parentObjectID == null){
+            parentObjectID = new SecuredObject();
+        }
+        return parentObjectID;
+    }
+
+    public void setParentObjectID(SecuredObject parentObjectID) {
+        if(parentObjectID == null){
+            return;
+        }
+        this.parentObjectID = parentObjectID;
+    }
+    
     public String getObjectID() {
+        if(objectID == null){
+            objectID="";
+        }
         return objectID;
     }
 
     public void setObjectID(String objectID) {
+        if(objectID == null){
+            return;
+        }
         this.objectID = objectID;
     }
 
-    public String getParentObjectID() {
-        return parentObjectID;
-    }
-
-    public void setParentObjectID(String parentObjectID) {
-        this.parentObjectID = parentObjectID;
-    }
-
     public boolean isValid(){
-        return StringUtils.isNotBlank(objectID) && StringUtils.isNotBlank(parentObjectID);
+        return StringUtils.isNotBlank(objectID) && (organization!=null);
     }
 
 }
