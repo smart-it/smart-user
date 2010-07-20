@@ -169,7 +169,10 @@ public class OrganizationPrivilegesResource extends AbstractResource{
     public Response post(Privilege privilege){
         ResponseBuilder responseBuilder;
         try{
-            responseBuilder = Response.status(Status.OK);
+            responseBuilder = Response.status(Status.CREATED);
+            if(privilege.getSecuredObjectID() != null){
+                Services.getInstance().getSecuredObjectService().populateSecuredObject(privilege);
+            }
             Services.getInstance().getPrivilegeService().create(privilege);
         }catch(Exception ex){
             ex.printStackTrace();

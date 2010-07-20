@@ -100,7 +100,7 @@ public class OrganizationPrivilegeResource extends AbstractResource{
 
         Feed privilegeFeed = abderaFactory.newFeed();
 
-        privilegeFeed.setId(privilege.getObjectID());
+        privilegeFeed.setId(privilege.getName());
         privilegeFeed.setTitle(privilege.getName());
         privilegeFeed.addLink(getSelfLink());
 
