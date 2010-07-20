@@ -51,8 +51,6 @@ public class User extends AbstractPersistentDTO<User> {
         this.parentOrganizationID = parentOrganizationID;
     }
 
-
-
     public String getPassword() {
         if (password == null) {
             password = "";

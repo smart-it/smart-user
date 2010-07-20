@@ -20,6 +20,7 @@ public enum UniqueConstrainedField {
     ROLE_NAME,
     PRIVILEGE_NAME,
     OBJECT_IDENTITY,
+    OBJECT_ID,
     ACL,
     ACE,
     SID_OID,

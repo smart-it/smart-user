@@ -6,9 +6,9 @@
 package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
-import com.smartitengineering.domain.PersistentDTO;
 import java.util.Date;
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 
 /**
@@ -21,6 +21,8 @@ public class SecuredObject extends AbstractPersistentDTO<SecuredObject>{
     private String objectID;
     private SecuredObject parentObjectID;
     private Organization organization;
+
+    private Integer parentOrganizationID;
     private Date lastModifiedDate;
 
     public Date getLastModifiedDate() {
@@ -51,6 +53,7 @@ public class SecuredObject extends AbstractPersistentDTO<SecuredObject>{
         this.name = name;
     }
 
+    @JsonIgnore
     public Organization getOrganization() {
         if(organization == null){
             organization = new Organization("", "");
@@ -58,6 +61,7 @@ public class SecuredObject extends AbstractPersistentDTO<SecuredObject>{
         return organization;
     }
 
+    @JsonIgnore
     public void setOrganization(Organization organization) {
         if(organization==null){
             return;
@@ -93,8 +97,21 @@ public class SecuredObject extends AbstractPersistentDTO<SecuredObject>{
         this.objectID = objectID;
     }
 
+    
+
+
+
     public boolean isValid(){
         return StringUtils.isNotBlank(objectID) && (organization!=null);
+    }
+
+    @JsonIgnore
+    public Integer getParentOrganizationID() {
+        return parentOrganizationID;
+    }
+
+    public void setParentOrganizationID(Integer parentOrganizationID) {
+        this.parentOrganizationID = parentOrganizationID;
     }
 
 }

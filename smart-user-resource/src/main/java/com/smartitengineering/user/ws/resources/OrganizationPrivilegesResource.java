@@ -79,15 +79,7 @@ public class OrganizationPrivilegesResource extends AbstractResource{
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
     public Response get(){
-        ResponseBuilder responseBuilder;
-        try{
-            responseBuilder = Response.status(Status.OK);
-
-        }catch(Exception ex){
-            ex.printStackTrace();
-            responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
-        }
-        return responseBuilder.build();
+        return get(null, true);
     }
 
     public Response get(String privilegeName, boolean isBefore)
@@ -173,6 +165,10 @@ public class OrganizationPrivilegesResource extends AbstractResource{
             if(privilege.getSecuredObjectID() != null){
                 Services.getInstance().getSecuredObjectService().populateSecuredObject(privilege);
             }
+            if(privilege.getParentOrganizationID() == null){
+                throw new Exception("No parent Organization");
+            }
+            Services.getInstance().getOrganizationService().populateOrganization(privilege);
             Services.getInstance().getPrivilegeService().create(privilege);
         }catch(Exception ex){
             ex.printStackTrace();

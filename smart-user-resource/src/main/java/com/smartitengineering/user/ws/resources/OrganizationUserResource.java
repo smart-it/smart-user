@@ -78,6 +78,16 @@ public class OrganizationUserResource extends AbstractResource{
     public Response update(User newUser) {
         ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
         try {
+            if(user.getRoleIDs() != null){
+                Services.getInstance().getRoleService().populateRole(user);
+            }
+            if(user.getPrivilegeIDs() != null){
+                Services.getInstance().getPrivilegeService().populatePrivilege(user);
+            }
+            if(user.getParentOrganizationID() == null){
+                throw new Exception("No organization found");
+            }
+            Services.getInstance().getOrganizationService().populateOrganization(user);
             Services.getInstance().getUserService().save(newUser);
             user = Services.getInstance().getUserService().getUserByUsername(newUser.getUsername());
             responseBuilder = Response.ok(getUserFeed());
