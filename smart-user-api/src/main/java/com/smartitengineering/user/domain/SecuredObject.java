@@ -19,7 +19,7 @@ public class SecuredObject extends AbstractPersistentDTO<SecuredObject>{
 
     private String name;
     private String objectID;
-    private SecuredObject parentObjectID;
+    private SecuredObject parentObject;
     private Organization organization;
     private Date lastModifiedDate;
 
@@ -65,18 +65,18 @@ public class SecuredObject extends AbstractPersistentDTO<SecuredObject>{
         this.organization = organization;
     }
 
-    public SecuredObject getParentObjectID() {
-        if(parentObjectID == null){
-            parentObjectID = new SecuredObject();
+    public SecuredObject getParentObject() {
+        if(parentObject == null){
+            parentObject = new SecuredObject();
         }
-        return parentObjectID;
+        return parentObject;
     }
 
-    public void setParentObjectID(SecuredObject parentObjectID) {
-        if(parentObjectID == null){
+    public void setParentObjectID(SecuredObject parentObject) {
+        if(parentObject == null){
             return;
         }
-        this.parentObjectID = parentObjectID;
+        this.parentObject = parentObject;
     }
     
     public String getObjectID() {
