@@ -10,10 +10,13 @@ import com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl;
 import com.smartitengineering.domain.PersistentDTO;
 import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
+import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.filter.RoleFilter;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.RoleService;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import org.hibernate.StaleStateException;
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -130,5 +133,32 @@ public class RoleServiceImpl extends AbstractCommonDaoImpl<Role> implements Role
     @Override
     public Collection<Role> search(RoleFilter filter) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+
+    public void populateRole(User user) throws Exception{
+        List<Integer> roleIDs = user.getRoleIDs();
+
+        if(roleIDs != null && !roleIDs.isEmpty()){
+            Set<Role> roles = getByIds(roleIDs);
+
+            if(roles == null || roleIDs.size() != roles.size()){
+                throw new Exception("Role not found");
+            }
+            user.setRoles(roles);
+        }
+    }
+
+    public void populateRole(Role role) throws Exception {
+        List<Integer> roleIDs = role.getRoleIDs();
+
+        if(roleIDs != null && !roleIDs.isEmpty()){
+            Set<Role> roles = getByIds(roleIDs);
+
+            if(roles == null || roleIDs.size() != roles.size()){
+                throw new Exception("Role not found");
+            }
+            role.setRoles(roles);
+        }
     }
 }

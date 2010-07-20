@@ -5,6 +5,7 @@
 package com.smartitengineering.user.service;
 
 import com.smartitengineering.user.domain.Role;
+import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.filter.RoleFilter;
 import java.util.Collection;
 
@@ -33,4 +34,8 @@ public interface RoleService {
     Collection<Role> search(RoleFilter filter);
 
     void update(Role role);
+
+    public void populateRole(User user) throws Exception;
+
+    public void populateRole(Role role) throws Exception;
 }
