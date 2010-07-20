@@ -21,8 +21,6 @@ public interface SecuredObjectService {
 
     public void delete(SecuredObject securedObject);
 
-    public SecuredObject getByObjectID(String objectID);
-
     public Collection<SecuredObject> getByOrganization(String organizationName);
 
     public void populateSecuredObject(Privilege privilege) throws Exception;
