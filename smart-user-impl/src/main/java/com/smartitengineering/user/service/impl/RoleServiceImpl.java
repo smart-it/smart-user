@@ -26,6 +26,10 @@ import org.hibernate.exception.ConstraintViolationException;
  */
 public class RoleServiceImpl extends AbstractCommonDaoImpl<Role> implements RoleService {
 
+    public RoleServiceImpl() {
+        setEntityClass(Role.class);
+    }
+
     @Override
     public void create(Role role) {
         validateRole(role);
