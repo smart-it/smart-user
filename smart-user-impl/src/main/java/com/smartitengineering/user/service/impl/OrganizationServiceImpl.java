@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.user.impl;
+package com.smartitengineering.user.service.impl;
 
 import com.smartitengineering.dao.common.CommonReadDao;
 import com.smartitengineering.dao.common.CommonWriteDao;
@@ -30,6 +30,11 @@ import org.hibernate.exception.ConstraintViolationException;
  * @author modhu7
  */
 public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization> implements OrganizationService{
+
+    public OrganizationServiceImpl() {
+        setEntityClass(Organization.class);
+    }
+
     
 
     @Override
@@ -111,7 +116,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
     public void validateOrganization(Organization organization) {
         if (organization.getId() == null) {
             Integer count = (Integer) super.getOther(
-                    QueryParameterFactory.getElementCountParam("username"), QueryParameterFactory.getStringLikePropertyParam(
+                    QueryParameterFactory.getElementCountParam("uniqueShortName"), QueryParameterFactory.getStringLikePropertyParam(
                     "uniqueShortName",
                     organization.getUniqueShortName()));
             if (count.intValue() > 0) {
@@ -144,6 +149,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
         try {
             organization = super.getSingle(qp);
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return organization;
     }

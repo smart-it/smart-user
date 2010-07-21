@@ -7,8 +7,10 @@ package com.smartitengineering.user.domain;
 import com.smartitengineering.domain.AbstractPersistentDTO;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -21,6 +23,9 @@ public class Role extends AbstractPersistentDTO<Role> {
     private String shortDescription;
     private Set<Privilege> privileges;
     private Set<Role> roles;
+
+    private List<Integer> roleIDs;
+    private List<Integer> privilegeIDs;
     private Date lastModifiedDate;
 
     public Role(){
@@ -34,7 +39,7 @@ public class Role extends AbstractPersistentDTO<Role> {
     }
 
 
-
+    @JsonIgnore
     public Set<Role> getRoles() {
         if(roles == null){
             roles = new HashSet<Role>();
@@ -42,14 +47,15 @@ public class Role extends AbstractPersistentDTO<Role> {
         return roles;
     }
 
+    @JsonIgnore
     public void setRoles(Set<Role> roles) {
         if(roles==null){
             return;
         }
         this.roles = roles;
     }
-    
 
+    @JsonIgnore
     public Set<Privilege> getPrivileges() {
         if (privileges == null) {
             privileges = new HashSet<Privilege>();
@@ -57,14 +63,31 @@ public class Role extends AbstractPersistentDTO<Role> {
         return privileges;
     }
 
+    @JsonIgnore
     public void setPrivileges(Set<Privilege> privileges) {
         if (privileges == null) {
             return;
         }
         this.privileges = privileges;
-    }   
+    }
 
+    @JsonIgnore
+    public List<Integer> getPrivilegeIDs() {
+        return privilegeIDs;
+    }
 
+    public void setPrivilegeIDs(List<Integer> privilegeIDs) {
+        this.privilegeIDs = privilegeIDs;
+    }
+
+    @JsonIgnore
+    public List<Integer> getRoleIDs() {
+        return roleIDs;
+    }
+
+    public void setRoleIDs(List<Integer> roleIDs) {
+        this.roleIDs = roleIDs;
+    }
 
     public String getDisplayName() {
         if (displayName == null) {

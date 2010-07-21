@@ -6,7 +6,6 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Role;
-import com.smartitengineering.user.impl.Services;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -24,7 +23,7 @@ import org.apache.abdera.model.Feed;
  *
  * @author russel
  */
-@Path("/organizations/{organizationName}/users/{userName}/roles/{roleName}")
+@Path("/notapplicable/organizations/{organizationName}/users/{userName}/roles/{roleName}")
 public class UserRoleResource extends AbstractResource{
 
     private String organizationName;
@@ -39,7 +38,7 @@ public class UserRoleResource extends AbstractResource{
         this.userName = userName;
         this.roleName = roleName;
 
-        role = Services.getInstance().getRoleService().getRoleByOrganizationAndUserAndUserID(organizationName, userName, roleName);        
+        role = Services.getInstance().getRoleService().getRoleByOrganizationAndRoleName(organizationName, roleName);
     }
 
     @GET

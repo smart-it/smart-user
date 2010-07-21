@@ -1,0 +1,59 @@
+/* 
+    Document   : default
+    Created on : Jul 20, 2010, 5:46:32 PM
+    Author     : uzzal
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+body{
+
+    background-color: #FFCCCC;
+}
+
+#maindivision{
+    width: 100%;
+    border-style: inset;
+}
+
+#header{
+    width: 100%;
+    height: 75px;
+    border-style: inset;
+}
+
+#content{
+    width: 70%;
+    height: 500px;
+    float: left;
+    border-style: inset;
+}
+
+#login{
+    width: 29%;
+    height: 500px;
+    float: left;
+    border-style: inset;
+
+}
+#footer{
+
+    width: 100%;
+    height: 75px;
+    border-style: inset;
+
+}
+
+#name, #pass{
+   
+ letter-spacing: 8px;
+}

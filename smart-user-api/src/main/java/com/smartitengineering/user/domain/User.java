@@ -5,9 +5,12 @@
 package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -20,6 +23,12 @@ public class User extends AbstractPersistentDTO<User> {
     private Organization organization;
     private Set<Role> roles;
     private Set<Privilege> privileges;
+    
+    private List<Integer> roleIDs;
+    private List<Integer> privilegeIDs;
+
+    private Date lastModifiedDate;
+
 
     public String getPassword() {
         if (password == null) {
@@ -35,6 +44,36 @@ public class User extends AbstractPersistentDTO<User> {
         this.password = password;
     }
 
+    public Organization getOrganization() {
+        if(organization==null){
+            organization = new Organization("", "");
+        }
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        if(organization==null)
+            return;
+        this.organization = organization;
+    }
+
+    @JsonIgnore
+    public Set<Privilege> getPrivileges() {
+        if(privileges==null){
+            privileges = new HashSet<Privilege>();
+        }
+        return privileges;
+    }
+
+    @JsonIgnore
+    public void setPrivileges(Set<Privilege> privileges) {
+        if(privileges==null){
+            return;
+        }
+        this.privileges = privileges;
+    }
+
+    @JsonIgnore
     public Set<Role> getRoles() {
         if (roles == null) {
             roles = new HashSet<Role>();
@@ -42,6 +81,7 @@ public class User extends AbstractPersistentDTO<User> {
         return roles;
     }
 
+    @JsonIgnore
     public void setRoles(Set<Role> roles) {
         if (roles == null) {
             return;
@@ -61,6 +101,32 @@ public class User extends AbstractPersistentDTO<User> {
             return;
         }
         this.username = username;
+    }
+
+    @JsonIgnore
+    public List<Integer> getPrivilegeIDs() {
+        return privilegeIDs;
+    }
+
+    public void setPrivilegeIDs(List<Integer> privilegeIDs) {
+        this.privilegeIDs = privilegeIDs;
+    }
+
+    @JsonIgnore
+    public List<Integer> getRoleIDs() {
+        return roleIDs;
+    }
+
+    public void setRoleIDs(List<Integer> roleIDs) {
+        this.roleIDs = roleIDs;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     @Override

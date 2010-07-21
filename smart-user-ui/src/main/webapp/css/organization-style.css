@@ -11,27 +11,40 @@
    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
 */
 
-root { 
+root {
     display: block;
 }
 
 body{
     background-color: #ffffff;
+    font-family: vardana, sans-serif;
 
 }
-#main{
-        border-style: inset;
-        width:80%;
-        background-position: center;
+#maindivision{
+        padding-top: 10px;
+        width:100%;
 
 
 }
 #header_organization{
+    height: 70px;
+    background-color:	#307D7E;
 }
 
 #form_organizationentry{
-    background-color:#348781;
+    background-color: #25A0C5;
+    padding: 10px 10px 10px 10px;
     
+}
+
+#header{
+    font-family: vardana, sans-serif;
+    text-decoration: none;
+    font-size: x-large;
+    font-weight: bolder;
+    font-style: normal;
+    color:#FFFFFF;
+
 }
 
 label{
@@ -39,30 +52,18 @@ label{
     font-size: large;
     font-weight: 500;
     font-style: normal;
-    color:aqua;
+    color:black;
 }
 
-.inner-left{
+#inner-left-1,#inner-left-2,#inner-left-3,#inner-left-4,#inner-left-5,#inner-left-6,#inner-left-7{
     padding: 10px 2px 10px 10px;
-    width: 50%;
+    width: 40%;
     float:left;
-
-/*    float:left;
-    width:50%;
-    border-style: inset;*/
-
-
 }
 
-.inner-right{
+#inner-right-1,#inner-right-2,#inner-right-3,#inner-right-4,#inner-right-5,#inner-right-6,#inner-right-7,#inner-right-8{
 
-    padding: 10px 10px 10px 10px;
-    width: 50%;
-/*    margin-left:50%;
-    float: right;*/
-/*    margin-left:50%;
-    width:50%;
-    border-style: inset;*/
-    
-
+    padding: 10px 10px 10px 0px;
+    width: 58%;
+    float:left;
 }

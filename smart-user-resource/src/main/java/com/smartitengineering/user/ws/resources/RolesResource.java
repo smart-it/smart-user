@@ -7,7 +7,6 @@ package com.smartitengineering.user.ws.resources;
 
 
 import com.smartitengineering.user.domain.Role;
-import com.smartitengineering.user.impl.Services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -151,6 +150,7 @@ public class RolesResource extends AbstractResource{
             }
             
         }
+        responseBuilder.entity(atomFeed);
         return responseBuilder.build();
     }
 

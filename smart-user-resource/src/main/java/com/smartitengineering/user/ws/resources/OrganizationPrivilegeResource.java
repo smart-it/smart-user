@@ -27,14 +27,14 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-@Path("/privileges/{privilegeName}")
-public class PrivilegeResource extends AbstractResource{
+@Path("/organizations/{organizationUniqueShortName}/privileges/{privilegeName}")
+public class OrganizationPrivilegeResource extends AbstractResource{
 
     private Privilege privilege;
 
-    public PrivilegeResource(@PathParam("privilegeName") String privilegeName){
-                
-        privilege = Services.getInstance().getPrivilegeService().getPrivilegeByName(privilegeName);
+    public OrganizationPrivilegeResource(@PathParam("organizationUniqueShortName") String organizationUniqueShortName, @PathParam("privilegeName") String privilegeName){
+        
+        privilege = Services.getInstance().getPrivilegeService().getPrivilegeByOrganizationAndPrivilegeName(organizationUniqueShortName, privilegeName);
     }
 
     @GET
@@ -111,7 +111,7 @@ public class PrivilegeResource extends AbstractResource{
 
 
         Link altLink = abderaFactory.newLink();
-        altLink.setHref(UriBuilder.fromResource(PrivilegeResource.class).build(privilege.getObjectID()).toString());
+        altLink.setHref(UriBuilder.fromResource(OrganizationPrivilegeResource.class).build(privilege.getName()).toString());
         altLink.setRel(Link.REL_ALTERNATE);
         altLink.setMimeType(MediaType.APPLICATION_JSON);
 

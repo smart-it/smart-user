@@ -6,7 +6,6 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Privilege;
-import com.smartitengineering.user.impl.Services;
 import java.util.Collection;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -73,11 +72,13 @@ public class UserPrivilegesResource extends AbstractResource{
                 roleEntry.addLink(roleLink);
                 atomFeed.addEntry(roleEntry);
             }
+            responseBuilder.entity(atomFeed);
 
         }catch(Exception ex){
             ex.printStackTrace();
             responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
         }
+        
         return responseBuilder.build();
     }
 

@@ -6,7 +6,6 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Role;
-import com.smartitengineering.user.impl.Services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -144,6 +143,7 @@ public class OrganizationRolesResource extends AbstractResource{
                 atomFeed.addEntry(roleEntry);
             }            
         }
+        responseBuilder.entity(atomFeed);
         return responseBuilder.build();
     }
 
@@ -153,7 +153,13 @@ public class OrganizationRolesResource extends AbstractResource{
     public Response post(Role role){
         ResponseBuilder responseBuilder;
         try{
-            responseBuilder = Response.status(Status.OK);
+            responseBuilder = Response.status(Status.CREATED);
+            if(role.getPrivilegeIDs() != null && !role.getPrivilegeIDs().isEmpty()){
+                Services.getInstance().getPrivilegeService().populatePrivilege(role);
+            }
+            if(role.getRoleIDs() != null && ! role.getRoleIDs().isEmpty()){
+                Services.getInstance().getRoleService().populateRole(role);
+            }
             Services.getInstance().getRoleService().create(role);
         }catch(Exception ex){
             ex.printStackTrace();
