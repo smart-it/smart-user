@@ -17,6 +17,7 @@ import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.SecuredObjectService;
 import java.util.Collection;
 import java.util.HashSet;
+import javax.mail.MethodNotSupportedException;
 import org.hibernate.StaleStateException;
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -75,6 +76,11 @@ public class SecuredObjectServiceImpl extends AbstractCommonDaoImpl<SecuredObjec
         return super.getList(qp);
     }
 
+    public SecuredObject getByOrganizationAndObjectID(String organizationName, String objectID){
+
+        throw new UnsupportedOperationException();
+    }
+
     public void validateSecuredObject(SecuredObject securedObject) {
         if (securedObject.getId() == null) {
             Integer count = (Integer) super.getOther(
@@ -112,4 +118,6 @@ public class SecuredObjectServiceImpl extends AbstractCommonDaoImpl<SecuredObjec
             privilege.setSecuredObject(securedObject);
         }
     }
+
+
 }

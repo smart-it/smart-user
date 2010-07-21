@@ -23,6 +23,8 @@ public interface SecuredObjectService {
 
     public Collection<SecuredObject> getByOrganization(String organizationName);
 
+    public SecuredObject getByOrganizationAndObjectID(String organizationName, String objectID);
+
     public void populateSecuredObject(Privilege privilege) throws Exception;
 
 

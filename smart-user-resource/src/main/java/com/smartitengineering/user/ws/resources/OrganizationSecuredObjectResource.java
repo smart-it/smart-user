@@ -45,7 +45,7 @@ public class OrganizationSecuredObjectResource extends AbstractResource{
     }
     
     public OrganizationSecuredObjectResource(@PathParam("organizationUniqueShortName") String organizationUniqueShortName, @PathParam("old") String name){
-        this.securedObject = Services.getInstance().getSecuredObjectService().getByObjectID(name);
+        this.securedObject = Services.getInstance().getSecuredObjectService().getByOrganizationAndObjectID(organizationUniqueShortName, name);
     }
 
     @GET
@@ -75,7 +75,7 @@ public class OrganizationSecuredObjectResource extends AbstractResource{
             }
             Services.getInstance().getOrganizationService().populateOrganization(securedObject);
             Services.getInstance().getSecuredObjectService().save(newSecuredObject);
-            newSecuredObject = Services.getInstance().getSecuredObjectService().getByObjectID(newSecuredObject.getObjectID());
+            //newSecuredObject = Services.getInstance().getSecuredObjectService().getByObjectID(newSecuredObject.getObjectID());
             responseBuilder = Response.ok(getSecuredObjectFeed());
         }
         catch (Exception ex) {
