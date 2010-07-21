@@ -11,15 +11,15 @@ package com.smartitengineering.user.filter;
  */
 public class OrganizationFilter {
 
-    private String organizationName;
+    private String organizationUniqueShortName;
 
-    public String getOrganizationFilter() {
-        if(organizationName == null)
-            organizationName = "";
-        return organizationName;
+    public String getOrganizationUniqueShortName() {
+        if(organizationUniqueShortName == null)
+            organizationUniqueShortName = "";
+        return organizationUniqueShortName;
     }
 
-    public void setOrganizationFilter(String organizationName) {
-        this.organizationName = organizationName;
+    public void setOrganizationUniqueShortName(String organizationUniqueShortName) {
+        this.organizationUniqueShortName = organizationUniqueShortName;
     }
 }

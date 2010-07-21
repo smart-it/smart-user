@@ -7,7 +7,6 @@ package com.smartitengineering.user.ws.resources;
 
 
 import com.smartitengineering.user.domain.Organization;
-import com.smartitengineering.user.impl.Services;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.core.MediaType;
@@ -29,7 +28,7 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-@Path("/organizations/{name}")
+@Path("/organizations/shortname/{uniqueShortName}")
 public class OrganizationResource extends AbstractResource {
 
     static final UriBuilder ORGANIZATION_URI_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
@@ -41,14 +40,15 @@ public class OrganizationResource extends AbstractResource {
             ORGANIZATION_CONTENT_URI_BUILDER.path(OrganizationResource.class.getMethod("getOrganization"));
         }
         catch (Exception ex) {
+            ex.printStackTrace();
             throw new InstantiationError();
         }
     }
     private Organization organization;
 
-    public OrganizationResource(@PathParam("organizationName") String organizationName) {
-        //organization = Services.getInstance().getOrganizationService().getOrganizationByOrganizationName(organizationName);
-        organization = new Organization(organizationName, organizationName);
+    public OrganizationResource(@PathParam("uniqueShortName") String uniqueShortName) {
+        organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(uniqueShortName);
+        
     }
 
     @GET
@@ -72,24 +72,16 @@ public class OrganizationResource extends AbstractResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(Organization newOrganization) {
         ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-        try {
-            //Services.getInstance().getOrganizationService().populateAuthor(newOrganization);
+        try {            
             Services.getInstance().getOrganizationService().save(newOrganization);
-            organization = Services.getInstance().getOrganizationService().getOrganizationByOrganizationName(newOrganization.getContactPerson());
+            organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(newOrganization.getUniqueShortName());
             responseBuilder = Response.ok(getOrganizationFeed());
         }        
         catch (Exception ex) {
             responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
         }
         return responseBuilder.build();
-    }
-
-    @POST
-    @Produces(MediaType.APPLICATION_ATOM_XML)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response ammend(Organization newOrganization) {
-        return update(newOrganization);
-    }
+    }    
 
     @DELETE
     public Response delete() {
@@ -99,15 +91,22 @@ public class OrganizationResource extends AbstractResource {
     }
 
     private Feed getOrganizationFeed() throws UriBuilderException, IllegalArgumentException {
-        Feed organizationFeed = getFeed(organization.getAddress(), organization.getLastModifiedDate());
-        //organizationFeed.setTitle(organization.get);
+        
+        Feed organizationFeed = getFeed(organization.getName(), organization.getLastModifiedDate());
+        organizationFeed.setTitle(organization.getName());
+
+        // add a self link
         organizationFeed.addLink(getSelfLink());
+
+        // add a edit link
         Link editLink = abderaFactory.newLink();
         editLink.setHref(uriInfo.getRequestUri().toString());
         editLink.setRel(Link.REL_EDIT);
         editLink.setMimeType(MediaType.APPLICATION_JSON);
+
+        // add a alternate link
         Link altLink = abderaFactory.newLink();
-        altLink.setHref(ORGANIZATION_CONTENT_URI_BUILDER.clone().build(organization.getContactPerson()).toString());
+        altLink.setHref(ORGANIZATION_CONTENT_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
         altLink.setRel(Link.REL_ALTERNATE);
         altLink.setMimeType(MediaType.APPLICATION_JSON);
         organizationFeed.addLink(altLink);

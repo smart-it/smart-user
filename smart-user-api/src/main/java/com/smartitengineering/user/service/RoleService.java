@@ -5,6 +5,8 @@
 package com.smartitengineering.user.service;
 
 import com.smartitengineering.user.domain.Role;
+import com.smartitengineering.user.domain.User;
+import com.smartitengineering.user.filter.RoleFilter;
 import java.util.Collection;
 
 /**
@@ -17,13 +19,23 @@ public interface RoleService {
 
     void delete(Role role);
 
-    Role getRoleByUserID(String userID);
+    Role getRoleByName(String roleName);
 
-    Collection<Role> getRolesByOrganizationAndUser(String organization, String user);
+    Collection<Role> getRolesByOrganizationAndUser(String organizationShortname, String username);
 
-    Collection<Role> getRolesByOrganization(String organization);
+    Collection<Role> getRolesByOrganization(String organizationShortName);
 
-    Role getRoleByOrganizationAndUserAndUserID(String organization, String user, String userID);
+    Collection<Role> getAllRoles();
+
+    Role getRoleByOrganizationAndUserAndRole(String organizationShortName, String username, String roleName);
+
+    Role getRoleByOrganizationAndRoleName(String organizationShortName, String roleName);
+
+    Collection<Role> search(RoleFilter filter);
 
     void update(Role role);
+
+    public void populateRole(User user) throws Exception;
+
+    public void populateRole(Role role) throws Exception;
 }

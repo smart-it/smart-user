@@ -5,6 +5,8 @@
 package com.smartitengineering.user.service;
 
 import com.smartitengineering.user.domain.Privilege;
+import com.smartitengineering.user.domain.Role;
+import com.smartitengineering.user.domain.User;
 import java.util.Collection;
 
 /**
@@ -17,14 +19,20 @@ public interface PrivilegeService {
 
     void delete(Privilege privilege);
 
-    //Privilege getPrivilegeByName(String name);
+    Privilege getPrivilegeByName(String name);
 
     //Collection<Privilege> getPrivilegesByObjectID(String objectID);
-    Privilege getPrivilegesByObjectID(String objectID);
+    //Privilege getPrivilegesByObjectID(String objectID);
+
+    Privilege getPrivilegeByOrganizationAndPrivilegeName(String organizationName, String privilegename);
 
     Collection<Privilege> getPrivilegesByOrganizationAndUser(String organizationName, String userName);
 
     Collection<Privilege> getPrivilegesByOrganization(String organization);
 
     void update(Privilege privilege);
+
+    void populatePrivilege(User user) throws Exception;
+
+    void populatePrivilege(Role role) throws Exception;
 }

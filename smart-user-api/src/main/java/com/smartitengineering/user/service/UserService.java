@@ -26,5 +26,9 @@ public interface UserService {
 
     public User getUserByUsername(String username);
 
+    public User getUserByOrganizationAndUserName(String organizationShortName, String userName);
+
+    public Collection<User> getUserByOrganization(String organizationName);
+
     public void validateUser(User user);
 }

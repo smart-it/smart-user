@@ -5,17 +5,13 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.User;
-import com.smartitengineering.user.filter.UserFilter;
-import com.smartitengineering.user.impl.Services;
-import com.smartitengineering.user.service.UserService;
-import java.util.Calendar;
+
 import java.util.Date;
-import javax.annotation.Resource;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
+
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 
@@ -38,9 +34,7 @@ import org.springframework.stereotype.Component;
  * @author modhu7
  */
 
-@Path("/organizations/{organizationName}/users/{username}")
-@Component
-@Scope(value = "singleton")
+@Path("/users/username/{userName}")
 public class UserResource extends AbstractResource{
 
     private User user;
@@ -58,8 +52,8 @@ public class UserResource extends AbstractResource{
         }
     }
 
-    public UserResource(){
-        
+    public UserResource(@PathParam("userName") String userName){
+        user = Services.getInstance().getUserService().getUserByUsername(userName);
     }
 
     @GET
@@ -97,11 +91,18 @@ public class UserResource extends AbstractResource{
 
     private Feed getUserFeed() throws UriBuilderException, IllegalArgumentException{
         Feed userFeed = getFeed(user.getUsername(), new Date());
+        userFeed.setTitle(user.getUsername());
+
+        // add a self link
         userFeed.addLink(getSelfLink());
+
+        // add a edit link
         Link editLink = abderaFactory.newLink();
         editLink.setHref(uriInfo.getRequestUri().toString());
         editLink.setRel(Link.REL_EDIT);
         editLink.setMimeType(MediaType.APPLICATION_JSON);
+
+        // add a alternate link
         Link altLink = abderaFactory.newLink();
         altLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(user.getUsername()).toString());
         altLink.setRel(Link.REL_ALTERNATE);
@@ -116,7 +117,5 @@ public class UserResource extends AbstractResource{
         Services.getInstance().getUserService().delete(user);
         ResponseBuilder responseBuilder = Response.ok();
         return responseBuilder.build();
-    }
-  
- 
+    }   
 }

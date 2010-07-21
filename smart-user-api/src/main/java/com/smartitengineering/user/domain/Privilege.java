@@ -5,6 +5,7 @@
 package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
+import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -18,6 +19,8 @@ public class Privilege extends AbstractPersistentDTO<Privilege> {
     private String shortDescription;
     private String objectID;
     private Integer permissionMask;
+
+    private Date lastModifiedDate;
 
     public String getShortDescription() {
         return shortDescription;
@@ -59,7 +62,14 @@ public class Privilege extends AbstractPersistentDTO<Privilege> {
     public void setPermissionMask(Integer permissionMask) {
         this.permissionMask = permissionMask;
     }
-        
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
 
     public boolean isValid() {
         if (StringUtils.isEmpty(objectID) || !(permissionMask<0)) {

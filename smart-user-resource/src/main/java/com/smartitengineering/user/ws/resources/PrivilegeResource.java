@@ -6,7 +6,6 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Privilege;
-import com.smartitengineering.user.impl.Services;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -34,8 +33,8 @@ public class PrivilegeResource extends AbstractResource{
     private Privilege privilege;
 
     public PrivilegeResource(@PathParam("privilegeName") String privilegeName){
-        
-        privilege = Services.getInstance().getPrivilegeService().getPrivilegesByObjectID(privilegeName);
+                
+        privilege = Services.getInstance().getPrivilegeService().getPrivilegeByName(privilegeName);
     }
 
     @GET

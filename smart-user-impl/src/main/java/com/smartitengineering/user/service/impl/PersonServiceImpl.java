@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.smartitengineering.user.impl;
+package com.smartitengineering.user.service.impl;
 
 import com.smartitengineering.dao.common.CommonReadDao;
 import com.smartitengineering.dao.common.CommonWriteDao;
@@ -10,6 +10,8 @@ import com.smartitengineering.dao.common.queryparam.FetchMode;
 import com.smartitengineering.dao.common.queryparam.MatchMode;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
+import com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl;
+import com.smartitengineering.domain.PersistentDTO;
 import com.smartitengineering.user.domain.BasicIdentity;
 import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
@@ -28,32 +30,25 @@ import org.hibernate.exception.ConstraintViolationException;
  *
  * @author modhu7
  */
-public class PersonServiceImpl implements PersonService {
+public class PersonServiceImpl extends AbstractCommonDaoImpl<Person> implements PersonService {
 
-    private CommonReadDao<Person> personReadDao;
     private CommonReadDao<BasicIdentity> basicIdentityReadDao;
-    private CommonWriteDao<Person> personWriteDao;
 
-    public CommonReadDao<Person> getPersonReadDao() {
-        return personReadDao;
+    public CommonReadDao<BasicIdentity> getBasicIdentityReadDao() {
+        return basicIdentityReadDao;
     }
 
-    public void setPersonReadDao(CommonReadDao<Person> personReadDao) {
-        this.personReadDao = personReadDao;
+    public void setBasicIdentityReadDao(
+            CommonReadDao<BasicIdentity> basicIdentityReadDao) {
+        this.basicIdentityReadDao = basicIdentityReadDao;
     }
 
-    public CommonWriteDao<Person> getPersonWriteDao() {
-        return personWriteDao;
-    }
 
-    public void setPersonWriteDao(CommonWriteDao<Person> personWriteDao) {
-        this.personWriteDao = personWriteDao;
-    }
-
-    public void create(Person person) {        
+    @Override
+    public void save(Person person) {
         validatePerson(person);
         try {
-            getPersonWriteDao().save(person);
+            super.save(person);
         } catch (ConstraintViolationException e) {
             String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
             throw new RuntimeException(message, e);
@@ -65,10 +60,11 @@ public class PersonServiceImpl implements PersonService {
         }
     }
 
+    @Override
     public void update(Person person) {
         validatePerson(person);
         try {
-            getPersonWriteDao().update(person);
+            super.update(person);
         } catch (ConstraintViolationException e) {
             String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
             throw new RuntimeException(message, e);
@@ -80,15 +76,17 @@ public class PersonServiceImpl implements PersonService {
         }
     }
 
+    @Override
     public void delete(Person person) {
         try {
-            getPersonWriteDao().delete(person);
+            super.delete(person);
         } catch (RuntimeException e) {
             String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.PERSON;
             throw new RuntimeException(message, e);
         }
     }
 
+    @Override
     public Collection<Person> search(PersonFilter filter) {
         QueryParameter qp = null;
         List<QueryParameter> queryParameters = new ArrayList<QueryParameter>();
@@ -144,48 +142,42 @@ public class PersonServiceImpl implements PersonService {
         }
 
         Collection<Person> persons = new HashSet<Person>();
-        if (queryParameters.size() == 0) {
+        if (queryParameters.isEmpty()) {
             try {
-                persons = getPersonReadDao().getAll();
+                persons = super.getAll();
             } catch (Exception e) {
             }
         } else {
             try {
-                persons = getPersonReadDao().getList(queryParameters);
+                persons = super.getList(queryParameters);
             } catch (Exception e) {
             }
         }
         return persons;
     }
 
+    @Override
     public Collection<Person> getAllPerson() {
         Collection<Person> persons = new HashSet<Person>();
         try {
-            persons = getPersonReadDao().getAll();
+            persons = super.getAll();
         } catch (Exception e) {
         }
         return persons;
     }
 
+    @Override
     public Person getPersonByEmail(String email) {
         Person person = new Person();
-        person = getPersonReadDao().getSingle(QueryParameterFactory.getEqualPropertyParam("primaryEmail", email));
+        person = super.getSingle(QueryParameterFactory.getEqualPropertyParam("primaryEmail", email));
         return person;
-    }
+    }    
 
-    public CommonReadDao<BasicIdentity> getBasicIdentityReadDao() {
-        return basicIdentityReadDao;
-    }
-
-    public void setBasicIdentityReadDao(
-            CommonReadDao<BasicIdentity> basicIdentityReadDao) {
-        this.basicIdentityReadDao = basicIdentityReadDao;
-    }
-
+    @Override
     public void validatePerson(Person person) {
 
         if (person.getId() != null) {
-            Integer count = (Integer) getPersonReadDao().getOther(QueryParameterFactory.getElementCountParam(
+            Integer count = (Integer) super.getOther(QueryParameterFactory.getElementCountParam(
                     "primaryEmail"), QueryParameterFactory.getConjunctionParam(
                     QueryParameterFactory.getNotEqualPropertyParam("id",
                     person.getId()), QueryParameterFactory.getStringLikePropertyParam(
@@ -242,7 +234,7 @@ public class PersonServiceImpl implements PersonService {
                 }
             }
         } else {
-            Integer count = (Integer) getPersonReadDao().getOther(QueryParameterFactory.getElementCountParam(
+            Integer count = (Integer) super.getOther(QueryParameterFactory.getElementCountParam(
                     "primaryEmail"), QueryParameterFactory.getStringLikePropertyParam(
                     "primaryEmail", person.getPrimaryEmail(), MatchMode.EXACT));
             if (count.intValue() > 0) {
