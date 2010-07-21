@@ -110,7 +110,7 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
         if (privilege.getId() == null) {
             Integer count = (Integer) super.getOther(
                     QueryParameterFactory.getElementCountParam("name"), QueryParameterFactory.getConjunctionParam(
-                    QueryParameterFactory.getEqualPropertyParam("organization_id",
+                    QueryParameterFactory.getEqualPropertyParam("organization.id",
                     privilege.getParentOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
                     "name", privilege.getName())));
             if (count.intValue() > 0) {
@@ -122,7 +122,7 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
                     QueryParameterFactory.getElementCountParam("name"),
                     QueryParameterFactory.getConjunctionParam(
                     QueryParameterFactory.getNotEqualPropertyParam("id",
-                    privilege.getId()), QueryParameterFactory.getEqualPropertyParam("organization_id",
+                    privilege.getId()), QueryParameterFactory.getEqualPropertyParam("organization.id",
                     privilege.getParentOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
                     "name", privilege.getName())));
             if (count.intValue() > 0) {
