@@ -5,7 +5,6 @@
 
 package com.smartitengineering.user.ws.resources;
 
-import com.smartitengineering.user.impl.Services;
 import com.smartitengineering.user.domain.User;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -99,6 +98,19 @@ public class UsersResource extends AbstractResource{
 
               
         Collection<User> users = Services.getInstance().getUserService().getAllUser();
+//        Collection<User> users;
+//        List<User> serverList = new ArrayList<User>();
+//        User user1 = new User();
+//        user1.setUsername("russel");
+//        user1.setPassword("russel");
+//        serverList.add(user1);
+//
+//        User user2 = new User();
+//        user2.setUsername("atiq");
+//        user2.setPassword("atiq");
+//        serverList.add(user2);
+//
+//        users = serverList;
 
         if(users != null && !users.isEmpty()){
 
@@ -140,7 +152,7 @@ public class UsersResource extends AbstractResource{
                 userEntry.setId(user.getUsername());
                 userEntry.setTitle(user.getUsername());
                 userEntry.setSummary(user.getUsername());
-                userEntry.setUpdated("Not available");
+                //userEntry.setUpdated("Not available");
 
                 // setting link to the each individual user
                 Link userLink = abderaFactory.newLink();
@@ -153,6 +165,7 @@ public class UsersResource extends AbstractResource{
                 atomFeed.addEntry(userEntry);
             }                       
         }
+        responseBuilder.entity(atomFeed);
         return responseBuilder.build();
     }
 
@@ -162,6 +175,15 @@ public class UsersResource extends AbstractResource{
 
         ResponseBuilder responseBuilder;
         try{
+
+            if(user.getRoleIDs() != null){
+                Services.getInstance().getRoleService().populateRole(user);
+            }
+
+            if(user.getPrivilegeIDs() != null){
+                
+            }
+
             Services.getInstance().getUserService().save(user);
             responseBuilder = Response.status(Status.OK);
         }

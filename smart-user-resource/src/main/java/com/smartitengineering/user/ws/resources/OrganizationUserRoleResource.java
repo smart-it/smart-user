@@ -6,7 +6,6 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Role;
-import com.smartitengineering.user.impl.Services;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -47,7 +46,7 @@ public class OrganizationUserRoleResource extends AbstractResource {
     private Role role;
 
     public OrganizationUserRoleResource(@PathParam("organizationName")String organizationName, @PathParam("userName")String userName, @PathParam("roleName")String roleName){
-        role = Services.getInstance().getRoleService().getRoleByOrganizationAndUserAndUserID(organizationName, userName, roleName);
+        role = Services.getInstance().getRoleService().getRoleByOrganizationAndUserAndRole(organizationName, userName, roleName);
     }
 
     @GET

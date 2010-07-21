@@ -5,7 +5,6 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.User;
-import com.smartitengineering.user.impl.Services;
 
 import java.util.Date;
 

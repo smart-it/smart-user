@@ -12,7 +12,7 @@
     <property column="state" length="255" name="state" type="java.lang.String"/>
     <property column="country" length="255" name="country" type="java.lang.String"/>
     <property column="zip" length="255" name="zip" type="java.lang.String"/>
-    <component name="geoLoacation">
+    <component name="geoLocation">
       <property column="longitude" length="255" name="longitude" type="java.lang.Double"/>
       <property column="latitude" length="255" name="latitude" type="java.lang.Double"/>
     </component>

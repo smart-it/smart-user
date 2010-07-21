@@ -7,7 +7,6 @@ package com.smartitengineering.user.ws.resources;
 
 
 import com.smartitengineering.user.domain.Organization;
-import com.smartitengineering.user.impl.Services;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.core.MediaType;
@@ -48,7 +47,7 @@ public class OrganizationResource extends AbstractResource {
     private Organization organization;
 
     public OrganizationResource(@PathParam("uniqueShortName") String uniqueShortName) {
-        organization = Services.getInstance().getOrganizationService().getOrganizationByOrganizationName(uniqueShortName);
+        organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(uniqueShortName);
         
     }
 
@@ -75,7 +74,7 @@ public class OrganizationResource extends AbstractResource {
         ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
         try {            
             Services.getInstance().getOrganizationService().save(newOrganization);
-            organization = Services.getInstance().getOrganizationService().getOrganizationByOrganizationName(newOrganization.getUniqueShortName());
+            organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(newOrganization.getUniqueShortName());
             responseBuilder = Response.ok(getOrganizationFeed());
         }        
         catch (Exception ex) {
