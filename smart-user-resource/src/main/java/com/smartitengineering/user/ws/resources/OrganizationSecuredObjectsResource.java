@@ -168,6 +168,10 @@ public class OrganizationSecuredObjectsResource extends AbstractResource{
 
         ResponseBuilder responseBuilder;
         try{
+            if(securedObject.getParentOrganizationID() == null){
+                throw new Exception("No parent Organization");
+            }
+            Services.getInstance().getOrganizationService().populateOrganization(securedObject);
             Services.getInstance().getSecuredObjectService().save(securedObject);
             responseBuilder = Response.status(Status.CREATED);
         }

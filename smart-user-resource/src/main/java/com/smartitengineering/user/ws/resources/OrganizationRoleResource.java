@@ -71,7 +71,16 @@ public class OrganizationRoleResource extends AbstractResource{
     public Response update(Role newRole) {
         ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
         try {
-
+            if(role.getParentOrganizationID() == null){
+                throw new Exception("No parent organization found");
+            }
+            Services.getInstance().getOrganizationService().populateOrganization(role);
+            if(role.getPrivilegeIDs() != null && !role.getPrivilegeIDs().isEmpty()){
+                Services.getInstance().getPrivilegeService().populatePrivilege(role);
+            }
+            if(role.getRoleIDs() != null && ! role.getRoleIDs().isEmpty()){
+                Services.getInstance().getRoleService().populateRole(role);
+            }
           Services.getInstance().getRoleService().update(role);
           responseBuilder = Response.ok(getRoleFeed());
         }

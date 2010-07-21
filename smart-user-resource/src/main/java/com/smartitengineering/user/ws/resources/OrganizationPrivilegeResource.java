@@ -87,6 +87,13 @@ public class OrganizationPrivilegeResource extends AbstractResource{
         ResponseBuilder responseBuilder;
         try{
             responseBuilder = Response.status(Status.OK);
+            if(privilege.getParentOrganizationID() == null){
+                throw new Exception("No parent Organization");
+            }
+            Services.getInstance().getOrganizationService().populateOrganization(privilege);
+            if(privilege.getSecuredObjectID() != null){
+                Services.getInstance().getSecuredObjectService().populateSecuredObject(privilege);
+            }
             Services.getInstance().getPrivilegeService().delete(newPrivilege);
         }catch(Exception ex){
             ex.printStackTrace();

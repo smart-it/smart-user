@@ -70,6 +70,10 @@ public class OrganizationSecuredObjectResource extends AbstractResource{
     public Response update(SecuredObject newSecuredObject) {
         ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
         try {
+            if(securedObject.getParentOrganizationID() == null){
+                throw new Exception("No parent Organization");
+            }
+            Services.getInstance().getOrganizationService().populateOrganization(securedObject);
             Services.getInstance().getSecuredObjectService().save(newSecuredObject);
             newSecuredObject = Services.getInstance().getSecuredObjectService().getByObjectID(newSecuredObject.getObjectID());
             responseBuilder = Response.ok(getSecuredObjectFeed());
