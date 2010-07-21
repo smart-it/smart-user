@@ -25,8 +25,7 @@ public enum UniqueConstrainedField {
     ACE,
     SID_OID,
     ORGANIZATION,
-    ORGANIZATION_UNIQUE_SHORT_NAME,
-    OBJECT_ID,
+    ORGANIZATION_UNIQUE_SHORT_NAME,    
     SECURED_OBJECT_OBJECT_ID,
     OTHER;
 }
