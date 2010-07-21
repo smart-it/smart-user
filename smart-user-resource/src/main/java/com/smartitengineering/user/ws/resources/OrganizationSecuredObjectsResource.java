@@ -60,7 +60,7 @@ public class OrganizationSecuredObjectsResource extends AbstractResource{
     @PathParam("uniqueShortName")
     private String organizationUniqueShortName;
 
-    public OrganizationSecuredObjectsResource(@PathParam("uniqueShortName")String organizationUniqueShortName){
+    public OrganizationSecuredObjectsResource(@PathParam("organizationUniqueShortName")String organizationUniqueShortName){
         this.organizationUniqueShortName = organizationUniqueShortName;
     }
 

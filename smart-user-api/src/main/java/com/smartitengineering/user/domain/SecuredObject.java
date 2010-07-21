@@ -20,6 +20,7 @@ public class SecuredObject extends AbstractPersistentDTO<SecuredObject>{
     private String name;
     private String objectID;
     private SecuredObject parentObject;
+
     private Organization organization;
 
     private Integer parentOrganizationID;
@@ -76,7 +77,7 @@ public class SecuredObject extends AbstractPersistentDTO<SecuredObject>{
         return parentObject;
     }
 
-    public void setParentObjectID(SecuredObject parentObject) {
+    public void setParentObject(SecuredObject parentObject) {
         if(parentObject == null){
             return;
         }
