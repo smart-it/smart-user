@@ -17,15 +17,35 @@
     <body>
 
         <div id="maindivision">
-            <div id="header">Header</div>
-                <div style="clear: both">
-    </div>
 
-            <div id="content">BODY</div><div id="login"><jsp:include page="login.jsp"></jsp:include></div>
-                <div style="clear: both">
-    </div>
+<%--This is Header portion--%>
 
-            <div id="footer">Footer</div>
+            <div id="header">Header
+            </div>
+
+<%--Header ends here--%>
+                <div style="clear: both">
+                </div>
+<%--This is left side or content portion--%>
+
+            <div id="content">BODY
+            </div>
+
+<%--Content portion ends here--%>
+
+<%--This is right side or login section--%>
+            <div id="login"><jsp:include page="login.jsp"></jsp:include>
+            </div>
+
+<%--login or right portion ends here--%>
+                <div style="clear: both">
+                </div>
+ <%--This is Footer portion--%>
+
+            <div id="footer">Footer
+            </div>
+ <%--Footer portion ends here--%>
+
         </div>
     </body>
 </html>
