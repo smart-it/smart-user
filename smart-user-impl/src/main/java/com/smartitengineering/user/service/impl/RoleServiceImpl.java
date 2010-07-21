@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.service.impl;
 
+import com.smartitengineering.dao.common.queryparam.FetchMode;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl;
@@ -14,7 +15,9 @@ import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.filter.RoleFilter;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.RoleService;
+import com.smartitengineering.user.service.UserService;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.hibernate.StaleStateException;
@@ -29,6 +32,18 @@ public class RoleServiceImpl extends AbstractCommonDaoImpl<Role> implements Role
     public RoleServiceImpl() {
         setEntityClass(Role.class);
     }
+
+    private UserService userService;
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+
 
     @Override
     public void create(Role role) {
@@ -55,23 +70,28 @@ public class RoleServiceImpl extends AbstractCommonDaoImpl<Role> implements Role
     }
 
     @Override
-    public Collection<Role> getRolesByOrganizationAndUser(String organization, String user) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Collection<Role> getRolesByOrganizationAndUser(String organizationName, String userName) {
+        User user = userService.getUserByOrganizationAndUserName(organizationName, userName);
+        return user.getRoles();
     }
 
     @Override
     public Collection<Role> getRolesByOrganization(String organization) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Collection<Role> users = new HashSet<Role>();
+        QueryParameter qp = QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT,QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organization));
+        return super.getList(qp);
     }
 
     @Override
     public Collection<Role> getAllRoles() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return super.getAll();
     }
 
     @Override
-    public Role getRoleByOrganizationAndRoleName(String organization, String roleName) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Role getRoleByOrganizationAndRoleName(String organizationName, String roleName) {
+        return super.getSingle(QueryParameterFactory.getStringLikePropertyParam("name", roleName),
+               QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT,
+               QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationName)));
     }
 
     @Override
@@ -119,19 +139,17 @@ public class RoleServiceImpl extends AbstractCommonDaoImpl<Role> implements Role
 
     @Override
     public Role getRoleByName(String roleName) {
-        QueryParameter qp;
-        qp = QueryParameterFactory.getEqualPropertyParam("name", roleName);
-        Role role = new Role();
-        try {
-            role = super.getSingle(qp);
-        } catch (Exception e) {
-        }
-        return role;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public Role getRoleByOrganizationAndUserAndRole(String organizationShortName, String username, String roleName) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Collection<Role> userRoles = getRolesByOrganizationAndUser(organizationShortName, username);
+        for(Role role: userRoles){
+            if(role.getName().equals(roleName))
+                return role;
+        }
+        return null;
     }
 
     @Override

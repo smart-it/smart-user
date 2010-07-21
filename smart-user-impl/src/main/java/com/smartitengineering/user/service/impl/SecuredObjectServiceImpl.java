@@ -11,13 +11,10 @@ import com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl;
 import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.domain.SecuredObject;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
-import com.smartitengineering.user.security.domain.SmartAcl;
-import com.smartitengineering.user.security.domain.SmartObjectIdentity;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.SecuredObjectService;
 import java.util.Collection;
 import java.util.HashSet;
-import javax.mail.MethodNotSupportedException;
 import org.hibernate.StaleStateException;
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -31,6 +28,7 @@ public class SecuredObjectServiceImpl extends AbstractCommonDaoImpl<SecuredObjec
         setEntityClass(SecuredObject.class);
     }
 
+    @Override
     public void save(SecuredObject securedObject) {
         validateSecuredObject(securedObject);
         try {
@@ -46,6 +44,7 @@ public class SecuredObjectServiceImpl extends AbstractCommonDaoImpl<SecuredObjec
         }
     }
 
+    @Override
     public void update(SecuredObject securedObject) {
         validateSecuredObject(securedObject);
         try {
@@ -61,6 +60,7 @@ public class SecuredObjectServiceImpl extends AbstractCommonDaoImpl<SecuredObjec
         }
     }
 
+    @Override
     public void delete(SecuredObject securedObject) {
         try {
             super.delete(securedObject);
@@ -70,15 +70,19 @@ public class SecuredObjectServiceImpl extends AbstractCommonDaoImpl<SecuredObjec
         }
     }
 
+    @Override
     public Collection<SecuredObject> getByOrganization(String organizationName) {
         Collection<SecuredObject> securedObjects = new HashSet<SecuredObject>();
         QueryParameter qp = QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationName));
         return super.getList(qp);
     }
 
+    @Override
     public SecuredObject getByOrganizationAndObjectID(String organizationName, String objectID){
+        return super.getSingle(QueryParameterFactory.getStringLikePropertyParam("objectID", objectID),
+               QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT,
+               QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationName)));
 
-        throw new UnsupportedOperationException();
     }
 
     public void validateSecuredObject(SecuredObject securedObject) {
@@ -108,6 +112,7 @@ public class SecuredObjectServiceImpl extends AbstractCommonDaoImpl<SecuredObjec
         }
     }
 
+    @Override
     public void populateSecuredObject(Privilege privilege) throws Exception {
         Integer securedObjectID = privilege.getSecuredObjectID();
         if (securedObjectID != null) {
