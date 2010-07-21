@@ -125,7 +125,7 @@ public class OrganizationSecuredObjectsResource extends AbstractResource{
                 nextUri.queryParam(key, values);
                 previousUri.queryParam(key, values);
             }
-            nextLink.setHref(nextUri.build(lastSecuredObject.getObjectID()).toString());
+            nextLink.setHref(nextUri.build(uniqueOrganizationName,lastSecuredObject.getObjectID()).toString());
 
 
             atomFeed.addLink(nextLink);
@@ -135,27 +135,27 @@ public class OrganizationSecuredObjectsResource extends AbstractResource{
             prevLink.setRel(Link.REL_PREVIOUS);
             SecuredObject firstSecuredObject = securedObjectList.get(securedObjects.size() - 1);
 
-            prevLink.setHref(previousUri.build(firstSecuredObject.getObjectID()).toString());
+            prevLink.setHref(previousUri.build(uniqueOrganizationName,firstSecuredObject.getObjectID()).toString());
             atomFeed.addLink(prevLink);
 
             for(SecuredObject securedObject: securedObjects){
 
-                Entry userEntry = abderaFactory.newEntry();
+                Entry securedObjectEntry = abderaFactory.newEntry();
 
-                userEntry.setId(securedObject.getObjectID());
-                userEntry.setTitle(securedObject.getObjectID());
-                userEntry.setSummary(securedObject.getObjectID());
-                userEntry.setUpdated("Not available");
+                securedObjectEntry.setId(securedObject.getObjectID());
+                securedObjectEntry.setTitle(securedObject.getObjectID());
+                securedObjectEntry.setSummary(securedObject.getObjectID());
+                //userEntry.setUpdated("Not available");
 
                 // setting link to the each individual user
-                Link userLink = abderaFactory.newLink();
-                userLink.setHref(OrganizationSecuredObjectResource.ORGANIZATION_SECURED_OBJECT_URI_BUILDER.clone().build(securedObject.getObjectID()).toString());
-                userLink.setRel(Link.REL_ALTERNATE);
-                userLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
+                Link securedObjectLink = abderaFactory.newLink();
+                securedObjectLink.setHref(OrganizationSecuredObjectResource.ORGANIZATION_SECURED_OBJECT_URI_BUILDER.clone().build(uniqueOrganizationName,securedObject.getObjectID()).toString());
+                securedObjectLink.setRel(Link.REL_ALTERNATE);
+                securedObjectLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
 
-                userEntry.addLink(userLink);
+                securedObjectEntry.addLink(securedObjectLink);
 
-                atomFeed.addEntry(userEntry);
+                atomFeed.addEntry(securedObjectEntry);
             }
         }
         responseBuilder.entity(atomFeed);
