@@ -26,12 +26,20 @@
         <dependency>
             <groupId>com.smartitengineering.smart-user</groupId>
             <artifactId>smart-user-api</artifactId>
-            <version>${project.version}</version>            
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.smartitengineering.smart-user</groupId>
             <artifactId>smart-user-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
+<!--        <dependency>
+            <groupId>org.atmosphere</groupId>
+            <artifactId>atmosphere-jersey</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.atmosphere</groupId>
+          <artifactId>atmosphere-commons</artifactId>
+        </dependency>-->
     </dependencies>
 </project>

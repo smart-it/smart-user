@@ -59,7 +59,7 @@ public class OrganizationSecuredObjectResource extends AbstractResource{
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/content")
-    public Response getOrganization() {
+    public Response getSecuredObject() {
         ResponseBuilder responseBuilder = Response.ok(securedObject);
         return responseBuilder.build();
     }
