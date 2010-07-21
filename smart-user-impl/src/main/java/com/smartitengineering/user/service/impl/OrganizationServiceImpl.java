@@ -172,7 +172,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
     
     public void populateOrganization(SecuredObject securedObject) throws Exception{
         Integer organizationID = securedObject.getParentOrganizationID();
-        if(securedObject.getParentOrganizationID() == null){
+        if(organizationID != null){
             Organization parentOrganization = super.getById(organizationID);
 
             if(parentOrganization == null){
