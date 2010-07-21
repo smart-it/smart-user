@@ -36,6 +36,16 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
 
     private UserService userService;
 
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+
+
     @Override
     public void create(Privilege privilege){
 
