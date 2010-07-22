@@ -18,7 +18,7 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <table>
+        <table border="1">
         <c:forEach var="organization" items="${it}">
             <tr>
                 <td>
