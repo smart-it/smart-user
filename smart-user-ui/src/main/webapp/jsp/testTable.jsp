@@ -24,13 +24,16 @@
                 <div class="title">User List</div>
             </div>
             <div class="content">
-                <div id="topbar">kjhzskjhujksdfldfewi
-                <%--<div class="header">lkjashdliau</div>--%>
-                <div class="lefts">fgsdfgs</div>
-                <div class="rights"></div>
+                <div id="topbar">
+                    <%--<div class="header">lkjashdliau</div>--%>
+                    <div class="rights"></div>
+                    <div class="lefts">
+                    <li>ID</li>
+                    <li>User Name</li>
+                    </div>
+                </div>
             </div>
-            </div>
-            
+
             <div class="footer">footer</div>
         </body>
     </html>

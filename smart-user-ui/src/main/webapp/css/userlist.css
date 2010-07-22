@@ -52,7 +52,9 @@ body{
 #topbar {  	margin: 0px 8px 0 8px;
 			padding: 0;
 			background: url(../image/menu.jpg) repeat-x top;
-			height: 35px;
+			height: 500px;
+                        width: 700px;
+                        margin-left: 90px;
 
 }
 #topbar .lefts {
@@ -60,6 +62,7 @@ body{
         float: left;
 	height: 35px;
 	padding-left: 5px;
+        margin-left: 0px;
 }
 #topbar .rights {
 	background: url(../image/menur.jpg) no-repeat right;
@@ -67,6 +70,39 @@ body{
 	height: 35px;
 	width: 8px;
 }
+
+#topbar li {
+        color: #FFF;
+        padding-left: 10px;
+        padding-right: 30px;
+        font-weight: bold;
+	float: left;
+	margin: 0;
+	font-size: 11px;
+	line-height: 35px;
+	white-space: nowrap;
+	list-style-type: none;
+	width:40px;
+	background: url(../image/sep.gif) no-repeat top right
+
+
+	
+}
+#topbar li1{
+ color: #FFF;
+        padding-left: 10px;
+        padding-right: 30px;
+        font-weight: bold;
+	float: left;
+	margin: 0;
+	font-size: 11px;
+	line-height: 100px;
+	white-space: nowrap;
+	list-style-type: none;
+	width:100px;
+	
+}
+
 
 
 .footer {
