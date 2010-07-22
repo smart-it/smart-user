@@ -129,6 +129,7 @@
     <bean id="userService" class="com.smartitengineering.user.service.impl.UserServiceImpl" parent="abstractDao"/>
 
     <bean id="roleService" class="com.smartitengineering.user.service.impl.RoleServiceImpl" parent="abstractDao"/>
+    
     <!-- **************************************************************** -->
     <!-- ********************* Smart Util Reg *************************** -->
     <!-- **************************************************************** -->
