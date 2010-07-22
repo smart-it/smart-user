@@ -13,53 +13,76 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>User List</title>
+
+       <link rel="Stylesheet" href="../css/userlist.css">
+        
     </head>
     <body>
+   
+        
+        <div align="center"><h1>User List</h1></div>
+
        
-        <div align="center" style="border-left-style: double; border-right-style: double; float: left; width: 08%; background-color: gray">
+        <div align="center" style=" float: left; width: 10%; background-color: silver">
             <h3>ID</h3>
         </div>
-        <div align="center" style="border-right-style: double; float: left; width: 50%; background-color: gray">
+        <div align="center" style=" float: left; width: 50%; background-color: silver">
             <h3>User Name</h3>
         </div>
-        <div align="center" style="border-right-style: double;float: left;width: 20%; background-color: gray">
+        <div align="center" style="float: left;width: 20%; background-color: silver">
             <h3>Edit</h3>
         </div>
-        <div align="center" style="border-right-style: double;float: left;width: 20%; background-color: gray">
-            <h3>Delete</h3>
-        </div>
-
-
-
-        <div align="center" style="float: left; width: 09%; background-color: activeborder">
-            <h3>01</h3>
-        </div>
-        <div align="center" style="float: left; width: 50%; background-color: activeborder">
-            <h3>Russel</h3>
-        </div>
-        <div align="center" style="float: left;width: 20%; background-color: activeborder"><a href="usercreation.jsp">
-                <h3>Edit</h3></a>
-        </div>
-        <div align="center" style="float: left;width: 20%; background-color: activeborder">
-            <h3>Delete</h3>
-        </div>
-
-
-
-        <div align="center" style="float: left; width: 09%; background-color: activeborder">
-            <h3>02</h3>
-        </div>
-        <div align="center" style="float: left; width: 50%; background-color: activeborder">
-            <h3>Modhu</h3>
-        </div>
-        <div align="center" style="float: left;width: 20%; background-color: activeborder"><a href="usercreation.jsp">
-                <h3>Edit</h3></a>
-        </div>
-        <div align="center" style="float: left;width: 20%; background-color: activeborder">
+        <div align="center" style="float: left;width: 20%; background-color: silver">
             <h3>Delete</h3>
         </div>
        
+
+        <c:forEach var="i"begin="1" end="10" >
+            <c:choose>
+                <c:when test="${i%2==0}">
+                 
+
+                    <div align="center" style="float: left; width:10%;background-color: white">
+                        <h4><c:out value="${i}" /></h4>
+                    </div>
+                    <div align="center" style="float: left; width: 50%;background-color: white">
+                        <h4> Russel</h4>
+                    </div>
+                    <div align="center" style="float: left;width: 20%; background-color: white"><a href="createuser.jsp">
+                            <h4> Edit</h4></a>
+                    </div>
+                    <div align="center" style="float: left;width: 20%; background-color: white">
+                        <h4>Delete</h4>
+                    </div>
+                  
+                </c:when>
+                <c:otherwise>
+                   
+                    <div align="center" style="float: left; width: 10%; background-color: #B6CEE8">
+                        <h4><c:out value="${i}" /></h4>
+                    </div>
+                    <div align="center" style="float: left; width: 50%;  background-color: #C9DCF1">
+                        <h4> Russel</h4>
+                    </div>
+                    <div align="center" style="float: left;width: 20%;  background-color: #B6CEE8"><a href="createuser.jsp">
+                            <h4> Edit</h4></a>
+                    </div>
+                    <div align="center" style="float: left;width: 20%; background-color:#C9DCF1">
+                        <h4>Delete</h4>
+                    </div>
+                   
+                </c:otherwise>
+            </c:choose>
+
+        </c:forEach>
+
+
+
+        
+       
+
+
 
     </body>
 </html>
