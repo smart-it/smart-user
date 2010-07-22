@@ -18,6 +18,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  */
 public class Role extends AbstractPersistentDTO<Role> {
 
+    private Organization parentOrganization;
+
     private String name;
     private String displayName;
     private String shortDescription;
@@ -26,11 +28,34 @@ public class Role extends AbstractPersistentDTO<Role> {
 
     private List<Integer> roleIDs;
     private List<Integer> privilegeIDs;
+    private Integer parentOrganizationID;
+    
     private Date lastModifiedDate;
 
     public Role(){
 
     }
+
+    @JsonIgnore
+    public Organization getParentOrganization() {
+        return parentOrganization;
+    }
+
+    @JsonIgnore
+    public void setParentOrganization(Organization parentOrganization) {
+        this.parentOrganization = parentOrganization;
+    }
+
+    @JsonIgnore
+    public Integer getParentOrganizationID() {
+        return parentOrganizationID;
+    }
+    
+    public void setParentOrganizationID(Integer parentOrganizationID) {
+        this.parentOrganizationID = parentOrganizationID;
+    }
+
+
 
     public Role(String name, String displayName, String shortDescription){
         this.name = name;

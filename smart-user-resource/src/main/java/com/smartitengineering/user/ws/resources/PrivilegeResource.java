@@ -100,7 +100,7 @@ public class PrivilegeResource extends AbstractResource{
 
         Feed privilegeFeed = abderaFactory.newFeed();
 
-        privilegeFeed.setId(privilege.getObjectID());
+        privilegeFeed.setId(privilege.getName());
         privilegeFeed.setTitle(privilege.getName());
         privilegeFeed.addLink(getSelfLink());
 
@@ -111,7 +111,7 @@ public class PrivilegeResource extends AbstractResource{
 
 
         Link altLink = abderaFactory.newLink();
-        altLink.setHref(UriBuilder.fromResource(PrivilegeResource.class).build(privilege.getObjectID()).toString());
+        altLink.setHref(UriBuilder.fromResource(PrivilegeResource.class).build(privilege.getName()).toString());
         altLink.setRel(Link.REL_ALTERNATE);
         altLink.setMimeType(MediaType.APPLICATION_JSON);
 

@@ -6,6 +6,7 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.User;
+import com.sun.jersey.api.view.Viewable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -65,7 +66,17 @@ public class OrganizationUsersResource extends AbstractResource{
     }
 
     
-    
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public Response getHtml(){
+        ResponseBuilder responseBuilder = Response.ok();
+        Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName);
+
+        Viewable view = new Viewable("userList", users, OrganizationUsersResource.class);
+        responseBuilder.entity(view);
+        return responseBuilder.build();
+        
+    }
     
 
     @GET
@@ -125,7 +136,7 @@ public class OrganizationUsersResource extends AbstractResource{
                 nextUri.queryParam(key, values);
                 previousUri.queryParam(key, values);
             }
-            nextLink.setHref(nextUri.build(lastUser.getUsername()).toString());
+            nextLink.setHref(nextUri.build(organizationUniqueShortName, lastUser.getUsername()).toString());
 
 
             atomFeed.addLink(nextLink);
@@ -135,7 +146,7 @@ public class OrganizationUsersResource extends AbstractResource{
             prevLink.setRel(Link.REL_PREVIOUS);
             User firstUser = userList.get(users.size() - 1);
 
-            prevLink.setHref(previousUri.build(firstUser.getUsername()).toString());
+            prevLink.setHref(previousUri.build(organizationUniqueShortName, firstUser.getUsername()).toString());
             atomFeed.addLink(prevLink);
 
             for(User user: users){
@@ -145,11 +156,11 @@ public class OrganizationUsersResource extends AbstractResource{
                 userEntry.setId(user.getUsername());
                 userEntry.setTitle(user.getUsername());
                 userEntry.setSummary(user.getUsername());
-                userEntry.setUpdated("Not available");
+                userEntry.setUpdated(user.getLastModifiedDate());
 
                 // setting link to the each individual user
                 Link userLink = abderaFactory.newLink();
-                userLink.setHref(UserResource.USER_URI_BUILDER.clone().build(user.getUsername()).toString());
+                userLink.setHref(UserResource.USER_URI_BUILDER.clone().build(organizationUniqueShortName, user.getUsername()).toString());
                 userLink.setRel(Link.REL_ALTERNATE);
                 userLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
 
@@ -168,8 +179,18 @@ public class OrganizationUsersResource extends AbstractResource{
 
         ResponseBuilder responseBuilder;
         try{
+            if(user.getRoleIDs() != null){
+                Services.getInstance().getRoleService().populateRole(user);
+            }
+            if(user.getPrivilegeIDs() != null){
+                Services.getInstance().getPrivilegeService().populatePrivilege(user);
+            }
+            if(user.getParentOrganizationID() == null){
+                throw new Exception("No organization found");
+            }
+            Services.getInstance().getOrganizationService().populateOrganization(user);
             Services.getInstance().getUserService().save(user);
-            responseBuilder = Response.status(Status.OK);
+            responseBuilder = Response.status(Status.CREATED);
         }
         catch(Exception ex){
             responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
