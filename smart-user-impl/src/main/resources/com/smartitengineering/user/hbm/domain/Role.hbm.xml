@@ -10,14 +10,14 @@
     <property column="name" length="255" name="name" type="java.lang.String" unique-key="UK_ROLE_ORGANIZATION"/>
     <property column="display_name" length="255" name="displayName" type="java.lang.String"/>
     <property column="short_description" length="255" name="shortDescription" type="java.lang.String"/>
-    <many-to-one cascade="none" column="organization_id" lazy="false" name="organization" unique-key="UK_ROLE_ORGANIZATION"/>
+    <many-to-one cascade="none" column="organization_id" lazy="false" name="parentOrganization" unique-key="UK_ROLE_ORGANIZATION"/>
     <set cascade="none" inverse="false" lazy="false" name="privileges" outer-join="true" table="role_privileges">
       <key column="role_id"/>
       <many-to-many class="com.smartitengineering.user.domain.Privilege" column="privilege_id" lazy="false" outer-join="true"/>
     </set>
     <set cascade="none" inverse="false" lazy="false" name="roles" outer-join="true" table="role_subroles">
       <key column="role_id"/>
-      <many-to-many class="com.smartitengineering.user.domain.Role" column="role_id" lazy="false" outer-join="true"/>
+      <many-to-many class="com.smartitengineering.user.domain.Role" column="sub_role_id" lazy="false" outer-join="true"/>
     </set>
   </class>
 </hibernate-mapping>

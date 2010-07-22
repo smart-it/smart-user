@@ -89,7 +89,7 @@ public class SecuredObjectServiceImpl extends AbstractCommonDaoImpl<SecuredObjec
         if (securedObject.getId() == null) {
             Integer count = (Integer) super.getOther(
                     QueryParameterFactory.getElementCountParam("objectID"), QueryParameterFactory.getConjunctionParam(
-                    QueryParameterFactory.getEqualPropertyParam("organization_id",
+                    QueryParameterFactory.getEqualPropertyParam("organization.id",
                     securedObject.getOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
                     "objectID", securedObject.getObjectID())));
             if (count.intValue() > 0) {
@@ -101,7 +101,7 @@ public class SecuredObjectServiceImpl extends AbstractCommonDaoImpl<SecuredObjec
                     QueryParameterFactory.getElementCountParam("objectID"),
                     QueryParameterFactory.getConjunctionParam(
                     QueryParameterFactory.getNotEqualPropertyParam("id",
-                    securedObject.getId()), QueryParameterFactory.getEqualPropertyParam("organization_id",
+                    securedObject.getId()), QueryParameterFactory.getEqualPropertyParam("organization.id",
                     securedObject.getOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
                     "objectID", securedObject.getObjectID())));
             if (count.intValue() > 0) {

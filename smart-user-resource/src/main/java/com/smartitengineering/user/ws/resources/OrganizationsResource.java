@@ -35,6 +35,8 @@ import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 
 
+
+
 @Path("/organizations")
 public class OrganizationsResource extends AbstractResource{
 
@@ -86,6 +88,16 @@ public class OrganizationsResource extends AbstractResource{
     @Produces(MediaType.APPLICATION_ATOM_XML)
     public Response get() {
       return get(null, true);
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public Response getHtml(){
+        ResponseBuilder responseBuilder = Response.ok();
+       Collection<Organization> organizations = Services.getInstance().getOrganizationService().getAllOrganization();
+        //Viewable view = new Viewable("organizationList.jsp", organizations);
+        //responseBuilder.entity("organizations",organizations,"organizationList.jsp");
+        return responseBuilder.build();
     }
 
 
