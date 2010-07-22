@@ -1,0 +1,11 @@
+curl -v -X POST -H "Content-type:application/json" http://localhost:9090/organizations -d '{"name":"Smart IT Engineering Ltd", "uniqueShortName":"SITEL", "address":{"streetAddress":"Haji Chinu Mia Road","city":"Dhaka","state":"Dhaka","country":"Bangladesh","zip":"1207"}}'
+curl -v -X POST -H "Content-type:application/json" http://localhost:9090/organizations -d '{"name":"Agoora Ltd", "uniqueShortName":"AGOORA", "address":{"streetAddress":"Gulshan2","city":"Dhaka","state":"Dhaka","country":"Bangladesh","zip":"1210"}}'
+curl -v -X POST -H "Content-type:application/json" http://localhost:9090/organizations -d '{"name":"Nondon Ltd", "uniqueShortName":"NONDON", "address":{"streetAddress":"Dhanmondi","city":"Dhaka","state":"Dhaka","country":"Bangladesh","zip":"1207"}}'
+curl -v -X POST -H "Content-type:application/json" http://localhost:9090/organizations/SITEL/securedObjects -d '{"name":"journal","objectID":"journal-1","parentOrganizationID":"1"}'
+curl -v -X POST -H "Content-type:application/json" http://localhost:9090/organizations/SITEL/privileges -d'{"name":"privilegeName","displayName":"displayName","parentOrganizationID":"1"}'
+curl -v -X POST -H "Content-type:application/json" http://localhost:9090/organizations/SITEL/roles -d '{"name":"roleName1","displayName":"roleDisplayName1","privilegeIDs":["1"],"parentOrganizationID":"1"}'
+curl -v -X POST -H "Content-type:application/json" http://localhost:9090/organizations/SITEL/roles -d '{"name":"roleName2","displayName":"roleDisplayName2","privilegeIDs":["1"],"roleIDs":["1"],"parentOrganizationID":"1"}'
+curl -v -X POST -H "Content-type:application/json" http://localhost:9090/organizations/SITEL/users -d '{"username":"russel","password":"russel39","parentOrganizationID":"1","roleIDs":["1"]}'
+
+
+

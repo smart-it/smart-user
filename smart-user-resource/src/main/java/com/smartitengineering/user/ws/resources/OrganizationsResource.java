@@ -12,6 +12,7 @@ package com.smartitengineering.user.ws.resources;
  */
 
 import com.smartitengineering.user.domain.Organization;
+import com.sun.jersey.api.view.Viewable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -33,6 +34,8 @@ import org.apache.abdera.Abdera;
 import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
+
+
 
 
 @Path("/organizations")
@@ -86,6 +89,16 @@ public class OrganizationsResource extends AbstractResource{
     @Produces(MediaType.APPLICATION_ATOM_XML)
     public Response get() {
       return get(null, true);
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public Response getHtml(){
+        ResponseBuilder responseBuilder = Response.ok();
+       Collection<Organization> organizations = Services.getInstance().getOrganizationService().getAllOrganization();
+        Viewable view = new Viewable("organizationList", organizations, OrganizationsResource.class);
+        responseBuilder.entity(view);        
+        return responseBuilder.build();
     }
 
 

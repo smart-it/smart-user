@@ -5,6 +5,7 @@
 
 package com.smartitengineering.user.service.impl;
 
+import com.smartitengineering.dao.common.queryparam.FetchMode;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl;
@@ -15,7 +16,9 @@ import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.PrivilegeService;
+import com.smartitengineering.user.service.UserService;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.hibernate.StaleStateException;
@@ -30,6 +33,19 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
     public PrivilegeServiceImpl(){
         setEntityClass(Privilege.class);
     }
+
+    private UserService userService;
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+
+
     @Override
     public void create(Privilege privilege){
 
@@ -75,46 +91,59 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
 //
 //    }
 
+    @Override
     public Privilege getPrivilegeByName(String privilegeName){
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public Privilege getPrivilegeByOrganizationAndPrivilegeName(String organizationName, String privilegename){
-        throw new UnsupportedOperationException("Not supported yet.");        
+        return super.getSingle(QueryParameterFactory.getStringLikePropertyParam("name", privilegename),
+               QueryParameterFactory.getNestedParametersParam("parentOrganization", FetchMode.DEFAULT,
+               QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationName)));
     }
 
+    @Override
     public Collection<Privilege> getPrivilegesByOrganizationAndUser(String organizationName, String userName){
-        throw new UnsupportedOperationException("Not supported yet.");
+        User user = userService.getUserByOrganizationAndUserName(organizationName, userName);
+        return user.getPrivileges();
     }
 
+    @Override
     public Collection<Privilege> getPrivilegesByOrganization(String organization){
-        throw new UnsupportedOperationException("Not supported yet.");
+        Collection<Privilege> users = new HashSet<Privilege>();
+        QueryParameter qp = QueryParameterFactory.getNestedParametersParam("parentOrganization", FetchMode.DEFAULT,QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organization));
+        return super.getList(qp);
     }
 
     public void validatePrivilege(Privilege privilege){
-        if(privilege.getId() == null){
-
-            Integer count = (Integer)super.getOther(QueryParameterFactory.getElementCountParam("name"),
-                    QueryParameterFactory.getStringLikePropertyParam("name",
-                    privilege.getName()));
-            if(count.intValue() > 0){
+        if (privilege.getId() == null) {
+            Integer count = (Integer) super.getOther(
+                    QueryParameterFactory.getElementCountParam("name"), QueryParameterFactory.getConjunctionParam(
+                    QueryParameterFactory.getEqualPropertyParam("parentOrganization.id",
+                    privilege.getParentOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
+                    "name", privilege.getName())));
+            if (count.intValue() > 0) {
                 throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-"
-                        + UniqueConstrainedField.PRIVILEGE_NAME.name());
+                        + UniqueConstrainedField.SECURED_OBJECT_OBJECT_ID.name());
             }
-        }else{
+        } else {
             Integer count = (Integer) super.getOther(
                     QueryParameterFactory.getElementCountParam("name"),
                     QueryParameterFactory.getConjunctionParam(
                     QueryParameterFactory.getNotEqualPropertyParam("id",
-                    privilege.getId()), QueryParameterFactory.getStringLikePropertyParam(
+                    privilege.getId()), QueryParameterFactory.getEqualPropertyParam("parentOrganization.id",
+                    privilege.getParentOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
                     "name", privilege.getName())));
             if (count.intValue() > 0) {
                 throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-"
-                        + UniqueConstrainedField.PRIVILEGE_NAME.name());
+                        + UniqueConstrainedField.SECURED_OBJECT_OBJECT_ID.name());
             }
+
         }
     }
 
+    @Override
     public void populatePrivilege(User user) throws Exception{
         List<Integer> privilegeIDs = user.getPrivilegeIDs();
         if(privilegeIDs != null && ! privilegeIDs.isEmpty()){
@@ -128,6 +157,7 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
         }
     }
 
+    @Override
     public void populatePrivilege(Role role)throws Exception {
         List<Integer> privilegeIDs = role.getPrivilegeIDs();
         if(privilegeIDs != null && ! privilegeIDs.isEmpty()){

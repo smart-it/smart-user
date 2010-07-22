@@ -5,7 +5,9 @@
 
 package com.smartitengineering.user.service;
 
+import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.domain.SecuredObject;
+import java.util.Collection;
 
 /**
  *
@@ -19,7 +21,11 @@ public interface SecuredObjectService {
 
     public void delete(SecuredObject securedObject);
 
-    public SecuredObject getByObjectID(String objectID);
+    public Collection<SecuredObject> getByOrganization(String organizationName);
+
+    public SecuredObject getByOrganizationAndObjectID(String organizationName, String objectID);
+
+    public void populateSecuredObject(Privilege privilege) throws Exception;
 
 
 }

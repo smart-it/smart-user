@@ -19,8 +19,12 @@
                 <value>com/smartitengineering/user/hbm/domain/Person.hbm.xml</value>
                 <value>com/smartitengineering/user/hbm/acl/ace.hbm.xml</value>
                 <value>com/smartitengineering/user/hbm/acl/acl.hbm.xml</value>-->
+                <value>com/smartitengineering/user/hbm/domain/Role.hbm.xml</value><!--
+-->                <value>com/smartitengineering/user/hbm/domain/User.hbm.xml</value>
+                <value>com/smartitengineering/user/hbm/domain/Privilege.hbm.xml</value>
                 <value>com/smartitengineering/user/hbm/domain/Organization.hbm.xml</value>
                 <value>com/smartitengineering/user/hbm/domain/Address.hbm.xml</value>
+                <value>com/smartitengineering/user/hbm/domain/securedObject.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">

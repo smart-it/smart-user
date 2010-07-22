@@ -13,7 +13,11 @@ import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl;
 import com.smartitengineering.domain.PersistentDTO;
 import com.smartitengineering.user.domain.Organization;
+import com.smartitengineering.user.domain.Privilege;
+import com.smartitengineering.user.domain.Role;
+import com.smartitengineering.user.domain.SecuredObject;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
+import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.filter.OrganizationFilter;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.OrganizationService;
@@ -153,5 +157,55 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
         }
         return organization;
     }
+
+    public void populateOrganization(User user) throws Exception{
+        Integer organizationID = user.getParentOrganizationID();
+        if(user.getParentOrganizationID() != null){
+            Organization parentOrganization = super.getById(organizationID);
+
+            if(parentOrganization == null){
+                throw new Exception("No organization found");
+            }
+            user.setOrganization(parentOrganization);
+        }
+    }
+    
+    public void populateOrganization(SecuredObject securedObject) throws Exception{
+        Integer organizationID = securedObject.getParentOrganizationID();
+        if(organizationID != null){
+            Organization parentOrganization = super.getById(organizationID);
+
+            if(parentOrganization == null){
+                throw new Exception("No organization found");
+            }
+            securedObject.setOrganization(parentOrganization);
+        }
+    }
+    
+    public void populateOrganization(Privilege privilege) throws Exception{
+        Integer organizationID = privilege.getParentOrganizationID();
+        if(privilege.getParentOrganizationID() != null){
+            Organization parentOrganization = super.getById(organizationID);
+
+            if(parentOrganization == null){
+                throw new Exception("No organization found");
+            }
+            privilege.setParentOrganization(parentOrganization);
+        }
+    }
+
+    public void populateOrganization(Role role) throws Exception{
+        Integer organizationID = role.getParentOrganizationID();
+        if(role.getParentOrganizationID() == null){
+            Organization parentOrganization = super.getById(organizationID);
+
+            if(parentOrganization == null){
+                throw new Exception("No organization found");
+            }
+            role.setParentOrganization(parentOrganization);
+        }
+    }
+
+
 
 }

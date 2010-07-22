@@ -114,7 +114,7 @@ public class OrganizationRolesResource extends AbstractResource{
             nextLink.setRel(Link.REL_NEXT);
 
             Role firstRole = roleList.get(0);
-            nextLink.setHref(nextRoleUri.build(firstRole.getName()).toString());
+            nextLink.setHref(nextRoleUri.build(organizationName, firstRole.getName()).toString());
             atomFeed.addLink(nextLink);
 
             Role lastRole = roleList.get(roleList.size() -1);
@@ -122,7 +122,7 @@ public class OrganizationRolesResource extends AbstractResource{
             // link to the previous uri according to the count value
             Link previousLink = abderaFactory.newLink();
             previousLink.setRel(Link.REL_PREVIOUS);
-            previousLink.setHref(previousRoleUri.build(lastRole.getName()).toString());
+            previousLink.setHref(previousRoleUri.build(organizationName, lastRole.getName()).toString());
 
             atomFeed.addLink(previousLink);
 
@@ -135,7 +135,7 @@ public class OrganizationRolesResource extends AbstractResource{
 
                 Link roleLink = abderaFactory.newLink();
 
-                roleLink.setHref(UriBuilder.fromResource(RoleResource.class).build(role.getName()).toString());
+                roleLink.setHref(UriBuilder.fromResource(OrganizationRoleResource.class).build(organizationName, role.getName()).toString());
                 roleLink.setRel(Link.REL_ALTERNATE);
                 roleLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
 
@@ -154,6 +154,11 @@ public class OrganizationRolesResource extends AbstractResource{
         ResponseBuilder responseBuilder;
         try{
             responseBuilder = Response.status(Status.CREATED);
+            if(role.getParentOrganizationID() == null){
+                throw new Exception("No parent organization found");
+            }
+            Services.getInstance().getOrganizationService().populateOrganization(role);
+
             if(role.getPrivilegeIDs() != null && !role.getPrivilegeIDs().isEmpty()){
                 Services.getInstance().getPrivilegeService().populatePrivilege(role);
             }
