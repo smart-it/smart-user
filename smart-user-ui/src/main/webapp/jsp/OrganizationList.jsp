@@ -23,51 +23,79 @@
 
 
 <!--Table header-->
-<div style="width: 80%;position: relative;clear: left">
-<div style="background-color: #77e445">
-    <h1 id="header" >Organization</h1>
-</div>
+    <div style="width: 80%;position: relative;clear: left">
+    <div style="background-color: #77e445">
+            <h1 id="header" >Organization</h1>
+    </div>
             
     <div style="text-decoration: underline;border-color: #13200d">
+
     <div id="tableheadid">
         <h4> ID</h4>
-
     </div>
-        <div id="tableheadname">
-         
+
+    <div id="tableheadname">     
         <h4>Organization name</h4>
     </div>
-        <div class="tableheadlink">
-           
+
+    <div class="tableheadlink">   
         <h4>Edit</h4>
     </div>
-        <div class="tableheadlink">
+
+   <div class="tableheadlink">
         <h4> Delete</h4>
-    </div>
+   </div>
 
    </div>
 
 
 
 <!--Table details of Organization with edit and delete option-->
-   <c:set var="listsize" value="${organizationList.length}" scope="session"/>
+  
     <c:forEach var="i"  begin="1" end="listsize" step="1" varStatus="status">
           <div>
 
           <div id="teblecontentid">
-              <h4>  <c:out value="$organizationList[i].id" /></h4>
+              <h4>  <c:out value="$organization" /></h4>
           </div>
+
           <div id="teblecontentname">
-              <h4><c:out value="organizationList[i].name" /></h4>
+              <h4><c:out value="${organization.name}" /></h4>
           </div>
+
           <div class="teblecontentlink">
-              <h4><a href="organization-edit.jsp" id="organizationList[i].id" >Edit</a></h4>
+              <h4><a href="organization-edit.jsp">Edit</a></h4>
           </div>
+
           <div class="teblecontentlink">
                 <h4><a href="Jstl_Core_Tags.jsp?valid=true&name=eric&mark=8">Delete</a></h4>
           </div>
+
           </div>
      </c:forEach>
     </div>
 </body>
+<c:forEach var="organization" items="${it}">
+            <tr>
+                <td>
+                    <c:out value="${organization.name}" />
+
+                </td>
+                <td>
+                    <c:out value="${organization.uniqueShortName}" />
+                </td>
+                <td>
+                    <c:out value="${organization.address.streetAddress}" />
+                </td>
+                <td>
+                    <c:out value="${organization.address.city}" />
+                </td>
+                <td>
+                    <c:out value="${organization.address.state}" />
+                </td>
+                <td>
+                    <c:out value="${organization.address.country}" />
+                </td>
+            </tr>
+        </c:forEach>
 
