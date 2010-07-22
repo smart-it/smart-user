@@ -122,7 +122,7 @@ public class OrganizationUserRolesResource extends AbstractResource{
             nextLink.setRel(Link.REL_NEXT);
 
             Role firstRole = roleList.get(0);
-            nextLink.setHref(nextRoleUri.build(firstRole.getName()).toString());
+            nextLink.setHref(nextRoleUri.build(organizationName, firstRole.getName()).toString());
             atomFeed.addLink(nextLink);
 
             Role lastRole = roleList.get(roleList.size() -1);
@@ -130,7 +130,7 @@ public class OrganizationUserRolesResource extends AbstractResource{
             // link to the previous uri according to the count value
             Link previousLink = abderaFactory.newLink();
             previousLink.setRel(Link.REL_PREVIOUS);
-            previousLink.setHref(previousRoleUri.build(lastRole.getName()).toString());
+            previousLink.setHref(previousRoleUri.build(organizationName, lastRole.getName()).toString());
 
             atomFeed.addLink(previousLink);
 
@@ -145,9 +145,9 @@ public class OrganizationUserRolesResource extends AbstractResource{
                 // setting link to each individual role
                 Link roleLink = abderaFactory.newLink();
                 roleLink.setRel(Link.REL_ALTERNATE);
-                roleLink.setHref(RolesResource.ROLE_URI_BUILDER.build(role.getName()).toString());
+                roleLink.setHref(OrganizationRoleResource.ORGANIZATION_ROLE_URI_BUILDER.build(organizationName,role.getName()).toString());
                 roleLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
-                roleEntry.addLink(roleLink)                        ;
+                roleEntry.addLink(roleLink);
                 atomFeed.addEntry(roleEntry);
             }
 

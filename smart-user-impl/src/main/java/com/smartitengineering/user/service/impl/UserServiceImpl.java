@@ -139,7 +139,7 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
         if (user.getId() == null) {
             Integer count = (Integer) super.getOther(
                     QueryParameterFactory.getElementCountParam("username"), QueryParameterFactory.getConjunctionParam(
-                    QueryParameterFactory.getEqualPropertyParam("organization_id",
+                    QueryParameterFactory.getEqualPropertyParam("organization.id",
                     user.getOrganization().getId()), QueryParameterFactory.
                     getStringLikePropertyParam(
                     "username", user.getUsername())));
@@ -153,7 +153,7 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
                     QueryParameterFactory.getElementCountParam("username"),
                     QueryParameterFactory.getConjunctionParam(
                     QueryParameterFactory.getNotEqualPropertyParam("id",
-                    user.getId()), QueryParameterFactory.getEqualPropertyParam("organization_id",
+                    user.getId()), QueryParameterFactory.getEqualPropertyParam("organization.id",
                     user.getOrganization().getId()), QueryParameterFactory.
                     getStringLikePropertyParam(
                     "username", user.getUsername())));

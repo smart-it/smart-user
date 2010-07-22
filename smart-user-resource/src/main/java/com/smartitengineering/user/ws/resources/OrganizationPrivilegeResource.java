@@ -31,9 +31,11 @@ import org.apache.abdera.model.Link;
 public class OrganizationPrivilegeResource extends AbstractResource{
 
     private Privilege privilege;
+    private String organizationUniqueShortName;
 
     public OrganizationPrivilegeResource(@PathParam("organizationUniqueShortName") String organizationUniqueShortName, @PathParam("privilegeName") String privilegeName){
-        
+
+        this.organizationUniqueShortName = organizationUniqueShortName;
         privilege = Services.getInstance().getPrivilegeService().getPrivilegeByOrganizationAndPrivilegeName(organizationUniqueShortName, privilegeName);
     }
 
@@ -118,7 +120,7 @@ public class OrganizationPrivilegeResource extends AbstractResource{
 
 
         Link altLink = abderaFactory.newLink();
-        altLink.setHref(UriBuilder.fromResource(OrganizationPrivilegeResource.class).build(privilege.getName()).toString());
+        altLink.setHref(UriBuilder.fromResource(OrganizationPrivilegeResource.class).build(organizationUniqueShortName, privilege.getName()).toString());
         altLink.setRel(Link.REL_ALTERNATE);
         altLink.setMimeType(MediaType.APPLICATION_JSON);
 
