@@ -21,6 +21,7 @@
 
 
 
+
         <div style="width: 80%;position: relative;clear: left">
         <div style="background-color: #77e445">
             <h1 id="header" >Organization</h1>
@@ -49,6 +50,7 @@
 
         
         
+
         <c:forEach var="organization" items="${it}">
          <div>
           <div id="teblecontentid">

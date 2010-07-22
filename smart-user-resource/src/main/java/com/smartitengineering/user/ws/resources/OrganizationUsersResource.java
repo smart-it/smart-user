@@ -6,6 +6,7 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.User;
+import com.sun.jersey.api.view.Viewable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -65,7 +66,17 @@ public class OrganizationUsersResource extends AbstractResource{
     }
 
     
-    
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public Response getHtml(){
+        ResponseBuilder responseBuilder = Response.ok();
+        Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName);
+
+        Viewable view = new Viewable("userList", users, OrganizationUsersResource.class);
+        responseBuilder.entity(view);
+        return responseBuilder.build();
+        
+    }
     
 
     @GET
