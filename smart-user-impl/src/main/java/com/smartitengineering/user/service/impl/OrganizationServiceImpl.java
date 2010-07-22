@@ -196,7 +196,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
 
     public void populateOrganization(Role role) throws Exception{
         Integer organizationID = role.getParentOrganizationID();
-        if(role.getParentOrganizationID() == null){
+        if(role.getParentOrganizationID() != null){
             Organization parentOrganization = super.getById(organizationID);
 
             if(parentOrganization == null){
