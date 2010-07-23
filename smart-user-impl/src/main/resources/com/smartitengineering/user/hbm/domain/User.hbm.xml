@@ -7,16 +7,18 @@
             </generator>
     </id>
     <version column="version" name="version"/>
-    <property column="username" length="255" name="username" type="java.lang.String" unique-key="UK_USER_ORGANIZATION"/>
+    <property column="username" length="255" name="username" type="java.lang.String" unique-key="UK_USER_ORGANIZATION" not-null="true"/>
     <property column="password" length="255" name="password" type="java.lang.String"/>
-    <many-to-one cascade="none" column="organization_id" lazy="false" name="organization" unique-key="UK_USER_ORGANIZATION"/>
+    <many-to-one cascade="none" column="organization_id" lazy="false" name="organization" unique-key="UK_USER_ORGANIZATION" not-null="true"/>
     <set cascade="none" inverse="false" lazy="false" name="roles" outer-join="true" table="user_role">
       <key column="user_id"/>
       <many-to-many class="com.smartitengineering.user.domain.Role" column="role_id" lazy="false" outer-join="true"/>
     </set>
     <set cascade="none" inverse="false" lazy="false" name="privileges" outer-join="true" table="user_privileges">
-      <key column="user-id"/>
-      <many-to-many class="com.smartitengineering.user.domain.Privilege" column="privilge_id" lazy="false" outer-join="true"/>
+      <key column="user_id"/>
+      <many-to-many class="com.smartitengineering.user.domain.Privilege" column="privilege_id" lazy="false" outer-join="true"/>
     </set>
+    
+    <property column="last_modified_date" name="lastModifiedDate" type="java.util.Date"/>
   </class>
 </hibernate-mapping>

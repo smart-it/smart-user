@@ -100,6 +100,16 @@
             <artifactId>smart-bean-spring-util</artifactId>
             <version>0.2-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
     </dependencies>
 <!--    <build>
         <finalName>smartuser</finalName>

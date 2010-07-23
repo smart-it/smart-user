@@ -160,7 +160,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
 
     public void populateOrganization(User user) throws Exception{
         Integer organizationID = user.getParentOrganizationID();
-        if(user.getParentOrganizationID() == null){
+        if(user.getParentOrganizationID() != null){
             Organization parentOrganization = super.getById(organizationID);
 
             if(parentOrganization == null){
@@ -184,7 +184,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
     
     public void populateOrganization(Privilege privilege) throws Exception{
         Integer organizationID = privilege.getParentOrganizationID();
-        if(privilege.getParentOrganizationID() == null){
+        if(privilege.getParentOrganizationID() != null){
             Organization parentOrganization = super.getById(organizationID);
 
             if(parentOrganization == null){
@@ -196,7 +196,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
 
     public void populateOrganization(Role role) throws Exception{
         Integer organizationID = role.getParentOrganizationID();
-        if(role.getParentOrganizationID() == null){
+        if(role.getParentOrganizationID() != null){
             Organization parentOrganization = super.getById(organizationID);
 
             if(parentOrganization == null){

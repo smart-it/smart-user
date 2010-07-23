@@ -99,7 +99,7 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
     @Override
     public Privilege getPrivilegeByOrganizationAndPrivilegeName(String organizationName, String privilegename){
         return super.getSingle(QueryParameterFactory.getStringLikePropertyParam("name", privilegename),
-               QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT,
+               QueryParameterFactory.getNestedParametersParam("parentOrganization", FetchMode.DEFAULT,
                QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationName)));
     }
 
@@ -112,7 +112,7 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
     @Override
     public Collection<Privilege> getPrivilegesByOrganization(String organization){
         Collection<Privilege> users = new HashSet<Privilege>();
-        QueryParameter qp = QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT,QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organization));
+        QueryParameter qp = QueryParameterFactory.getNestedParametersParam("parentOrganization", FetchMode.DEFAULT,QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organization));
         return super.getList(qp);
     }
 
@@ -120,7 +120,7 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
         if (privilege.getId() == null) {
             Integer count = (Integer) super.getOther(
                     QueryParameterFactory.getElementCountParam("name"), QueryParameterFactory.getConjunctionParam(
-                    QueryParameterFactory.getEqualPropertyParam("organization.id",
+                    QueryParameterFactory.getEqualPropertyParam("parentOrganization.id",
                     privilege.getParentOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
                     "name", privilege.getName())));
             if (count.intValue() > 0) {
@@ -132,7 +132,7 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
                     QueryParameterFactory.getElementCountParam("name"),
                     QueryParameterFactory.getConjunctionParam(
                     QueryParameterFactory.getNotEqualPropertyParam("id",
-                    privilege.getId()), QueryParameterFactory.getEqualPropertyParam("organization.id",
+                    privilege.getId()), QueryParameterFactory.getEqualPropertyParam("parentOrganization.id",
                     privilege.getParentOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
                     "name", privilege.getName())));
             if (count.intValue() > 0) {

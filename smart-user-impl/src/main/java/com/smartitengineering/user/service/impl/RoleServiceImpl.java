@@ -78,7 +78,7 @@ public class RoleServiceImpl extends AbstractCommonDaoImpl<Role> implements Role
     @Override
     public Collection<Role> getRolesByOrganization(String organization) {
         Collection<Role> users = new HashSet<Role>();
-        QueryParameter qp = QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT,QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organization));
+        QueryParameter qp = QueryParameterFactory.getNestedParametersParam("parentOrganization", FetchMode.DEFAULT,QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organization));
         return super.getList(qp);
     }
 
@@ -90,7 +90,7 @@ public class RoleServiceImpl extends AbstractCommonDaoImpl<Role> implements Role
     @Override
     public Role getRoleByOrganizationAndRoleName(String organizationName, String roleName) {
         return super.getSingle(QueryParameterFactory.getStringLikePropertyParam("name", roleName),
-               QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT,
+               QueryParameterFactory.getNestedParametersParam("parentOrganization", FetchMode.DEFAULT,
                QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationName)));
     }
 

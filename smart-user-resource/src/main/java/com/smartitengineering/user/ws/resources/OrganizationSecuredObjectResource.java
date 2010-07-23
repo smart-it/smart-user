@@ -31,13 +31,14 @@ import org.apache.abdera.model.Link;
 public class OrganizationSecuredObjectResource extends AbstractResource{
 
     private SecuredObject securedObject;
+    private String organizationUniqueName;
 
     static final UriBuilder ORGANIZATION_SECURED_OBJECT_URI_BUILDER = UriBuilder.fromResource(OrganizationSecuredObjectResource.class);
     static final UriBuilder ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER;
     static{
         ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER = ORGANIZATION_SECURED_OBJECT_URI_BUILDER.clone();
         try{
-            ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.path(OrganizationSecuredObjectResource.class.getMethod("getSecuredObject", String.class));
+            ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.path(OrganizationSecuredObjectResource.class.getMethod("getSecuredObject"));
         }catch(Exception ex){
             ex.printStackTrace();
             throw new InstantiationError();
@@ -45,6 +46,7 @@ public class OrganizationSecuredObjectResource extends AbstractResource{
     }
     
     public OrganizationSecuredObjectResource(@PathParam("organizationUniqueShortName") String organizationUniqueShortName, @PathParam("old") String name){
+        this.organizationUniqueName = organizationUniqueShortName;
         this.securedObject = Services.getInstance().getSecuredObjectService().getByOrganizationAndObjectID(organizationUniqueShortName, name);
     }
 
@@ -107,7 +109,7 @@ public class OrganizationSecuredObjectResource extends AbstractResource{
 
         // add a alternate link
         Link altLink = abderaFactory.newLink();
-        altLink.setHref(ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.clone().build(securedObject.getObjectID()).toString());
+        altLink.setHref(ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.clone().build(organizationUniqueName,securedObject.getObjectID()).toString());
         altLink.setRel(Link.REL_ALTERNATE);
         altLink.setMimeType(MediaType.APPLICATION_JSON);
         securedObjectFeed.addLink(altLink);

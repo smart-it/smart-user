@@ -91,7 +91,7 @@ public class OrganizationPrivilegesResource extends AbstractResource{
 
         // create a link to parent resource, in this case now it is linked to root resource
         Link parentResourceLink = abderaFactory.newLink();
-        parentResourceLink.setHref(UriBuilder.fromResource(OrganizationResource.class).build().toString());
+        parentResourceLink.setHref(UriBuilder.fromResource(OrganizationResource.class).build(organizationUniqueShortName).toString());
         parentResourceLink.setRel("organization");
         atomFeed.addLink(parentResourceLink);
 
@@ -118,7 +118,7 @@ public class OrganizationPrivilegesResource extends AbstractResource{
                 nextUri.queryParam(key, values);
                 previousUri.queryParam(key, values);
             }
-            nextLink.setHref(nextUri.build(lastPrivilege.getName()).toString());
+            nextLink.setHref(nextUri.build(organizationUniqueShortName,lastPrivilege.getName()).toString());
             //nextLink.setHref(UriBuilder.fromResource(OrganizationsResource.class).build(lastOrganization.getUniqueShortName()).toString());
 
             atomFeed.addLink(nextLink);
@@ -128,28 +128,29 @@ public class OrganizationPrivilegesResource extends AbstractResource{
             prevLink.setRel(Link.REL_PREVIOUS);
             Privilege firstPrivilege = privilegeList.get(privileges.size() - 1);
 
-            prevLink.setHref(previousUri.build(firstPrivilege.getName()).toString());
+            prevLink.setHref(previousUri.build(organizationUniqueShortName,firstPrivilege.getName()).toString());
             //prevLink.setHref(nameLike)
             atomFeed.addLink(prevLink);
 
             // add entry of individual organization
             for (Privilege privilege : privileges) {
-              Entry organizationEntry = abderaFactory.newEntry();
+              Entry organizationPrivilegeEntry = abderaFactory.newEntry();
 
-              organizationEntry.setId(privilege.getName().toString());
-              organizationEntry.setTitle(privilege.getDisplayName());
-              organizationEntry.setSummary(privilege.getShortDescription());
+              organizationPrivilegeEntry.setId(privilege.getName().toString());
+              organizationPrivilegeEntry.setTitle(privilege.getDisplayName());
+              organizationPrivilegeEntry.setSummary(privilege.getShortDescription());
               //organizationEntry.setUpdated(privilege.);
 
               /* setting link to the individual organization resource*/
 
-              Link organizationLink = abderaFactory.newLink();
-              organizationLink.setHref(OrganizationResource.ORGANIZATION_URI_BUILDER.clone().build(privilege.getName()).toString());
-              organizationLink.setRel(Link.REL_ALTERNATE);
-              organizationLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
-              organizationEntry.addLink(organizationLink);
+              Link organizationPrivilegeLink = abderaFactory.newLink();
+              //organizationLink.setHref(OrganizationResource.ORGANIZATION_URI_BUILDER.clone().build(organizationUniqueShortName,privilege.getName()).toString());
+              organizationPrivilegeLink.setHref(UriBuilder.fromResource(OrganizationPrivilegeResource.class).build(organizationUniqueShortName, privilege.getName()).toString());
+              organizationPrivilegeLink.setRel(Link.REL_ALTERNATE);
+              organizationPrivilegeLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
+              organizationPrivilegeEntry.addLink(organizationPrivilegeLink);
 
-              atomFeed.addEntry(organizationEntry);
+              atomFeed.addEntry(organizationPrivilegeEntry);
             }
         }
         responseBuilder.entity(atomFeed);
