@@ -107,7 +107,7 @@ public class OrganizationRolesResource extends AbstractResource{
             UriBuilder nextRoleUri = ORGANIZATION_ROLE_AFTER_ROLE_NAME_URI_BUILDER.clone();
             UriBuilder previousRoleUri = ORGANIZATION_ROLE_BEFORE_ROLE_NAME_URI_BUILDER.clone();
 
-            List<Role> roleList = new ArrayList<Role>();
+            List<Role> roleList = new ArrayList<Role>(roles);
 
             // link to the next uri according to the count value
             Link nextLink = abderaFactory.newLink();

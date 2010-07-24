@@ -7,6 +7,7 @@ package com.smartitengineering.user.ws.resources;
 
 
 import com.smartitengineering.user.domain.User;
+import com.sun.jersey.api.view.Viewable;
 
 import java.util.Date;
 
@@ -69,6 +70,16 @@ public class OrganizationUserResource extends AbstractResource{
     @Path("/content")
     public Response getOrganization() {
         ResponseBuilder responseBuilder = Response.ok(user);
+        return responseBuilder.build();
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public Response getHtml(){
+        ResponseBuilder responseBuilder = Response.ok();
+
+        Viewable view = new Viewable("OrganizationUserDetails", user, OrganizationResource.class);
+        responseBuilder.entity(view);
         return responseBuilder.build();
     }
 
