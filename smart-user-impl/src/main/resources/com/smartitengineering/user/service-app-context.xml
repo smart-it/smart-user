@@ -121,6 +121,15 @@
         </property>
     </bean>
     <bean id="organizationService" class="com.smartitengineering.user.service.impl.OrganizationServiceImpl" parent="abstractDao"/>
+
+    <bean id="securedObjectService" class="com.smartitengineering.user.service.impl.SecuredObjectServiceImpl" parent="abstractDao"/>
+
+    <bean id="privilegeService" class="com.smartitengineering.user.service.impl.PrivilegeServiceImpl" parent="abstractDao"/>
+
+    <bean id="userService" class="com.smartitengineering.user.service.impl.UserServiceImpl" parent="abstractDao"/>
+
+    <bean id="roleService" class="com.smartitengineering.user.service.impl.RoleServiceImpl" parent="abstractDao"/>
+    
     <!-- **************************************************************** -->
     <!-- ********************* Smart Util Reg *************************** -->
     <!-- **************************************************************** -->
