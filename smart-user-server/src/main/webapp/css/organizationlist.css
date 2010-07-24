@@ -11,15 +11,17 @@
    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
 */
 
-root { 
-    display: block;
-}
 
 
 body{
-    background-color: #0d0d0d;
     font-family: vardana, sans-serif;
 
+}
+.show{
+    display: block;
+}
+.hide{
+    display: none;
 }
 #header{
     font-family: vardana, sans-serif;
@@ -27,7 +29,8 @@ body{
     font-size: x-large;
     font-weight: bolder;
     font-style: normal;
-    color:#FFFFFF;
+    text-align: center;
+    color:#354ad6;
 
 }
 #teblecontentid
@@ -38,11 +41,11 @@ body{
     background-color:papayawhip;
     border-bottom-style: double
 }
-#teblecontentname
+.teblecontentname
 {
     text-align: center;
     float: left;
-    width: 40%;
+    width: 30%;
     background-color:papayawhip;
     border-bottom-style: double
 }
@@ -50,7 +53,7 @@ body{
 {
     text-align: center;
     float: left;
-    width: 25%;
+    width: 15%;
     background-color:papayawhip;
     border-bottom-style: double
 }
@@ -62,11 +65,11 @@ body{
     background-color: #cbd0c8;
     font-size: larger
 }
-#tableheadname
+.tableheadname
 {
     text-align: center;
     float: left;
-    width: 40%;
+    width: 30%;
     background-color: #cbd0c8;
     font-size: larger
 }
@@ -74,7 +77,59 @@ body{
 {
     text-align: center;
     float: left;
-    width: 25%;
+    width: 15%;
     background-color: #cbd0c8;
     font-size: larger
+}
+body{
+    background-color: #ffffff;
+    font-family: vardana, sans-serif;
+
+}
+#maindivision{
+        padding-top: 10px;
+        width:100%;
+
+
+}
+#header_organization{
+    height: 70px;
+    background-color:	#307D7E;
+}
+
+#form_organizationentry{
+    background-color: #25A0C5;
+    padding: 10px 10px 10px 10px;
+
+}
+
+#header{
+    font-family: vardana, sans-serif;
+    text-decoration: none;
+    font-size: x-large;
+    font-weight: bolder;
+    font-style: normal;
+    color:#FFFFFF;
+
+}
+
+label{
+    font-family: vardana, sans-serif;
+    font-size: large;
+    font-weight: 500;
+    font-style: normal;
+    color:black;
+}
+
+#inner-left-1,#inner-left-2,#inner-left-3,#inner-left-4,#inner-left-5,#inner-left-6,#inner-left-7{
+    padding: 10px 2px 10px 10px;
+    width: 40%;
+    float:left;
+}
+
+#inner-right-1,#inner-right-2,#inner-right-3,#inner-right-4,#inner-right-5,#inner-right-6,#inner-right-7,#inner-right-8{
+
+    padding: 10px 10px 10px 0px;
+    width: 58%;
+    float:left;
 }
