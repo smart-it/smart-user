@@ -93,7 +93,7 @@
                       </div>
 
                       <div class="teblecontentlink">
-                          <a href="organizations/${organization.uniqueShortName}" name=""><h4>Edit</h4></a>
+                          <a href="javascript:Orgpageselect()"><h4>Edit</h4></a>
                       </div>
 
                       <div class="teblecontentlink">
