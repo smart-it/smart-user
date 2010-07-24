@@ -93,6 +93,16 @@ color:#FFFFFF;
 }
 
 
+#userform{
+    background-image: url(images/tablecontent.png);
+    background-repeat: repeat-y;
+    background-position: center;
+    background-attachment: fixed;
+    width: 100%;
+    padding-top: 100px;
+}
+
+
 #inner-left-1,#inner-left-2,#inner-left-3,#inner-left-4,#inner-left-5,#inner-left-6,#inner-left-7{
     padding: 10px 2px 10px 10px;
     width: 40%;
@@ -104,4 +114,12 @@ color:#FFFFFF;
     padding: 10px 10px 10px 0px;
     width: 58%;
     float:left;
+}
+#formfooter{
+    background-image: url(images/tsblecontent);
+    background-repeat: repeat-y;
+    height:20px;
+    text-align: center;
+    font-size: 14px;
+   padding-top: 140px;
 }

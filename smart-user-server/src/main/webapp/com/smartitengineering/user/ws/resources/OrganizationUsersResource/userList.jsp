@@ -104,7 +104,8 @@
 
                         <div id="inner-left-7" align="right"><label>Zip:</label></div><div id="inner-right-7" align="left"><input type="text" name="zip" size="40" value=""></div>
 --%>
-<div class="inner-right-8" align="center"><input type="submit" value="submit" name="submitBtn" ></div>
+        <div class="inner-right-8" align="center"><input type="submit" value="submit" name="submitBtn" ></div>
+        <div id="formfooter">  copyright@smartitengineering ltd.</div>
 
                     </form>
            
