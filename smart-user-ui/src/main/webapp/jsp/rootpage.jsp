@@ -13,6 +13,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>home page</title>
         <link rel="Stylesheet" href="../css/default.css">
+        <link rel="Stylesheet" href="../css/login.css">
+        <link rel="Stylesheet" href="../css/organization-style.css">
     </head>
     <body>
 
@@ -20,29 +22,37 @@
 
 <%--This is Header portion--%>
 
-            <div id="header">Header
+            <div id="header"><h1>aponn.com</h1>
             </div>
 
 <%--Header ends here--%>
-                <div style="clear: both">
-                </div>
+            <div style="clear: both">
+            </div>
 <%--This is left side or content portion--%>
 
-            <div id="content">BODY
+            <div id="content">
             </div>
 
 <%--Content portion ends here--%>
 
 <%--This is right side or login section--%>
-            <div id="login"><jsp:include page="login.jsp"></jsp:include>
+        <div id="right" align="center">
+            <div id="login">
+                <jsp:include page="login.jsp"></jsp:include>
             </div>
 
+            <div id="signup">
+                <jsp:include page="signup.jsp"></jsp:include>
+            </div>
+        </div>
+
+
 <%--login or right portion ends here--%>
-                <div style="clear: both">
-                </div>
+            <div style="clear: both">
+            </div>
  <%--This is Footer portion--%>
 
-            <div id="footer">Footer
+ <div id="footer"><h3>copyright@smartitengineering</h3>
             </div>
  <%--Footer portion ends here--%>
 

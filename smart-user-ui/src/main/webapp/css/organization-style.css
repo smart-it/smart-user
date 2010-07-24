@@ -14,21 +14,15 @@
 root {
     display: block;
 }
-
-body{
-    background-color: #ffffff;
-    font-family: vardana, sans-serif;
-
-}
-#maindivision{
+#maindivisionoforganization{
         padding-top: 10px;
-        width:100%;
-
+        width:auto;
 
 }
 #header_organization{
+    padding-top: 20px;
     height: 70px;
-    background-color:	#307D7E;
+    background-color:#307D7E;
 }
 
 #form_organizationentry{
@@ -37,7 +31,7 @@ body{
     
 }
 
-#header{
+#headerogorganization{
     font-family: vardana, sans-serif;
     text-decoration: none;
     font-size: x-large;

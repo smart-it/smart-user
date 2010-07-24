@@ -111,6 +111,6 @@
         <module>smart-user-resource</module>
         <module>smart-user-security</module>
         <module>smart-user-server</module>
-    <module>smart-user-ui</module>
+        <module>smart-user-ui</module>
   </modules>
 </project>

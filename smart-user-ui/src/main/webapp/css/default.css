@@ -16,60 +16,117 @@ root {
 }
 
 body{
-
-    background-color: 	#348781;
+/*    width: 100%;*/
+    padding-top: 10px;
     font:normal;
     font-family:Arial, Helvetica, sans-serif;
-    margin:0; padding:0; border:0; 
+    margin:0; border:0; 
     text-align:left;
+
 }
 
-#maindivision{
-    width: 100%;
+/*#maindivision{
+    width: 80%;
+    background-color:#FDFDFF;
     border-style: inset;
+}*/
+#maindivision{
+	position:relative; clear:left;
+        width:80%;
+	margin:0 auto;
+	background:#fff;
+	/*border:4px solid #666;*/
 }
+
+
+/*start of header*/
 
 #header{
-    width: 100%;
+    /*background-image: url(../images/header.gif);*/
+    background: url(../images/bgg.png) repeat;
+    width: auto;
     height: 75px;
-    border-style: inset;
+    /*border: 1px solid;*/
 }
 
+#header h1{
+    position:relative; clear:left;
+    /*margin-left:200px;*/
+    font-family: serif;
+    font-size:35pt;
+    text-align: center;
+    letter-spacing: 4px;
+    color: #99BB99;
+}
+
+/*End of header*/
+
+/*Start of body/content*/
+
 #content{
-    width: 79%;
-    height: 500px;
+    /*background: url(../images/line_1.jpg) repeat;*/
+    background-color: 	#C0C0C0;
+/*    background-repeat: repeat;*/
+    width: 80%;
+    height:480px;
     float: left;
-    border-style: inset;
+    /*border-style: inset;*/
+/*    border: 1px solid;
+    border-color: white;*/
+}
+
+/*End of body/content*/
+
+/*Right-side-bar(Login/signup) starts here*/
+#right{
+    padding-top: 20px;
+    width: 20%;
+    height: auto;
+    float: left;
+    /*border: 1px solid;*/
 }
 
 #login{
-    width: 20%;
-    height: 500px;
-    float: left;
-    border-style: inset;
+    padding: 2px 2px 2px 2px;
+    width: auto;
+    height: 50%;
+    border:1px solid;
+    border-color: #99C7FF;
+}
+
+#signup{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 2px 2px 2px 2px;
+    width: auto;
+    height: 30%;
+    border:1px solid;
+    border-color: #99C7FF;
 
 }
+/*End of right-side-bar*/
+
+/*Start of footer*/
+
 #footer{
-
-    width: 100%;
+    position:relative; clear:left;
+    background: url(../images/bgg.png);
+    width: auto;
     height: 75px;
-    border-style: inset;
+    border: 1px solid;
+    border-color: white;
+
 
 }
 
-#loginnametextbox, #loginpasstextbox{
-    border-spacing: inherit;
-    border-style: solid;
-    color:#000000;
-}
-
-#loginlbl{
-    text-decoration: none;
-    color:#FFFFFF;
+#footer h3{
+    position:relative; clear:left;
+    font-family: serif;
+    font-size:10pt;
+    text-align: center;
+    letter-spacing: 1px;
+    color: #000000;
 
 }
 
-#loginBtn{
-    background-color: 	#E3E4FA;
-    border-style: solid;
-}
+/*end of footer*/
