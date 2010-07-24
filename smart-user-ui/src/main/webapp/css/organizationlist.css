@@ -1,0 +1,80 @@
+/* 
+    Document   : organizationlist
+    Created on : Jul 22, 2010, 12:35:27 PM
+    Author     : saumitra
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+
+body{
+    background-color: #0d0d0d;
+    font-family: vardana, sans-serif;
+
+}
+#header{
+    font-family: vardana, sans-serif;
+    text-decoration: none;
+    font-size: x-large;
+    font-weight: bolder;
+    font-style: normal;
+    color:#FFFFFF;
+
+}
+#teblecontentid
+{
+    text-align: center;
+    float: left;
+    width: 10%;
+    background-color:papayawhip;
+    border-bottom-style: double
+}
+#teblecontentname
+{
+    text-align: center;
+    float: left;
+    width: 40%;
+    background-color:papayawhip;
+    border-bottom-style: double
+}
+.teblecontentlink
+{
+    text-align: center;
+    float: left;
+    width: 25%;
+    background-color:papayawhip;
+    border-bottom-style: double
+}
+#tableheadid
+{
+    text-align: center;
+    float: left;
+    width: 10%;
+    background-color: #cbd0c8;
+    font-size: larger
+}
+#tableheadname
+{
+    text-align: center;
+    float: left;
+    width: 40%;
+    background-color: #cbd0c8;
+    font-size: larger
+}
+.tableheadlink
+{
+    text-align: center;
+    float: left;
+    width: 25%;
+    background-color: #cbd0c8;
+    font-size: larger
+}
