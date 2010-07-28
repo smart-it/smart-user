@@ -17,7 +17,7 @@
         <link rel="Stylesheet" href="/css/user.css" type="text/css" >
         <script type="text/javascript">
 
-            function UserInf()
+            <%--function UserInf()
             {
                var className=document.getElementById("showList") ;
             
@@ -39,7 +39,7 @@
             if (time > 10)
               {
               document.write("<b>Good morning</b>");
-              }
+              }--%>
              
  
 
@@ -53,9 +53,9 @@
             <table>
                 <tr>
                     <th width="100px" style="border-right-style: double; font-size: 20px">ID</th>
-                    <th width="500px" style="border-right-style:  double; font-size: 20px">User Name</th>
-                    <th  style="font-size: 20px"><input type="button" value="Edit" id="button" onclick="UserInf()"></th>
-                    <th style="font-size: 20px"><input type="button" value="Delete" id="button" onclick=""></th>
+                    <th width="500px" style=" font-size: 20px">User Name</th>
+                    <%--<th  style="font-size: 20px"><a href="users/username/${user.username}">Edit</a></th>
+                    <th style="font-size: 20px"><input type="button" value="Delete" id="button" onclick=""></th>--%>
                 </tr>
             </table>
         </div>
@@ -65,8 +65,8 @@
            <div id="content" style=" width: 100px; margin-left: 200px">  <c:out value="${user.id}"/></div>
             <div id="content"style="width: 500px"><c:out value="${user.username}" /></div>
 
-            <div id="content" style="width: 200px"><input type="radio"></div>
-            <div id="content"><input type="checkbox"></div>
+            <div id="content" style="width: 200px"><a href="users/username/${user.username}">Edit</a></div>
+            <div id="content"><a href="">Delete</a></div>
            
         </c:forEach>
         
@@ -74,42 +74,6 @@
                 copyright@smartitengineering ltd.
             </div>
         </div>
-        <div class="hide"  id="edit">
-            
-                <form action="http://russel:9090/users" method="post" accept="application/json" enctype="" id="userform">
-
-                        <div id="inner-left-1" align="right"><label>First Name:</label></div><div id="inner-right-1" align="left"><input type="text" name="name" size="40" value=""></div>
-
-                        <div id="inner-left-2" align="right"><label>Middle Name:</label></div><div id="inner-right-2" align="left"><input type="text" name="uniqueShortName" size="40" value=""></div>
-
-                        <div id="inner-left-2" align="right"><label>Last Name:</label></div><div id="inner-right-2" align="left"><input type="text" name="uniqueShortName" size="40" value=""></div>
-
-                        <div id="inner-left-2" align="right"><label>Password:</label></div><div id="inner-right-2" align="left"><input type="text" name="uniqueShortName" size="40" value=""></div>
-
-                       <%-- <div id="inner-left-2" align="right"><label>Father Name:</label></div><div id="inner-right-2" align="left"><input type="text" name="uniqueShortName" size="40" value=""></div>
-
-                        <div id="inner-left-2" align="right"><label>Mother Name:</label></div><div id="inner-right-2" align="left"><input type="text" name="uniqueShortName" size="40" value=""></div>
-
-                        <div id="inner-left-2" align="right"><label>National ID:</label></div><div id="inner-right-2" align="left"><input type="text" name="uniqueShortName" size="40" value=""></div>--%>
-
-                        <div id="inner-left-2" align="right"><label>Cell Phone Number:</label></div><div id="inner-right-2" align="left"><input type="text" name="uniqueShortName" size="40" value=""></div>
-
-                       <%-- <div id="inner-left-3" align="right"><label>Street Address:</label></div><div id="inner-right-3" align="left"><input type="text" name="streetAddress" size="40" value=""></div>
-
-                        <div id="inner-left-4" align="right"><label>City:</label></div><div id="inner-right-4" align="left"><input type="text" name="city" size="40" value=""></div>
-
-                        <div id="inner-left-5" align="right"><label>State:</label></div><div id="inner-right-5" align="left"><input type="text" name="state" size="40" value=""></div>
-
-                        <div id="inner-left-6" align="right"><label>Country:</label></div><div id="inner-right-6" align="left"><input type="text" name="country" size="40" value=""></div>
-
-                        <div id="inner-left-7" align="right"><label>Zip:</label></div><div id="inner-right-7" align="left"><input type="text" name="zip" size="40" value=""></div>
---%>
-        <div class="inner-right-8" align="center"><input type="submit" value="submit" name="submitBtn" ></div>
-        <div id="formfooter">  copyright@smartitengineering ltd.</div>
-
-                    </form>
-           
-            </div>
-       
+        
     </body>
 </html>

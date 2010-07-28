@@ -115,6 +115,10 @@ color:#FFFFFF;
     width: 58%;
     float:left;
 }
+a{
+    color: #B6CEE8;
+}
+
 #formfooter{
     background-image: url(images/tsblecontent);
     background-repeat: repeat-y;
