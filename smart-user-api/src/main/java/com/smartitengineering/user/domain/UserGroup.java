@@ -19,9 +19,11 @@ public class UserGroup extends AbstractPersistentDTO<UserGroup>{
 
     private String name;
     private Set<User> users;
+    private Set<Privilege> privileges;
     private Organization organization;
 
     private List<Integer> userIDs;
+    private List<Integer> privilegeIDs;
     private Integer parentOrganizationID;
 
     private Date lastModifiedDate;
@@ -44,6 +46,16 @@ public class UserGroup extends AbstractPersistentDTO<UserGroup>{
     }
 
     @JsonIgnore
+    public List<Integer> getPrivilegeIDs() {
+        return privilegeIDs;
+    }
+
+    public void setPrivilegeIDs(List<Integer> privilegeIDs) {
+        this.privilegeIDs = privilegeIDs;
+    }
+
+
+    @JsonIgnore
     public Set<User> getUsers() {
         return users;
     }
@@ -51,6 +63,16 @@ public class UserGroup extends AbstractPersistentDTO<UserGroup>{
     @JsonIgnore
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    @JsonIgnore
+    public Set<Privilege> getPrivileges() {
+        return privileges;
+    }
+
+    @JsonIgnore
+    public void setPrivileges(Set<Privilege> privileges) {
+        this.privileges = privileges;
     }
 
     public boolean isValid(){
