@@ -40,13 +40,13 @@ public class OrganizationUserResource extends AbstractResource{
 
     private User user;
 
-    static final UriBuilder USER_URI_BUILDER = UriBuilder.fromResource(UserResource.class);
+    static final UriBuilder USER_URI_BUILDER = UriBuilder.fromResource(OrganizationUserResource.class);
     static final UriBuilder USER_CONTENT_URI_BUILDER;
 
     static{
         USER_CONTENT_URI_BUILDER = USER_URI_BUILDER.clone();
         try{
-            USER_CONTENT_URI_BUILDER.path(UserResource.class.getMethod("getUser"));
+            USER_CONTENT_URI_BUILDER.path(OrganizationUserResource.class.getMethod("getUser"));
         }catch(Exception ex){
             ex.printStackTrace();
             throw new InstantiationError();
@@ -68,7 +68,7 @@ public class OrganizationUserResource extends AbstractResource{
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/content")
-    public Response getOrganization() {
+    public Response getUser() {
         ResponseBuilder responseBuilder = Response.ok(user);
         return responseBuilder.build();
     }
@@ -78,7 +78,7 @@ public class OrganizationUserResource extends AbstractResource{
     public Response getHtml(){
         ResponseBuilder responseBuilder = Response.ok();
 
-        Viewable view = new Viewable("OrganizationUserDetails", user, OrganizationResource.class);
+        Viewable view = new Viewable("OrganizationUserDetails", user, OrganizationUserResource.class);
         responseBuilder.entity(view);
         return responseBuilder.build();
     }
