@@ -13,10 +13,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><c:out value="${it.name}"></c:out></title>
+        <title><c:out value="${it.username}"></c:out></title>
     </head>
     <body>
-        <c:out value="${it.name}"></c:out>
+        <c:out value="${it.username}"></c:out>
         <c:out value="${it.password}"></c:out>
 
          <form action="http://russel:9090/users" method="post" accept="application/json" enctype="" id="userform">
