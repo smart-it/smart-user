@@ -18,6 +18,7 @@ import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.SecuredObject;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.domain.User;
+import com.smartitengineering.user.domain.UserGroup;
 import com.smartitengineering.user.filter.OrganizationFilter;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.OrganizationService;
@@ -167,6 +168,18 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
                 throw new Exception("No organization found");
             }
             user.setOrganization(parentOrganization);
+        }
+    }
+
+    public void populateOrganization(UserGroup userGroup) throws Exception{
+        Integer organizationID = userGroup.getParentOrganizationID();
+        if(userGroup.getParentOrganizationID() != null){
+            Organization parentOrganization = super.getById(organizationID);
+
+            if(parentOrganization == null){
+                throw new Exception("No organization found");
+            }
+            userGroup.setOrganization(parentOrganization);
         }
     }
     
