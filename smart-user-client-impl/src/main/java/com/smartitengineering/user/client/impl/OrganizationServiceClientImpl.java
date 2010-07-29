@@ -5,10 +5,15 @@
 
 package com.smartitengineering.user.client.impl;
 
+import com.smartitengineering.user.domain.Organization;
+import com.smartitengineering.user.service.OrganizationService;
+import com.sun.jersey.api.client.WebResource;
+
 /**
  *
  * @author russel
  */
-public class OrganizationServiceClientImpl implements OrganizationService {
+public class OrganizationServiceClientImpl{
 
+    
 }
