@@ -7,6 +7,8 @@ package com.smartitengineering.user.ws.resources;
 
 
 import com.smartitengineering.user.domain.Organization;
+import com.sun.jersey.api.view.Viewable;
+import java.util.Collection;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.core.MediaType;
@@ -67,13 +69,23 @@ public class OrganizationResource extends AbstractResource {
         return responseBuilder.build();
     }
 
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public Response getHtml(){
+        ResponseBuilder responseBuilder = Response.ok();
+        
+        Viewable view = new Viewable("OrganizationDetails", organization, OrganizationResource.class);
+        responseBuilder.entity(view);
+        return responseBuilder.build();
+    }
+
     @PUT
     @Produces(MediaType.APPLICATION_ATOM_XML)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(Organization newOrganization) {
         ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
         try {            
-            Services.getInstance().getOrganizationService().save(newOrganization);
+            Services.getInstance().getOrganizationService().update(newOrganization);
             organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(newOrganization.getUniqueShortName());
             responseBuilder = Response.ok(getOrganizationFeed());
         }        
