@@ -7,6 +7,9 @@ package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
 import java.util.Date;
+import javax.ws.rs.Encoded;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -15,16 +18,20 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author russel
  */
+
 public class Organization extends AbstractPersistentDTO<Organization> {
 
+
     private String name;
+
     private String uniqueShortName;
+    
     private Address address;
     //private String contactPerson;
 
     private Date lastModifiedDate;
 
-    private Organization() {
+    public Organization() {
     }
     
     public Organization(String name, String uniqueShortName) {
@@ -86,6 +93,7 @@ public class Organization extends AbstractPersistentDTO<Organization> {
 //        this.contactPerson = contactPerson;
 //    }
 
+    @JsonIgnore
     public boolean isValid(){
         return StringUtils.isNotBlank(name) && StringUtils.isNotBlank(uniqueShortName);
     }
