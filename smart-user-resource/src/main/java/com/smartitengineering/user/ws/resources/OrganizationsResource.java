@@ -38,7 +38,7 @@ import org.apache.abdera.model.Link;
 
 
 
-@Path("/organizations")
+@Path("/orgs")
 public class OrganizationsResource extends AbstractResource{
 
     static final UriBuilder ORGANIZATION_URI_BUILDER;
