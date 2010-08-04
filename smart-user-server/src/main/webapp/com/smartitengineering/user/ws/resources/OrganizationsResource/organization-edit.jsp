@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>create organization</title>
+        <title>edit organization</title>
 
            <LINK REL=StyleSheet href="../css/organization-style.css" TYPE="text/css" MEDIA=screen>
 

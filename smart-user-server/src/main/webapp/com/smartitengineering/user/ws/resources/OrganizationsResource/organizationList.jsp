@@ -11,14 +11,20 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
+ 
 
 <html>
     <head>
+       
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link type="text/css" rel="stylesheet" href="/css/organizationlist.css">
+        <link type="text/javascript"  href="/script/js_1.js"/>
+        <link type="text/javascript" href="/css/jquery-1.4.2.js"/>
         <title>            
             Organizations  
         </title>
+        
+                
        
         
 
@@ -76,12 +82,16 @@
                       </div>
 
                       <div class="teblecontentlink">
-                          <a href="organizations/shortname/${organization.uniqueShortName}" name=""><h4>Edit</h4></a>
+                          <a href="orgs/shortname/${organization.uniqueShortName}" ><h4>Edit</h4></a>
                       </div>
-
+                      <form method="POST" onclick="OnclickActive()">
                       <div class="teblecontentlink">
-                            <h4><a href="Jstl_Core_Tags.jsp?valid=true&name=eric&mark=8">Delete</a></h4>
+                          <h4><a href="#">Delete</a></h4>
+
                       </div>
+                      </form>
+                      
+
 
                       </div>
                     </c:forEach>
