@@ -5,6 +5,7 @@
 package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -97,6 +98,7 @@ public class Address extends AbstractPersistentDTO<Address> {
         this.zip = zip;
     }
 
+    @JsonIgnore
     public boolean isValid() {
         if (streetAddress == null || zip == null || country == null ||
                 city == null || state == null) {
