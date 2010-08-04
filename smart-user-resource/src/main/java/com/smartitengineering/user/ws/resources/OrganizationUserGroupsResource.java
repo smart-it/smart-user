@@ -30,7 +30,7 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-@Path("/organizations/{uniqueShortName}/usergroups")
+@Path("/orgs/{uniqueShortName}/usergroups")
 public class OrganizationUserGroupsResource extends AbstractResource{
 
     private String organizationUniqueShortName;

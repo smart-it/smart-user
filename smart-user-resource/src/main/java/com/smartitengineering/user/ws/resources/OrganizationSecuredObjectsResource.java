@@ -30,7 +30,7 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-@Path("/organizations/{organizationUniqueShortName}/securedObjects")
+@Path("/orgs/{organizationUniqueShortName}/securedObjects")
 public class OrganizationSecuredObjectsResource extends AbstractResource{
 
     static final UriBuilder ORGANIZATION_SECURED_OBJECTS_URI_BUILDER;
