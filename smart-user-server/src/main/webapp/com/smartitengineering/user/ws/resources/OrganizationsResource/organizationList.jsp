@@ -86,7 +86,7 @@
                       </div>
                       <form method="POST" onclick="OnclickActive()">
                       <div class="teblecontentlink">
-                          <h4><a href="#">Delete</a></h4>
+                          <h4><a href="#">Delete</a></h4>s
 
                       </div>
                       </form>
