@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class dynamic-insert="false" dynamic-update="false" name="com.smartitengineering.user.domain.UserGroup" table="usergroup">
+    <id column="id" name="id" type="java.lang.Integer">
+      <generator class="increment">
+            </generator>
+    </id>
+    <version column="version" name="version"/>
+    <property column="name" length="255" name="name" type="java.lang.String" unique-key="UK_ROLE_ORGANIZATION" not-null="true"/>       
+    <many-to-one cascade="none" column="organization_id" lazy="false" name="parentOrganization" unique-key="UK_ROLE_ORGANIZATION" not-null="true"/>
+    <set cascade="none" inverse="false" lazy="false" name="privileges" outer-join="true" table="user_group_privileges">
+      <key column="user_group_id"/>
+      <many-to-many class="com.smartitengineering.user.domain.Privilege" column="privilege_id" lazy="false" outer-join="true"/>
+    </set>
+    <set cascade="none" inverse="false" lazy="false" name="roles" outer-join="true" table="user_group_users">
+      <key column="user_group_id"/>
+      <many-to-many class="com.smartitengineering.user.domain.User" column="user_id" lazy="false" outer-join="true"/>
+    </set>
+
+    <property column="last_modified_date" name="lastModifiedDate" type="java.util.Date"/>
+  </class>
+</hibernate-mapping>
