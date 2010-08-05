@@ -85,7 +85,7 @@ public class OrganizationPrivilegesResource extends AbstractResource{
        //Collection<SecuredObject> securedObjects = Services.getInstance().getSecuredObjectService().
       Collection<Privilege> privileges = Services.getInstance().getPrivilegeService().getPrivilegesByOrganization(
           organizationUniqueShortName);
-        Viewable view = new Viewable("orgPrivilegeList", privileges, OrganizationsResource.class);
+        Viewable view = new Viewable("OrgPrivilegeList", privileges, OrganizationPrivilegeResource.class);
         responseBuilder.entity(view);
         return responseBuilder.build();
     }
@@ -95,6 +95,7 @@ public class OrganizationPrivilegesResource extends AbstractResource{
     public Response get(){
         return get(null, true);
     }
+    
 
     public Response get(String privilegeName, boolean isBefore)
     {
