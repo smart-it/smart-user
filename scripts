@@ -1,7 +1,6 @@
-curl -v -X POST -H "Content-type:application/json" http://localhost:9090/organizations -d '{"name":"Smart IT Engineering", "uniqueShortName":"SITEL", "address":{"streetAddress":"Haji Chinu Mia Road","city":"Dhaka","state":"Dhaka","country":"Bangladesh","zip":"1207"}}'
+curl -v -X POST -H "Content-type:application/json" http://localhost:9090/organizations -d '{"name":"Smart IT Engineering Ltd", "uniqueShortName":"SITEL", "address":{"streetAddress":"Haji Chinu Mia Road","city":"Dhaka","state":"Dhaka","country":"Bangladesh","zip":"1207"}}'
 curl -v -X POST -H "Content-type:application/json" http://localhost:9090/organizations -d '{"name":"Agoora Ltd", "uniqueShortName":"AGOORA", "address":{"streetAddress":"Gulshan2","city":"Dhaka","state":"Dhaka","country":"Bangladesh","zip":"1210"}}'
 curl -v -X POST -H "Content-type:application/json" http://localhost:9090/organizations -d '{"name":"Nondon Ltd", "uniqueShortName":"NONDON", "address":{"streetAddress":"Dhanmondi","city":"Dhaka","state":"Dhaka","country":"Bangladesh","zip":"1207"}}'
-curl -v -X POST -H "Content-type:application/json" http://localhost:9090/organizations -d '{"name":"Sopno Ltd", "uniqueShortName":"SOPNO", "address":{"streetAddress":"Mehedibag","city":"Chittagong","state":"Chittagong","country":"Bangladesh","zip":"1207"}}'
 curl -v -X POST -H "Content-type:application/json" http://localhost:9090/organizations/SITEL/securedObjects -d '{"name":"journal","objectID":"journal-1","parentOrganizationID":"1"}'
 
 
