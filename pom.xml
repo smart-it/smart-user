@@ -49,9 +49,9 @@
     <distributionManagement>
         <!-- deploy site here -->
         <site>
-          <id>smartit-googlecode</id>
-          <name>Smart IT Engineering GoogleCode repository</name>
-          <url>svn:https://imyousuf@smart-it.googlecode.com/svn/maven2/site/user</url>
+            <id>smartit-googlecode</id>
+            <name>Smart IT Engineering GoogleCode repository</name>
+            <url>svn:https://imyousuf@smart-it.googlecode.com/svn/maven2/site/user</url>
         </site>
     </distributionManagement>
     <dependencies>
@@ -111,10 +111,10 @@
         <module>smart-user-resource</module>
         <module>smart-user-security</module>
         <module>smart-user-server</module>
-<<<<<<< HEAD
-    <module>smart-user-ui</module>
-=======
-    <module>smart-user-client-impl</module>
->>>>>>> russel/master
-  </modules>
+
+        <module>smart-user-ui</module>
+
+        <module>smart-user-client-impl</module>
+
+    </modules>
 </project>

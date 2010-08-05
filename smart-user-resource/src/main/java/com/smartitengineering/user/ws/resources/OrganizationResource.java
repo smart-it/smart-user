@@ -87,8 +87,8 @@ public class OrganizationResource extends AbstractResource {
         return responseBuilder.build();
     }
 
-//    @PUT
-    @POST
+    @PUT
+   // @POST
 
     @Produces(MediaType.APPLICATION_ATOM_XML)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -179,6 +179,7 @@ public class OrganizationResource extends AbstractResource {
     }
 
     @POST
+    @Produces(MediaType.APPLICATION_ATOM_XML)
     public Response deletePost(){
       Services.getInstance().getOrganizationService().delete(organization);
         ResponseBuilder responseBuilder = Response.ok();
@@ -186,8 +187,8 @@ public class OrganizationResource extends AbstractResource {
     }
 
 
-//    @DELETE
-    @POST
+    @DELETE
+    //@POST
     public Response delete() {
         Services.getInstance().getOrganizationService().delete(organization);
         ResponseBuilder responseBuilder = Response.ok();
