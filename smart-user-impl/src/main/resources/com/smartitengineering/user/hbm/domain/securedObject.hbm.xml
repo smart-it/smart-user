@@ -10,7 +10,7 @@
     <property column="name" length="255" name="name" type="java.lang.String" />
     <property column="object_id" length="255" name="objectID" type="java.lang.String" not-null="true" unique-key="UK_ORG_SEC_OBJ" />
     <many-to-one cascade="none" column="organization_id" lazy="false" name="organization"  not-null="true" unique-key="UK_ORG_SEC_OBJ" />
-    <many-to-one cascade="none" column="parent_object" lazy="false" name="parentObject" not-null="false" />
+    <property column="parent_object" length="255" lazy="false" name="parentObjectID"/>
     <property column="last_modified_date" name="lastModifiedDate" type="java.util.Date"/>
 <!--    <join table="parent" optional="true">
       <key column="object_id" unique="true"/>

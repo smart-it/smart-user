@@ -62,43 +62,43 @@ public class InitialUserFactory {
         securedObject.setName("Smart User System");
         securedObject.setObjectID(organization.getUniqueShortName());
         securedObject.setOrganization(organization);
-        securedObject.setParentObject(null);
+        securedObject.setParentObjectID(null);
         securedObjectService.save(securedObject);
 
         securedObject = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObject.getObjectID());
 
         SecuredObject securedObjectOrganizations = new SecuredObject();
         securedObjectOrganizations.setName("Smart User Organizations");
-        securedObjectOrganizations.setObjectID("/organizations"); //This objectId is actually the http url of organizations list
+        securedObjectOrganizations.setObjectID("/orgs"); //This objectId is actually the http url of organizations list
         securedObjectOrganizations.setOrganization(organization);
-        securedObjectOrganizations.setParentObject(securedObject);
+        securedObjectOrganizations.setParentObjectID(securedObject.getObjectID());
         securedObjectService.save(securedObjectOrganizations);
 
         securedObjectOrganizations = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectOrganizations.getObjectID());
 
         SecuredObject securedObjectUsers = new SecuredObject();
         securedObjectUsers.setName("Smart User Users");
-        securedObjectUsers.setObjectID("/organizations/smart-user/users"); //This objectId is actually the http url of users list of smart-user organizations
+        securedObjectUsers.setObjectID("/orgs/smart-user/users"); //This objectId is actually the http url of users list of smart-user organizations
         securedObjectUsers.setOrganization(organization);
-        securedObjectUsers.setParentObject(securedObject);
+        securedObjectUsers.setParentObjectID(securedObject.getObjectID());
         securedObjectService.save(securedObjectUsers);
 
         securedObjectUsers = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectUsers.getObjectID());
 
         SecuredObject securedObjectSecuredObjects = new SecuredObject();
         securedObjectSecuredObjects.setName("Smart User Secured Objects");
-        securedObjectSecuredObjects.setObjectID("/organizations/smart-user/securedObjects"); //This objectId is actually the http url of secured objcets list of smart-user organizations
+        securedObjectSecuredObjects.setObjectID("/orgs/smart-user/securedObjects"); //This objectId is actually the http url of secured objcets list of smart-user organizations
         securedObjectSecuredObjects.setOrganization(organization);
-        securedObjectSecuredObjects.setParentObject(securedObject);
+        securedObjectSecuredObjects.setParentObjectID(securedObject.getObjectID());
         securedObjectService.save(securedObjectSecuredObjects);
 
         securedObjectSecuredObjects = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectSecuredObjects.getObjectID());
         
         SecuredObject securedObjectPrivileges = new SecuredObject();
         securedObjectPrivileges.setName("Smart User Secured Objects");
-        securedObjectPrivileges.setObjectID("/organizations/smart-user/privileges"); //This objectId is actually the http url of secured objcets list of smart-user organizations
+        securedObjectPrivileges.setObjectID("/orgs/smart-user/privileges"); //This objectId is actually the http url of secured objcets list of smart-user organizations
         securedObjectPrivileges.setOrganization(organization);
-        securedObjectPrivileges.setParentObject(securedObject);
+        securedObjectPrivileges.setParentObjectID(securedObject.getObjectID());
         securedObjectService.save(securedObjectPrivileges);
 
         securedObjectPrivileges = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectPrivileges.getObjectID());

@@ -45,23 +45,27 @@ public class AuthorizationServiceImpl implements AuthorizationService {
       return AccessDecisionVoter.ACCESS_DENIED;
     }
     SecuredObject securedObject = securedObjectService.getByOrganizationAndObjectID(organizationName, oid);
-    return authorize(user, securedObject, permission);    
+    return authorize(user, securedObject, permission);
 
   }
 
   private Integer authorize(User user, SecuredObject securedObject, Integer permission) {
-    
-    if (user == null || user.getPrivileges() == null || permission == null || securedObject == null) {      
+
+    if (user == null || user.getPrivileges() == null || permission == null ) {
       return AccessDecisionVoter.ACCESS_DENIED;
+    }
+    if(user!=null && securedObject == null){
+      return AccessDecisionVoter.ACCESS_ABSTAIN;
     }
     for (Privilege privilege : user.getPrivileges()) {
       if (privilege.getSecuredObject().getObjectID().equals(securedObject.getObjectID())
           && (permission.intValue() & privilege.getPermissionMask().intValue()) == permission.intValue()) {
         return AccessDecisionVoter.ACCESS_GRANTED;
-      }      
+      }
     }
-    if (securedObject.getParentObject() != null) {
-      return authorize(user, securedObject.getParentObject(), permission);
+    if (!securedObject.getParentObjectID().isEmpty()) {
+      return authorize(user, securedObjectService.getByOrganizationAndObjectID(securedObject.getOrganization().
+          getUniqueShortName(), securedObject.getParentObjectID()), permission);
     }
     else {
       return AccessDecisionVoter.ACCESS_DENIED;
