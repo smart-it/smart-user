@@ -27,7 +27,7 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-@Path("/privileges/{privilegeName}")
+@Path("/privs/{privilegeName}")
 public class PrivilegeResource extends AbstractResource{
 
     private Privilege privilege;

@@ -104,5 +104,6 @@
         <module>smart-user-resource</module>
         <module>smart-user-security</module>
         <module>smart-user-server</module>
-    </modules>
+    <module>smart-user-client-impl</module>
+  </modules>
 </project>

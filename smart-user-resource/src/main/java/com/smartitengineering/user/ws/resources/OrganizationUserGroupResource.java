@@ -28,7 +28,7 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-@Path("/organizations/{uniqueShortName}/usergroups/groupname/{name}")
+@Path("/orgs/{uniqueShortName}/usergroups/name/{name}")
 public class OrganizationUserGroupResource extends AbstractResource{
 
     private UserGroup userGroup;

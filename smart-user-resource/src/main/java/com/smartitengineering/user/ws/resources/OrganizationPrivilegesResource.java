@@ -6,6 +6,8 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Privilege;
+import com.smartitengineering.user.domain.SecuredObject;
+import com.sun.jersey.api.view.Viewable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -29,7 +31,7 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-@Path("/organizations/{organizationUniqueShortName}/privileges")
+@Path("/orgs/{organizationUniqueShortName}/privs")
 public class OrganizationPrivilegesResource extends AbstractResource{
 
     private String organizationUniqueShortName;
@@ -74,6 +76,18 @@ public class OrganizationPrivilegesResource extends AbstractResource{
     @Path("/after/{privilegeName}")
     public Response getAfter(@PathParam("privilegeName") String afterPrivilegeName) {
       return get(afterPrivilegeName, false);
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public Response getHtml(){
+      ResponseBuilder responseBuilder = Response.ok();
+       //Collection<SecuredObject> securedObjects = Services.getInstance().getSecuredObjectService().
+      Collection<Privilege> privileges = Services.getInstance().getPrivilegeService().getPrivilegesByOrganization(
+          organizationUniqueShortName);
+        Viewable view = new Viewable("orgPrivilegeList", privileges, OrganizationsResource.class);
+        responseBuilder.entity(view);
+        return responseBuilder.build();
     }
 
     @GET
