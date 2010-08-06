@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.service.impl;
 
 import com.smartitengineering.dao.common.queryparam.FetchMode;
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.StringTokenizer;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleStateException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -28,11 +28,11 @@ import org.hibernate.exception.ConstraintViolationException;
  *
  * @author modhu7
  */
-public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements UserService{
+public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements UserService {
 
     private OrganizationService OrganizationService;
 
-    public UserServiceImpl(){
+    public UserServiceImpl() {
         setEntityClass(User.class);
     }
 
@@ -44,18 +44,16 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
         this.OrganizationService = OrganizationService;
     }
 
-
-
     @Override
     public void save(User user) {
         validateUser(user);
-        try{
+        try {
             super.save(user);
-        }catch(ConstraintViolationException e){
-            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-"+UniqueConstrainedField.OTHER;
+        } catch (ConstraintViolationException e) {
+            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
             throw new RuntimeException(message, e);
-        }catch(StaleStateException e){
-            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name()+"-"+UniqueConstrainedField.OTHER;
+        } catch (StaleStateException e) {
+            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
             throw new RuntimeException(message, e);
         }
     }
@@ -66,13 +64,12 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
         try {
             super.update(user);
         } catch (ConstraintViolationException e) {
-            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                    name() + "-" + UniqueConstrainedField.OTHER;
+            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
             throw new RuntimeException(message, e);
         } catch (StaleStateException e) {
             String message =
-                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
-                    UniqueConstrainedField.OTHER;
+                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-"
+                    + UniqueConstrainedField.OTHER;
             throw new RuntimeException(message, e);
         }
     }
@@ -82,8 +79,7 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
         try {
             super.delete(user);
         } catch (Exception e) {
-            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                    name() + "-" + UniqueConstrainedField.PERSON;
+            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.PERSON;
             throw new RuntimeException(message, e);
         }
     }
@@ -119,18 +115,29 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
         return users;
     }
 
-    public Collection<User> getUserByOrganization(String organizationShortName){
+    public Collection<User> getUserByOrganization(String organizationShortName) {
         Collection<User> users = new HashSet<User>();
 
-        QueryParameter qp = QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT,QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationShortName));
-        return super.getList(qp);        
+        QueryParameter qp = QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationShortName));
+        return super.getList(qp);
     }
 
     @Override
-    public User getUserByUsername(String username) {
-        QueryParameter qp;
-        qp = QueryParameterFactory.getEqualPropertyParam("username", username);
-        User user = super.getSingle(qp);
+    public User getUserByUsername(String usernameWithOrganizationName) {
+        String username;
+        String organizationName;
+        StringTokenizer tokenizer = new StringTokenizer(usernameWithOrganizationName, "@");
+        if (tokenizer.hasMoreTokens()) {
+            username = tokenizer.nextToken();
+        } else {
+            username = "";
+        }
+        if (tokenizer.hasMoreTokens()) {
+            organizationName = tokenizer.nextToken();
+        } else {
+            organizationName = "";
+        }
+        User user = getUserByOrganizationAndUserName(organizationName, username);
         return user;
     }
 
@@ -140,13 +147,11 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
             Integer count = (Integer) super.getOther(
                     QueryParameterFactory.getElementCountParam("username"), QueryParameterFactory.getConjunctionParam(
                     QueryParameterFactory.getEqualPropertyParam("organization.id",
-                    user.getOrganization().getId()), QueryParameterFactory.
-                    getStringLikePropertyParam(
+                    user.getOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
                     "username", user.getUsername())));
             if (count.intValue() > 0) {
-                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                        name() + "-" +
-                        UniqueConstrainedField.USER_USERNAME.name());
+                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-"
+                        + UniqueConstrainedField.USER_USERNAME.name());
             }
         } else {
             Integer count = (Integer) super.getOther(
@@ -154,13 +159,11 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
                     QueryParameterFactory.getConjunctionParam(
                     QueryParameterFactory.getNotEqualPropertyParam("id",
                     user.getId()), QueryParameterFactory.getEqualPropertyParam("organization.id",
-                    user.getOrganization().getId()), QueryParameterFactory.
-                    getStringLikePropertyParam(
+                    user.getOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
                     "username", user.getUsername())));
             if (count.intValue() > 0) {
-                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                        name() + "-" +
-                        UniqueConstrainedField.USER_USERNAME.name());
+                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-"
+                        + UniqueConstrainedField.USER_USERNAME.name());
             }
 
         }
@@ -168,9 +171,8 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
 
     @Override
     public User getUserByOrganizationAndUserName(String organizationShortName, String userName) {
-       return super.getSingle(QueryParameterFactory.getStringLikePropertyParam("username", userName),
-               QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT,
-               QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationShortName)));
+        return super.getSingle(QueryParameterFactory.getStringLikePropertyParam("username", userName),
+                QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT,
+                QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationShortName)));
     }
-
 }
