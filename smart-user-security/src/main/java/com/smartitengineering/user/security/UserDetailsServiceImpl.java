@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.security;
 
+import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.service.UserService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.context.SecurityContext;
@@ -28,6 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.userService = userService;
     }
 
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
         SecurityContext context = SecurityContextHolder.getContext();
         if (context == null) {
@@ -43,7 +45,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private UserDetails loadUserFromDB(String username) {
         UserDetailsImpl userDetails = new UserDetailsImpl();
-        userDetails.setUser(userService.getUserByUsername(username));
+        User user = userService.getUserByUsername(username);
+        if (user != null) {
+            userDetails.setUser(user);
+        }else{
+            userDetails.setUser(new User());
+        }
         return userDetails;
     }
 }
