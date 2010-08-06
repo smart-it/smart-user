@@ -104,14 +104,14 @@ public class SmartUserAdminVoter implements AccessDecisionVoter {
         
         String oid = oidRetrievalStrategy.getOid(object);
         Sid[] sids = sidRetrievalStrategy.getSids(authentication);
-        UserSid sid = (UserSid) sids[0];
-        if(sid==null)
-            return AccessDecisionVoter.ACCESS_ABSTAIN;
+        UserSid sid = (UserSid) sids[0];        
         // If domain object is null, vote to abstain
         if (object == null) {
             System.out.println("Object is null at authorize");
             return AccessDecisionVoter.ACCESS_ABSTAIN;
         }
+        if(sid==null)
+            return AccessDecisionVoter.ACCESS_DENIED;
 
         // Obtain the OID applicable to the domain object
         return authorizationService.authorize(sid.getUsername(), sid.getOrganizationName(), oid, votingConfig.getRequirePermission()[0].getMask());
