@@ -14,7 +14,6 @@
         <title>home page</title>
         <link rel="Stylesheet" href="../css/default.css">
         <link rel="Stylesheet" href="../css/login.css">
-        <link rel="Stylesheet" href="../css/organization-style.css">
     </head>
     <body>
 

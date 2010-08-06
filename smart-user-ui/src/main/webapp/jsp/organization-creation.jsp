@@ -9,11 +9,11 @@
    "http://www.w3.org/TR/html4/loose.dtd">
 
 
-        <div id="maindivisionoforganization">
+        <div id="maindivisionforganization">
 
 
             <div id="header_organization" align="center">
-                <label id="headerogorganization">Organization Entry</label>
+                <label id="headerogorganization">Organization Entry Form</label>
             </div>
 
 
@@ -21,21 +21,42 @@
 
                     <form action="http://russel:9090/organizations" method="post" accept="application/json" enctype="" id="organizationform">
 
-                        <div id="inner-left-1" align="right"><label>Organization Name:</label></div><div id="inner-right-1" align="left"><input type="text" name="name" size="40" value=""></div>
+                        <div class="inner-left" align="left"><label>Organization Name:</label></div>
+                        <div class="inner-right" align="left"><input type="text" name="name" value="" class="textField"></div>
 
-                        <div id="inner-left-2" align="right"><label>Unique short Name:</label></div><div id="inner-right-2" align="left"><input type="text" name="uniqueShortName" size="40" value=""></div>
+                        <div class="inner-left" align="left"><label>Unique short Name:</label></div>
+                        <div class="inner-right" align="left"><input type="text" name="uniqueShortName" value="" class="textField"></div>
 
-                        <div id="inner-left-3" align="right"><label>Street Address:</label></div><div id="inner-right-3" align="left"><input type="text" name="streetAddress" size="40" value=""></div>
+                        <div class="inner-left"></div><div class="inner-right" align="left"><label>!!!! already exists!!! try another!!!</label></div>
 
-                        <div id="inner-left-4" align="right"><label>City:</label></div><div id="inner-right-4" align="left"><input type="text" name="city" size="40" value=""></div>
+<%--                        <div style="clear: both">
+                        </div>
 
-                        <div id="inner-left-5" align="right"><label>State:</label></div><div id="inner-right-5" align="left"><input type="text" name="state" size="40" value=""></div>
+                        <div id="alertfield"><label>!!!! already exists!!! try another!!!</label></div>
 
-                        <div id="inner-left-6" align="right"><label>Country:</label></div><div id="inner-right-6" align="left"><input type="text" name="country" size="40" value=""></div>
+                        <div style="clear: both">
+                        </div>--%>
 
-                        <div id="inner-left-7" align="right"><label>Zip:</label></div><div id="inner-right-7" align="left"><input type="text" name="zip" size="40" value=""></div>
+                        <div class="inner-left" align="left"><label>Street Address:</label></div>
+                        <div class="inner-right" align="left"><input type="text" name="streetAddress" value="" class="textField"></div>
 
-                        <div class="inner-right-8" align="center"><input type="submit" value="submit" name="submitBtn"></div>
+                        <div class="inner-left" align="left"><label>City:</label></div>
+                        <div class="inner-right" align="left"><input type="text" name="city" value="" class="textField"></div>
+
+                        <div class="inner-left" align="left"><label>State:</label></div>
+                        <div class="inner-right" align="left"><input type="text" name="state" value="" class="textField"></div>
+
+                        <div class="inner-left" align="left"><label>Country:</label></div>
+                        <div class="inner-right" align="left"><input type="text" name="country" value="" class="textField"></div>
+
+                        <div class="inner-left" align="left"><label>Zip:</label></div>
+                        <div class="inner-right" align="left"><input type="text" name="zip" value="" class="textField"></div>
+
+                        <div style="clear: both">
+                        </div>
+                        <div id="btnfield" align="center"><input type="submit" value="submit" name="submitBtn"></div>
+                        <div style="clear: both">
+                        </div>
 
                     </form>
                 

@@ -1,0 +1,79 @@
+/* 
+    Document   : dashboardstyle
+    Created on : Aug 5, 2010, 5:35:08 PM
+    Author     : uzzal
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+.dashboardblock{
+    width: 300px;
+    border: 2px solid;
+    border-color: #24E0FB;
+}
+
+.dashboardhead{
+    padding: 4px 2px 2px 25px;
+    width: auto;
+    height: 25px;
+    border-bottom-color:#24E0FB;
+    background-color:#C0C0C0;
+
+}
+
+.dashboardhead label{
+    font-family: verdana, tahoma;
+    font-size: 12pt;
+    font-style: normal;
+    font-variant: small-caps;
+    font-weight: bold;
+    color: #000;
+}
+
+.dashboardcontent{
+    padding-right: 4px;
+    width:auto;
+    height: 200px;
+    background-color:#D0E6FF;
+    background-image: url(../image/l.gif);
+    background-repeat: no-repeat;
+    background-position: left top;
+    border: 1px solid;
+    border-color: white;
+
+}
+
+.dashboardcontent ul li {
+    border-bottom: #1e3a07 1px solid;
+    line-height:25px;
+    width:225px;
+}
+
+.dashboardcontent li{
+
+    list-style:  url(../images/arrow.gif) outside;
+    background-repeat:no-repeat;
+    padding: 10px 10px 2px 2px;
+    color:#E8C6FF;
+}
+
+.dashboardcontent a{
+
+    font-family: sans-serif, tahoma, verdana;
+    font-size: 9pt;
+    font-weight: bold;
+    color:#23819C;
+    /*color:#ef9e06;*/
+    text-decoration: none;
+    text-transform: capitalize;
+
+}

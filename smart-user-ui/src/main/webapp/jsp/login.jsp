@@ -10,7 +10,7 @@
 
 <div id="inloginform">
     <div id="loginheader"><label>sitel secured login!</label></div>
-        <form action="" method="">
+        <form action="" method="post">
 
             <div id="loginlabeldiv" align="right"><label id="loginlbl">Name: </label></div>
             <div id="loginboxdiv"><input type="text" name="name" id="loginnametextbox" align="left"></div>

@@ -25,14 +25,9 @@ body{
 
 }
 
-/*#maindivision{
-    width: 80%;
-    background-color:#FDFDFF;
-    border-style: inset;
-}*/
 #maindivision{
 	position:relative; clear:left;
-        width:80%;
+        width:60%;
 	margin:0 auto;
 	background:#fff;
 	/*border:4px solid #666;*/
@@ -64,15 +59,11 @@ body{
 /*Start of body/content*/
 
 #content{
-    /*background: url(../images/line_1.jpg) repeat;*/
-    background-color: 	#C0C0C0;
-/*    background-repeat: repeat;*/
+/*    background: url(../image/bodybg.jpg);*/
+    background-color: 	#FFFFFE;
     width: 80%;
     height:480px;
     float: left;
-    /*border-style: inset;*/
-/*    border: 1px solid;
-    border-color: white;*/
 }
 
 /*End of body/content*/
