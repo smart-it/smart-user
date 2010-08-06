@@ -5,20 +5,27 @@
 
 
 
-//function Orgpageselect()
-//{
-//    var className=document.getElementById("showList");
-//    if(className=="show")
-//        {
-//            document.getElementById("showList").className="hide";
-//            document.getElementById("edit").className="show";
-//        }
-//    else
-//        {
-//            document.getElementById("showList").className="show";
-//            document.getElementById("edit").className="hide";
-//        }
-//}
+function Orgpageselect()
+{
+    
+    var className=document.getElementById("showList").className;
+    alert(className);
+    var className1=document.getElementById("create").className;
+    alert(className1);
+    if(className=="show")
+        {
+            document.getElementById("showList").className="hide";
+            document.getElementById("create").className="show";
+        }
+    else
+        {
+            document.getElementById("showList").className="show";
+            document.getElementById("create").className="hide";
+        }
+    
+}
+
+
 function OnclickActive()
 {
     alert("Are you sure??");
