@@ -21,13 +21,8 @@ public class Role extends AbstractPersistentDTO<Role> {
     private Organization parentOrganization;
 
     private String name;
-    private String displayName;
+    private String displayName;    
     private String shortDescription;
-    private Set<Privilege> privileges;
-    private Set<Role> roles;
-
-    private List<Integer> roleIDs;
-    private List<Integer> privilegeIDs;
     private Integer parentOrganizationID;
     
     private Date lastModifiedDate;
@@ -63,56 +58,6 @@ public class Role extends AbstractPersistentDTO<Role> {
         this.shortDescription = shortDescription;
     }
 
-
-    @JsonIgnore
-    public Set<Role> getRoles() {
-        if(roles == null){
-            roles = new HashSet<Role>();
-        }
-        return roles;
-    }
-
-    @JsonIgnore
-    public void setRoles(Set<Role> roles) {
-        if(roles==null){
-            return;
-        }
-        this.roles = roles;
-    }
-
-    @JsonIgnore
-    public Set<Privilege> getPrivileges() {
-        if (privileges == null) {
-            privileges = new HashSet<Privilege>();
-        }
-        return privileges;
-    }
-
-    @JsonIgnore
-    public void setPrivileges(Set<Privilege> privileges) {
-        if (privileges == null) {
-            return;
-        }
-        this.privileges = privileges;
-    }
-
-    @JsonIgnore
-    public List<Integer> getPrivilegeIDs() {
-        return privilegeIDs;
-    }
-
-    public void setPrivilegeIDs(List<Integer> privilegeIDs) {
-        this.privilegeIDs = privilegeIDs;
-    }
-
-    @JsonIgnore
-    public List<Integer> getRoleIDs() {
-        return roleIDs;
-    }
-
-    public void setRoleIDs(List<Integer> roleIDs) {
-        this.roleIDs = roleIDs;
-    }
 
     public String getDisplayName() {
         if (displayName == null) {
