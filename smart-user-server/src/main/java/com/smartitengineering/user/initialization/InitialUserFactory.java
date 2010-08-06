@@ -69,12 +69,41 @@ public class InitialUserFactory {
 
         SecuredObject securedObjectOrganizations = new SecuredObject();
         securedObjectOrganizations.setName("Smart User Organizations");
-        securedObjectOrganizations.setObjectID("/orgs"); //This objectId is actually the http url of organizations list
+        securedObjectOrganizations.setObjectID("/organizations"); //This objectId is actually the http url of organizations list
         securedObjectOrganizations.setOrganization(organization);
         securedObjectOrganizations.setParentObject(securedObject);
         securedObjectService.save(securedObjectOrganizations);
 
         securedObjectOrganizations = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectOrganizations.getObjectID());
+
+        SecuredObject securedObjectUsers = new SecuredObject();
+        securedObjectUsers.setName("Smart User Users");
+        securedObjectUsers.setObjectID("/organizations/smart-user/users"); //This objectId is actually the http url of users list of smart-user organizations
+        securedObjectUsers.setOrganization(organization);
+        securedObjectUsers.setParentObject(securedObject);
+        securedObjectService.save(securedObjectUsers);
+
+        securedObjectUsers = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectUsers.getObjectID());
+
+        SecuredObject securedObjectSecuredObjects = new SecuredObject();
+        securedObjectSecuredObjects.setName("Smart User Secured Objects");
+        securedObjectSecuredObjects.setObjectID("/organizations/smart-user/securedObjects"); //This objectId is actually the http url of secured objcets list of smart-user organizations
+        securedObjectSecuredObjects.setOrganization(organization);
+        securedObjectSecuredObjects.setParentObject(securedObject);
+        securedObjectService.save(securedObjectSecuredObjects);
+
+        securedObjectSecuredObjects = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectSecuredObjects.getObjectID());
+        
+        SecuredObject securedObjectPrivileges = new SecuredObject();
+        securedObjectPrivileges.setName("Smart User Secured Objects");
+        securedObjectPrivileges.setObjectID("/organizations/smart-user/privileges"); //This objectId is actually the http url of secured objcets list of smart-user organizations
+        securedObjectPrivileges.setOrganization(organization);
+        securedObjectPrivileges.setParentObject(securedObject);
+        securedObjectService.save(securedObjectPrivileges);
+
+        securedObjectPrivileges = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectPrivileges.getObjectID());
+
+
 
         Privilege privilege = new Privilege();
         privilege.setDisplayName("Smart User Adminstration");
@@ -88,18 +117,7 @@ public class InitialUserFactory {
         privilege = privilegeService.getPrivilegeByOrganizationAndPrivilegeName(organization.getUniqueShortName(), privilege.getName());
         Set<Privilege> privileges = new HashSet();
         privileges.add(privilege);
-
-        Privilege privilegeOrganizations = new Privilege();
-        privilegeOrganizations.setDisplayName("Adminstration of Organizations");
-        privilegeOrganizations.setName("organizations-admin");
-        privilegeOrganizations.setParentOrganization(organization);
-        privilegeOrganizations.setPermissionMask(31); //permission mask 31 means all privileges are there 11111
-        privilegeOrganizations.setSecuredObject(securedObjectOrganizations);
-        privilegeOrganizations.setShortDescription("This admin privilege contains the authority to create organization and read list of organizations");
-        privilegeService.create(privilegeOrganizations);
-
-        privilegeOrganizations = privilegeService.getPrivilegeByOrganizationAndPrivilegeName(organization.getUniqueShortName(), privilegeOrganizations.getName());
-        privileges.add(privilegeOrganizations);
+       
 
 
         User user = new User();
