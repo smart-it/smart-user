@@ -7,6 +7,7 @@ package com.smartitengineering.user.ws.resources;
 
 
 import com.smartitengineering.user.domain.User;
+import com.sun.jersey.api.view.Viewable;
 
 import java.util.Date;
 
@@ -34,18 +35,18 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-@Path("/organizations/{organizationShortName}/users/username/{userName}")
+@Path("/orgs/{organizationShortName}/users/username/{userName}")
 public class OrganizationUserResource extends AbstractResource{
 
     private User user;
 
-    static final UriBuilder USER_URI_BUILDER = UriBuilder.fromResource(UserResource.class);
+    static final UriBuilder USER_URI_BUILDER = UriBuilder.fromResource(OrganizationUserResource.class);
     static final UriBuilder USER_CONTENT_URI_BUILDER;
 
     static{
         USER_CONTENT_URI_BUILDER = USER_URI_BUILDER.clone();
         try{
-            USER_CONTENT_URI_BUILDER.path(UserResource.class.getMethod("getUser"));
+            USER_CONTENT_URI_BUILDER.path(OrganizationUserResource.class.getMethod("getUser"));
         }catch(Exception ex){
             ex.printStackTrace();
             throw new InstantiationError();
@@ -67,8 +68,18 @@ public class OrganizationUserResource extends AbstractResource{
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/content")
-    public Response getOrganization() {
+    public Response getUser() {
         ResponseBuilder responseBuilder = Response.ok(user);
+        return responseBuilder.build();
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public Response getHtml(){
+        ResponseBuilder responseBuilder = Response.ok();
+
+        Viewable view = new Viewable("OrganizationUserDetails", user, OrganizationUserResource.class);
+        responseBuilder.entity(view);
         return responseBuilder.build();
     }
 

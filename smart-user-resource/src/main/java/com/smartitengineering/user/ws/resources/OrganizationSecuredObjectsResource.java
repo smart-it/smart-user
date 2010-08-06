@@ -6,6 +6,7 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.SecuredObject;
+import com.sun.jersey.api.view.Viewable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -30,7 +31,7 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-@Path("/organizations/{organizationUniqueShortName}/securedObjects")
+@Path("/orgs/{organizationUniqueShortName}/securedObjects")
 public class OrganizationSecuredObjectsResource extends AbstractResource{
 
     static final UriBuilder ORGANIZATION_SECURED_OBJECTS_URI_BUILDER;
@@ -80,6 +81,19 @@ public class OrganizationSecuredObjectsResource extends AbstractResource{
     @Path("/after/{afterObjectID}")
     public Response getAfter(@PathParam("afterObjectID") String afterObjectID) {
       return get(organizationUniqueShortName,afterObjectID, false);
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public Response getHtml(){
+      ResponseBuilder responseBuilder = Response.ok();
+       
+      Collection<SecuredObject> securedObjects = Services.getInstance().getSecuredObjectService().getByOrganization(
+          organizationUniqueShortName);
+
+        Viewable view = new Viewable("orgSecuredObjectList", securedObjects, OrganizationSecuredObjectsResource.class);
+        responseBuilder.entity(view);
+        return responseBuilder.build();
     }
 
     @GET

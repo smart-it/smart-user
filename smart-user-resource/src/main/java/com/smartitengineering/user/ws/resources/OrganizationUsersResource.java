@@ -31,7 +31,7 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-@Path("/organizations/{uniqueShortName}/users")
+@Path("/orgs/{uniqueShortName}/users")
 public class OrganizationUsersResource extends AbstractResource{
 
     static final UriBuilder ORGANIZATION_USERS_URI_BUILDER;
@@ -160,7 +160,7 @@ public class OrganizationUsersResource extends AbstractResource{
 
                 // setting link to the each individual user
                 Link userLink = abderaFactory.newLink();
-                userLink.setHref(UserResource.USER_URI_BUILDER.clone().build(organizationUniqueShortName, user.getUsername()).toString());
+                userLink.setHref(OrganizationUserResource.USER_URI_BUILDER.clone().build(organizationUniqueShortName, user.getUsername()).toString());
                 userLink.setRel(Link.REL_ALTERNATE);
                 userLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
 

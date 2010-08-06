@@ -1,0 +1,87 @@
+/* 
+    Document   : securedObjectList
+    Created on : Aug 6, 2010, 1:14:24 PM
+    Author     : saumitra
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+.show{
+    display: block;
+}
+.hide{
+    display: none;
+}
+.tableheadname
+{
+    text-align: center;
+    float: left;
+    width: 30%;
+    background-color: #cbd0c8;
+    font-size: larger
+}
+.tableheadPO
+{
+    text-align: center;
+    float: left;
+    width: 30%;
+    background-color: #cbd0c8;
+    font-size: larger
+}
+.tableheadorg
+{
+    text-align: center;
+    float: left;
+    width: 30%;
+    background-color:#cbd0c8;
+    font-size: larger
+}
+.tableheaddetails
+{
+    text-align: center;
+    float: left;
+    width: 10%;
+    background-color: #cbd0c8;
+    font-size: larger
+}
+
+.tablecontentPO
+{
+    text-align: center;
+    float: left;
+    width: 30%;
+    background-color: #cbd0c8;
+    font-size: larger
+}
+.tablecontentorg
+{
+    text-align: center;
+    float: left;
+    width: 30%;
+    background-color: #cbd0c8;
+    font-size: larger
+}
+.tablecontentdetails
+{
+    text-align: center;
+    float: left;
+    width: 10%;
+    background-color: #cbd0c8;
+    font-size: larger
+}
+.tablecontentname
+{
+    text-align: center;
+    float: left;
+    width: 30%;
+    background-color: #cbd0c8;
+    font-size: larger
+}
