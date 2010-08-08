@@ -24,7 +24,7 @@ public interface UserService {
 
     public Collection<User> getAllUser();
 
-    public User getUserByUsername(String username);
+    public User getUserByUsername(String usernameWithOrganizationName);
 
     public User getUserByOrganizationAndUserName(String organizationShortName, String userName);
 

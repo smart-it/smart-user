@@ -42,7 +42,7 @@ public class UserDetailsImpl implements UserDetails {
 
     public String getUsername() {
         System.out.println("--------------------- username " + user.getUsername());
-        return user.getUsername();
+        return getUserNameWithOrganizationName();
     }
 
     public boolean isAccountNonExpired() {
@@ -59,5 +59,9 @@ public class UserDetailsImpl implements UserDetails {
 
     public boolean isEnabled() {
         return true;
+    }
+
+    private String getUserNameWithOrganizationName() {
+        return user.getUsername() + "@" + user.getOrganization().getUniqueShortName();
     }
 }

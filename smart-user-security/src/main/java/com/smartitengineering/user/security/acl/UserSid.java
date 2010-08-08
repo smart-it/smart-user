@@ -15,4 +15,6 @@ public interface UserSid extends Sid{
 
     public String getUsername();
 
+    public String getOrganizationName();
+
 }

@@ -5,8 +5,8 @@
 package com.smartitengineering.user.security.acl.impl;
 
 import com.smartitengineering.user.security.acl.impl.ConfigAttributeImpl;
-import com.smartitengineering.user.security.acl.impl.VotingConfig;
-import com.smartitengineering.user.security.acl.impl.VotingConfigProvider;
+import com.smartitengineering.user.security.VotingConfig;
+import com.smartitengineering.user.security.VotingConfigProvider;
 import java.io.InputStream;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
@@ -24,11 +24,11 @@ import org.springframework.security.acls.domain.BasePermission;
  *
  * @author modhu7
  */
-public class VotingConfigProviderImpl implements VotingConfigProvider{
+public class SmartUserVotingConfigProviderImpl implements VotingConfigProvider{
 
     private List<VotingConfig> listVotingConfig = new ArrayList<VotingConfig>();
 
-    public VotingConfigProviderImpl(String xmlFileName) {
+    public SmartUserVotingConfigProviderImpl(String xmlFileName) {
         try {
             InputStream votersStream = getClass().getClassLoader().getResourceAsStream(xmlFileName);
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

@@ -2,13 +2,18 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <display-name>>Smart User Server</display-name>
     <context-param>
-        <param-name>classpathAppContextLocation</param-name>
-        <param-value>com/smartitengineering/user/server/app-context.xml</param-value>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            classpath:com/smartitengineering/user/server/app-context.xml            
+        </param-value>
     </context-param>
     <listener>
-        <listener-class>com.smartitengineering.util.bean.spring.ClasspathXmlContextLoader</listener-class>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>    
     <filter>
         <filter-name>Jersey Filter</filter-name>
         <filter-class>com.sun.jersey.spi.container.servlet.ServletContainer</filter-class>
@@ -30,13 +35,18 @@
         </init-param>
     </filter>
     <filter-mapping>
-        <filter-name>Jersey Filter</filter-name>
+        <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>Jersey Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>    
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+    
 </web-app>
