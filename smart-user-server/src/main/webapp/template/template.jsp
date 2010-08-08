@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -15,14 +16,17 @@
         <link rel="Stylesheet" href="../css/style.css">
         <link rel="Stylesheet" href="../css/dashboardstyle.css">
         <link rel="Stylesheet" href="../css/organization-style.css">
+        <%--<link rel="Stylesheet" href="../css/organizationlist.css">--%>
+
+        <script type="text/javascript" src="/script/javascript_1.js"></script>
     </head>
     <body>
         <div id="main" >
             <div id="header"><label>aponn.com</label></div>
 
             <div id="options">
-                <form action="#" method="post">
-<%--                <table>
+<%--            <form action="#" method="post">
+                <table>
                     <tr>
                         <td>
                              <input type="text" id="searchbox" name="search" size="75">
@@ -33,8 +37,8 @@
                              <input type="image" src="../images/butup.gif" id="btnSearch" value="Search" alt="[Submit]" name="submit">
                         </td>
                     </tr>
-                </table>--%>
-                </form>
+                </table>
+                </form>--%>
 
             </div>
 
@@ -45,7 +49,7 @@
                     <%--<jsp:include page="superadminaccess.jsp"></jsp:include>--%>
                     <%--<jsp:include page="orgsadminaccess.jsp"></jsp:include>--%>
                     <%--<jsp:include page="enduseraccess.jsp"></jsp:include>--%>
-                    <jsp:include page="organization-creation.jsp"></jsp:include>
+                    <jsp:include page="${templateContent}"></jsp:include>
             </div>
 
             <div id="right">Right</div>

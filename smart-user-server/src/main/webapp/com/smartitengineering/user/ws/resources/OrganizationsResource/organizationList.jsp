@@ -13,31 +13,13 @@
     "http://www.w3.org/TR/html4/loose.dtd">
 
 
-<html>
-    <head>
+        <div class="show" id="showList">
 
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <link type="text/css" rel="stylesheet" href="/css/organizationlist.css"/>
-        <script type="text/javascript" src="/script/javascript_1.js">
-        </script>
-
-        <title>            
-            Organizations
-        </title>
-
-
-
-
-
-    </head>
-    <body>
-
-        <div class="show" id="showList" style="width: 80%;position: relative;clear: left">
-            <div style="background-color: #77e445">
+            <div style="background-color: #77e445; border: 1px solid;">
                 <h1 id="header" >Organization</h1>
             </div>
 
-            <div style="text-decoration: underline;border-color: #13200d">
+            <div style="border: 1px solid">
 
                 <div id="tableheadid">
                     <h4> ID</h4>
@@ -62,22 +44,17 @@
 
             </div>
 
-            
-<!--                <input type="hidden" name="id" size="40">-->
-           
-
-
 
             <c:forEach var="organization" items="${it}">
-                <div>
+                <div style="border: 1px solid">
                     <div id="teblecontentid">
                         <h4><c:out value="${organization.id}" /></h4>
                     </div>
 
                     <div class="teblecontentname">
                         <h4><c:out value="${organization.name}" /></h4>
-
                     </div>
+
                     <div class="teblecontentname">
                         <h4><c:out value="${organization.uniqueShortName}"/></h4>
                         <c:set value="${organization.uniqueShortName}" var="uniqueName"></c:set>
@@ -96,13 +73,17 @@
                 </div>
             </c:forEach>
 
-            <div>
-            <h4><a href="javascript: Orgpageselect()">Create</a></h4>
         </div>
-        </div>
+
+
+            <div style="border: 1px solid">
+                <a href="javascript: Orgpageselect()">Create</a>
+            </div>
         
+
+
         <div class="hide" id="create">
-            <form action="http://russel:9090/organizations" method="post" accept="application/json" enctype="" id="organizationform">
+  <%--          <form action="http://russel:9090/organizations" method="post" accept="application/json" enctype="" id="organizationform">
 
                         <div id="inner-left-1" align="right"><label>Organization Name:</label></div><div id="inner-right-1" align="left"><input type="text" name="name" size="40" value=""></div>
 
@@ -120,7 +101,47 @@
 
                         <div class="inner-right-8" align="center"><input type="submit" value="submit" name="submitBtn"></div>
 
-             </form>
+             </form>--%>
+
+                    <div id="header_organization" align="center">
+                        <label id="headerogorganization">Organization Entry Form</label>
+                    </div>
+
+
+                    <div id="form_organizationentry" align="center">
+
+                        <form action="http://russel:9090/organizations" method="post" accept="application/json" enctype="" id="organizationform">
+
+                            <div class="inner-left" align="left"><label>Organization Name:</label></div>
+                            <div class="inner-right" align="left"><input type="text" name="name" value="" class="textField"></div>
+
+                            <div class="inner-left" align="left"><label>Unique short Name:</label></div>
+                            <div class="inner-right" align="left"><input type="text" name="uniqueShortName" value="" class="textField"></div>
+
+                            <div class="inner-left"></div><div class="inner-right" align="left"><label>!!!! already exists!!! try another!!!</label></div>
+
+                            <div class="inner-left" align="left"><label>Street Address:</label></div>
+                            <div class="inner-right" align="left"><input type="text" name="streetAddress" value="" class="textField"></div>
+
+                            <div class="inner-left" align="left"><label>City:</label></div>
+                            <div class="inner-right" align="left"><input type="text" name="city" value="" class="textField"></div>
+
+                            <div class="inner-left" align="left"><label>State:</label></div>
+                            <div class="inner-right" align="left"><input type="text" name="state" value="" class="textField"></div>
+
+                            <div class="inner-left" align="left"><label>Country:</label></div>
+                            <div class="inner-right" align="left"><input type="text" name="country" value="" class="textField"></div>
+
+                            <div class="inner-left" align="left"><label>Zip:</label></div>
+                            <div class="inner-right" align="left"><input type="text" name="zip" value="" class="textField"></div>
+
+                            <div style="clear: both">
+                            </div>
+                            <div id="btnfield" align="center"><input type="submit" value="submit" name="submitBtn"></div>
+                            <div style="clear: both">
+                            </div>
+
+                        </form>
+
+                    </div>
             </div>
-    </body>
-</html>

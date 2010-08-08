@@ -29,14 +29,6 @@
 
                         <div class="inner-left"></div><div class="inner-right" align="left"><label>!!!! already exists!!! try another!!!</label></div>
 
-<%--                        <div style="clear: both">
-                        </div>
-
-                        <div id="alertfield"><label>!!!! already exists!!! try another!!!</label></div>
-
-                        <div style="clear: both">
-                        </div>--%>
-
                         <div class="inner-left" align="left"><label>Street Address:</label></div>
                         <div class="inner-right" align="left"><input type="text" name="streetAddress" value="" class="textField"></div>
 
