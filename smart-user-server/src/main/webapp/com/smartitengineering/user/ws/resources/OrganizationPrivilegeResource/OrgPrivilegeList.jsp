@@ -82,7 +82,7 @@
                 </div>
 
             </div>
-            <div id="create" align="center" class="show">
+            <div id="create" align="center" class="hide">
 
                 <form action="http://russel:9090/orgs/privs" method="post" accept="application/json" enctype="" id="privilegeform">
 
