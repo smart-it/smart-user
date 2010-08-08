@@ -37,8 +37,7 @@ root {
 }
 
 #showList{
-    width: auto;
-    border: 1px solid;
+    width: 100%;
 }
 
 #header_organization{
@@ -127,6 +126,37 @@ root {
 
 /*Showing list of organizations*/
 
+#title_of_organization{
+    background-color: #CCCCFF;
+    height: 30px;
+    text-align: center;
+}
+
+#title_of_organization label{
+    font-family: sans-serif;
+    font-size: 14pt;
+    font-weight: bold;
+    font-variant: normal;
+    text-align: center;
+    text-decoration: none;
+    color: #333366;
+}
+
+#top_row{
+
+    height: 20px;
+    background-color: #cbd0c8;
+    padding-top: 10px;
+    padding-bottom: 0px;
+
+}
+
+#individual_row{
+    height: 15px;
+    padding: 2px 2px 2px 2px;
+
+}
+
 #teblecontentid
 {
     text-align: center;
@@ -141,34 +171,43 @@ root {
     width: 30%;
     border-bottom-style: double
 }
+
 .teblecontentlink
 {
     text-align: center;
     float: left;
     width: 15%;
-    border-bottom-style: double
+    border-bottom-style: double;
 }
 #tableheadid
 {
     text-align: center;
     float: left;
     width: 10%;
-    background-color: #cbd0c8;
-    font-size: larger
 }
 .tableheadname
 {
     text-align: center;
     float: left;
     width: 30%;
-    background-color: #cbd0c8;
-    font-size: larger
 }
 .tableheadlink
 {
     text-align: center;
     float: left;
     width: 15%;
-    background-color: #cbd0c8;
-    font-size: larger
+}
+
+.tablehead_label{
+    font-family: sans-serif;
+    font-size: 7pt;
+    font-weight: 500;
+}
+
+.tablecontent_label{
+    font-family: sans-serif;
+    font-size: 10pt;
+    font-weight: 400;
+    font-style: oblique;
+    text-decoration: none;
 }
