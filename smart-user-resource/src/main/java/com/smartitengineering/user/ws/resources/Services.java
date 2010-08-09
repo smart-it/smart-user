@@ -12,6 +12,7 @@ import com.smartitengineering.user.service.PrivilegeService;
 import com.smartitengineering.user.service.RoleService;
 import com.smartitengineering.user.service.SecuredObjectService;
 import com.smartitengineering.user.service.UserGroupService;
+import com.smartitengineering.user.service.UserPersonService;
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.util.bean.BeanFactoryRegistrar;
 import com.smartitengineering.util.bean.annotations.Aggregator;
@@ -37,6 +38,9 @@ public class Services {
 
     @InjectableField
     private UserGroupService userGroupService;
+
+    @InjectableField
+    private UserPersonService userPersonService;
 
     private Services(){
         
@@ -70,6 +74,16 @@ public class Services {
     public void setUserGroupService(UserGroupService userGroupService) {
         this.userGroupService = userGroupService;
     }
+
+  public UserPersonService getUserPersonService() {
+    return userPersonService;
+  }
+
+  public void setUserPersonService(UserPersonService userPersonService) {
+    this.userPersonService = userPersonService;
+  }
+
+    
 
     
     
