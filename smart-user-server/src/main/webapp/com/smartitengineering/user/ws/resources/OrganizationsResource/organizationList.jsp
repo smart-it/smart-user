@@ -81,7 +81,7 @@
             </c:forEach>
 
 
-            <div id="">
+            <div class="tablecontent_label">
                 <a href="javascript: Orgpageselect()">Create</a>
             </div>
 
@@ -103,29 +103,29 @@
 
                     <div id="form_organizationentry" align="center">
 
-                        <form action="http://russel:9090/organizations" method="post" accept="application/json" enctype="" id="organizationform">
+                        <form action="http://localhost:9090/orgs" method="post" accept="application/json" enctype="" id="organizationform">
 
-                            <div class="inner-left" align="left"><label>Organization Name:</label></div>
+                            <div class="inner-left" ><label>Organization Name:</label></div>
                             <div class="inner-right" align="left"><input type="text" name="name" value="" class="textField"></div>
 
-                            <div class="inner-left" align="left"><label>Unique short Name:</label></div>
+                            <div class="inner-left"><label>Unique short Name:</label></div>
                             <div class="inner-right" align="left"><input type="text" name="uniqueShortName" value="" class="textField"></div>
 
                             <div class="inner-left"></div><div class="inner-right" align="left"><label>!!!! already exists!!! try another!!!</label></div>
 
-                            <div class="inner-left" align="left"><label>Street Address:</label></div>
+                            <div class="inner-left"><label>Street Address:</label></div>
                             <div class="inner-right" align="left"><input type="text" name="streetAddress" value="" class="textField"></div>
 
-                            <div class="inner-left" align="left"><label>City:</label></div>
+                            <div class="inner-left"><label>City:</label></div>
                             <div class="inner-right" align="left"><input type="text" name="city" value="" class="textField"></div>
 
-                            <div class="inner-left" align="left"><label>State:</label></div>
+                            <div class="inner-left"><label>State:</label></div>
                             <div class="inner-right" align="left"><input type="text" name="state" value="" class="textField"></div>
 
-                            <div class="inner-left" align="left"><label>Country:</label></div>
+                            <div class="inner-left"><label>Country:</label></div>
                             <div class="inner-right" align="left"><input type="text" name="country" value="" class="textField"></div>
 
-                            <div class="inner-left" align="left"><label>Zip:</label></div>
+                            <div class="inner-left"><label>Zip:</label></div>
                             <div class="inner-right" align="left"><input type="text" name="zip" value="" class="textField"></div>
 
                             <div style="clear: both">

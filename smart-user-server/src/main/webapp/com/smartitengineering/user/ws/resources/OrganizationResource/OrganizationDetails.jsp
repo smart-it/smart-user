@@ -13,49 +13,63 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link type="text/css" rel="stylesheet" href="/css/organizationlist.css">
-        <title><c:out value="${it.name}"></c:out>
-<!--            <script type="text/javascript" src="jquery.js"></script>
-            <script type="text/javascript">
-                $(document).ready(function(){
-                    $("submit").click(function(){
-                        $(this).hide();
-                    });
-                });
-            </script>-->
-        </title>
-        <!--        <link type="text/javascript" href="/css/javascript_1.js">-->
+        <link type="text/css" rel="stylesheet" href="/css/organization-style.css">
+        <title><c:out value="${it.name}"></c:out></title>
 
 
 
     </head>
     <body>
-        <h1><c:out value="${it.name}"></c:out></h1>
+        <%--<h1><c:out value="${it.name}"></c:out></h1>--%>
 
+
+
+     <div id="create">
+
+        <div id="header_organization" align="center">
+            <label id="headerogorganization"><c:out value="${it.name}"></c:out></label>
+        </div>
+
+        <div id="form_organizationentry" align="center">
 
         <form method="POST" action ="http://russel:9090/orgs/shortname/${it.uniqueShortName}" accept="application/json" id="organizationform">
 
-            <div id="inner-left-1" align="right"><label>Organization Name:</label></div><div id="inner-right-1" align="left"><input type="text" name="name" size="40" value="${it.name}"></div>
+            <div class="inner-left"><label>Organization Name:</label></div>
+            <div class="inner-right" align="left"><input type="text" name="name" value="${it.name}" class="textField"></div>
 
-            <div id="inner-left-2" align="right"><label>Unique short Name:</label></div><div id="inner-right-2" align="left"><input type="text" name="uniqueShortName" size="40" value="${it.uniqueShortName}"></div>
+            <div class="inner-left"><label>Unique short Name:</label></div>
+            <div class="inner-right" align="left"><input type="text" name="uniqueShortName" value="${it.uniqueShortName}" class="textField"></div>
 
-            <div id="inner-left-3" align="right"><label>Street Address:</label></div><div id="inner-right-3" align="left"><input type="text" name="streetAddress" size="40" value="${it.address.streetAddress}"></div>
+            <div class="inner-left"><label>Street Address:</label></div>
+            <div class="inner-right" align="left"><input type="text" name="streetAddress" value="${it.address.streetAddress}" class="textField"></div>
 
-            <div id="inner-left-4" align="right"><label>City:</label></div><div id="inner-right-4" align="left"><input type="text" name="city" size="40" value="${it.address.city}"></div>
+            <div class="inner-left"><label>City:</label></div>
+            <div class="inner-right" align="left"><input type="text" name="city" value="${it.address.city}" class="textField"></div>
 
-            <div id="inner-left-5" align="right"><label>State:</label></div><div id="inner-right-5" align="left"><input type="text" name="state" size="40" value="${it.address.state}"></div>
+            <div class="inner-left"><label>State:</label></div>
+            <div class="inner-right" align="left"><input type="text" name="state" value="${it.address.state}" class="textField"></div>
 
-            <div id="inner-left-6" align="right"><label>Country:</label></div><div id="inner-right-6" align="left"><input type="text" name="country" size="40" value="${it.address.country}"></div>
+            <div class="inner-left"><label>Country:</label></div>
+            <div class="inner-right" align="left"><input type="text" name="country" value="${it.address.country}" class="textField"></div>
 
-            <div id="inner-left-6" align="right"></div><div id="inner-right-6" align="left"><input type="hidden" name="id" size="40" value="${it.id}"></div>
+            <div class="inner-left"><label>Zip:</label></div>
+            <div class="inner-right" align="left"><input type="text" name="zip" value="" class="textField"></div>
 
-            <div id="inner-left-6" align="right"></div><div id="inner-right-6" align="left"><input type="hidden" name="version" size="40" value="${it.version}"></div>
+            <div></div>
+            <div><input type="hidden" name="id" value="${it.id}"></div>
 
-            <div id="inner-left-7" align="right"><label>Zip:</label></div><div id="inner-right-7" align="left"><input type="text" name="zip" size="40" value=""></div>
+            <div></div>
+            <div><input type="hidden" name="version" value="${it.version}"></div>
 
-            <div class="inner-right-8" align="center"><input type="submit" value="update" name="update"></div>
+            <div style="clear: both"></div>
+            <div id="btnfield" align="center"><input type="submit" value="UPDATE" name="submitBtn"></div>
+            <div style="clear: both"></div>
 
         </form>
+            
+        </div>
+
+     </div>
 
 
     </body>

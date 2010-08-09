@@ -15,6 +15,7 @@ root {
     display: block;
 }
 body{
+    background: url(../images/main_bg1.gif) repeat;
     width:auto;
     text-align: center;
 }
@@ -70,8 +71,10 @@ body{
 }
 
 #content{
+    background: url(../images/bg_shadow_bot.gif) repeat;
+    height: 672px;
     float: left;
-    height: auto;
+    /*height: auto;*/
     width: 75%;
 }
 

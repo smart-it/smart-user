@@ -50,6 +50,8 @@
                     <%--<jsp:include page="orgsadminaccess.jsp"></jsp:include>--%>
                     <%--<jsp:include page="enduseraccess.jsp"></jsp:include>--%>
                     <jsp:include page="${templateContent}"></jsp:include>
+                    <%--<jsp:include page="OrganizationDetails.jsp"></jsp:include>--%>
+
             </div>
 
             <div id="right">Right</div>

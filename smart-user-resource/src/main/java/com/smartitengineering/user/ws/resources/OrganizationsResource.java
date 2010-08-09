@@ -35,6 +35,7 @@ import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 
 @Path("/orgs")
+//@Path("/privs")
 public class OrganizationsResource extends AbstractResource {
 
     static final UriBuilder ORGANIZATION_URI_BUILDER;
@@ -92,6 +93,7 @@ public class OrganizationsResource extends AbstractResource {
         ResponseBuilder responseBuilder = Response.ok();
         Collection<Organization> organizations = Services.getInstance().getOrganizationService().getAllOrganization();
         servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
+//        servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationPrivilegeResource/OrgPrivilegeList.jsp");
         Viewable view = new Viewable("/template/template.jsp", organizations);
         responseBuilder.entity(view);
         return responseBuilder.build();
