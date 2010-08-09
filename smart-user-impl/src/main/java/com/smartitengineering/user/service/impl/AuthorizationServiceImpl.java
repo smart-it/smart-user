@@ -44,7 +44,13 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     if (user == null) {
       return AccessDecisionVoter.ACCESS_DENIED;
     }
+    if(user!=null && oid==null){
+      return AccessDecisionVoter.ACCESS_ABSTAIN;
+    }
     SecuredObject securedObject = securedObjectService.getByOrganizationAndObjectID(organizationName, oid);
+    if(user!=null && securedObject==null){
+      return AccessDecisionVoter.ACCESS_ABSTAIN;
+    }
     return authorize(user, securedObject, permission);
 
   }

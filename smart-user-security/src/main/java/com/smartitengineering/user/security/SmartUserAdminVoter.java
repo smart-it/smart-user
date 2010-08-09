@@ -61,6 +61,8 @@ public class SmartUserAdminVoter implements AccessDecisionVoter {
 
     @Override
     public boolean supports(ConfigAttribute ca) {
+        if(getVotingConfig(ca).getProcessConfigAttribute()==null)
+          return false;
         return true;
     }
 
