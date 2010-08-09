@@ -4,12 +4,14 @@
  */
 package com.smartitengineering.user.client.impl;
 
+import com.smartitengineering.util.rest.atom.HttpClient;
 import com.sun.jersey.api.client.Client;
 import java.net.URI;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.sun.jersey.client.apache.ApacheHttpClient;
 import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
 import javax.ws.rs.core.UriBuilder;
+import org.springframework.context.ApplicationContext;
 
 /**
  *
@@ -17,29 +19,17 @@ import javax.ws.rs.core.UriBuilder;
  */
 public class AbstractClientImpl {
 
-  protected static final URI BASE_URI = getBaseURI();
+  protected static final URI BASE_URI;
+  protected static final ConnectionConfig CONNECTION_CONFIG;
+
+  static {
+    ApplicationContext context = new ClassPathXmlApplicationContext("client-context.xml");
+    CONNECTION_CONFIG = ConfigFactory.getInstance().getConnectionConfig();
+    BASE_URI = UriBuilder.fromUri(CONNECTION_CONFIG.getContextPath()).host(CONNECTION_CONFIG.getHost()).port(CONNECTION_CONFIG.
+        getPort()).path(CONNECTION_CONFIG.getBasicUri()).build();
+  }
   private Client client;
-
-  private static int getPort(int defaultPort) {
-    String port = System.getenv("JERSEY_HTTP_PORT");
-    if (null != port) {
-      try {
-        return Integer.parseInt(port);
-      }
-      catch (NumberFormatException e) {
-      }
-    }
-    return defaultPort;
-  }
-
-  private static URI getBaseURI() {
-    new ClassPathXmlApplicationContext(
-        "client-context.xml");
-    final ConnectionConfig connectionConfig =
-                           ConfigFactory.getInstance().getConnectionConfig();
-    return UriBuilder.fromUri(connectionConfig.getBasicUrl()).port(getPort(connectionConfig.getPort())).path(connectionConfig.
-        getContextPath()).build();
-  }
+  private HttpClient httpClient;
 
   protected AbstractClientImpl() {
   }
@@ -50,5 +40,12 @@ public class AbstractClientImpl {
       client = ApacheHttpClient.create(clientConfig);
     }
     return client;
+  }
+
+  public HttpClient getHttpClient() {
+    if (httpClient == null) {
+      httpClient = new HttpClient(getClient(), BASE_URI.getHost(), CONNECTION_CONFIG.getPort());
+    }
+    return httpClient;
   }
 }
