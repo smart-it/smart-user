@@ -71,4 +71,13 @@ public class AuthorizationServiceImpl implements AuthorizationService {
       return AccessDecisionVoter.ACCESS_DENIED;
     }
   }
+
+  @Override
+  public Boolean login(String username, String password) {
+    User user = UserService.getUserByUsername(username);
+    if(user!=null && user.getPassword().equals(password))
+      return true;
+    else
+      return false;
+  }
 }

@@ -13,4 +13,6 @@ public interface AuthorizationService {
 
     public Integer authorize(String username, String organizationName, String oid, Integer permission);
 
+    public Boolean login(String username, String password);
+
 }
