@@ -6,10 +6,11 @@ package com.smartitengineering.user.client.impl;
 
 import com.smartitengineering.user.client.api.LoginResource;
 import com.smartitengineering.user.client.api.RootResource;
-import com.sun.jersey.api.client.WebResource;
+import com.smartitengineering.util.rest.atom.ClientUtil;
+import com.sun.jersey.api.client.ClientResponse;
+import javax.ws.rs.core.MediaType;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
-import org.apache.abdera.protocol.client.ClientResponse;
 
 /**
  *
@@ -25,9 +26,8 @@ public class RootResourceImpl extends AbstractClientImpl implements RootResource
   }
 
   public RootResourceImpl() {
-    WebResource resource = getClient().resource(BASE_URI);
-    ClientResponse Response = resource.get(ClientResponse.class);
-    Feed feed = null;
+    ClientResponse response = ClientUtil.readClientResponse(BASE_URI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
+    Feed feed = ClientUtil.getFeed(response);
     Link link = feed.getLink(REL_LOGIN);
     loginLink = link;
   }
