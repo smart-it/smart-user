@@ -44,7 +44,13 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     if (user == null) {
       return AccessDecisionVoter.ACCESS_DENIED;
     }
+    if(user!=null && oid==null){
+      return AccessDecisionVoter.ACCESS_ABSTAIN;
+    }
     SecuredObject securedObject = securedObjectService.getByOrganizationAndObjectID(organizationName, oid);
+    if(user!=null && securedObject==null){
+      return AccessDecisionVoter.ACCESS_ABSTAIN;
+    }
     return authorize(user, securedObject, permission);
 
   }
@@ -70,5 +76,14 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     else {
       return AccessDecisionVoter.ACCESS_DENIED;
     }
+  }
+
+  @Override
+  public Boolean login(String username, String password) {
+    User user = UserService.getUserByUsername(username);
+    if(user!=null && user.getPassword().equals(password))
+      return true;
+    else
+      return false;
   }
 }

@@ -7,8 +7,12 @@ package com.smartitengineering.user.client.api;
 
 /**
  *
- * @author russel
+ * @author modhu7
  */
-public interface AuthorizationResource {
+public interface BasicIdentity {
+
+  public Name getName();
+
+  public String getNationalID();
 
 }

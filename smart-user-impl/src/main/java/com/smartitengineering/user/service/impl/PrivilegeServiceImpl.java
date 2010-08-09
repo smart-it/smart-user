@@ -159,15 +159,6 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
 
     @Override
     public void populatePrivilege(Role role)throws Exception {
-        List<Integer> privilegeIDs = role.getPrivilegeIDs();
-        if(privilegeIDs != null && ! privilegeIDs.isEmpty()){
-            Set<Privilege> privileges = getByIds(privilegeIDs);
-
-            if(privileges == null || privilegeIDs.size() != privileges.size()){
-                throw new Exception("Privilege not found");
-            }
-
-            role.setPrivileges(privileges);
-        }
+       throw new UnsupportedOperationException("Not supported yet.");
     }
 }
