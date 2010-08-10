@@ -9,6 +9,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
     <head>
@@ -46,9 +47,13 @@
         </script>
     </head>
     <body>
-        <div class="show"  id="showList">
+   
         
-        <div id="header"><h1>User List</h1></div>
+        <div id="header"><h1>User List</h1>
+            <fmt:message key="welcome">
+                <fmt:param value="${user.username}"/>
+            </fmt:message>
+        </div>
         <div id="tablebar">
             <table>
                 <tr>
@@ -60,20 +65,21 @@
             </table>
         </div>
 
-       
+                <div>
         <c:forEach var="user" items="${it}">
            <div id="content" style=" width: 100px; margin-left: 200px">  <c:out value="${user.id}"/></div>
             <div id="content"style="width: 500px"><c:out value="${user.username}" /></div>
 
             <div id="content" style="width: 200px"><a href="users/username/${user.username}">Edit</a></div>
-            <div id="content"><a href="">Delete</a></div>
+            <div id="content" style="width: 70px"><a href="">Delete</a></div>
            
         </c:forEach>
+                </div>
         
             <div id="footer">
                 copyright@smartitengineering ltd.
             </div>
-        </div>
+      
         
     </body>
 </html>

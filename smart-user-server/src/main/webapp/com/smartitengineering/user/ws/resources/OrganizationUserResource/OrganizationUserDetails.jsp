@@ -14,20 +14,21 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><c:out value="${it.username}"></c:out></title>
+        <link rel="Stylesheet" href="/css/user.css" type="text/css" >
     </head>
     <body>
-        <c:out value="${it.username}"></c:out>
-        <c:out value="${it.password}"></c:out>
+        <%--<c:out value="${it.username}"></c:out>
+        <c:out value="${it.password}"></c:out>--%>
 
-         <form action="http://russel:9090/users" method="post" accept="application/json" enctype="" id="userform">
+         <form action="/userList.jsp" method="post" accept="application/json" enctype="" id="userform">
 
-                        <div id="inner-left-1" align="right"><label>First Name:</label></div><div id="inner-right-1" align="left"><input type="text" name="name" size="40" value=""></div>
+                        <div id="inner-left-1" align="right"><label>First Name:</label></div><div id="inner-right-1" align="left"><input type="text" name="name" size="40" value="${it.username}"></div>
 
-                        <div id="inner-left-2" align="right"><label>Middle Name:</label></div><div id="inner-right-2" align="left"><input type="text" name="uniqueShortName" size="40" value=""></div>
+                        <%--<div id="inner-left-2" align="right"><label>Middle Name:</label></div><div id="inner-right-2" align="left"><input type="text" name="uniqueShortName" size="40" value="${it.username}"></div>
 
-                        <div id="inner-left-2" align="right"><label>Last Name:</label></div><div id="inner-right-2" align="left"><input type="text" name="uniqueShortName" size="40" value=""></div>
+                        <div id="inner-left-2" align="right"><label>Last Name:</label></div><div id="inner-right-2" align="left"><input type="text" name="uniqueShortName" size="40" value="${it.username}"></div>--%>
 
-                        <div id="inner-left-2" align="right"><label>Password:</label></div><div id="inner-right-2" align="left"><input type="text" name="uniqueShortName" size="40" value=""></div>
+                        <div id="inner-left-2" align="right"><label>Password:</label></div><div id="inner-right-2" align="left"><input type="text" name="uniqueShortName" size="40" value="${it.password}"></div>
 
                        <%-- <div id="inner-left-2" align="right"><label>Father Name:</label></div><div id="inner-right-2" align="left"><input type="text" name="uniqueShortName" size="40" value=""></div>
 
