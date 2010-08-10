@@ -4,14 +4,15 @@
  */
 package com.smartitengineering.clientrest.smartuserclientimpl;
 
-import com.smartitengineering.util.spring.BeanFactoryRegistrar;
-import com.smartitengineering.util.spring.annotations.Aggregator;
-import com.smartitengineering.util.spring.annotations.InjectableField;
+import com.smartitengineering.util.bean.BeanFactoryRegistrar;
+import com.smartitengineering.util.bean.annotations.Aggregator;
+import com.smartitengineering.util.bean.annotations.InjectableField;
 
 /**
  *
  * @author imyousuf
  */
+
 @Aggregator(contextName = "userRestClientContextTest")
 public final class TestConfigFactory {
 

@@ -8,6 +8,7 @@ import com.smartitengineering.user.client.api.LoginResource;
 import com.smartitengineering.user.client.api.RootResource;
 import com.smartitengineering.util.rest.atom.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
+import java.net.URI;
 import javax.ws.rs.core.MediaType;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
@@ -26,7 +27,13 @@ public class RootResourceImpl extends AbstractClientImpl implements RootResource
   }
 
   public RootResourceImpl() {
-    ClientResponse response = ClientUtil.readClientResponse(BASE_URI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
+    URI testUri = null;
+    try{
+      testUri = new URI("http://localhost:9090");
+    }catch(Exception ex){
+      
+    }
+    ClientResponse response = ClientUtil.readClientResponse( /*BASE_URI*/testUri, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
     Feed feed = ClientUtil.getFeed(response);
     Link link = feed.getLink(REL_LOGIN);
     loginLink = link;

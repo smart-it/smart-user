@@ -23,7 +23,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
             </list>
         </property>
     </bean>
-    <bean id="testConnectionConfig" class="com.smartitengineering.util. com.smartitengineering.user.rest.client.TestConnectionConfig">
+    <bean id="testConnectionConfig" class="com.smartitengineering.user.client.impl.TestConnectionConfig">
         <property name="basicUrl">
             <value>${url}</value>
         </property>
@@ -37,7 +37,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
             <value>${server}</value>
         </property>
     </bean>
-    <bean id="beanRegistrar" class="com.smartitengineering.util.bean.spring.BeanFactoryRegistrar">
+    <bean id="beanRegistrar" class="com.smartitengineering.util.bean.spring.SpringBeanRegistrar">
         <property name="beanFactoryContextName">
             <value>userRestClientContextTest</value>
         </property>
