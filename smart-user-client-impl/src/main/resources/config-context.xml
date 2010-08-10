@@ -16,14 +16,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
     
-    <bean id="propertyConfigurer" class="com.smartitengineering.util.spring.PropertiesLocatorConfigurer">
+    <bean id="propertyConfigurer" class="com.smartitengineering.util.bean.spring.PropertiesLocatorConfigurer">
         <property name="smartLocations">
             <list>
                 <value>testConfiguration.properties</value>
             </list>
         </property>
     </bean>
-    <bean id="testConnectionConfig" class="com.smartitengineering.user.rest.client.TestConnectionConfig">
+    <bean id="testConnectionConfig" class="com.smartitengineering.util. com.smartitengineering.user.rest.client.TestConnectionConfig">
         <property name="basicUrl">
             <value>${url}</value>
         </property>
@@ -37,7 +37,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
             <value>${server}</value>
         </property>
     </bean>
-    <bean id="beanRegistrar" class="com.smartitengineering.util.spring.BeanFactoryRegistrar">
+    <bean id="beanRegistrar" class="com.smartitengineering.util.bean.spring.BeanFactoryRegistrar">
         <property name="beanFactoryContextName">
             <value>userRestClientContextTest</value>
         </property>

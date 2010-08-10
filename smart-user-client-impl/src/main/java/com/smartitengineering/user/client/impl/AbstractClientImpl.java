@@ -5,6 +5,7 @@
 package com.smartitengineering.user.client.impl;
 
 import com.smartitengineering.util.rest.atom.HttpClient;
+import com.sun.corba.se.impl.orb.ParserTable.TestContactInfoListFactory;
 import com.sun.jersey.api.client.Client;
 import java.net.URI;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -23,7 +24,7 @@ public class AbstractClientImpl {
   protected static final ConnectionConfig CONNECTION_CONFIG;
 
   static {
-    ApplicationContext context = new ClassPathXmlApplicationContext("client-context.xml");
+    ApplicationContext context = new ClassPathXmlApplicationContext("config-context.xml");
     CONNECTION_CONFIG = ConfigFactory.getInstance().getConnectionConfig();
     BASE_URI = UriBuilder.fromUri(CONNECTION_CONFIG.getContextPath()).host(CONNECTION_CONFIG.getHost()).port(CONNECTION_CONFIG.
         getPort()).path(CONNECTION_CONFIG.getBasicUri()).build();
