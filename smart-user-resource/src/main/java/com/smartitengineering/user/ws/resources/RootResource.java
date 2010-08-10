@@ -35,6 +35,7 @@ public class RootResource extends AbstractResource {
     booksLink.setHref("test1");
     booksLink.setRel("books");
     atomFeed.addLink(booksLink);
+
     Link authorsLink = Abdera.getNewFactory().newLink();
     authorsLink.setHref(UriBuilder.fromResource(OrganizationsResource.class).build().toString());
     authorsLink.setHref("Organizations");
