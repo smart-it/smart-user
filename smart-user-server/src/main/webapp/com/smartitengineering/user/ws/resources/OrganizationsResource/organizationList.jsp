@@ -114,7 +114,7 @@
         </div>
                 <fmt:message key="org.inputlabel1" var="update"/>
         
-        <div class="hide" id="create">
+<!--        <div class="hide" id="create">
             <form action="http://russel:9090/orgs" method="post" accept="application/json" enctype="" id="organizationform">
 
                         <div id="inner-left-1" align="right"><label><fmt:message key="org.inputlabel1"/></label></div><div id="inner-right-1" align="left"><input type="text" name="name" size="40" value=""></div>
@@ -134,6 +134,6 @@
                         <div class="inner-right-8" align="center"><input type="submit" value="updatebt" name="submit"></div>
 
               </form>
-        </div>
+        </div>-->
     </body>
 </html>
