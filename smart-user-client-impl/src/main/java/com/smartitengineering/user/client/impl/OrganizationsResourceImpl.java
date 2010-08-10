@@ -21,8 +21,8 @@ class OrganizationsResourceImpl extends AbstractClientImpl implements Organizati
 
   public Link link;
 
-  OrganizationsResourceImpl(){
-    
+  OrganizationsResourceImpl(Link orgsLink) {
+    throw new UnsupportedOperationException("Not yet implemented");
   }
 
   @Override

@@ -37,4 +37,8 @@ public class RootResourceImpl extends AbstractClientImpl implements RootResource
   public LoginResource performAuthentication(String userName, String password) {
     return new LoginResourceImpl(userName, password, loginLink);
   }
+
+  public Link getLoginLink(){
+    return loginLink;
+  }
 }

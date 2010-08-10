@@ -13,12 +13,17 @@ import com.smartitengineering.user.client.api.User;
 import com.smartitengineering.user.client.api.UserResource;
 import java.net.URI;
 import java.util.Date;
+import org.apache.abdera.model.Link;
 
 /**
  *
  * @author russel
  */
 public class UserResourceImpl extends AbstractClientImpl implements UserResource{
+
+  UserResourceImpl(Link usersLink) {
+    throw new UnsupportedOperationException("Not yet implemented");
+  }
 
   @Override
   public User getUser() {
