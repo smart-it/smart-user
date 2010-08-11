@@ -7,7 +7,6 @@
 <%@page import="javax.swing.text.Document"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.Collection"%>
-<%@page import="com.smartitengineering.user.domain.Organization"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="com.smartitengineering.user.domain.User"%>
