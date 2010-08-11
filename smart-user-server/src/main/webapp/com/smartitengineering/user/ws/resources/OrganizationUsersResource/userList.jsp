@@ -49,21 +49,18 @@
                 </div>
 
             </div>
-              <% String path=request.getContextPath();
-              System.out.print(path);
-              System.out.print("asd");
+                    <c:set value="${pageContext.request.servletContext}" var="path" />
+              <c:out value="${path}" />
 
-              %>
-              <c:out value="${path}"/>
 
             <c:forEach var="user" items="${it}">
                 <div id="individual_row">
                     <div id="teblecontentid">
-                        <label class="tablecontent_label"> <a href="users/${user.username}" ><label><c:out value="${user.id}" /></label></a></label>
+                        <label class="tablecontent_label"> <a href="${path}/users/${user.username}" ><label><c:out value="${user.id}" /></label></a></label>
                     </div>
 
                     <div class="teblecontentname">
-                        <label class="tablecontent_label"><a href="${path}users/${user.username}" ><label><c:out value="${user.username}"/></label></a></label>
+                        <label class="tablecontent_label"><a href="${path}/users/${user.username}" ><label><c:out value="${user.username}"/></label></a></label>
                     </div>
 
                 </div>
