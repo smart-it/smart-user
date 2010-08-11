@@ -4,11 +4,13 @@
     Author     : russel
 --%>
 
+<%@page import="javax.swing.text.Document"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.Collection"%>
 <%@page import="com.smartitengineering.user.domain.Organization"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="com.smartitengineering.user.domain.User"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
@@ -47,16 +49,21 @@
                 </div>
 
             </div>
+              <% String path=request.getContextPath();
+              System.out.print(path);
+              System.out.print("asd");
 
+              %>
+              <c:out value="${path}"/>
 
-            <c:forEach var="organization" items="${it}">
+            <c:forEach var="user" items="${it}">
                 <div id="individual_row">
                     <div id="teblecontentid">
-                        <label class="tablecontent_label"> <a href="users/${user.id}" ><label><c:out value="${user.userId}" /></label></a></label>
+                        <label class="tablecontent_label"> <a href="users/${user.username}" ><label><c:out value="${user.id}" /></label></a></label>
                     </div>
 
                     <div class="teblecontentname">
-                        <label class="tablecontent_label"><a href="users/${user.id}" ><label><c:out value="${user.userName}"/></label></a></label>
+                        <label class="tablecontent_label"><a href="${path}users/${user.username}" ><label><c:out value="${user.username}"/></label></a></label>
                     </div>
 
                 </div>
@@ -66,6 +73,8 @@
             <div class="tablecontent_label">
                 <a href="javascript: Orgpageselect()">Create</a>
             </div>
+
+
 
         </div>
         <fmt:message key="org.usrinput6" var="submitbtn"/>

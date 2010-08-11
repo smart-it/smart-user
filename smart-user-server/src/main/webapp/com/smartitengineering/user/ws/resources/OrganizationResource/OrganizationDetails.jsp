@@ -35,6 +35,8 @@
     </div>
     <div><a href="javascript: Orgpageselect()">Edit</a></div>
    </div>
+
+    <div><a href="/orgs/${it.uniqueShortName}/users">UserList</a></div>
     
 
 
