@@ -9,9 +9,9 @@ function Orgpageselect()
 {
     
     var className=document.getElementById("showList").className;
-//    alert(className);
-//    var className1=document.getElementById("create").className;
-//    alert(className1);
+    alert(className);
+    var className1=document.getElementById("create").className;
+    alert(className1);
     if(className=="show")
         {
             document.getElementById("showList").className="hide";
