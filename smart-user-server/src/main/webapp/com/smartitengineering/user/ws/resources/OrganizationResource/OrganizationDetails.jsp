@@ -24,7 +24,7 @@
   <div id="">Related tabs will be in this div</div>
   <h1><c:out value="${it.name}"></c:out></h1>
   
-  <div id="ShowList" class="show">
+  <div id="showList" class="show">
          <div class=""><label>Organization name:</label></div><label>${it.name}</label><div class=""></div>
     <div class=""><label>Unique short Name:</label></div><div class=""><label>${it.uniqueShortName}</label></div>
     <div class=""><label>Street Address:</label></div><div class=""><label>${it.address.streetAddress}</label></div>
