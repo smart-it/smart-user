@@ -28,6 +28,9 @@
 
             <div id="top_row">
 
+                        <div style="clear: both">
+                            </div>
+
                 <div id="tableheadid">
                     <label class="tablehead_label"><fmt:message key="org.tablehead1"/></label>
                 </div>
@@ -48,6 +51,9 @@
                 <div class="tableheadlink">
                     <label class="tablehead_label"><fmt:message key="org.tablehead5"/></label>
                 </div>
+
+                          <div style="clear: both">
+                            </div>
 
             </div>
 
@@ -101,7 +107,7 @@
                     </div>
 
 
-                    <div id="form_organizationentry" align="center">
+                    <div id="form_organizationentry">
 
                         <form action="http://localhost:9090/orgs" method="post" accept="application/json" enctype="" id="organizationform">
 

@@ -23,10 +23,17 @@ root {
 }
 #create{
 
-/*    background-image: url(../images/gallery_bg.gif);
+/*  background-image: url(../images/gallery_bg.gif);
     background-repeat: repeat;
     background-position: top left;*/
-    background-color: #F5EEFD;
+
+/*    -moz-border-radius: 1em;
+    -webkit-border-radius: 1em;
+    border-radius: 1em;
+*/
+    /*background-color: #F5EEFD;*/
+    /*background-color: #F5EE00;*/
+    
     text-align: left;
     margin: 50px 0px 0px 150px;
     /*margin: 0 auto;*/
@@ -37,7 +44,19 @@ root {
 }
 
 #header_organization{
-    
+
+/*    background-image: url(../images/menul.jpg),
+                                                url(../images/menur.jpg);
+    background-repeat: no-repeat,
+                                                no-repeat;
+    background-position: top left,
+                                                top right;*/
+/*
+    -moz-border-radius: 1em;
+    -webkit-border-radius: 1em;
+    border-radius: 1em;
+*/
+
     padding-top: 3px;
     padding-bottom: 3px;
     height: 20px;
@@ -51,21 +70,21 @@ root {
     font-weight: bolder;
     font-style: normal;
     color:#333366;
-
 }
 
 #form_organizationentry{
     width:auto;
-    background-color: #25A0C5;
-    background-color: inherit;
+    background-color: #F5EEFD;
     padding: 10px 10px 10px 10px;
     font-family: Arial,Helvetica,sans-serif;
 }
 
 .inner-left{
-    padding: 14px 0px 10px 10px;
+    /*padding: 14px 0px 10px 10px;*/
+    padding: 10px 10px 10px 0px;
     width:35%;
     float:left;
+    text-align: left;
     /*border: 1px solid;*/
 }
 
@@ -75,7 +94,6 @@ root {
     font-weight: 500;
     font-style: normal;
     color:#330066;
-    text-align: left;
 }
 
 .inner-right{
@@ -87,13 +105,14 @@ root {
 }
 
 .textField{
-    height: 25px;
-    border: 1px inset;
+    height: 20px;
+    border: 1px outset;
+    /*border-style: ridge*/
     border-color:#9A03FE;
-    width:auto;
+    width: 100%  ;
     font-family: sans-serif;
-    font-weight: 500;
-    font-size: 12pt;
+    font-weight: normal;
+    font-size: 9pt;
 
 }
 
@@ -213,4 +232,14 @@ root {
     font-style: oblique;
     text-decoration: none;
     color: #333399;
+}
+
+/*Showing organization Privileges list*/
+
+.table_privs_headers{
+
+}
+
+.table_privs_contents{
+  
 }
