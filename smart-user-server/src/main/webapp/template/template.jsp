@@ -50,8 +50,8 @@
             <div id="content">
                     <%--<jsp:include page="superadminaccess.jsp"></jsp:include>--%>
                     <%--<jsp:include page="orgsadminaccess.jsp"></jsp:include>--%>
-                    <%--<jsp:include page="enduseraccess.jsp"></jsp:include>--%>
-                    <jsp:include page="${templateContent}"></jsp:include>
+                    <%--<jsp:include page="enduseraccess.jsp"></jsp:include>--%>                    
+                    <jsp:include page="${templateContent}"></jsp:include>                    
                     <%--<jsp:include page="${templateContent2}"></jsp:include>--%>
                     <%--<jsp:include page="OrganizationDetails.jsp"></jsp:include>--%>
 
