@@ -88,7 +88,6 @@ public class OrganizationResource extends AbstractResource {
         ResponseBuilder responseBuilder = Response.ok();
         servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationResource/OrganizationDetails.jsp");
 //        Viewable view = new Viewable("OrganizationDetails", organization, OrganizationResource.class);
-        //Viewable view = new Viewable("/template/template.jsp", organization);
         Viewable view = new Viewable("/template/template.jsp", organization);
         responseBuilder.entity(view);
         return responseBuilder.build();
