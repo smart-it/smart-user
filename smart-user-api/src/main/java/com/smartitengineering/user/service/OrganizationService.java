@@ -37,8 +37,6 @@ public interface OrganizationService {
 
     public void populateOrganization(SecuredObject securedObject) throws Exception;
     
-    public void populateOrganization(Role role) throws Exception;
-
     public void populateOrganization(Privilege privilege) throws Exception;
 
     public void validateOrganization(Organization organization);
