@@ -11,7 +11,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -31,7 +30,7 @@
                         <div style="clear: both">
                             </div>
 
-                <div id="tableheadid">
+                <div class="tableheadname">
                     <label class="tablehead_label"><fmt:message key="org.tablehead1"/></label>
                 </div>
 
@@ -43,15 +42,6 @@
                     <label class="tablehead_label"><fmt:message key="org.tablehead3"/></label>
                 </div>
 
-
-                <div class="tableheadlink">
-                    <label class="tablehead_label"><fmt:message key="org.tablehead4"/></label>
-                </div>
-
-                <div class="tableheadlink">
-                    <label class="tablehead_label"><fmt:message key="org.tablehead5"/></label>
-                </div>
-
                           <div style="clear: both">
                             </div>
 
@@ -60,28 +50,20 @@
 
             <c:forEach var="organization" items="${it}">
                 <div id="individual_row">
-                    <div id="teblecontentid">
-                        <label class="tablecontent_label"><c:out value="${organization.id}" /></label>
+
+                    <div class="teblecontentname">
+                        <a href="orgs/shortname/${organization.uniqueShortName}" target="_blank"><label class="tablecontent_label"><c:out value="${organization.id}" /></label></a>
                     </div>
 
                     <div class="teblecontentname">
-                        <label class="tablecontent_label"><c:out value="${organization.name}" /></label>
+                        <a href="orgs/shortname/${organization.uniqueShortName}" target="_blank"><label class="tablecontent_label"><c:out value="${organization.name}" /></label></a>
                     </div>
 
                     <div class="teblecontentname">
-                        <label class="tablecontent_label"><c:out value="${organization.uniqueShortName}"/></label>
+                        <a href="orgs/shortname/${organization.uniqueShortName}" target="_blank"><label class="tablecontent_label"><c:out value="${organization.uniqueShortName}" /></label></a>
                         <c:set value="${organization.uniqueShortName}" var="uniqueName"></c:set>
 
                     </div>
-
-                    <div class="teblecontentlink">
-                        <a href="orgs/shortname/${organization.uniqueShortName}" ><label class="tablecontent_label">Edit</label></a>
-                    </div>
-
-                    <div class="teblecontentlink">
-                        <a href="javascript: postwith(http://russel:9090/org)" name="del" onclick="submitform()"><label class="tablecontent_label">Delete</label></a>
-                    </div>
-
 
                 </div>
             </c:forEach>
@@ -93,19 +75,14 @@
 
         </div>
 
-
                 <fmt:message key="org.inputlabel1" var="update"/>
 
         
-
-
         <div class="hide" id="create">
 
-
-                    <div id="header_organization" align="center">
+                    <div id="header_organization">
                         <label id="headerogorganization">Organization Entry Form</label>
                     </div>
-
 
                     <div id="form_organizationentry">
 
@@ -121,6 +98,7 @@
 
                             <div class="inner-left"><label>Street Address:</label></div>
                             <div class="inner-right" align="left"><input type="text" name="streetAddress" value="" class="textField"></div>
+
 
                             <div class="inner-left"><label>City:</label></div>
                             <div class="inner-right" align="left"><input type="text" name="city" value="" class="textField"></div>

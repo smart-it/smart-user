@@ -56,7 +56,7 @@ root {
     -webkit-border-radius: 1em;
     border-radius: 1em;
 */
-
+    text-align: center;
     padding-top: 3px;
     padding-bottom: 3px;
     height: 20px;
@@ -144,7 +144,7 @@ root {
 
 
 #showList{
-    width: 100%;
+    width: auto;
 }
 
 #title_of_organization{
@@ -168,8 +168,8 @@ root {
 
     height: 20px;
     background-color: #cbd0c8;
-    padding-top: 10px;
-    padding-bottom: 0px;
+    padding-top: 6px;
+    padding-bottom: 6px;
 }
 
 #individual_row{
@@ -180,12 +180,7 @@ root {
     /*border-color: #24E0FB;*/
 }
 
-#teblecontentid
-{
-    text-align: center;
-    float: left;
-    width: 10%;
-}
+
 .teblecontentname
 {
     text-align: center;
@@ -193,34 +188,16 @@ root {
     width: 30%;
 }
 
-.teblecontentlink
-{
-    text-align: center;
-    float: left;
-    width: 15%;
-}
-#tableheadid
-{
-    text-align: center;
-    float: left;
-    width: 10%;
-}
 .tableheadname
 {
     text-align: center;
     float: left;
     width: 30%;
 }
-.tableheadlink
-{
-    text-align: center;
-    float: left;
-    width: 15%;
-}
 
 .tablehead_label{
     font-family: sans-serif;
-    font-size: 7pt;
+    font-size: 10pt;
     font-weight: bold;
     color:#333366;
 }
@@ -234,12 +211,78 @@ root {
     color: #333399;
 }
 
-/*Showing organization Privileges list*/
+/*Individual Organization Details*/
 
-.table_privs_headers{
-
+#individual_org_details_header{
+  /*margin-left: 110px;*/
+  margin: 0 auto;
+  padding-top: 5px;
+  width: 70%;
+  height: 25px;
+  background-color:#CCCFFF;
 }
 
-.table_privs_contents{
-  
+#individual_org_details_header label{
+  padding-left: 10px;
+  font-family:cursive;
+  font-weight:600;
+  font-size: 10pt;
+  color: #23819C;
+}
+
+#individual_org_details_content{
+  /*margin-left: 110px;*/
+  margin: 0 auto;
+  background-image: url(../images/l.gif);
+  background-repeat:repeat;
+  background-position:top ;
+  width:70%;
+}
+
+.individual_org_label{
+  float: left;
+  width: 40%;
+  padding: 2px 2px 5px 10px;
+  text-align: left;
+  /*border: 1px solid;*/
+}
+
+.individual_org_data{
+  float: left;
+  width: 55%;
+  padding: 2px 2px 5px 0px;
+  /*border: 1px solid;*/
+}
+
+.individual_org_label label{
+
+  font-family:sans-serif;
+  font-style: normal;
+  font-size: 12pt;
+  font-weight: 500;
+  text-decoration: none;
+  /*text-transform: uppercase;*/
+  color: 	#0000FF;
+}
+
+.individual_org_data label{
+  font-family:sans-serif;
+  font-style: oblique;
+  font-size: 12pt;
+  font-weight: 600;
+  color: #FF9966;
+}
+
+.clear{
+  clear: both;
+}
+
+/*MENU*/
+
+#topmenu{
+  /*border: 1px solid;*/
+  text-align: right;
+  height: 25px;
+  background-repeat:repeat-x;
+  background-position: top right;
 }

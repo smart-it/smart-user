@@ -28,10 +28,10 @@ function Orgpageselect()
 }
 
 
-function OnclickActive()
+function getPath()
 {
-    alert("Are you sure??");
-
+   var path = document.location.pathname;
+   return path;
 }
 function submitform()
 {

@@ -48,9 +48,8 @@ body{
 
 #options{
     background: url(../images/bgg.png) repeat;
-    
     width: auto;
-    height: 85px;
+    height: 50px;
 }
 
 #options form{

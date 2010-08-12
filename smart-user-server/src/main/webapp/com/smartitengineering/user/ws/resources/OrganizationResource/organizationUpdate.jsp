@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : OrganizationDetails
     Created on : Jul 24, 2010, 12:55:21 PM
     Author     : russel
@@ -10,56 +10,25 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
-  <div id="topmenu">
-  <a href="javascript: Orgpageselect()">Edit</a>
-  <a href="/orgs/${it.uniqueShortName}/users">UserList</a>
-  </div>
-
-   
-  <div id="showList" class="show">
-
-    <div id="individual_org_details_header"><label><c:out value="${it.name}"></label></c:out></div>
-        
-    <div id="individual_org_details_content">
-
-      <div class="individual_org_label"><label>Organization Name:</label></div>
-      <div class="individual_org_data"><label>${it.name}</label></div>
-      <div class="clear"></div>
-
-      <div class="individual_org_label"><label>Unique Short Name:</label></div>
-      <div class="individual_org_data"><label>${it.uniqueShortName}</label></div>
-      <div class="clear"></div>
-
-      <div class="individual_org_label"><label>Street Address:</label></div>
-      <div class="individual_org_data"><label>${it.address.streetAddress}</label></div>
-      <div class="clear"></div>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link type="text/css" rel="stylesheet" href="/css/organization-style.css">
+        <title><c:out value="${it.name}"></c:out></title>
 
 
-      <div class="individual_org_label"><label>City:</label></div>
-      <div class="individual_org_data"><label>${it.address.city}</label></div>
-      <div class="clear"></div>
 
-      <div class="individual_org_label"><label>State:</label></div>
-      <div class="individual_org_data"><label>${it.address.state}</label></div>
-      <div class="clear"></div>
-
-      <div class="individual_org_label"><label>Country:</label></div>
-      <div class="individual_org_data"><label>${it.address.country}</label></div>
-      <div class="clear"></div>
-
-      <div class="individual_org_label"><label>Zip:</label></div>
-      <div class="individual_org_data"><label>${it.address.zip}</label></div>
-      <div class="clear"></div>
-
-      </div>
-      
-  </div>
+    </head>
+    <body>
+        <%--<h1><c:out value="${it.name}"></c:out></h1>--%>
 
 
-    
-    <div id="create" class="hide">
-      
-      <div id="header_organization"><label id="headerogorganization"><c:out value="${it.name}"></c:out></label></div>
+
+     <div id="create">
+
+        <div id="header_organization" align="center">
+            <label id="headerogorganization"><c:out value="${it.name}"></c:out></label>
+        </div>
 
         <div id="form_organizationentry" align="center">
 
@@ -100,4 +69,8 @@
 
         </div>
 
-    </div>
+     </div>
+
+
+    </body>
+</html>
