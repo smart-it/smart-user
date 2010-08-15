@@ -46,8 +46,7 @@ public class OrganizationResource extends AbstractResource {
     ORGANIZATION_CONTENT_URI_BUILDER = ORGANIZATION_URI_BUILDER.clone();
     try {
       ORGANIZATION_CONTENT_URI_BUILDER.path(OrganizationResource.class.getMethod("getOrganization"));
-    }
-    catch (Exception ex) {
+    } catch (Exception ex) {
       ex.printStackTrace();
       throw new InstantiationError();
     }
@@ -105,18 +104,18 @@ public class OrganizationResource extends AbstractResource {
       organization.setLastModifiedDate(new Date());
 
       Services.getInstance().getOrganizationService().update(organization);
-      organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(newOrganization.
-          getUniqueShortName());
+      organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(newOrganization.getUniqueShortName());
       responseBuilder = Response.ok(getOrganizationFeed());
-    }
-    catch (Exception ex) {
+    } catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
   }
 
   @POST
-  public Response post(@HeaderParam("Content-type") String contentType, String message) {
+  @Path("/update")
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  public Response updatePost(@HeaderParam("Content-type") String contentType, String message) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
 
     if (StringUtils.isBlank(message)) {
@@ -128,8 +127,7 @@ public class OrganizationResource extends AbstractResource {
     if (StringUtils.isBlank(contentType)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
       isHtmlPost = false;
-    }
-    else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+    } else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
       isHtmlPost = true;
       try {
@@ -139,50 +137,23 @@ public class OrganizationResource extends AbstractResource {
         final String realMsg = message.substring(startIndex);
         //Decode the message to ignore the form encodings and make them human readable
         message = URLDecoder.decode(realMsg, "UTF-8");
-      }
-      catch (UnsupportedEncodingException ex) {
+      } catch (UnsupportedEncodingException ex) {
         ex.printStackTrace();
       }
-    }
-    else {
+    } else {
       contentType = contentType;
       isHtmlPost = false;
     }
 
     if (isHtmlPost) {
-      Organization organization = getObjectFromContent(message);
+      Organization newOrganization = getObjectFromContent(message);
       try {
-        Services.getInstance().getOrganizationService().update(organization);
-        organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organization.
-            getUniqueShortName());
+        Services.getInstance().getOrganizationService().update(newOrganization);
+        //organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organization.getUniqueShortName());
         responseBuilder = Response.ok(getOrganizationFeed());
-      }
-      catch (Exception ex) {
+      } catch (Exception ex) {
         responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
       }
-//        Map<String, String> keyValueMap = new HashMap<String, String>();
-//
-//        String[] keyValuePairs = message.split("&");
-//
-//        for(int i=0; i<keyValuePairs.length; i++){
-//
-//          String[] keyValuePair = keyValuePairs[i].split("=");
-//          keyValueMap.put(keyValuePair[0], keyValuePair[1]);
-//        }
-//
-//        Organization newOrganization = new Organization();
-//        newOrganization.setId( Integer.valueOf(keyValueMap.get("id")));
-//        newOrganization.setName(keyValueMap.get("name"));
-//        newOrganization.setUniqueShortName(keyValueMap.get("uniqueShortName"));
-//        newOrganization.setVersion(Integer.valueOf(keyValueMap.get("version")));
-//
-//        Address address = new Address();
-//        address.setCity(keyValueMap.get("city"));
-//        address.setCountry(keyValueMap.get("country"));
-//        address.setState(keyValueMap.get("state"));
-//        address.setZip(keyValueMap.get("zip"));
-//
-//        newOrganization.setAddress(address);
     }
     return responseBuilder.build();
   }
@@ -232,110 +203,21 @@ public class OrganizationResource extends AbstractResource {
     return newOrganization;
   }
 
-//    @POST
-//    public Response updatePost(@HeaderParam("Content-type") String contentType, String message){
-//      ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-//
-//      if(StringUtils.isBlank(message)){
-//        responseBuilder = Response.status(Status.BAD_REQUEST);
-//        responseBuilder.build();
-//      }
-//
-//      final boolean isHtmlPost;
-//      if (StringUtils.isBlank(contentType)) {
-//        contentType = MediaType.APPLICATION_OCTET_STREAM;
-//        isHtmlPost = false;
-//      }
-//      else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
-//        contentType = MediaType.APPLICATION_OCTET_STREAM;
-//        isHtmlPost = true;
-//        try {
-//          //Will search for the first '=' if not found will take the whole string
-//          final int startIndex = 0;//message.indexOf("=") + 1;
-//          //Consider the first '=' as the start of a value point and take rest as value
-//          final String realMsg = message.substring(startIndex);
-//          //Decode the message to ignore the form encodings and make them human readable
-//          message = URLDecoder.decode(realMsg, "UTF-8");
-//        }
-//        catch (UnsupportedEncodingException ex) {
-//          ex.printStackTrace();
-//        }
-//      }
-//      else {
-//        contentType = contentType;
-//        isHtmlPost = false;
-//      }
-//
-//      if (isHtmlPost) {
-//
-//        Map<String, String> keyValueMap = new HashMap<String, String>();
-//
-//        String[] keyValuePairs = message.split("&");
-//
-//        for(int i=0; i<keyValuePairs.length; i++){
-//
-//          String[] keyValuePair = keyValuePairs[i].split("=");
-//          keyValueMap.put(keyValuePair[0], keyValuePair[1]);
-//        }
-//
-//        Organization newOrganization = new Organization();
-//        newOrganization.setId( Integer.valueOf(keyValueMap.get("id")));
-//        newOrganization.setName(keyValueMap.get("name"));
-//        newOrganization.setUniqueShortName(keyValueMap.get("uniqueShortName"));
-//        newOrganization.setVersion(Integer.valueOf(keyValueMap.get("version")));
-//
-//        Address address = new Address();
-//        address.setCity(keyValueMap.get("city"));
-//        address.setCountry(keyValueMap.get("country"));
-//        address.setState(keyValueMap.get("state"));
-//        address.setZip(keyValueMap.get("zip"));
-//
-//        newOrganization.setAddress(address);
-//
-//        try {
-//
-//          Organization oldOrganization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(uniqueShortName);
-//
-//          oldOrganization.setName(newOrganization.getName());
-//
-//          // address setting
-//          oldOrganization.getAddress().setCity(newOrganization.getAddress().getCity());
-//          oldOrganization.getAddress().setCountry(newOrganization.getAddress().getCountry());
-//          oldOrganization.getAddress().setState(newOrganization.getAddress().getState());
-//          oldOrganization.getAddress().setStreetAddress(newOrganization.getAddress().getStreetAddress());
-//          oldOrganization.getAddress().setZip(newOrganization.getAddress().getZip());
-//
-//
-//
-//          Services.getInstance().getOrganizationService().update(oldOrganization);
-//          organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organization.
-//              getUniqueShortName());
-//          responseBuilder = Response.ok(getOrganizationFeed());
-//        }
-//        catch (Exception ex) {
-//          responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
-//          ex.printStackTrace();
-//        }
-//        return responseBuilder.build();
-//      }
-//      return responseBuilder.build();
-//    }
-//
-//    @POST
-//    @Produces(MediaType.APPLICATION_ATOM_XML)
-//    public Response deletePost(){
-//      Services.getInstance().getOrganizationService().delete(organization);
-//        ResponseBuilder responseBuilder = Response.ok();
-//        return responseBuilder.build();
-//    }
+  @POST
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  public Response deletePost() {
+    Services.getInstance().getOrganizationService().delete(organization);
+    ResponseBuilder responseBuilder = Response.ok();
+    return responseBuilder.build();
+  }
+
   @DELETE
   public Response delete() {
     ResponseBuilder responseBuilder = Response.ok();
 
     try {
       Services.getInstance().getOrganizationService().delete(organization);
-    }
-    catch (Exception ex) {
+    } catch (Exception ex) {
       ex.printStackTrace();
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }

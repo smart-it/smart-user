@@ -43,8 +43,7 @@ public class RoleResource extends AbstractResource {
     ROLE_CONTENT_URI_BUILDER = ROLE_URI_BUILDER.clone();
     try {
       ROLE_CONTENT_URI_BUILDER.path(RoleResource.class.getMethod("getRole"));
-    }
-    catch (Exception ex) {
+    } catch (Exception ex) {
       throw new InstantiationError();
     }
   }
@@ -80,8 +79,7 @@ public class RoleResource extends AbstractResource {
 
       Services.getInstance().getRoleService().update(role);
       responseBuilder = Response.ok(getRoleFeed());
-    }
-    catch (Exception ex) {
+    } catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -131,8 +129,7 @@ public class RoleResource extends AbstractResource {
     if (StringUtils.isBlank(contentType)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
       isHtmlPost = false;
-    }
-    else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+    } else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
       isHtmlPost = true;
       try {
@@ -142,48 +139,28 @@ public class RoleResource extends AbstractResource {
         final String realMsg = message.substring(startIndex);
         //Decode the message to ignore the form encodings and make them human readable
         message = URLDecoder.decode(realMsg, "UTF-8");
-      }
-      catch (UnsupportedEncodingException ex) {
+      } catch (UnsupportedEncodingException ex) {
         ex.printStackTrace();
       }
-    }
-    else {
+    } else {
       contentType = contentType;
       isHtmlPost = false;
     }
 
     if (isHtmlPost) {
-      Map<String, String> keyValueMap = new HashMap<String, String>();
-
-      String[] keyValuePairs = message.split("&");
-
-      for (int i = 0; i < keyValuePairs.length; i++) {
-
-        String[] keyValuePair = keyValuePairs[i].split("=");
-        keyValueMap.put(keyValuePair[0], keyValuePair[1]);
-      }
-
-      Role newRole = new Role();
-      newRole.setShortDescription(keyValueMap.get("shortDescription"));
-      newRole.setDisplayName(keyValueMap.get("displayName"));
-
+      Role newRole = getRoleFromContent(message);
       try {
         Role oldRole = Services.getInstance().getRoleService().getRoleByName(role.getName());
 
         oldRole.setDisplayName(newRole.getDisplayName());
         oldRole.setShortDescription(newRole.getShortDescription());
         oldRole.setLastModifiedDate(new Date());
-
         Services.getInstance().getRoleService().update(oldRole);
-
-
-      }
-      catch (Exception ex) {
+      } catch (Exception ex) {
         responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
         ex.printStackTrace();
       }
     }
-
     return responseBuilder.build();
   }
 
@@ -193,10 +170,29 @@ public class RoleResource extends AbstractResource {
     ResponseBuilder responseBuilder = Response.ok();
     try {
       Services.getInstance().getRoleService().delete(role);
-    }
-    catch (Exception ex) {
+    } catch (Exception ex) {
       ex.printStackTrace();
     }
     return responseBuilder.build();
+  }
+
+  private Role getRoleFromContent(String message) {
+    Role newRole = new Role();
+    Map<String, String> keyValueMap = new HashMap<String, String>();
+
+    String[] keyValuePairs = message.split("&");
+
+    for (int i = 0; i < keyValuePairs.length; i++) {
+
+      String[] keyValuePair = keyValuePairs[i].split("=");
+      keyValueMap.put(keyValuePair[0], keyValuePair[1]);
+    }
+    if (keyValueMap.get("shortDescription")!=null) {
+      newRole.setShortDescription(keyValueMap.get("shortDescription"));
+    }
+    if (keyValueMap.get("displayName")!=null) {
+      newRole.setDisplayName(keyValueMap.get("displayName"));
+    }
+    return newRole;
   }
 }
