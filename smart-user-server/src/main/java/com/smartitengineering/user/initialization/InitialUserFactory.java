@@ -69,12 +69,10 @@ public class InitialUserFactory {
 
     Role role = new Role();
     role.setName("ROLE_SUPER_ADMIN");
-    role.setDisplayName("Super admin role");
-    role.setParentOrganization(organization);
+    role.setDisplayName("Super admin role");    
     role.setShortDescription("The global role for super admin. It will be applied to every url coming to smart user system");
-    roleService.create(role);
-    
-    role = roleService.getRoleByOrganizationAndRoleName(organization.getUniqueShortName(), role.getName());
+    roleService.create(role);    
+    role = roleService.getRoleByName(role.getName());
 
     Set<Role> roles = new HashSet<Role>();
     roles.add(role);
