@@ -66,3 +66,41 @@ function postwith (to) {
 //    });
 //   });
 //}
+
+
+function isEmpty() {
+
+
+//change "field1, field2 and field3" to your field names
+strfield1 = document.forms[0].name.value
+strfield2 = document.forms[0].uniqueShortName.value
+strfield3 = document.forms[0].country.value
+
+  //name field
+    if (strfield1 == "" || strfield1 == null || !isNaN(strfield1) || strfield1.charAt(0) == ' ')
+    {
+    alert("\"name\" is a mandatory field.\nPlease amend and retry.")
+    return false;
+    }
+
+  //url field
+    if (strfield2 == "" || strfield2 == null || strfield2.charAt(0) == ' ')
+    {
+    alert("\"Unique Short name\" is a mandatory field.\nPlease amend and retry.")
+    return false;
+    }
+
+  //title field
+    if (strfield3 == "" || strfield3 == null || strfield3.charAt(0) == ' ')
+    {
+    alert("\"country\" is a mandatory field.\nPlease amend and retry.")
+    return false;
+    }
+    return true;
+}
+
+function onmouse_over()
+{
+    document.getElementById(submit).onfocus();
+        
+}
