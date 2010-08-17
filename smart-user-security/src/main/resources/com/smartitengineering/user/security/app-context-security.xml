@@ -22,7 +22,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <sec:http-basic />
   </sec:http>
     
-  <bean id="accessDecisionManager" class="org.springframework.security.vote.UnanimousBased">
+  <bean id="accessDecisionManager" class="com.smartitengineering.user.security.SmartAccessDecisionManager">
     <property name="allowIfAllAbstainDecisions" value="true"/>
     <property name="decisionVoters">
       <list>
