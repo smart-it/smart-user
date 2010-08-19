@@ -9,6 +9,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
   "http://www.w3.org/TR/html4/loose.dtd">
 
+<%--Uzzal--%>
+
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -22,56 +24,6 @@
 
     <script type="text/javascript" src="/script/javascript_1.js"></script>
     <script type="text/javascript" src="/script/jquery-1.4.2.js"></script>
-    <script type="text/javascript">
-          
-      $(document).ready(function(){
-        $.ajax({
-          type: "GET",
-          url: "http://localhost:9090/orgs",
-          dataType: "xml",
-          success: function(xml) {
-
-            var contentId="";
-            var contentTitle="";
-
-            $(xml).find('entry').each(function(){
-              var id = $(this).find('id').text();
-      <%--alert(id)--%>
-                var title = $(this).find('title').text();
-      <%--alert(title)--%>
-                contentId +=  id ;
-                contentTitle += title;
-
-<%--      		$('<div class="items" id="link_'+id+'"></div>').html('<a href="'+url+'">'+title+'</a>').appendTo('#page-wrap');
-    $(this).find('entry').each(function(){
-      var brief = $(this).find('brief').text();
-      var l = $(this).find('long').text();
-      $('<div class="brief"></div>').html(brief).appendTo('#link_'+id);
-      $('<div class="long"></div>').html(l).appendTo('#link_'+id);
-    });--%>
-            });
-
-            $("#tableContentId").html(contentId);
-            $("#tableContentTitle").html(contentTitle);
-               
-            var linkvalue="";
-
-            $(xml).find('link').each(function(){
-              var nextlink = $(this).attr("rel");
-              if(nextlink=='next')
-              {
-                var href = $(this).attr("href");
-                linkvalue += "<a href=\""+href+"\">"+href+"</a>";
-                $("#teblecontentlink").html(linkvalue);
-              }
-            })
-
-          }
-
-        });
-      });
-
-    </script>
 
     <script type="text/javascript">
 
@@ -133,3 +85,4 @@
 
   </body>
 </html>
+<%--Uzzal--%>

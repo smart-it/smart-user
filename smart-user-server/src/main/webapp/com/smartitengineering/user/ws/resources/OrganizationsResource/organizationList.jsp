@@ -13,7 +13,7 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
   "http://www.w3.org/TR/html4/loose.dtd">
-
+<%--Uzzalllllll--%>
 <div id="rightmenu">
   <div id="rightmenu_header">Organization-Creation</div>
   <div id="rightmenu_body">
@@ -115,3 +115,4 @@
 
   </div>
 </div>
+      <%--uzzallllll--%>
