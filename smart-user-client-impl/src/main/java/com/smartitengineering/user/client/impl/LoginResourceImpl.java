@@ -5,6 +5,7 @@
 
 package com.smartitengineering.user.client.impl;
 
+import com.smartitengineering.user.client.api.AuthorizationResource;
 import com.smartitengineering.user.client.api.LoginResource;
 import com.smartitengineering.user.client.api.OrganizationResource;
 import com.smartitengineering.user.client.api.OrganizationsResource;
@@ -72,5 +73,15 @@ class LoginResourceImpl extends AbstractClientImpl implements LoginResource{
   public Object refresh() {
     throw new UnsupportedOperationException("Not supported yet.");
   }
+
+  //Added by Subrata
+
+  @Override
+  public AuthorizationResource getAuthorizationResource(String username, String organizationName, String oid,
+                                                        Integer permission) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  //End by Subrata
 
 }
