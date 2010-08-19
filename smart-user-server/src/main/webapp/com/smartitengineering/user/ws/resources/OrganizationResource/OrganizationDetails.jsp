@@ -39,7 +39,8 @@
     <div class=""><label><fmt:message key="org.inputlabel5"/></label></div><div class=""><label>${it.address.state}</label></div>
     <div class=""><label><fmt:message key="org.inputlabel6"/></label></div><div class=""><label>${it.address.country}</label></div>
     <div class=""><label><fmt:message key="org.inputlabel7"/></label></div><div class=""><label>${it.address.zip}</label></div>
-    <div><a href="javascript: Orgpageselect()">Edit</a></div>
+    <div><a href="javascript: Orgpageselect()"><fmt:message key="org.tablehead4"/></a></div>
+    <div><a href="javascript: Orgpageselect()">Delete</a></div>
     </div>
     
    </div>

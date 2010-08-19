@@ -8,14 +8,27 @@ package com.smartitengineering.user.ws.resources;
  *
  * @author russel
  */
+
+
+
+import com.smartitengineering.user.domain.Address;
+
 import com.smartitengineering.user.domain.Organization;
 import com.sun.jersey.api.view.Viewable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.Map;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -33,6 +46,7 @@ import org.apache.abdera.Abdera;
 import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
+import org.apache.commons.lang.StringUtils;
 
 @Path("/orgs")
 //@Path("/privs")
@@ -60,10 +74,13 @@ public class OrganizationsResource extends AbstractResource {
             ex.printStackTrace();
         }
     }
-    @QueryParam("name")
-    private String nameLike;
-//    @QueryParam("author_nick")
-//    private String authorNickName;
+    
+//    @QueryParam("name")
+//    private String nameLike;
+
+    @QueryParam("shortname")
+    private String uniqueShortName;
+
     @QueryParam("count")
     private Integer count;
 
@@ -75,10 +92,43 @@ public class OrganizationsResource extends AbstractResource {
     }
 
     @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path("/before/{beforeShortName}")
+    public Response getBeforeHtml(@PathParam("beforeShortName") String beforeShortName){
+      ResponseBuilder responseBuilder = Response.ok();
+      if(count == null)
+            count = 10;
+       Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
+           null, beforeShortName, true, count);
+
+       servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
+        Viewable view = new Viewable("/template/template.jsp", organizations);
+        responseBuilder.entity(view);
+        return responseBuilder.build();
+    }
+
+
+    @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
     @Path("/after/{afterShortName}")
     public Response getAfter(@PathParam("afterShortName") String afterShortName) {
         return get(afterShortName, false);
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path("/after/{afterShortName}")
+    public Response getAfterHtml(@PathParam("afterShortName") String afterShortName){
+
+      ResponseBuilder responseBuilder = Response.ok();
+      if(count == null)
+            count = 10;
+       Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
+           null, afterShortName, true, count);
+       servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
+        Viewable view = new Viewable("/template/template.jsp", organizations); 
+        responseBuilder.entity(view);
+        return responseBuilder.build();
     }
 
     @GET
@@ -91,17 +141,29 @@ public class OrganizationsResource extends AbstractResource {
     @Produces(MediaType.TEXT_HTML)
     public Response getHtml() {
         ResponseBuilder responseBuilder = Response.ok();
-        Collection<Organization> organizations = Services.getInstance().getOrganizationService().getAllOrganization();
+
+        if(count == null)
+            count = 10;
+
+        Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
+           uniqueShortName, uniqueShortName, true, count);
         servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
 //        servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationPrivilegeResource/OrgPrivilegeList.jsp");
-        Viewable view = new Viewable("/template/template.jsp", organizations);
+        Viewable view = new Viewable("/template/template.jsp", organizations);       
+        
         responseBuilder.entity(view);
         return responseBuilder.build();
     }
 
 //    @GET
 //    @Produces(MediaType.APPLICATION_ATOM_XML)
-    public Response get(String organizationName, boolean isBefore) {
+
+    public Response get(String organizationName, boolean isBefore)
+    {
+      if (count == null) {
+        count = 10;
+      }
+
         ResponseBuilder responseBuilder = Response.ok();
 
         // create a new atom feed
@@ -113,8 +175,12 @@ public class OrganizationsResource extends AbstractResource {
         parentResourceLink.setRel("root");
         atomFeed.addLink(parentResourceLink);
 
-        // get the organizations accoring to the query
-        Collection<Organization> organizations = Services.getInstance().getOrganizationService().getAllOrganization();
+        // get the organizations accoring to the query        
+        //Collection<Organization> organizations = Services.getInstance().getOrganizationService().getAllOrganization();
+//        Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
+//            organizationName, uniqueShortName, isBefore, count);
+        Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
+            "", organizationName, isBefore, count);
 
         // for testing purpose we manually add organization to the list.
 //        List<Organization> serviceOrganization = new ArrayList<Organization>();
@@ -137,7 +203,9 @@ public class OrganizationsResource extends AbstractResource {
             Organization lastOrganization = organizationList.get(0);
 
 
-            for (String key : queryParam.keySet()) {
+                        
+            for(String key:queryParam.keySet()){
+
                 final Object[] values = queryParam.get(key).toArray();
                 nextUri.queryParam(key, values);
                 previousUri.queryParam(key, values);
@@ -196,4 +264,97 @@ public class OrganizationsResource extends AbstractResource {
         }
         return responseBuilder.build();
     }
+
+  
+
+    private Organization getObjectFromContent(String message){
+      
+        Map<String, String> keyValueMap = new HashMap<String, String>();
+
+        String[] keyValuePairs = message.split("&");
+
+        for(int i=0; i<keyValuePairs.length; i++){
+
+          String[] keyValuePair = keyValuePairs[i].split("=");
+          keyValueMap.put(keyValuePair[0], keyValuePair[1]);
+        }
+
+        Organization newOrganization = new Organization();
+
+        if(keyValueMap.get("id") != null){
+          newOrganization.setId(Integer.valueOf(keyValueMap.get("id")));
+        }
+
+        if(keyValueMap.get("name") != null){
+          newOrganization.setName(keyValueMap.get("name"));
+        }
+        if(keyValueMap.get("uniqueShortName") != null){
+          newOrganization.setUniqueShortName(keyValueMap.get("uniqueShortName"));
+        }
+      
+        
+
+        Address address = new Address();
+
+        if(keyValueMap.get("city") != null){
+          address.setCity(keyValueMap.get("city"));
+        }
+
+        if(keyValueMap.get("country") != null){
+          address.setCountry(keyValueMap.get("country"));
+        }
+
+        if(keyValueMap.get("state")!= null){
+          address.setState(keyValueMap.get("state"));
+        }
+        if(keyValueMap.get("zip") != null){
+          address.setZip(keyValueMap.get("zip"));
+        }
+
+        return newOrganization;
+    }
+
+    @POST
+    public Response post(@HeaderParam("Content-type")String contentType, String message){
+      ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+
+      if(StringUtils.isBlank(message)){
+        responseBuilder = Response.status(Status.BAD_REQUEST);
+        responseBuilder.build();
+      }
+
+      final boolean isHtmlPost;
+      if (StringUtils.isBlank(contentType)) {
+        contentType = MediaType.APPLICATION_OCTET_STREAM;
+        isHtmlPost = false;
+      }
+      else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+        contentType = MediaType.APPLICATION_OCTET_STREAM;
+        isHtmlPost = true;
+        try {
+          //Will search for the first '=' if not found will take the whole string
+          final int startIndex = 0;//message.indexOf("=") + 1;
+          //Consider the first '=' as the start of a value point and take rest as value
+          final String realMsg = message.substring(startIndex);
+          //Decode the message to ignore the form encodings and make them human readable
+          message = URLDecoder.decode(realMsg, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex) {
+          ex.printStackTrace();
+        }
+      }
+      else {
+        contentType = contentType;
+        isHtmlPost = false;
+      }
+
+      if(isHtmlPost){
+
+        Organization newOrganization = getObjectFromContent(message);
+        Services.getInstance().getOrganizationService().save(newOrganization);
+
+        
+    }
+      return responseBuilder.build();
+  }
 }

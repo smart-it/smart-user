@@ -7,8 +7,14 @@ package com.smartitengineering.user.client.api;
 
 /**
  *
- * @author russel
+ * @author modhu7
  */
-public interface OrganizationRoleResource {
+public interface Organization {
+
+  public String getName();
+
+  public String getUniqueShortName();
+
+  public Address getAddress();
 
 }

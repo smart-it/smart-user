@@ -173,7 +173,7 @@
 
         <div class="hide"  id="create">
 
-            <form action="http://russel:9090/users" method="post" accept="application/json" enctype="" id="userform">
+            <form action="http://localhost:9090/users" method="post" accept="application/json" enctype="" id="userform">
 
                 <div id="inner-left-1" align="right"><label><fmt:message key="org.usrinput1"/></label></div><div id="inner-right-1" align="left"><input type="text" name="name" size="40" value=""></div>
 

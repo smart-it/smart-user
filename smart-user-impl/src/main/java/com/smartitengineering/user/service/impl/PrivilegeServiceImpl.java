@@ -6,6 +6,7 @@
 package com.smartitengineering.user.service.impl;
 
 import com.smartitengineering.dao.common.queryparam.FetchMode;
+import com.smartitengineering.dao.common.queryparam.Order;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl;
@@ -17,10 +18,14 @@ import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.PrivilegeService;
 import com.smartitengineering.user.service.UserService;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleStateException;
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -116,6 +121,50 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
         return super.getList(qp);
     }
 
+    public Collection<Privilege> getPrivilegess(String nameLike, String name, boolean isSmallerThan, int count){
+
+      List<QueryParameter> params = new ArrayList<QueryParameter>();
+
+      if(StringUtils.isNotBlank(nameLike)){
+        final QueryParameter orgNameLikeParam =   QueryParameterFactory.getNestedParametersParam("name",
+                                                                                               FetchMode.EAGER,
+                                                                                               QueryParameterFactory.getStringLikePropertyParam("name", nameLike));
+        params.add(orgNameLikeParam);
+      }
+      else{
+        params.add(QueryParameterFactory.getNestedParametersParam("username", FetchMode.EAGER));
+      }
+
+      if(StringUtils.isNotBlank(name)){
+        if(isSmallerThan){
+          params.add(QueryParameterFactory.getLesserThanPropertyParam("username", name));
+        }else{
+          params.add(QueryParameterFactory.getGreaterThanPropertyParam("username", name));
+        }
+      }
+
+      params.add(QueryParameterFactory.getMaxResultsParam(count));
+      params.add(QueryParameterFactory.getOrderByParam("id", Order.DESC));
+      params.add(QueryParameterFactory.getDistinctPropProjectionParam("id"));
+
+      List<Integer> userIDs = getOtherList(params);
+
+      if (userIDs != null && !userIDs.isEmpty()) {
+      List<Privilege> privileges = new ArrayList<Privilege>(super.getByIds(userIDs));
+      Collections.sort(privileges, new Comparator<Privilege>(){
+
+        @Override
+        public int compare(Privilege o1, Privilege o2) {
+          return o1.getId().compareTo(o2.getId()) * -1;
+        }
+      });
+      return privileges;
+    }
+    else {
+      return Collections.emptySet();
+    }
+    }
+
     public void validatePrivilege(Privilege privilege){
         if (privilege.getId() == null) {
             Integer count = (Integer) super.getOther(
@@ -159,15 +208,6 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
 
     @Override
     public void populatePrivilege(Role role)throws Exception {
-        List<Integer> privilegeIDs = role.getPrivilegeIDs();
-        if(privilegeIDs != null && ! privilegeIDs.isEmpty()){
-            Set<Privilege> privileges = getByIds(privilegeIDs);
-
-            if(privileges == null || privilegeIDs.size() != privileges.size()){
-                throw new Exception("Privilege not found");
-            }
-
-            role.setPrivileges(privileges);
-        }
+       throw new UnsupportedOperationException("Not supported yet.");
     }
 }

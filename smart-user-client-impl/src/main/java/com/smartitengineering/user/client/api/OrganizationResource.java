@@ -5,20 +5,24 @@
 
 package com.smartitengineering.user.client.api;
 
-import com.smartitengineering.user.domain.User;
+import com.smartitengineering.user.resource.api.WritableResource;
 
 /**
  *
  * @author russel
  */
-public interface OrganizationResource {
+public interface OrganizationResource extends WritableResource<OrganizationResource>{
 
-  public OrganizationUsersResource getUsersResource();
+  public UsersResource getUsersResource();
 
-  public OrganizationSecuredObjectsResource getSecuredObject();
+  public SecuredObjectsResource getSecuredObjectsResource();
 
-  public void update(User user);
+  public PrivilegesResource getPrivilegesResource();
 
-  public void delete(User user);
+  //public RolesResource getRolesResource();
+
+  public Organization getOrganization();
+
+  public OrganizationsResource getOrganizationsResource();
 
 }

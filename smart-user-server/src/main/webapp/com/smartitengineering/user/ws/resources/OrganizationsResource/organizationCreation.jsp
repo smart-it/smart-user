@@ -13,19 +13,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>create organization</title>
 
-<%--           <script type="text/javascript" src="jquery-1.4.2.js"></script>
-           <script type="text/javascript" src="json2.js"></script>
-           <script type="text/javascript" src="jquery.form.js"></script>
-
-             <script type="text/javascript">
-        // wait for the DOM to be loaded
-            $(document).ready(function() {
-            // bind 'myForm' and provide a simple callback function
-            $('#organizationform').ajaxForm(function() {
-                alert("Thank you for your comment!");
-            });
-            });
-            </script>--%>
 
            <LINK REL=StyleSheet href="../css/organization-style.css" TYPE="text/css" MEDIA=screen>
 

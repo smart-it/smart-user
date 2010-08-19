@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.user.security.acl.impl;
+package com.smartitengineering.user.security;
 
 import org.springframework.security.ConfigAttribute;
 import org.springframework.security.acls.Permission;
