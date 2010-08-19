@@ -12,10 +12,13 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -35,49 +38,87 @@ import org.apache.commons.lang.StringUtils;
 public class LoginResource extends AbstractResource {
 
   static final UriBuilder LOGIN_URI_BUILDER = UriBuilder.fromResource(LoginResource.class);
-  @FormParam("user")
-  private String userName;
-  @FormParam("password")
-  private String password;
+  
+  @QueryParam("username")
+  private String userNameWithOrganizationName;
+//  @FormParam("user")
+//  private String userName;
+//  @FormParam("password")
+//  private String password;
 
   public LoginResource() {
   }
 
-  @POST
-  public Response post(@HeaderParam("Content-type") String contentType) {
+  @GET
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  public Response get() {
 
+    System.out.println("Inside Login Resource");
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+
+    Feed atomFeed = getFeed("Login Resource", new Date());
+
+        Link organizationsLink = Abdera.getNewFactory().newLink();
+        organizationsLink.setHref(OrganizationsResource.ORGANIZATION_URI_BUILDER.build().toString());
+        organizationsLink.setRel("Organizations");
+        atomFeed.addLink(organizationsLink);
+
+        User user = Services.getInstance().getUserService().getUserByUsername(userNameWithOrganizationName);
+        String userName = user.getUsername();
+        String shortName = user.getOrganization().getUniqueShortName();
+
+        Link UserLink = Abdera.getNewFactory().newLink();
+        UserLink.setHref(OrganizationUserResource.USER_URI_BUILDER.build(shortName,userName).toString());
+        UserLink.setRel("User");
+        atomFeed.addLink(UserLink);
+
+
+        Link organizationLink = Abdera.getNewFactory().newLink();
+        organizationLink.setHref(OrganizationResource.ORGANIZATION_URI_BUILDER.build(shortName).toString());
+        organizationLink.setRel("Organization");
+        atomFeed.addLink(organizationLink);
+
+        Link usersLink = Abdera.getNewFactory().newLink();
+        usersLink.setHref(OrganizationUsersResource.ORGANIZATION_USERS_URI_BUILDER.build(shortName).toString());
+        usersLink.setRel("Users");
+        atomFeed.addLink(usersLink);
+
+        responseBuilder.entity(atomFeed);
+
+        return responseBuilder.build();
 //    if (StringUtils.isBlank(message)) {
 //      responseBuilder = Response.status(Status.BAD_REQUEST);
 //      return responseBuilder.build();
 //    }
 
-    final boolean isHtmlPost;
-    if (StringUtils.isBlank(contentType)) {
-      contentType = MediaType.APPLICATION_OCTET_STREAM;
-      isHtmlPost = false;
-    }
-    else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
-      contentType = MediaType.APPLICATION_OCTET_STREAM;
-      isHtmlPost = true;
-//      try {
-//        //Will search for the first '=' if not found will take the whole string
-//        final int startIndex = 0;//message.indexOf("=") + 1;
-//        //Consider the first '=' as the start of a value point and take rest as value
-//        final String realMsg = message.substring(startIndex);
-//        //Decode the message to ignore the form encodings and make them human readable
-//        message = URLDecoder.decode(realMsg, "UTF-8");
-//      }
-//      catch (UnsupportedEncodingException ex) {
-//        ex.printStackTrace();
-//      }
-    }
-    else {
-      contentType = contentType;
-      isHtmlPost = false;
-    }
+//    final boolean isHtmlPost;
+//    if (StringUtils.isBlank(contentType)) {
+//      contentType = MediaType.APPLICATION_OCTET_STREAM;
+//      isHtmlPost = false;
+//    }
+//    else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+//      contentType = MediaType.APPLICATION_OCTET_STREAM;
+//      isHtmlPost = true;
+////      try {
+////        //Will search for the first '=' if not found will take the whole string
+////        final int startIndex = 0;//message.indexOf("=") + 1;
+////        //Consider the first '=' as the start of a value point and take rest as value
+////        final String realMsg = message.substring(startIndex);
+////        //Decode the message to ignore the form encodings and make them human readable
+//
+////        message = URLDecoder.decode(realMsg, "UTF-8");
+//
+////      }
+////      catch (UnsupportedEncodingException ex) {
+////        ex.printStackTrace();
+////      }
+//    }
+//    else {
+//      contentType = contentType;
+//      isHtmlPost = false;
+//    }
 
-    if (isHtmlPost) {
+    //if (isHtmlPost) {
 
 //      String username;
 //      String password;
@@ -103,39 +144,17 @@ public class LoginResource extends AbstractResource {
 //        password = "";
 //      }
 
-      if (Services.getInstance().getAuthorizationService().login(userName, password)) {
-
-        Feed atomFeed = getFeed("Login Resource", new Date());
-        Link usersLink = Abdera.getNewFactory().newLink();
-        usersLink.setHref(UsersResource.USERS_URI_BUILDER.build().toString());
-        usersLink.setRel("Users");
-        atomFeed.addLink(usersLink);
-        Link organizationsLink = Abdera.getNewFactory().newLink();
-        organizationsLink.setHref(OrganizationsResource.ORGANIZATION_URI_BUILDER.build().toString());
-        organizationsLink.setRel("Organizations");
-        atomFeed.addLink(organizationsLink);
-
-        Link UserLink = Abdera.getNewFactory().newLink();
-        organizationsLink.setHref(UserResource.USER_URI_BUILDER.build(userName).toString());
-        organizationsLink.setRel("User");
-        atomFeed.addLink(UserLink);
-
-        User user = Services.getInstance().getUserService().getUserByUsername(userName);
-        String shortName = user.getOrganization().getUniqueShortName();
-
-        Link organizationLink = Abdera.getNewFactory().newLink();
-        organizationLink.setHref(OrganizationResource.ORGANIZATION_URI_BUILDER.build(shortName).toString());
-        organizationLink.setRel("Organization");
-        atomFeed.addLink(organizationLink);
-        responseBuilder.entity(atomFeed);        
-        return responseBuilder.status(Status.OK).build();
-      }
-      else {
-        return responseBuilder.status(Status.UNAUTHORIZED).build();
-      }
-
-    }
-    return responseBuilder.build();
+//      if (Services.getInstance().getAuthorizationService().login(userName, password)) {
+//      if (true) {
+//
+//        return responseBuilder.status(Status.OK).build();
+//      }
+//      else {
+//        return responseBuilder.status(Status.UNAUTHORIZED).build();
+//      }
+//
+//    }
+//    return responseBuilder.build();
 
   }
 }
