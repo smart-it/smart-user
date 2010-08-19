@@ -10,6 +10,8 @@ import java.util.Date;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -75,6 +77,7 @@ public class OrganizationSecuredObjectResource extends AbstractResource{
             if(securedObject.getParentOrganizationID() == null){
                 throw new Exception("No parent Organization");
             }
+
             Services.getInstance().getOrganizationService().populateOrganization(securedObject);
             Services.getInstance().getSecuredObjectService().save(newSecuredObject);
             //newSecuredObject = Services.getInstance().getSecuredObjectService().getByObjectID(newSecuredObject.getObjectID());
@@ -86,10 +89,18 @@ public class OrganizationSecuredObjectResource extends AbstractResource{
         return responseBuilder.build();
     }
 
+    
+
+
     @DELETE
     public Response delete() {
+      ResponseBuilder responseBuilder = Response.ok();
+      try{
         Services.getInstance().getSecuredObjectService().delete(securedObject);
-        ResponseBuilder responseBuilder = Response.ok();
+      }catch(Exception ex){
+        ex.printStackTrace();
+        responseBuilder = Response.ok(Status.INTERNAL_SERVER_ERROR);
+      }
         return responseBuilder.build();
     }
 

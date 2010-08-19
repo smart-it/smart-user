@@ -17,25 +17,33 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
     <import resource="classpath:com/smartitengineering/user/service-app-context.xml" />
     <import resource="classpath:com/smartitengineering/user/app-context-datasource.xml" />
-    <import resource="classpath:com/smartitengineering/user/app-context-hibernate-definition.xml" />
+    <import resource="classpath:com/smartitengineering/user/app-context-hibernate-definition.xml" />   
+    <import resource="classpath:com/smartitengineering/user/security/app-context-security.xml" />
+
 <!--    <context:component-scan base-package="com.smartitengineering.user.ws.resources"/>-->
 
-    <!-- **************************************************************** -->
-    <!-- ******************** Initialize Roles ************************** -->
-    <!-- **************************************************************** -->
-<!--    <bean id="initialRoleFactory" class="com.smartitengineering.user.parser.InitialRoleFactory">
+<!--     ****************************************************************
+     ******************** Initialize Roles ************************** 
+     **************************************************************** -->
+    <bean id="initialUserFactory" class="com.smartitengineering.user.initialization.InitialUserFactory">
         <property name="privilegeService">
+            <ref bean="privilegeService"/>
+        </property>
+        <property name="organizationService">
+            <ref bean="organizationService"/>
+        </property>
+        <property name="userService">
             <ref bean="userService"/>
+        </property>
+        <property name="securedObjectService">
+            <ref bean="securedObjectService"/>
         </property>
         <property name="roleService">
-            <ref bean="userService"/>
-        </property>
-        <property name="userPersonService">
-            <ref bean="userPersonService"/>
+            <ref bean="roleService"/>
         </property>
     </bean>
     <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="initialRoleFactory"/>
+        <property name="targetObject" ref="initialUserFactory"/>
         <property name="targetMethod" value="initializeInformation" />
     </bean>
     <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
@@ -50,5 +58,5 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
                 <ref bean="simpleTrigger" />
             </list>
         </property>
-    </bean>-->
+    </bean>
 </beans>

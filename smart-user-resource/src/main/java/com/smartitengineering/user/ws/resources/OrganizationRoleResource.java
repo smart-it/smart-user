@@ -6,9 +6,16 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Role;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -21,6 +28,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -74,13 +82,7 @@ public class OrganizationRoleResource extends AbstractResource{
             if(role.getParentOrganizationID() == null){
                 throw new Exception("No parent organization found");
             }
-            Services.getInstance().getOrganizationService().populateOrganization(role);
-            if(role.getPrivilegeIDs() != null && !role.getPrivilegeIDs().isEmpty()){
-                Services.getInstance().getPrivilegeService().populatePrivilege(role);
-            }
-            if(role.getRoleIDs() != null && ! role.getRoleIDs().isEmpty()){
-                Services.getInstance().getRoleService().populateRole(role);
-            }
+            Services.getInstance().getOrganizationService().populateOrganization(role);            
           Services.getInstance().getRoleService().update(role);
           responseBuilder = Response.ok(getRoleFeed());
         }
@@ -89,6 +91,76 @@ public class OrganizationRoleResource extends AbstractResource{
         }
         return responseBuilder.build();
     }
+
+
+    @POST
+    public Response updatePost(@HeaderParam("Content-type") String contentType, String message){
+      ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+
+      if(StringUtils.isBlank(message)){
+        responseBuilder = Response.status(Status.BAD_REQUEST);
+        responseBuilder.build();
+      }
+
+      final boolean isHtmlPost;
+      if (StringUtils.isBlank(contentType)) {
+        contentType = MediaType.APPLICATION_OCTET_STREAM;
+        isHtmlPost = false;
+      }
+      else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+        contentType = MediaType.APPLICATION_OCTET_STREAM;
+        isHtmlPost = true;
+        try {
+          //Will search for the first '=' if not found will take the whole string
+          final int startIndex = 0;//message.indexOf("=") + 1;
+          //Consider the first '=' as the start of a value point and take rest as value
+          final String realMsg = message.substring(startIndex);
+          //Decode the message to ignore the form encodings and make them human readable
+          message = URLDecoder.decode(realMsg, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex) {
+          ex.printStackTrace();
+        }
+      }
+      else {
+        contentType = contentType;
+        isHtmlPost = false;
+      }
+
+      if(isHtmlPost){
+        Map<String, String> keyValueMap = new HashMap<String, String>();
+
+        String[] keyValuePairs = message.split("&");
+
+        for(int i=0; i<keyValuePairs.length; i++){
+
+          String[] keyValuePair = keyValuePairs[i].split("=");
+          keyValueMap.put(keyValuePair[0], keyValuePair[1]);
+        }
+
+        Role newRole = new Role();
+        newRole.setShortDescription(keyValueMap.get("shortDescription"));
+        newRole.setDisplayName(keyValueMap.get("displayName"));
+
+        try{
+          Role oldRole = Services.getInstance().getRoleService().getRoleByOrganizationAndRoleName(role.getParentOrganization().getUniqueShortName(), role.getName());
+
+          oldRole.setDisplayName(newRole.getDisplayName());
+          oldRole.setShortDescription(newRole.getShortDescription());
+          oldRole.setLastModifiedDate(new Date());
+
+          Services.getInstance().getRoleService().update(oldRole);
+
+
+        }catch(Exception ex){
+          responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+          ex.printStackTrace();
+        }
+      }
+
+      return responseBuilder.build();
+    }
+
 
     private Feed getRoleFeed() throws UriBuilderException, IllegalArgumentException{
 
@@ -113,10 +185,31 @@ public class OrganizationRoleResource extends AbstractResource{
 
         return roleFeed;
     }
+
+    @POST
+    @Produces(MediaType.APPLICATION_ATOM_XML)
+
+    public Response postDelete(){
+      ResponseBuilder responseBuilder = Response.ok();
+      try{
+        Services.getInstance().getRoleService().delete(role);
+      }catch(Exception ex){
+        ex.printStackTrace();
+      }
+      return responseBuilder.build();
+    }
+
     @DELETE
     public Response delete() {
+
+      ResponseBuilder responseBuilder = Response.ok();
+      try{
         Services.getInstance().getRoleService().delete(role);
-        ResponseBuilder responseBuilder = Response.ok();
+      }catch(Exception ex){
+        ex.printStackTrace();
+        responseBuilder = Response.ok(Status.INTERNAL_SERVER_ERROR);
+      }
+
         return responseBuilder.build();
     }
 }

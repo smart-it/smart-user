@@ -2,19 +2,21 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.client.api;
+
+import com.smartitengineering.user.resource.api.Resource;
 
 /**
  *
  * @author russel
  */
-public interface LoginResource {
+public interface LoginResource extends Resource {
 
-  OrganizationResource getOrganizationResource();
+  public OrganizationsResource getOrganizationsResource();
 
-  OrganizationUserResource getUserResource();
+  public UsersResource getUsersResource(String OrganizationShortName);
 
-//   AuthorizationResource checkAuthorization(String userName);
+  public UserResource getUserResource();
 
+  public OrganizationResource getOrganizationResource();
 }
