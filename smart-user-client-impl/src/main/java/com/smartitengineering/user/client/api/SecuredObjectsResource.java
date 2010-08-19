@@ -8,6 +8,7 @@ import com.smartitengineering.user.filter.UserFilter;
 import com.smartitengineering.user.resource.api.LinkedResource;
 import com.smartitengineering.user.resource.api.Resource;
 import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -15,9 +16,10 @@ import java.util.Collection;
  */
 public interface SecuredObjectsResource extends Resource {
 
-  public Collection<LinkedResource<SecuredObjectResource>> getSecuredObjectResources();
+  //public Collection<LinkedResource<SecuredObjectResource>> getSecuredObjectResources();
+  public List<SecuredObjectResource> getSecuredObjectResources();
 
-  public SecuredObjectResource create(SecuredObjcet securedObjcet);
+  public SecuredObjectResource create(SecuredObject securedObjcet);
 
   public SecuredObjectsResource search(SecuredObjectFilter filter);
 }

@@ -27,13 +27,13 @@ public class RootResourceImpl extends AbstractClientImpl implements RootResource
   }
 
   public RootResourceImpl() {
-    URI testUri = null;
-    try{
-      testUri = new URI("http://localhost:9090");
-    }catch(Exception ex){
-      
-    }
-    ClientResponse response = ClientUtil.readClientResponse( /*BASE_URI*/testUri, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
+//    URI testUri = null;
+//    try{
+//      testUri = new URI("http://localhost:9090");
+//    }catch(Exception ex){
+//
+//    }
+    ClientResponse response = ClientUtil.readClientResponse( BASE_URI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
     Feed feed = ClientUtil.getFeed(response);
     Link link = feed.getLink(REL_LOGIN);
     loginLink = link;

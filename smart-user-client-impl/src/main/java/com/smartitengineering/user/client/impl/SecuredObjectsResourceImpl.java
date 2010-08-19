@@ -5,14 +5,13 @@
 
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.user.client.api.User;
-import com.smartitengineering.user.client.api.UserFilter;
-import com.smartitengineering.user.client.api.UserResource;
-import com.smartitengineering.user.client.api.UsersResource;
+import com.smartitengineering.user.client.api.SecuredObject;
+import com.smartitengineering.user.client.api.SecuredObjectFilter;
+import com.smartitengineering.user.client.api.SecuredObjectResource;
+import com.smartitengineering.user.client.api.SecuredObjectsResource;
 import com.smartitengineering.user.resource.api.LinkedResource;
 import com.smartitengineering.util.rest.atom.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,36 +28,34 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-class UsersResourceImpl extends AbstractClientImpl implements UsersResource{
+public class SecuredObjectsResourceImpl extends AbstractClientImpl implements SecuredObjectsResource{
 
-  public static final String REL_USERS = "users";
-  public static final String REL_ALT = "alternate";
-  
-  private Link usersLink;
-  private Link userLink;
-  private URI usersURI;
+  private Link securedObjectsLink;
+  private URI securedObjectsURI;
+
+  private static final String REL_SECUREDOBJECT ="securedobject";
+  private static final String REL_ALT = "alternate";
 
   private boolean isCacheEnabled;
   private Date lastModifiedDate;
   private Date expirationDate;
   private List<Entry> entries;
 
-  public UsersResourceImpl(Link usersLink) {
+  public SecuredObjectsResourceImpl(Link securedObjectsLink){
 
-    this.usersLink = usersLink;
+    this.securedObjectsLink = securedObjectsLink;
 
-    usersURI = UriBuilder.fromUri(BASE_URI.toString() + usersLink.getHref().toString()).build();
+    securedObjectsURI = UriBuilder.fromUri(BASE_URI.toString() + securedObjectsLink.getHref().toString()).build();
+    URI uri = UriBuilder.fromUri(BASE_URI.toString() + securedObjectsLink.getHref().toString()).build();
 
-    URI uri = UriBuilder.fromUri(BASE_URI.toString() + usersLink.getHref().toString()).build();
     ClientResponse response = ClientUtil.readClientResponse(uri, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
-    //PaginatedFeedEntitiesList<Organization> pgs;
     if (response.getStatus() != 401) {
       Feed feed = ClientUtil.getFeed(response);
 
       entries = feed.getEntries();
 
-      usersLink = feed.getLink(REL_USERS);
+      securedObjectsLink = feed.getLink(REL_SECUREDOBJECT);
 
 
       if(response.getHeaders().getFirst("Cache-Control") != null)
@@ -80,69 +77,51 @@ class UsersResourceImpl extends AbstractClientImpl implements UsersResource{
 
     }else{
 
-      usersLink=null;
+      securedObjectsLink=null;
 
     }
   }
 
   @Override
-  public List<UserResource> getUserResources() {
-        List<UserResource> organizationResources = new ArrayList<UserResource>();
+  public List<SecuredObjectResource> getSecuredObjectResources(){
 
-    //LinkedResource<OrganizationResource> linkedResource = new LinkedList<OrganizationResource>();
+    List<SecuredObjectResource> securedObjectResources = new ArrayList<SecuredObjectResource>();
 
     for(Entry entry: entries){
-      organizationResources.add( new UserResourceImpl(entry.getLink(REL_ALT)));
+      securedObjectResources.add( new SecuredObjectResourceImpl(entry.getLink(REL_ALT)));
     }
-    return organizationResources;
+
+    return securedObjectResources;
   }
 
 //  @Override
-//  public Collection<LinkedResource<UserResource>> getUserResources() {
-//
-//    List<UserResource> organizationResources = new ArrayList<UserResource>();
-//
-//    //LinkedResource<OrganizationResource> linkedResource = new LinkedList<OrganizationResource>();
-//
-//    for(Entry entry: entries){
-//      organizationResources.add( new UserResourceImpl(entry.getLink(REL_ALT)));
-//    }
-//
-//
-//    return null;
-//
+//  public Collection<LinkedResource<SecuredObjectResource>> getSecuredObjectResources() {
+//    throw new UnsupportedOperationException("Not supported yet.");
 //  }
 
-
   @Override
-  public UserResource create(com.smartitengineering.user.client.impl.domain.User user) {
-
-    WebResource webResource = getClient().resource(usersURI);
-    webResource.type(MediaType.APPLICATION_JSON).post(user);
-    return new UserResourceImpl(user);
+  public SecuredObjectResource create(SecuredObject securedObjcet) {
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
-  public UsersResource search(UserFilter filter) {
+  public SecuredObjectsResource search(SecuredObjectFilter filter) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
   public boolean isCacheEnabled() {
-    
-    return isCacheEnabled;
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
   public Date getLastModifiedDate() {
-    
-    return lastModifiedDate;
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
   public Date getExpirationDate() {
-    
-    return expirationDate;
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
@@ -152,14 +131,12 @@ class UsersResourceImpl extends AbstractClientImpl implements UsersResource{
 
   @Override
   public URI getUri() {
-    
-    return usersURI;
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
   public Object refresh() {
-    
-    return new UsersResourceImpl(usersLink);
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
 }

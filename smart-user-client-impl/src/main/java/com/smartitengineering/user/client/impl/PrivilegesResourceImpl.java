@@ -5,10 +5,11 @@
 
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.user.client.api.User;
-import com.smartitengineering.user.client.api.UserFilter;
-import com.smartitengineering.user.client.api.UserResource;
-import com.smartitengineering.user.client.api.UsersResource;
+import com.smartitengineering.user.client.api.OrganizationResource;
+import com.smartitengineering.user.client.api.Privilege;
+import com.smartitengineering.user.client.api.PrivilegeFilter;
+import com.smartitengineering.user.client.api.PrivilegeResource;
+import com.smartitengineering.user.client.api.PrivilegesResource;
 import com.smartitengineering.user.resource.api.LinkedResource;
 import com.smartitengineering.util.rest.atom.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
@@ -29,36 +30,34 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-class UsersResourceImpl extends AbstractClientImpl implements UsersResource{
+public class PrivilegesResourceImpl extends AbstractClientImpl implements PrivilegesResource{
 
-  public static final String REL_USERS = "users";
+  public static final String REL_PRIVS = "Privileges";
   public static final String REL_ALT = "alternate";
-  
-  private Link usersLink;
-  private Link userLink;
-  private URI usersURI;
+
+  private Link privilegesLink;
+  private Link privilegeLink;
+  private URI privilegesURI;
 
   private boolean isCacheEnabled;
   private Date lastModifiedDate;
   private Date expirationDate;
   private List<Entry> entries;
 
-  public UsersResourceImpl(Link usersLink) {
+  public PrivilegesResourceImpl(Link privilegesLink){
 
-    this.usersLink = usersLink;
+    this.privilegesLink = privilegesLink;
+    privilegesURI = UriBuilder.fromUri(BASE_URI.toString() + privilegesLink.getHref().toString()).build();
 
-    usersURI = UriBuilder.fromUri(BASE_URI.toString() + usersLink.getHref().toString()).build();
+    URI uri = UriBuilder.fromUri(BASE_URI.toString() + privilegesLink.getHref().toString()).build();
 
-    URI uri = UriBuilder.fromUri(BASE_URI.toString() + usersLink.getHref().toString()).build();
-    ClientResponse response = ClientUtil.readClientResponse(uri, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
-
-    //PaginatedFeedEntitiesList<Organization> pgs;
+    ClientResponse response = ClientUtil.readClientResponse(privilegesURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
     if (response.getStatus() != 401) {
       Feed feed = ClientUtil.getFeed(response);
 
       entries = feed.getEntries();
 
-      usersLink = feed.getLink(REL_USERS);
+      privilegesLink = feed.getLink(REL_PRIVS);
 
 
       if(response.getHeaders().getFirst("Cache-Control") != null)
@@ -80,68 +79,61 @@ class UsersResourceImpl extends AbstractClientImpl implements UsersResource{
 
     }else{
 
-      usersLink=null;
+      privilegesLink=null;
 
     }
   }
 
   @Override
-  public List<UserResource> getUserResources() {
-        List<UserResource> organizationResources = new ArrayList<UserResource>();
+  public List<PrivilegeResource> getPrivilegeResources(){
 
-    //LinkedResource<OrganizationResource> linkedResource = new LinkedList<OrganizationResource>();
+    List<PrivilegeResource> privilegeResources = new ArrayList<PrivilegeResource>();
 
     for(Entry entry: entries){
-      organizationResources.add( new UserResourceImpl(entry.getLink(REL_ALT)));
+      privilegeResources.add(new PrivilegeResourceImpl(entry.getLink(REL_ALT)));
     }
-    return organizationResources;
+    return privilegeResources;
   }
 
 //  @Override
-//  public Collection<LinkedResource<UserResource>> getUserResources() {
+//  public Collection<LinkedResource<PrivilegeResource>> getPrivilegeResources() {
 //
-//    List<UserResource> organizationResources = new ArrayList<UserResource>();
-//
-//    //LinkedResource<OrganizationResource> linkedResource = new LinkedList<OrganizationResource>();
+//    List<PrivilegeResource> privilegeResources = new ArrayList<PrivilegeResource>();
 //
 //    for(Entry entry: entries){
-//      organizationResources.add( new UserResourceImpl(entry.getLink(REL_ALT)));
+//      privilegeResources.add(new PrivilegeResourceImpl(entry.getLink(REL_ALT)));
 //    }
-//
-//
 //    return null;
-//
+//    //throw new UnsupportedOperationException("Not supported yet.");
 //  }
 
-
   @Override
-  public UserResource create(com.smartitengineering.user.client.impl.domain.User user) {
+  public PrivilegeResource create(com.smartitengineering.user.client.impl.domain.Privilege privilege) {
 
-    WebResource webResource = getClient().resource(usersURI);
-    webResource.type(MediaType.APPLICATION_JSON).post(user);
-    return new UserResourceImpl(user);
+    WebResource webResource = getClient().resource(privilegesURI);
+    webResource.type(MediaType.APPLICATION_JSON).post(privilege);
+
+    return new PrivilegeResourceImpl(privilege);
+
   }
 
   @Override
-  public UsersResource search(UserFilter filter) {
+  public PrivilegesResource search(PrivilegeFilter filter) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
   public boolean isCacheEnabled() {
-    
     return isCacheEnabled;
   }
 
   @Override
   public Date getLastModifiedDate() {
-    
     return lastModifiedDate;
   }
 
   @Override
   public Date getExpirationDate() {
-    
     return expirationDate;
   }
 
@@ -152,14 +144,16 @@ class UsersResourceImpl extends AbstractClientImpl implements UsersResource{
 
   @Override
   public URI getUri() {
-    
-    return usersURI;
+    return privilegesURI;
   }
 
   @Override
   public Object refresh() {
-    
-    return new UsersResourceImpl(usersLink);
+    return new PrivilegesResourceImpl(privilegesLink);
   }
+
+
+
+
 
 }

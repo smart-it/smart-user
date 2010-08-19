@@ -12,7 +12,7 @@ import com.smartitengineering.user.resource.api.WritableResource;
  */
 public interface SecuredObjectResource extends WritableResource<SecuredObjectResource> {
 
-  public SecuredObjcet getSecuredObjcet();
+  public SecuredObject getSecuredObjcet();
 
   public OrganizationResource getOrganizationResource();
 }

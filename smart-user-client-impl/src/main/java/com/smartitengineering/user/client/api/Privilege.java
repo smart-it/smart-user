@@ -16,7 +16,7 @@ public interface Privilege {
 
   public String getShortDescription();
 
-  public SecuredObjcet getSecuredObjcet();
+  public SecuredObject getSecuredObjcet();
 
   public Integer getPermissionMask();
 }

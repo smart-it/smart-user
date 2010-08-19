@@ -11,10 +11,12 @@ import com.smartitengineering.user.client.api.UserResource;
 import com.smartitengineering.user.client.api.UsersResource;
 import com.smartitengineering.util.rest.atom.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriBuilder;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 
@@ -36,7 +38,6 @@ class LoginResourceImpl extends AbstractClientImpl implements LoginResource {
   private Date lastModifiedDate;
   private Date expirationDate;
   private URI uri;
-
   private String userName;
   private String password;
   private Link loginLink;
@@ -45,28 +46,45 @@ class LoginResourceImpl extends AbstractClientImpl implements LoginResource {
     this.userName = userName;
     this.password = password;
     this.loginLink = loginLink;
-    ClientResponse response = ClientUtil.readClientResponse(BASE_URI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
-    Feed feed = ClientUtil.getFeed(response);
-    orgsLink = feed.getLink(REL_ORGS);
-    orgLink = feed.getLink(REL_ORG);
-    usersLink = feed.getLink(REL_USERS);
-    userLink = feed.getLink(REL_USER);
+    URI uri = UriBuilder.fromUri(BASE_URI.toString() + loginLink.getHref().toString() + "?username=" + this.userName).build();
+    ClientResponse response = ClientUtil.readClientResponse(uri, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
-    isCacheEnabled = response.getHeaders().getFirst("Cache-Control").equals("no-cache");
-    String dateString = response.getHeaders().getFirst("Last-Modified");
-    SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
-    try {
-      lastModifiedDate = format.parse(dateString);
+    if (response.getStatus() != 401) {
+      Feed feed = ClientUtil.getFeed(response);
+      orgsLink = feed.getLink(REL_ORGS);
+      orgLink = feed.getLink(REL_ORG);
+      usersLink = feed.getLink(REL_USERS);
+      userLink = feed.getLink(REL_USER);
+
+      if(response.getHeaders().getFirst("Cache-Control") != null)
+        isCacheEnabled = response.getHeaders().getFirst("Cache-Control").equals("no-cache");
+      String dateString = response.getHeaders().getFirst("Last-Modified");
+      SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
+      try {
+        lastModifiedDate = format.parse(dateString);
+      }
+      catch (Exception ex) {
+      }
+      dateString = response.getHeaders().getFirst("Expires");
+      try {
+        lastModifiedDate = format.parse(dateString);
+      }
+      catch (Exception ex) {
+      }
+      uri = response.getLocation();
+
+    }else{
+      orgsLink=null;
+      orgLink=null;
+      usersLink=null;
+      userLink=null;
     }
-    catch (Exception ex) {
-    }
-    dateString = response.getHeaders().getFirst("Expires");
-    try {
-      lastModifiedDate = format.parse(dateString);
-    }
-    catch (Exception ex) {
-    }
-    uri = response.getLocation();
+
+    //ClientResponse response = webResource.post();
+
+
+
+
   }
 
   @Override
