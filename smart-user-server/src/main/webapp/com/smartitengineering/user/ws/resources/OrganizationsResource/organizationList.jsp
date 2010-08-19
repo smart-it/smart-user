@@ -86,7 +86,7 @@
 
     <div id="form_organizationentry" align="center">
         <fmt:message key="org.usrinput6" var="submitbtn"/>
-        <form action="http://russel:9090/orgs" method="post" accept="application/json" enctype="" id="organizationform">
+        <form action="http://localhost:9090/orgs" method="post" accept="application/json" enctype="" id="organizationform">
 
             <div class="inner-left" ><label><fmt:message key="org.inputlabel1"/></label></div>
             <div class="inner-right" align="left"><input type="text" name="name" value="" class="textField"></div>
