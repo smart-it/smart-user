@@ -5,7 +5,7 @@
 --%>
 
 <%@page import="java.util.Collection"%>
-<%@page import="com.smartitengineering.user.domain.Organization"%>
+<%--<%@page import="com.smartitengineering.user.domain.Organization"%>--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -28,9 +28,7 @@
 
     <div id="top_row">
 
-        <div id="tableheadid">
-            <label class="tablehead_label"><fmt:message key="org.tablehead1"/></label>
-        </div>
+       
 
         <div class="tableheadname">
             <label class="tablehead_label"><fmt:message key="org.tablehead2"/></label>
@@ -42,28 +40,30 @@
 
     </div>
 
-
-    <c:forEach var="organization" items="${it}">
+    
         <div id="individual_row">
-            <div id="teblecontentid">
-                <label class="tablecontent_label"> <a href="orgs/shortname/${organization.uniqueShortName}" ><label class="tablecontent_label"><c:out value="${organization.id}" /></label></a></label>
+
+            <div>
+                <div id="teblecontentname"></div>
             </div>
 
-            <div class="teblecontentname">
-                <label class="tablecontent_label"><a href="orgs/shortname/${organization.uniqueShortName}" ><label class="tablecontent_label"><c:out value="${organization.name}" /></label></a></label>
-            </div>
-
-            <div class="teblecontentname">
-                <label class="tablecontent_label"><a href="orgs/shortname/${organization.uniqueShortName}" ><label class="tablecontent_label"><c:out value="${organization.uniqueShortName}" /></label></a></label>
+            <div>
+                <div    id="teblecontentid"></div>
                 <c:set value="${organization.uniqueShortName}" var="uniqueName"></c:set>
 
             </div>
 
         </div>
-    </c:forEach>
 
 
-    <div class="tablecontent_label">
+    <div id="teblecontentlink" ></div>
+
+
+
+    
+
+
+          <div class="tablecontent_label">
         <a href="javascript: Orgpageselect()">Create</a>
     </div>
 
