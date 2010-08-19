@@ -1,0 +1,123 @@
+/* 
+    Document   : default
+    Created on : Jul 20, 2010, 5:46:32 PM
+    Author     : uzzal
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+body{
+/*    width: 100%;*/
+    padding-top: 10px;
+    font:normal;
+    font-family:Arial, Helvetica, sans-serif;
+    margin:0; border:0; 
+    text-align:left;
+
+}
+
+#maindivision{
+	position:relative; clear:left;
+        width:60%;
+	margin:0 auto;
+	background:#fff;
+	/*border:4px solid #666;*/
+}
+
+
+/*start of header*/
+
+#header{
+    /*background-image: url(../images/header.gif);*/
+    background: url(../images/bgg.png) repeat;
+    width: auto;
+    height: 75px;
+    /*border: 1px solid;*/
+}
+
+#header h1{
+    position:relative; clear:left;
+    /*margin-left:200px;*/
+    font-family: serif;
+    font-size:35pt;
+    text-align: center;
+    letter-spacing: 4px;
+    color: #99BB99;
+}
+
+/*End of header*/
+
+/*Start of body/content*/
+
+#content{
+/*    background: url(../image/bodybg.jpg);*/
+    background-color: 	#FFFFFE;
+    width: 80%;
+    height:480px;
+    float: left;
+}
+
+/*End of body/content*/
+
+/*Right-side-bar(Login/signup) starts here*/
+#right{
+    padding-top: 20px;
+    width: 20%;
+    height: auto;
+    float: left;
+    /*border: 1px solid;*/
+}
+
+#login{
+    padding: 2px 2px 2px 2px;
+    width: auto;
+    height: 50%;
+    border:1px solid;
+    border-color: #99C7FF;
+}
+
+#signup{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 2px 2px 2px 2px;
+    width: auto;
+    height: 30%;
+    border:1px solid;
+    border-color: #99C7FF;
+
+}
+/*End of right-side-bar*/
+
+/*Start of footer*/
+
+#footer{
+    position:relative; clear:left;
+    background: url(../images/bgg.png);
+    width: auto;
+    height: 75px;
+    border: 1px solid;
+    border-color: white;
+
+
+}
+
+#footer h3{
+    position:relative; clear:left;
+    font-family: serif;
+    font-size:10pt;
+    text-align: center;
+    letter-spacing: 1px;
+    color: #000000;
+
+}
+
+/*end of footer*/

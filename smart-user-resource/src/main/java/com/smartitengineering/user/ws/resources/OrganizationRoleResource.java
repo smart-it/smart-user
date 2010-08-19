@@ -26,7 +26,7 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-@Path("/organizations/{organizationName}/roles/rolename/{roleName}")
+@Path("/orgs/{organizationName}/roles/name/{roleName}")
 public class OrganizationRoleResource extends AbstractResource{
 
     static final UriBuilder ORGANIZATION_ROLE_URI_BUILDER = UriBuilder.fromResource(OrganizationRoleResource.class);

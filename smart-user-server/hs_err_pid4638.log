@@ -1,0 +1,292 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x084ec02e, pid=4638, tid=2231094128
+#
+# JRE version: 6.0_20-b02
+# Java VM: Java HotSpot(TM) Server VM (16.3-b01 mixed mode linux-x86 )
+# Problematic frame:
+# C  0x084ec02e
+#
+# If you would like to submit a bug report, please visit:
+#   http://java.sun.com/webapps/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0842f800):  JavaThread "CompilerThread0" daemon [_thread_in_native, id=4649, stack(0x84f3c000,0x84fbd000)]
+
+siginfo:si_signo=SIGSEGV: si_errno=0, si_code=1 (SEGV_MAPERR), si_addr=0xffe00000
+
+Registers:
+EAX=0x084ec010, EBX=0xb72d21e0, ECX=0xffe00000, EDX=0xc0400000
+ESP=0x84fbaa58, EBP=0x84fbaa58, ESI=0x001c0042, EDI=0x0000005d
+EIP=0x084ec02e, CR2=0xffe00000, EFLAGS=0x00210283
+
+Top of Stack: (sp=0x84fbaa58)
+0x84fbaa58:   84fbaa88 b6e55460 084ec010 08747500
+0x84fbaa68:   b6e55457 b6e55457 00000008 b7804595
+0x84fbaa78:   b72d21e0 b72d21e0 084ec010 08747500
+0x84fbaa88:   84fbaac8 b7087822 084ec010 0000005d
+0x84fbaa98:   08747500 00000000 84fbba04 b78080d8
+0x84fbaaa8:   084d27cc b6ca58a4 00000000 00000002
+0x84fbaab8:   00000000 b72d21e0 08747500 084ec010
+0x84fbaac8:   84fbab28 b708759d 84fbb060 08747500 
+
+Instructions: (pc=0x084ec02e)
+0x084ec01e:   00 10 90 01 00 00 80 0f 00 00 00 00 00 f0 28 38
+0x084ec02e:   c0 01 00 20 00 00 01 00 04 00 30 00 38 0a 00 e0 
+
+Stack: [0x84f3c000,0x84fbd000],  sp=0x84fbaa58,  free space=1fa84fba3f0k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  0x084ec02e
+V  [libjvm.so+0x2dc460]
+V  [libjvm.so+0x50e822]
+V  [libjvm.so+0x50e59d]
+V  [libjvm.so+0x50ddd8]
+V  [libjvm.so+0x50bb94]
+V  [libjvm.so+0x26f176]
+V  [libjvm.so+0x26b9d5]
+V  [libjvm.so+0x203d97]
+V  [libjvm.so+0x27426c]
+V  [libjvm.so+0x273b79]
+V  [libjvm.so+0x653946]
+V  [libjvm.so+0x64cfde]
+V  [libjvm.so+0x55f24e]
+C  [libpthread.so.0+0x596e]
+
+
+Current CompileTask:
+C2:320      org.apache.maven.artifact.DefaultArtifact.getDependencyConflictId()Ljava/lang/String; (34 bytes)
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x08731400 JavaThread "pool-1-thread-5" [_thread_blocked, id=4661, stack(0x848af000,0x84900000)]
+  0x84efe000 JavaThread "pool-1-thread-4" [_thread_blocked, id=4660, stack(0x84a5e000,0x84aaf000)]
+  0x84e50000 JavaThread "pool-1-thread-3" [_thread_blocked, id=4659, stack(0x84aaf000,0x84b00000)]
+  0x84b73000 JavaThread "pool-1-thread-2" [_thread_blocked, id=4658, stack(0x84c07000,0x84c58000)]
+  0x84b72800 JavaThread "pool-1-thread-1" [_thread_blocked, id=4657, stack(0x84c5c000,0x84cad000)]
+  0x84e02c00 JavaThread "Low Memory Detector" daemon [_thread_blocked, id=4651, stack(0x84d2e000,0x84d7f000)]
+  0x84e01000 JavaThread "CompilerThread1" daemon [_thread_in_native, id=4650, stack(0x84d7f000,0x84e00000)]
+=>0x0842f800 JavaThread "CompilerThread0" daemon [_thread_in_native, id=4649, stack(0x84f3c000,0x84fbd000)]
+  0x0842dc00 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=4648, stack(0x84fbd000,0x8500e000)]
+  0x0841cc00 JavaThread "Finalizer" daemon [_thread_blocked, id=4647, stack(0x8504d000,0x8509e000)]
+  0x08418400 JavaThread "Reference Handler" daemon [_thread_blocked, id=4646, stack(0x8509e000,0x850ef000)]
+  0x08378000 JavaThread "main" [_thread_in_Java, id=4640, stack(0xb6b02000,0xb6b53000)]
+
+Other Threads:
+  0x08415800 VMThread [stack: 0x850ef000,0x85170000] [id=4645]
+  0x84e04c00 WatcherThread [stack: 0x84cad000,0x84d2e000] [id=4652]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ PSYoungGen      total 92864K, used 58977K [0xa5910000, 0xb14f0000, 0xb39b0000)
+  eden space 85760K, 60% used [0xa5910000,0xa8bbb920,0xaacd0000)
+  from space 7104K, 99% used [0xaacd0000,0xab3bcc80,0xab3c0000)
+  to   space 10432K, 0% used [0xb0ac0000,0xb0ac0000,0xb14f0000)
+ PSOldGen        total 28736K, used 12966K [0x897b0000, 0x8b3c0000, 0xa5910000)
+  object space 28736K, 45% used [0x897b0000,0x8a459898,0x8b3c0000)
+ PSPermGen       total 16384K, used 6296K [0x857b0000, 0x867b0000, 0x897b0000)
+  object space 16384K, 38% used [0x857b0000,0x85dd6328,0x867b0000)
+
+Dynamic libraries:
+08048000-08052000 r-xp 00000000 08:01 132657     /opt/jdk1.6.0_20/bin/java
+08052000-08053000 rwxp 00009000 08:01 132657     /opt/jdk1.6.0_20/bin/java
+08372000-090c6000 rwxp 00000000 00:00 0          [heap]
+84600000-8466e000 rwxp 00000000 00:00 0 
+8466e000-84700000 ---p 00000000 00:00 0 
+84700000-847fc000 rwxp 00000000 00:00 0 
+847fc000-84800000 ---p 00000000 00:00 0 
+848af000-848b2000 ---p 00000000 00:00 0 
+848b2000-84900000 rwxp 00000000 00:00 0 
+84900000-849f2000 rwxp 00000000 00:00 0 
+849f2000-84a00000 ---p 00000000 00:00 0 
+84a35000-84a36000 r-xs 00003000 08:01 3803844    /home/atiqul/.m2/repository/org/codehaus/plexus/plexus-compiler-javac/1.5.3/plexus-compiler-javac-1.5.3.jar
+84a36000-84a38000 r-xs 00000000 08:01 3803841    /home/atiqul/.m2/repository/org/codehaus/plexus/plexus-compiler-manager/1.5.3/plexus-compiler-manager-1.5.3.jar
+84a38000-84a3a000 r-xs 0000b000 08:01 3802320    /home/atiqul/.m2/repository/org/codehaus/plexus/plexus-interpolation/1.6/plexus-interpolation-1.6.jar
+84a3a000-84a3c000 r-xs 00007000 08:01 3802315    /home/atiqul/.m2/repository/org/apache/maven/shared/maven-filtering/1.0-beta-2/maven-filtering-1.0-beta-2.jar
+84a3c000-84a41000 r-xs 00039000 08:01 3802314    /home/atiqul/.m2/repository/org/codehaus/plexus/plexus-utils/1.5.6/plexus-utils-1.5.6.jar
+84a41000-84a43000 r-xs 00004000 08:01 3801929    /home/atiqul/.m2/repository/org/apache/maven/plugins/maven-resources-plugin/2.3/maven-resources-plugin-2.3.jar
+84a43000-84a46000 r-xs 00027000 08:01 3801811    /home/atiqul/.m2/repository/org/codehaus/plexus/plexus-utils/1.1/plexus-utils-1.1.jar
+84a46000-84a4b000 r-xs 0002c000 08:01 3801810    /home/atiqul/.m2/repository/commons-net/commons-net/2.0/commons-net-2.0.jar
+84a4b000-84a4f000 r-xs 0002b000 08:01 3801759    /home/atiqul/.m2/repository/org/codehaus/plexus/plexus-utils/1.4.1/plexus-utils-1.4.1.jar
+84a4f000-84a5e000 r-xs 0011c000 08:01 3801695    /home/atiqul/.m2/repository/org/jvnet/hudson/svnkit/svnkit/1.1.4-hudson-4/svnkit-1.1.4-hudson-4.jar
+84a5e000-84a61000 ---p 00000000 00:00 0 
+84a61000-84aaf000 rwxp 00000000 00:00 0 
+84aaf000-84ab2000 ---p 00000000 00:00 0 
+84ab2000-84b00000 rwxp 00000000 00:00 0 
+84b00000-84bf9000 rwxp 00000000 00:00 0 
+84bf9000-84c00000 ---p 00000000 00:00 0 
+84c00000-84c01000 r-xs 00004000 08:01 3803838    /home/atiqul/.m2/repository/org/codehaus/plexus/plexus-compiler-api/1.5.3/plexus-compiler-api-1.5.3.jar
+84c01000-84c03000 r-xs 00026000 08:01 3803835    /home/atiqul/.m2/repository/org/codehaus/plexus/plexus-utils/1.0.4/plexus-utils-1.0.4.jar
+84c03000-84c07000 r-xs 00038000 08:01 3801758    /home/atiqul/.m2/repository/ch/ethz/ganymed/ganymed-ssh2/build210/ganymed-ssh2-build210.jar
+84c07000-84c0a000 ---p 00000000 00:00 0 
+84c0a000-84c58000 rwxp 00000000 00:00 0 
+84c58000-84c5a000 r-xs 0000c000 08:01 3803789    /home/atiqul/.m2/repository/org/mortbay/jetty/jetty-maven-plugin/7.1.5.v20100705/jetty-maven-plugin-7.1.5.v20100705.jar
+84c5a000-84c5c000 r-xs 00011000 08:01 3803498    /home/atiqul/.m2/repository/org/apache/maven/plugins/maven-war-plugin/2.1-beta-1/maven-war-plugin-2.1-beta-1.jar
+84c5c000-84c5f000 ---p 00000000 00:00 0 
+84c5f000-84cad000 rwxp 00000000 00:00 0 
+84cad000-84cae000 ---p 00000000 00:00 0 
+84cae000-84d2e000 rwxp 00000000 00:00 0 
+84d2e000-84d31000 ---p 00000000 00:00 0 
+84d31000-84d7f000 rwxp 00000000 00:00 0 
+84d7f000-84d82000 ---p 00000000 00:00 0 
+84d82000-84e00000 rwxp 00000000 00:00 0 
+84e00000-84f00000 rwxp 00000000 00:00 0 
+84f00000-84f01000 r-xs 00003000 08:01 3801814    /home/atiqul/.m2/repository/org/apache/maven/wagon/wagon-ftp/1.0-beta-6/wagon-ftp-1.0-beta-6.jar
+84f01000-84f3c000 r-xs 002c7000 08:01 138388     /opt/apache-maven-2.2.1/lib/maven-2.2.1-uber.jar
+84f3c000-84f3f000 ---p 00000000 00:00 0 
+84f3f000-84fbd000 rwxp 00000000 00:00 0 
+84fbd000-84fc0000 ---p 00000000 00:00 0 
+84fc0000-8500e000 rwxp 00000000 00:00 0 
+8500e000-8504d000 r-xp 00000000 08:01 2891404    /usr/lib/locale/en_US.utf8/LC_CTYPE
+8504d000-85050000 ---p 00000000 00:00 0 
+85050000-8509e000 rwxp 00000000 00:00 0 
+8509e000-850a1000 ---p 00000000 00:00 0 
+850a1000-850ef000 rwxp 00000000 00:00 0 
+850ef000-850f0000 ---p 00000000 00:00 0 
+850f0000-851a3000 rwxp 00000000 00:00 0 
+851a3000-85339000 r-xs 02fd0000 08:01 131276     /opt/jdk1.6.0_20/jre/lib/rt.jar
+85339000-8533a000 ---p 00000000 00:00 0 
+8533a000-853ba000 rwxp 00000000 00:00 0 
+853ba000-853bb000 ---p 00000000 00:00 0 
+853bb000-8543b000 rwxp 00000000 00:00 0 
+8543b000-8543c000 ---p 00000000 00:00 0 
+8543c000-854bc000 rwxp 00000000 00:00 0 
+854bc000-854bd000 ---p 00000000 00:00 0 
+854bd000-85545000 rwxp 00000000 00:00 0 
+85545000-8555d000 rwxp 00000000 00:00 0 
+8555d000-8556c000 rwxp 00000000 00:00 0 
+8556c000-8563e000 rwxp 00000000 00:00 0 
+8563e000-85646000 rwxp 00000000 00:00 0 
+85646000-8565e000 rwxp 00000000 00:00 0 
+8565e000-8566d000 rwxp 00000000 00:00 0 
+8566d000-8573e000 rwxp 00000000 00:00 0 
+8573e000-8579d000 rwxp 00000000 00:00 0 
+8579d000-857af000 rwxp 00000000 00:00 0 
+857af000-867b0000 rwxp 00000000 00:00 0 
+867b0000-897b0000 rwxp 00000000 00:00 0 
+897b0000-8b3c0000 rwxp 00000000 00:00 0 
+8b3c0000-a5910000 rwxp 00000000 00:00 0 
+a5910000-b14f0000 rwxp 00000000 00:00 0 
+b14f0000-b39b0000 rwxp 00000000 00:00 0 
+b39b0000-b39b1000 r-xs 00004000 08:01 3801755    /home/atiqul/.m2/repository/org/jvnet/wagon-svn/wagon-svn/1.9/wagon-svn-1.9.jar
+b39b1000-b39b3000 r-xs 00007000 08:01 3803443    /home/atiqul/.m2/repository/org/apache/maven/plugins/maven-surefire-plugin/2.5/maven-surefire-plugin-2.5.jar
+b39b3000-b39b5000 r-xs 00030000 08:01 3803421    /home/atiqul/.m2/repository/org/apache/maven/plugins/maven-javadoc-plugin/2.6/maven-javadoc-plugin-2.6.jar
+b39b5000-b39b6000 r-xs 00005000 08:01 3803413    /home/atiqul/.m2/repository/org/apache/maven/plugins/maven-source-plugin/2.1.2/maven-source-plugin-2.1.2.jar
+b39b6000-b39bf000 rwxp 00000000 00:00 0 
+b39bf000-b3a76000 rwxp 00000000 00:00 0 
+b3a76000-b3cb6000 rwxp 00000000 00:00 0 
+b3cb6000-b6a76000 rwxp 00000000 00:00 0 
+b6a76000-b6a85000 r-xp 00000000 08:01 131322     /opt/jdk1.6.0_20/jre/lib/i386/libzip.so
+b6a85000-b6a87000 rwxp 0000e000 08:01 131322     /opt/jdk1.6.0_20/jre/lib/i386/libzip.so
+b6a87000-b6a91000 r-xp 00000000 08:01 2366595    /lib/tls/i686/cmov/libnss_files-2.11.1.so
+b6a91000-b6a92000 r-xp 00009000 08:01 2366595    /lib/tls/i686/cmov/libnss_files-2.11.1.so
+b6a92000-b6a93000 rwxp 0000a000 08:01 2366595    /lib/tls/i686/cmov/libnss_files-2.11.1.so
+b6a93000-b6a9b000 r-xp 00000000 08:01 2366597    /lib/tls/i686/cmov/libnss_nis-2.11.1.so
+b6a9b000-b6a9c000 r-xp 00007000 08:01 2366597    /lib/tls/i686/cmov/libnss_nis-2.11.1.so
+b6a9c000-b6a9d000 rwxp 00008000 08:01 2366597    /lib/tls/i686/cmov/libnss_nis-2.11.1.so
+b6a9d000-b6a9e000 r-xs 00004000 08:01 3803393    /home/atiqul/.m2/repository/org/apache/maven/plugins/maven-compiler-plugin/2.0.2/maven-compiler-plugin-2.0.2.jar
+b6a9e000-b6aa5000 r-xs 00000000 08:01 2905577    /usr/lib/gconv/gconv-modules.cache
+b6aa5000-b6aad000 rwxs 00000000 08:01 393278     /tmp/hsperfdata_atiqul/4638
+b6aad000-b6ac0000 r-xp 00000000 08:01 2366592    /lib/tls/i686/cmov/libnsl-2.11.1.so
+b6ac0000-b6ac1000 r-xp 00012000 08:01 2366592    /lib/tls/i686/cmov/libnsl-2.11.1.so
+b6ac1000-b6ac2000 rwxp 00013000 08:01 2366592    /lib/tls/i686/cmov/libnsl-2.11.1.so
+b6ac2000-b6ac4000 rwxp 00000000 00:00 0 
+b6ac4000-b6ac5000 r-xp 00000000 00:00 0 
+b6ac5000-b6acb000 r-xp 00000000 08:01 2366593    /lib/tls/i686/cmov/libnss_compat-2.11.1.so
+b6acb000-b6acc000 r-xp 00006000 08:01 2366593    /lib/tls/i686/cmov/libnss_compat-2.11.1.so
+b6acc000-b6acd000 rwxp 00007000 08:01 2366593    /lib/tls/i686/cmov/libnss_compat-2.11.1.so
+b6acd000-b6ad3000 r-xp 00000000 08:01 131304     /opt/jdk1.6.0_20/jre/lib/i386/native_threads/libhpi.so
+b6ad3000-b6ad4000 rwxp 00006000 08:01 131304     /opt/jdk1.6.0_20/jre/lib/i386/native_threads/libhpi.so
+b6ad4000-b6af7000 r-xp 00000000 08:01 131318     /opt/jdk1.6.0_20/jre/lib/i386/libjava.so
+b6af7000-b6af9000 rwxp 00023000 08:01 131318     /opt/jdk1.6.0_20/jre/lib/i386/libjava.so
+b6af9000-b6b00000 r-xp 00000000 08:01 2366602    /lib/tls/i686/cmov/librt-2.11.1.so
+b6b00000-b6b01000 r-xp 00006000 08:01 2366602    /lib/tls/i686/cmov/librt-2.11.1.so
+b6b01000-b6b02000 rwxp 00007000 08:01 2366602    /lib/tls/i686/cmov/librt-2.11.1.so
+b6b02000-b6b05000 ---p 00000000 00:00 0 
+b6b05000-b6b53000 rwxp 00000000 00:00 0 
+b6b53000-b6b77000 r-xp 00000000 08:01 2366351    /lib/tls/i686/cmov/libm-2.11.1.so
+b6b77000-b6b78000 r-xp 00023000 08:01 2366351    /lib/tls/i686/cmov/libm-2.11.1.so
+b6b78000-b6b79000 rwxp 00024000 08:01 2366351    /lib/tls/i686/cmov/libm-2.11.1.so
+b6b79000-b7285000 r-xp 00000000 08:01 131306     /opt/jdk1.6.0_20/jre/lib/i386/server/libjvm.so
+b7285000-b72d6000 rwxp 0070b000 08:01 131306     /opt/jdk1.6.0_20/jre/lib/i386/server/libjvm.so
+b72d6000-b76f5000 rwxp 00000000 00:00 0 
+b76f5000-b7848000 r-xp 00000000 08:01 2365948    /lib/tls/i686/cmov/libc-2.11.1.so
+b7848000-b7849000 ---p 00153000 08:01 2365948    /lib/tls/i686/cmov/libc-2.11.1.so
+b7849000-b784b000 r-xp 00153000 08:01 2365948    /lib/tls/i686/cmov/libc-2.11.1.so
+b784b000-b784c000 rwxp 00155000 08:01 2365948    /lib/tls/i686/cmov/libc-2.11.1.so
+b784c000-b784f000 rwxp 00000000 00:00 0 
+b784f000-b7851000 r-xp 00000000 08:01 2366185    /lib/tls/i686/cmov/libdl-2.11.1.so
+b7851000-b7852000 r-xp 00001000 08:01 2366185    /lib/tls/i686/cmov/libdl-2.11.1.so
+b7852000-b7853000 rwxp 00002000 08:01 2366185    /lib/tls/i686/cmov/libdl-2.11.1.so
+b7853000-b785a000 r-xp 00000000 08:01 131320     /opt/jdk1.6.0_20/jre/lib/i386/jli/libjli.so
+b785a000-b785c000 rwxp 00006000 08:01 131320     /opt/jdk1.6.0_20/jre/lib/i386/jli/libjli.so
+b785c000-b785d000 rwxp 00000000 00:00 0 
+b785d000-b7872000 r-xp 00000000 08:01 2366600    /lib/tls/i686/cmov/libpthread-2.11.1.so
+b7872000-b7873000 r-xp 00014000 08:01 2366600    /lib/tls/i686/cmov/libpthread-2.11.1.so
+b7873000-b7874000 rwxp 00015000 08:01 2366600    /lib/tls/i686/cmov/libpthread-2.11.1.so
+b7874000-b7876000 rwxp 00000000 00:00 0 
+b7876000-b7878000 r-xs 00008000 08:01 138375     /opt/apache-maven-2.2.1/boot/classworlds-1.1.jar
+b7878000-b7879000 rwxp 00000000 00:00 0 
+b7879000-b787a000 r-xp 00000000 00:00 0 
+b787a000-b7885000 r-xp 00000000 08:01 131317     /opt/jdk1.6.0_20/jre/lib/i386/libverify.so
+b7885000-b7886000 rwxp 0000b000 08:01 131317     /opt/jdk1.6.0_20/jre/lib/i386/libverify.so
+b7886000-b7888000 rwxp 00000000 00:00 0 
+b7888000-b7889000 r-xp 00000000 00:00 0          [vdso]
+b7889000-b78a4000 r-xp 00000000 08:01 2365909    /lib/ld-2.11.1.so
+b78a4000-b78a5000 r-xp 0001a000 08:01 2365909    /lib/ld-2.11.1.so
+b78a5000-b78a6000 rwxp 0001b000 08:01 2365909    /lib/ld-2.11.1.so
+bfea3000-bfeb8000 rwxp 00000000 00:00 0          [stack]
+
+VM Arguments:
+jvm_args: -Dclassworlds.conf=/opt/maven/bin/m2.conf -Dmaven.home=/opt/maven 
+java_command: org.codehaus.classworlds.Launcher "jetty:run"
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=/opt/java6
+PATH=/opt/java6/bin:/opt/ant/bin:/opt/maven/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
+USERNAME=atiqul
+LD_LIBRARY_PATH=/opt/jdk1.6.0_20/jre/lib/i386/server:/opt/jdk1.6.0_20/jre/lib/i386:/opt/jdk1.6.0_20/jre/../lib/i386
+SHELL=/bin/bash
+DISPLAY=:0.0
+
+Signal Handlers:
+SIGSEGV: [libjvm.so+0x68d5c0], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGBUS: [libjvm.so+0x68d5c0], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGFPE: [libjvm.so+0x55cb30], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGPIPE: [libjvm.so+0x55cb30], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGXFSZ: [libjvm.so+0x55cb30], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGILL: [libjvm.so+0x55cb30], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGUSR1: SIG_DFL, sa_mask[0]=0x00000000, sa_flags=0x00000000
+SIGUSR2: [libjvm.so+0x55f770], sa_mask[0]=0x00000000, sa_flags=0x10000004
+SIGHUP: [libjvm.so+0x55f4a0], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGINT: [libjvm.so+0x55f4a0], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGTERM: [libjvm.so+0x55f4a0], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGQUIT: [libjvm.so+0x55f4a0], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+
+
+---------------  S Y S T E M  ---------------
+
+OS:squeeze/sid
+
+uname:Linux 2.6.32-24-generic #38-Ubuntu SMP Mon Jul 5 09:22:14 UTC 2010 i686
+libc:glibc 2.11.1 NPTL 2.11.1 
+rlimit: STACK 8192k, CORE 0k, NPROC infinity, NOFILE 1024, AS infinity
+load average:1.37 0.81 0.57
+
+CPU:total 4 (8 cores per cpu, 2 threads per core) family 6 model 37 stepping 2, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, ht
+
+Memory: 4k page, physical 2753736k(815288k free), swap 7811064k(7811064k free)
+
+vm_info: Java HotSpot(TM) Server VM (16.3-b01) for linux-x86 JRE (1.6.0_20-b02), built on Apr 12 2010 13:58:11 by "java_re" with gcc 3.2.1-7a (J2SE release)
+
+time: Thu Aug 19 11:50:48 2010
+elapsed time: 2 seconds
+

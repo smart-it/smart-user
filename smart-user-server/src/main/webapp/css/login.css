@@ -1,0 +1,107 @@
+/* 
+    Document   : login
+    Created on : Jul 21, 2010, 4:04:47 PM
+    Author     : uzzal
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+#inloginform{
+    background-color:#99C7FF;
+    width: 100%;
+    height: 100%;
+}
+
+#loginnametextbox, #loginpasstextbox{
+    width: inherit;
+    border:1px solid #C5C2C2;
+    border-spacing: inherit;
+    border-style: solid;
+    color:#000000;
+}
+
+#loginlbl{
+    font-family:Arial, Helvetica, sans-serif;
+    text-decoration: none;
+    font-size: small;
+    text-align: right;
+    color:#000000;
+
+}
+
+#loginBtn{
+    width:80px;
+    height:30px;
+    border-style: solid;
+    background-color: #E3E4FA;
+}
+
+
+#loginlabeldiv{
+    margin: 1px 1px 1px 0px;
+    /*padding: 8px 2px 2px 2px;*/
+    width: 30%;
+    float: left;
+    /*border: 1px solid;*/
+
+}
+
+#loginboxdiv{
+    margin: 1px 1px 1px 1px;
+    /*padding: 5px 2px 2px 0px;*/
+    width: 67%;
+    float: left;
+    /*border: 1px solid;*/
+}
+
+.btnlinkcheck{
+    padding: 10px 5px 15px 5px;
+    font-size: 10pt;
+}
+
+#loginheader{
+    padding: 3px 5px 30px 5px;
+}
+#loginheader label{
+    font-size: 10pt;
+}
+
+/*sign up starts here*/
+
+#insignup{
+    background-color:#99C7FF;
+    width: 100%;
+    height: 100%;
+}
+
+
+#signupBtn{
+    width:125px;
+    height:50px;
+    font-size: 15pt;
+    border: 1px outset;
+    border-color:#43C6DB ;
+    background-color:#6D7B8D;
+}
+.innersignup{
+    padding: 5px 2px 15px 2px;
+
+}
+
+.innersignup label{
+    font-size: 10pt;
+}
+.innersignup a{
+    font-size: 10pt;
+}
+
+/*Sign up ends here*/

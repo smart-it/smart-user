@@ -27,7 +27,7 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-@Path("/organizations/{organizationUniqueShortName}/securedObjects/{old}")
+@Path("/orgs/{organizationUniqueShortName}/securedObjects/{old}")
 public class OrganizationSecuredObjectResource extends AbstractResource{
 
     private SecuredObject securedObject;
