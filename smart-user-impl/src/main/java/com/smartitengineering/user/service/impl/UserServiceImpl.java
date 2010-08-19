@@ -5,6 +5,7 @@
 package com.smartitengineering.user.service.impl;
 
 import com.smartitengineering.dao.common.queryparam.FetchMode;
+import com.smartitengineering.dao.common.queryparam.Order;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl;
@@ -17,6 +18,8 @@ import com.smartitengineering.user.service.OrganizationService;
 import com.smartitengineering.user.service.UserService;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -103,6 +106,50 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
             users = super.getList(queryParameters);
         }
         return users;
+    }
+
+    public Collection<User> getUsers(String userNameLike, String userName, boolean isSmallerThan, int count){
+
+      List<QueryParameter> params = new ArrayList<QueryParameter>();
+
+      if(StringUtils.isNotBlank(userNameLike)){
+        final QueryParameter orgNameLikeParam =   QueryParameterFactory.getNestedParametersParam("username",
+                                                                                               FetchMode.EAGER,
+                                                                                               QueryParameterFactory.getStringLikePropertyParam("username", userNameLike));
+        params.add(orgNameLikeParam);
+      }
+      else{
+        params.add(QueryParameterFactory.getNestedParametersParam("username", FetchMode.EAGER));
+      }
+
+      if(StringUtils.isNotBlank(userName)){
+        if(isSmallerThan){
+          params.add(QueryParameterFactory.getLesserThanPropertyParam("username", userName));
+        }else{
+          params.add(QueryParameterFactory.getGreaterThanPropertyParam("username", userName));
+        }
+      }
+
+      params.add(QueryParameterFactory.getMaxResultsParam(count));
+      params.add(QueryParameterFactory.getOrderByParam("id", Order.DESC));
+      params.add(QueryParameterFactory.getDistinctPropProjectionParam("id"));
+
+      List<Integer> userIDs = getOtherList(params);
+
+      if (userIDs != null && !userIDs.isEmpty()) {
+      List<User> organizations = new ArrayList<User>(super.getByIds(userIDs));
+      Collections.sort(organizations, new Comparator<User>(){
+
+        @Override
+        public int compare(User o1, User o2) {
+          return o1.getId().compareTo(o2.getId()) * -1;
+        }
+      });
+      return organizations;
+    }
+    else {
+      return Collections.emptySet();
+    }
     }
 
     @Override
