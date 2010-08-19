@@ -7,97 +7,124 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="com.smartitengineering.user.domain.Organization" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@page import="java.util.Collection"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
+  "http://www.w3.org/TR/html4/loose.dtd">
 
-  <div id="topmenu">
-  <a href="javascript: Orgpageselect()">Edit</a>
-  <a href="/orgs/${it.uniqueShortName}/users">UserList</a>
+<div id="rightmenu">
+  <div id="rightmenu_header"><label>organization</label></div>
+
+  <div id="rightmenu_body">
+  <ul>
+
+    <li><a href="javascript: Orgpageselect()">Edit</a></li>
+    <li><a href="#">Delete</a></li>
+    <li><a href="/orgs/${it.uniqueShortName}/users">UserList</a></li>
+
+  </ul>
   </div>
 
-   
-  <div id="showList" class="show">
-
-    <div id="individual_org_details_header"><label><c:out value="${it.name}"></label></c:out></div>
-        
-    <div id="individual_org_details_content">
-
-      <div class="individual_org_label"><label>Organization Name:</label></div>
-      <div class="individual_org_data"><label>${it.name}</label></div>
-      <div class="clear"></div>
-
-      <div class="individual_org_label"><label>Unique Short Name:</label></div>
-      <div class="individual_org_data"><label>${it.uniqueShortName}</label></div>
-      <div class="clear"></div>
-
-      <div class="individual_org_label"><label>Street Address:</label></div>
-      <div class="individual_org_data"><label>${it.address.streetAddress}</label></div>
-      <div class="clear"></div>
+</div>
 
 
-      <div class="individual_org_label"><label>City:</label></div>
-      <div class="individual_org_data"><label>${it.address.city}</label></div>
-      <div class="clear"></div>
+<div id="showList" class="show">
 
-      <div class="individual_org_label"><label>State:</label></div>
-      <div class="individual_org_data"><label>${it.address.state}</label></div>
-      <div class="clear"></div>
+  <c:if test="${param['lang']!=null}">
+    <fmt:setLocale scope="session" value="${param['lang']}"/>
+  </c:if>
 
-      <div class="individual_org_label"><label>Country:</label></div>
-      <div class="individual_org_data"><label>${it.address.country}</label></div>
-      <div class="clear"></div>
 
-      <div class="individual_org_label"><label>Zip:</label></div>
-      <div class="individual_org_data"><label>${it.address.zip}</label></div>
-      <div class="clear"></div>
+  <div id="individual_org_details_header"><label><c:out value="${it.name}"></label></c:out></div>
 
-      </div>
-      
+  <div id="individual_org_details_content">
+
+    <div class="individual_org_label"><label><fmt:message key="org.tablehead2"/></label></div>
+    <div class="individual_org_data"><label>${it.name}</label></div>
+    <div class="clear"></div>
+
+    <div class="individual_org_label"><label><fmt:message key="org.tablehead3"/></label></div>
+    <div class="individual_org_data"><label>${it.uniqueShortName}</label></div>
+    <div class="clear"></div>
+
+    <div class="individual_org_label"><label><fmt:message key="org.inputlabel3"/></label></div>
+    <div class="individual_org_data"><label>${it.address.streetAddress}</label></div>
+    <div class="clear"></div>
+
+    <div class="individual_org_label"><label><fmt:message key="org.inputlabel4"/></label></div>
+    <div class="individual_org_data"><label>${it.address.city}</label></div>
+    <div class="clear"></div>
+
+    <div class="individual_org_label"><label><fmt:message key="org.inputlabel5"/></label></div>
+    <div class="individual_org_data"><label>${it.address.state}</label></div>
+    <div class="clear"></div>
+
+    <div class="individual_org_label"><label><fmt:message key="org.inputlabel6"/></label></div>
+    <div class="individual_org_data"><label>${it.address.country}</label></div>
+    <div class="clear"></div>
+
+    <div class="individual_org_label"><label><fmt:message key="org.inputlabel7"/></label></div>
+    <div class="individual_org_data"><label>${it.address.zip}</label></div>
+    <div class="clear"></div>
+
   </div>
 
+</div>
 
-    
-    <div id="create" class="hide">
-      
-      <div id="header_organization"><label id="headerogorganization"><c:out value="${it.name}"></c:out></label></div>
 
-        <div id="form_organizationentry" align="center">
 
-        <form method="POST" action ="http://russel:9090/orgs/shortname/${it.uniqueShortName}" accept="application/json" id="organizationform">
+<div id="create" class="hide">
 
-            <div class="inner-left"><label>Organization Name:</label></div>
-            <div class="inner-right" align="left"><input type="text" name="name" value="${it.name}" class="textField"></div>
+  <div id="header_organization"><label id="headerogorganization"><c:out value="${it.name}"></c:out></label></div>
 
-            <div class="inner-left"><label>Unique short Name:</label></div>
-            <div class="inner-right" align="left"><input type="text" name="uniqueShortName" value="${it.uniqueShortName}" class="textField"></div>
+  <fmt:message key="org.usrinput6" var="submitbtn"/>
 
-            <div class="inner-left"><label>Street Address:</label></div>
-            <div class="inner-right" align="left"><input type="text" name="streetAddress" value="${it.address.streetAddress}" class="textField"></div>
+  <div id="form_organizationentry">
 
-            <div class="inner-left"><label>City:</label></div>
-            <div class="inner-right" align="left"><input type="text" name="city" value="${it.address.city}" class="textField"></div>
+    <form method="POST" action ="http://russel:9090/orgs/shortname/${it.uniqueShortName}" accept="application/json" id="organizationform">
 
-            <div class="inner-left"><label>State:</label></div>
-            <div class="inner-right" align="left"><input type="text" name="state" value="${it.address.state}" class="textField"></div>
+      <div class="inner-left"><label><fmt:message key="org.tablehead2"/></label></div>
+      <div class="inner-right"><input type="text" name="name" value="${it.name}" class="textField"></div>
+      <div class="clear"></div>
 
-            <div class="inner-left"><label>Country:</label></div>
-            <div class="inner-right" align="left"><input type="text" name="country" value="${it.address.country}" class="textField"></div>
+      <div class="inner-left"><label><fmt:message key="org.tablehead3"/></label></div>
+      <div class="inner-right"><input type="text" name="uniqueShortName" value="${it.uniqueShortName}" class="textField"></div>
+      <div class="clear"></div>
 
-            <div class="inner-left"><label>Zip:</label></div>
-            <div class="inner-right" align="left"><input type="text" name="zip" value="" class="textField"></div>
+      <div class="inner-left"><label><fmt:message key="org.inputlabel3"/></label></div>
+      <div class="inner-right"><input type="text" name="streetAddress" value="${it.address.streetAddress}" class="textField"></div>
+      <div class="clear"></div>
 
-            <div></div>
-            <div><input type="hidden" name="id" value="${it.id}"></div>
+      <div class="inner-left"><label><fmt:message key="org.inputlabel4"/></label></div>
+      <div class="inner-right"><input type="text" name="city" value="${it.address.city}" class="textField"></div>
+      <div class="clear"></div>
 
-            <div></div>
-            <div><input type="hidden" name="version" value="${it.version}"></div>
+      <div class="inner-left"><label><fmt:message key="org.inputlabel5"/></label></div>
+      <div class="inner-right"><input type="text" name="state" value="${it.address.state}" class="textField"></div>
+      <div class="clear"></div>
 
-            <div style="clear: both"></div>
-            <div id="btnfield" align="center"><input type="submit" value="UPDATE" name="submitBtn"></div>
-            <div style="clear: both"></div>
+      <div class="inner-left"><label><fmt:message key="org.inputlabel6"/></label></div>
+      <div class="inner-right"><input type="text" name="country" value="${it.address.country}" class="textField"></div>
+      <div class="clear"></div>
 
-        </form>
+      <div class="inner-left"><label><fmt:message key="org.inputlabel7"/></label></div>
+      <div class="inner-right"><input type="text" name="zip" value="" class="textField"></div>
+      <div class="clear"></div>
 
-        </div>
 
-    </div>
+      <div></div>
+      <div><input type="hidden" name="id" value="${it.id}"></div>
+      <div class="clear"></div>
+
+      <div></div>
+      <div><input type="hidden" name="version" value="${it.version}"></div>
+
+      <div class="clear"></div>
+      <div id="btnfield"><input type="submit" value="UPDATE" name="submitbtn"></div>
+      <div class="clear"></div>
+
+    </form>
+
+  </div>
+
+</div>

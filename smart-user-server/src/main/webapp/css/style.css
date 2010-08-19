@@ -49,7 +49,7 @@ body{
 #options{
     background: url(../images/bgg.png) repeat;
     width: auto;
-    height: 50px;
+    height: 80px;
 }
 
 #options form{
@@ -76,7 +76,7 @@ body{
     background: url(../images/bg_shadow_bot.gif) repeat;
     height: 672px;
     float: right;
-    width: 75%;
+    width: 73.6%;
 }
 
 
@@ -84,13 +84,14 @@ body{
     background: url(../images/)  no-repeat;
     height:672px;
     float: left;
-    width: 24.8%;
+    width: 26.2%;
     border: 1px solid;
     border-color: #24E0FB;
+    background-color: #FFFFFF;
 }
 
 #footer{
     background: url(../images/bgg.png) repeat;
     width: auto;
-    height: 75px;
+    height: 80px;
 }

@@ -12,113 +12,103 @@
 
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
+  "http://www.w3.org/TR/html4/loose.dtd">
 
 
 <c:if test="${param['lang']!=null}">
-    <fmt:setLocale scope="session" value="${param['lang']}"/>
+  <fmt:setLocale scope="session" value="${param['lang']}"/>
 </c:if>
 
 
-        <div class="show" id="showList">
-            <div id="title_of_organization">
-                <label><fmt:message key="org.title"/></label>
-            </div>
+<div class="show" id="showList">
 
-            <div id="top_row">
+  <div id="title_of_organization">
+    <label><fmt:message key="org.title"/></label>
+  </div>
 
-                        <div style="clear: both">
-                            </div>
+  <div id="top_row">
 
-                <div class="tableheadname">
-                    <label class="tablehead_label"><fmt:message key="org.tablehead1"/></label>
-                </div>
-
-                <div class="tableheadname">
-                    <label class="tablehead_label"><fmt:message key="org.tablehead2"/></label>
-                </div>
-
-                <div class="tableheadname">
-                    <label class="tablehead_label"><fmt:message key="org.tablehead3"/></label>
-                </div>
-
-                          <div style="clear: both">
-                            </div>
-
-            </div>
+    <div class="tableheadname">
+      <label class="tablehead_label"><fmt:message key="org.tablehead3"/></label>
+    </div>
 
 
-            <c:forEach var="organization" items="${it}">
-                <div id="individual_row">
+    <div class="tableheadname">
+      <label class="tablehead_label"><fmt:message key="org.tablehead2"/></label>
+    </div>
 
-                    <div class="teblecontentname">
-                        <a href="orgs/shortname/${organization.uniqueShortName}" target="_blank"><label class="tablecontent_label"><c:out value="${organization.id}" /></label></a>
-                    </div>
-
-                    <div class="teblecontentname">
-                        <a href="orgs/shortname/${organization.uniqueShortName}" target="_blank"><label class="tablecontent_label"><c:out value="${organization.name}" /></label></a>
-                    </div>
-
-                    <div class="teblecontentname">
-                        <a href="orgs/shortname/${organization.uniqueShortName}" target="_blank"><label class="tablecontent_label"><c:out value="${organization.uniqueShortName}" /></label></a>
-                        <c:set value="${organization.uniqueShortName}" var="uniqueName"></c:set>
-
-                    </div>
-
-                </div>
-            </c:forEach>
+  </div>
 
 
-            <div class="tablecontent_label">
-                <a href="javascript: Orgpageselect()">Create</a>
-            </div>
+  <c:forEach var="organization" items="${it}">
+    <div id="individual_row">
 
-        </div>
+      <div class="tablecontentname">
+        <a href="orgs/shortname/${organization.uniqueShortName}" target="_blank"><label class="tablecontent_label" id=""></label></a>
+      </div>
 
-                <fmt:message key="org.inputlabel1" var="update"/>
+      <div class="tablecontentname">
+        <a href="orgs/shortname/${organization.uniqueShortName}" target="_blank"><label class="tablecontent_label" id="tableContentTitle"></label></a>
+      </div>
 
-        
-        <div class="hide" id="create">
-
-                    <div id="header_organization">
-                        <label id="headerogorganization">Organization Entry Form</label>
-                    </div>
-
-                    <div id="form_organizationentry">
-
-                        <form action="http://localhost:9090/orgs" method="post" accept="application/json" enctype="" id="organizationform">
-
-                            <div class="inner-left" ><label>Organization Name:</label></div>
-                            <div class="inner-right" align="left"><input type="text" name="name" value="" class="textField"></div>
-
-                            <div class="inner-left"><label>Unique short Name:</label></div>
-                            <div class="inner-right" align="left"><input type="text" name="uniqueShortName" value="" class="textField"></div>
-
-                            <div class="inner-left"></div><div class="inner-right" align="left"><label>!!!! already exists!!! try another!!!</label></div>
-
-                            <div class="inner-left"><label>Street Address:</label></div>
-                            <div class="inner-right" align="left"><input type="text" name="streetAddress" value="" class="textField"></div>
+    </div>
+  </c:forEach>
 
 
-                            <div class="inner-left"><label>City:</label></div>
-                            <div class="inner-right" align="left"><input type="text" name="city" value="" class="textField"></div>
+  <div class="tablecontent_label">
+    <a href="javascript: Orgpageselect()">Create</a>
+  </div>
 
-                            <div class="inner-left"><label>State:</label></div>
-                            <div class="inner-right" align="left"><input type="text" name="state" value="" class="textField"></div>
+</div>
 
-                            <div class="inner-left"><label>Country:</label></div>
-                            <div class="inner-right" align="left"><input type="text" name="country" value="" class="textField"></div>
+<fmt:message key="org.inputlabel1" var="update"/>
 
-                            <div class="inner-left"><label>Zip:</label></div>
-                            <div class="inner-right" align="left"><input type="text" name="zip" value="" class="textField"></div>
 
-                            <div style="clear: both">
-                            </div>
-                            <div id="btnfield" align="center"><input type="submit" value="submit" name="submitBtn"></div>
-                            <div style="clear: both">
-                            </div>
+<div class="hide" id="create">
 
-                        </form>
+  <div id="header_organization">
+    <label>Organization Entry Form</label>
+  </div>
 
-                    </div>
-            </div>
+  <div id="form_organizationentry">
+
+    <form action="http://localhost:9090/orgs" method="post" accept="application/json" enctype="" id="organizationform">
+
+      <div class="inner-left" ><label><fmt:message key="org.tablehead2"/></label></div>
+      <div class="inner-right"><input type="text" name="name" value="" class="textField"></div>
+      <div class="clear"></div>
+
+      <div class="inner-left"><label><fmt:message key="org.tablehead3"/></label></div>
+      <div class="inner-right"><input type="text" name="uniqueShortName" value="" class="textField"></div>
+      <div class="clear"></div>
+
+      <div class="inner-left"></div><div class="inner-right" align="left"><label>!!!! already exists!!! try another!!!</label></div>
+
+      <div class="inner-left"><label><fmt:message key="org.inputlabel3"/></label></div>
+      <div class="inner-right"><input type="text" name="streetAddress" value="" class="textField"></div>
+      <div class="clear"></div>
+
+
+      <div class="inner-left"><label><fmt:message key="org.inputlabel4"/></label></div>
+      <div class="inner-right"><input type="text" name="city" value="" class="textField"></div>
+      <div class="clear"></div>
+
+      <div class="inner-left"><label><fmt:message key="org.inputlabel5"/></label></div>
+      <div class="inner-right"><input type="text" name="state" value="" class="textField"></div>
+      <div class="clear"></div>
+
+      <div class="inner-left"><label><fmt:message key="org.inputlabel6"/></label></div>
+      <div class="inner-right"><input type="text" name="country" value="" class="textField"></div>
+      <div class="clear"></div>
+
+      <div class="inner-left"><label><fmt:message key="org.inputlabel7"/></label></div>
+      <div class="inner-right"><input type="text" name="zip" value="" class="textField"></div>
+      <div class="clear"></div>
+
+      <div id="btnfield"><input type="submit" value="submit" name="submitBtn"></div>
+      <div class="clear"></div>
+
+    </form>
+
+  </div>
+</div>
