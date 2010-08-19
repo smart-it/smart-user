@@ -71,8 +71,11 @@ public class OrganizationsResource extends AbstractResource{
         }
     }
     
-    @QueryParam("name")
-    private String nameLike;
+//    @QueryParam("name")
+//    private String nameLike;
+
+    @QueryParam("shortname")
+    private String uniqueShortName;
 //    @QueryParam("author_nick")
 //    private String authorNickName;
     @QueryParam("count")
@@ -86,10 +89,36 @@ public class OrganizationsResource extends AbstractResource{
     }
 
     @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path("/before/{beforeShortName}")
+    public Response getBeforeHtml(@PathParam("beforeShortName") String beforeShortName){
+      ResponseBuilder responseBuilder = Response.ok();
+       Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
+           null, beforeShortName, true, count);
+        Viewable view = new Viewable("organizationList", organizations, OrganizationsResource.class);
+        responseBuilder.entity(view);
+        return responseBuilder.build();
+    }
+
+
+    @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
     @Path("/after/{afterShortName}")
     public Response getAfter(@PathParam("afterShortName") String afterShortName) {
       return get(afterShortName, false);
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path("/after/{afterShortName}")
+    public Response getAfterHtml(@PathParam("afterShortName") String afterShortName){
+
+      ResponseBuilder responseBuilder = Response.ok();
+       Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
+           null, afterShortName, true, count);
+        Viewable view = new Viewable("organizationList", organizations, OrganizationsResource.class);
+        responseBuilder.entity(view);
+        return responseBuilder.build();
     }
 
     @GET
@@ -102,7 +131,8 @@ public class OrganizationsResource extends AbstractResource{
     @Produces(MediaType.TEXT_HTML)
     public Response getHtml(){
         ResponseBuilder responseBuilder = Response.ok();
-       Collection<Organization> organizations = Services.getInstance().getOrganizationService().getAllOrganization();
+       Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
+           uniqueShortName, uniqueShortName, true, count);
         Viewable view = new Viewable("organizationList", organizations, OrganizationsResource.class);
         responseBuilder.entity(view);
         return responseBuilder.build();
@@ -113,6 +143,9 @@ public class OrganizationsResource extends AbstractResource{
 //    @Produces(MediaType.APPLICATION_ATOM_XML)
     public Response get(String organizationName, boolean isBefore)
     {
+      if (count == null) {
+        count = 10;
+      }
         ResponseBuilder responseBuilder = Response.ok();
 
         // create a new atom feed
@@ -125,7 +158,11 @@ public class OrganizationsResource extends AbstractResource{
         atomFeed.addLink(parentResourceLink);
 
         // get the organizations accoring to the query        
-        Collection<Organization> organizations = Services.getInstance().getOrganizationService().getAllOrganization();
+        //Collection<Organization> organizations = Services.getInstance().getOrganizationService().getAllOrganization();
+//        Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
+//            organizationName, uniqueShortName, isBefore, count);
+        Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
+            "", organizationName, isBefore, count);
 
         // for testing purpose we manually add organization to the list.
 //        List<Organization> serviceOrganization = new ArrayList<Organization>();
@@ -146,8 +183,7 @@ public class OrganizationsResource extends AbstractResource{
             Link nextLink = abderaFactory.newLink();
             nextLink.setRel(Link.REL_NEXT);
             Organization lastOrganization = organizationList.get(0);
-            
-            
+                        
             for(String key:queryParam.keySet()){
                 final Object[] values = queryParam.get(key).toArray();
                 nextUri.queryParam(key, values);
