@@ -6,14 +6,11 @@
 package com.smartitengineering.user.client.impl;
 
 import com.smartitengineering.user.client.api.OrganizationResource;
-import com.smartitengineering.user.client.api.Person;
-import com.smartitengineering.user.client.api.PrivilegesResource;
-import com.smartitengineering.user.client.api.RolesResource;
-import com.smartitengineering.user.client.api.User;
-
-import com.smartitengineering.user.client.api.UserResource;
+import com.smartitengineering.user.client.api.SecuredObject;
+import com.smartitengineering.user.client.api.SecuredObjectResource;
 import com.smartitengineering.util.rest.atom.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,54 +24,47 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-public class UserResourceImpl extends AbstractClientImpl implements UserResource{
+public class SecuredObjectResourceImpl extends AbstractClientImpl implements SecuredObjectResource{
 
-  public static final String REL_USER = "user";
+  public static final String REL_SECUREDOBJECT = "securedobject";
   public static final String REL_ALT = "alternate";
 
-  private URI userURI;
-  private Link userLink;
-  private Link usersLink;
-  private Link privilegesLink;
-  private Link rolesLink;
-  
+  public URI securedObjectURI;
+  public Link securedObjectLink;
 
   private boolean isCacheEnabled;
   private Date lastModifiedDate;
   private Date expirationDate;
 
-  private User user;
+  private com.smartitengineering.user.client.impl.domain.SecuredObject securedObject;
 
-  UserResourceImpl(com.smartitengineering.user.client.impl.domain.User user){
+  public SecuredObjectResourceImpl(Link securedObjectLink){
 
-    Link createdUserLink = Abdera.getNewFactory().newLink();
-    createdUserLink.setHref(BASE_URI.toString() + "/username/"+ user.getUsername());
+    this.securedObjectLink = securedObjectLink;
+    securedObjectURI = UriBuilder.fromUri(BASE_URI.toString() + securedObjectLink.getHref().toString()).build();
 
-    this.userLink = createdUserLink;
-    userURI = UriBuilder.fromUri(BASE_URI.toString() + userLink.getHref().toString()).build();
-
-    ClientResponse response = ClientUtil.readClientResponse(userURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
+    ClientResponse response = ClientUtil.readClientResponse(securedObjectURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
     if(response.getStatus() != 401){
 
       Feed feed = ClientUtil.getFeed(response);
 
+      securedObjectLink = feed.getLink(REL_ALT);
 
+      securedObjectLink = feed.getLink(REL_SECUREDOBJECT);
 
-      Link userContentLink = feed.getLink(REL_ALT);
-
-      URI orgContentURI = UriBuilder.fromUri(BASE_URI.toString() + userContentLink.getHref().toString()).build();
+      URI orgContentURI = UriBuilder.fromUri(BASE_URI.toString() + securedObjectLink.getHref().toString()).build();
       ClientResponse contentResponse = ClientUtil.readClientResponse(orgContentURI, getHttpClient(), MediaType.APPLICATION_JSON);
 
       if(contentResponse.getStatus() != 401){
-        user = ClientUtil.getResponseEntity(contentResponse, com.smartitengineering.user.client.impl.domain.User.class);
-        //String str = ClientUtil.getResponseEntity(contentResponse, String.class);
+        //com.smartitengineering.user.domain.Organization organization = ClientUtil.getResponseEntity(contentResponse, com.smartitengineering.user.domain.Organization.class);
+        String str = ClientUtil.getResponseEntity(contentResponse, String.class);
 
       }
 
       Feed contentFeed = ClientUtil.getFeed(response);
 
-      String href = userLink.getHref().toString();
+      String href = securedObjectLink.getHref().toString();
 
       if(response.getHeaders().getFirst("Cache-Control") != null)
         isCacheEnabled = response.getHeaders().getFirst("Cache-Control").equals("no-cache");
@@ -91,40 +81,43 @@ public class UserResourceImpl extends AbstractClientImpl implements UserResource
       }
       catch (Exception ex) {
       }
-      userURI = response.getLocation();
+      securedObjectURI = response.getLocation();
 
     }else{
-      userLink = null;
+      securedObjectLink = null;
     }
   }
 
-  UserResourceImpl(Link usersLink) {
+  public SecuredObjectResourceImpl(SecuredObject securedObject){
+    
+    Link createdLink = Abdera.getNewFactory().newLink();
+    createdLink.setHref(BASE_URI.toString() + "/securedobjects/" + securedObject.getName());
 
-    this.userLink = userLink;
-    userURI = UriBuilder.fromUri(BASE_URI.toString() + userLink.getHref().toString()).build();
+    this.securedObjectLink = createdLink;
+    securedObjectURI = UriBuilder.fromUri(BASE_URI.toString() + securedObjectLink.getHref().toString()).build();
 
-    ClientResponse response = ClientUtil.readClientResponse(userURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
+    ClientResponse response = ClientUtil.readClientResponse(securedObjectURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
     if(response.getStatus() != 401){
 
       Feed feed = ClientUtil.getFeed(response);
 
+      securedObjectLink = feed.getLink(REL_ALT);
 
+      securedObjectLink = feed.getLink(REL_SECUREDOBJECT);
 
-      Link userContentLink = feed.getLink(REL_ALT);
-
-      URI orgContentURI = UriBuilder.fromUri(BASE_URI.toString() + userContentLink.getHref().toString()).build();
+      URI orgContentURI = UriBuilder.fromUri(BASE_URI.toString() + securedObjectLink.getHref().toString()).build();
       ClientResponse contentResponse = ClientUtil.readClientResponse(orgContentURI, getHttpClient(), MediaType.APPLICATION_JSON);
 
       if(contentResponse.getStatus() != 401){
-        user = ClientUtil.getResponseEntity(contentResponse, com.smartitengineering.user.client.impl.domain.User.class);
-        //String str = ClientUtil.getResponseEntity(contentResponse, String.class);
+        //com.smartitengineering.user.domain.Organization organization = ClientUtil.getResponseEntity(contentResponse, com.smartitengineering.user.domain.Organization.class);
+        String str = ClientUtil.getResponseEntity(contentResponse, String.class);
 
       }
 
       Feed contentFeed = ClientUtil.getFeed(response);
 
-      String href = userLink.getHref().toString();
+      String href = securedObjectLink.getHref().toString();
 
       if(response.getHeaders().getFirst("Cache-Control") != null)
         isCacheEnabled = response.getHeaders().getFirst("Cache-Control").equals("no-cache");
@@ -141,33 +134,16 @@ public class UserResourceImpl extends AbstractClientImpl implements UserResource
       }
       catch (Exception ex) {
       }
-      userURI = response.getLocation();
+      securedObjectURI = response.getLocation();
 
     }else{
-      userLink = null;
+      securedObjectLink = null;
     }
-  }
-
-  @Override
-  public User getUser() {
-    return user;
-  }
-
-  @Override
-  public Person getProfile() {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public PrivilegesResource getPrivilegesResource() {
-    //throw new UnsupportedOperationException("Not supported yet.");
-    //return new PrivilegesResourceImpl(privilegesLink);
-    return null;
 
   }
 
   @Override
-  public RolesResource getRolesResource() {
+  public SecuredObject getSecuredObjcet() {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
@@ -177,17 +153,23 @@ public class UserResourceImpl extends AbstractClientImpl implements UserResource
   }
 
   @Override
-  public UserResource update() {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public SecuredObjectResource update() {
+    WebResource webResource = getClient().resource(securedObjectURI);
+    getClient().getProviders();
+    webResource.type(MediaType.APPLICATION_JSON_TYPE).put(securedObject);
+
+    return new SecuredObjectResourceImpl(securedObjectLink);
   }
 
   @Override
   public void delete() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    WebResource webResource = getClient().resource(securedObjectURI);
+    getClient().getProviders();
+    webResource.type(MediaType.APPLICATION_JSON_TYPE).delete();
   }
 
   @Override
-  public UserResource refreshAndMerge() {
+  public SecuredObjectResource refreshAndMerge() {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
@@ -213,12 +195,12 @@ public class UserResourceImpl extends AbstractClientImpl implements UserResource
 
   @Override
   public URI getUri() {
-    return userURI;
+    return securedObjectURI;
   }
 
   @Override
-  public UserResource refresh() {
-    return new UserResourceImpl(usersLink);
+  public SecuredObjectResource refresh() {
+    return new SecuredObjectResourceImpl(securedObjectLink);
   }
 
 }

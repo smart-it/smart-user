@@ -40,4 +40,6 @@ class GeoLocation extends AbstractPersistentDTO<GeoLocation>{
             return true;
     }
 
+
+
 }

@@ -5,17 +5,18 @@
 
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.user.client.api.OrganizationFilter;
-import com.smartitengineering.user.client.api.OrganizationResource;
-import com.smartitengineering.user.client.api.OrganizationsResource;
-import com.smartitengineering.user.domain.Organization;
+import com.smartitengineering.user.client.api.User;
+import com.smartitengineering.user.client.api.UserFilter;
+import com.smartitengineering.user.client.api.UserResource;
+import com.smartitengineering.user.client.api.UsersResource;
+import com.smartitengineering.user.resource.api.LinkedResource;
 import com.smartitengineering.util.rest.atom.ClientUtil;
-import com.smartitengineering.util.rest.atom.PaginatedFeedEntitiesList;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.ws.rs.core.MediaType;
@@ -28,37 +29,37 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-class OrganizationsResourceImpl extends AbstractClientImpl implements OrganizationsResource{
+class UsersResourceImpl extends AbstractClientImpl implements UsersResource{
 
-  private Link orgsLink;
-  private Link orgLink;
-  private URI orgsURI;
-  private static final String REL_ORG = "Organization";
-  private static final String REL_ALT = "alternate";
+  public static final String REL_USERS = "users";
+  public static final String REL_ALT = "alternate";
+  
+  private Link usersLink;
+  private Link userLink;
+  private URI usersURI;
 
   private boolean isCacheEnabled;
   private Date lastModifiedDate;
   private Date expirationDate;
   private List<Entry> entries;
- 
 
-  OrganizationsResourceImpl(Link orgsLink) {
+  public UsersResourceImpl(Link usersLink) {
 
-    this.orgsLink = orgsLink;
+    this.usersLink = usersLink;
 
-    orgsURI = UriBuilder.fromUri(BASE_URI.toString() + orgsLink.getHref().toString()).build();
-    
-    URI uri = UriBuilder.fromUri(BASE_URI.toString() + orgsLink.getHref().toString()).build();
+    usersURI = UriBuilder.fromUri(BASE_URI.toString() + usersLink.getHref().toString()).build();
+
+    URI uri = UriBuilder.fromUri(BASE_URI.toString() + usersLink.getHref().toString()).build();
     ClientResponse response = ClientUtil.readClientResponse(uri, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
-    PaginatedFeedEntitiesList<Organization> pgs;
+    //PaginatedFeedEntitiesList<Organization> pgs;
     if (response.getStatus() != 401) {
       Feed feed = ClientUtil.getFeed(response);
 
       entries = feed.getEntries();
 
-      orgsLink = feed.getLink(REL_ORG);
-      
+      usersLink = feed.getLink(REL_USERS);
+
 
       if(response.getHeaders().getFirst("Cache-Control") != null)
         isCacheEnabled = response.getHeaders().getFirst("Cache-Control").equals("no-cache");
@@ -78,75 +79,69 @@ class OrganizationsResourceImpl extends AbstractClientImpl implements Organizati
       uri = response.getLocation();
 
     }else{
-      
-      orgLink=null;
-      
-    }
 
+      usersLink=null;
+
+    }
   }
 
   @Override
-  public OrganizationResource create(com.smartitengineering.user.client.impl.domain.Organization organization) {
-    
-    WebResource webResource = getClient().resource(orgsURI);
-    getClient().getProviders();
-    try{
-    webResource.type(MediaType.APPLICATION_JSON_TYPE).post(organization);
-    }catch(Exception ex){
-      ex.printStackTrace();
-    }
+  public List<UserResource> getUserResources() {
+        List<UserResource> organizationResources = new ArrayList<UserResource>();
 
-    return new OrganizationResourceImpl(organization);    
+    //LinkedResource<OrganizationResource> linkedResource = new LinkedList<OrganizationResource>();
+
+    for(Entry entry: entries){
+      organizationResources.add( new UserResourceImpl(entry.getLink(REL_ALT)));
+    }
+    return organizationResources;
   }
 
 //  @Override
-//  public Collection<LinkedResource<OrganizationResource>> getOrganizationResources() {
-//    //throw new UnsupportedOperationException("Not supported yet.");
+//  public Collection<LinkedResource<UserResource>> getUserResources() {
 //
-//    List<OrganizationResource> organizationResources = new ArrayList<OrganizationResource>();
+//    List<UserResource> organizationResources = new ArrayList<UserResource>();
 //
 //    //LinkedResource<OrganizationResource> linkedResource = new LinkedList<OrganizationResource>();
 //
 //    for(Entry entry: entries){
-//      organizationResources.add( new OrganizationResourceImpl(entry.getLink(REL_ALT)));
+//      organizationResources.add( new UserResourceImpl(entry.getLink(REL_ALT)));
 //    }
 //
 //
 //    return null;
+//
 //  }
 
+
   @Override
-  public List<OrganizationResource> getOrganizationResources(){
+  public UserResource create(com.smartitengineering.user.client.impl.domain.User user) {
 
-    List<OrganizationResource> organizationResources = new ArrayList<OrganizationResource>();
-
-    for(Entry entry: entries){
-      organizationResources.add( new OrganizationResourceImpl(entry.getLink(REL_ALT)));
-    }
-
-    return organizationResources;
+    WebResource webResource = getClient().resource(usersURI);
+    webResource.type(MediaType.APPLICATION_JSON).post(user);
+    return new UserResourceImpl(user);
   }
 
   @Override
-  public OrganizationsResource search(OrganizationFilter filter) {
-
-    
-
+  public UsersResource search(UserFilter filter) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
   public boolean isCacheEnabled() {
+    
     return isCacheEnabled;
   }
 
   @Override
   public Date getLastModifiedDate() {
+    
     return lastModifiedDate;
   }
 
   @Override
   public Date getExpirationDate() {
+    
     return expirationDate;
   }
 
@@ -157,12 +152,14 @@ class OrganizationsResourceImpl extends AbstractClientImpl implements Organizati
 
   @Override
   public URI getUri() {
-    return orgsURI;
+    
+    return usersURI;
   }
 
   @Override
   public Object refresh() {
-    return new OrganizationsResourceImpl(orgsLink);
+    
+    return new UsersResourceImpl(usersLink);
   }
 
 }

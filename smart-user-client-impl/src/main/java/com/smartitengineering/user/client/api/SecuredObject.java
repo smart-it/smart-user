@@ -8,7 +8,7 @@ package com.smartitengineering.user.client.api;
  *
  * @author modhu7
  */
-public interface SecuredObjcet {
+public interface SecuredObject {
 
   public String getName();
 

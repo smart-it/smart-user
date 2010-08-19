@@ -7,6 +7,7 @@ package com.smartitengineering.user.client.api;
 import com.smartitengineering.user.resource.api.LinkedResource;
 import com.smartitengineering.user.resource.api.Resource;
 import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -14,9 +15,10 @@ import java.util.Collection;
  */
 public interface PrivilegesResource extends Resource {
 
-  public Collection<LinkedResource<PrivilegeResource>> getPrivilegeResources();
+  //public Collection<LinkedResource<PrivilegeResource>> getPrivilegeResources();
+  public List<PrivilegeResource> getPrivilegeResources();
 
-  public PrivilegeResource create(Privilege Privilege);
+  public PrivilegeResource create(com.smartitengineering.user.client.impl.domain.Privilege Privilege);
 
   public PrivilegesResource search(PrivilegeFilter filter);
 }

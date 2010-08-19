@@ -30,6 +30,7 @@ public class RootResource extends AbstractResource {
   public Response get() {
     ResponseBuilder responseBuilder = Response.ok();
     Feed atomFeed = getFeed("ROA Demo", INIT_DATE);
+
     Link loginLink = Abdera.getNewFactory().newLink();
     //loginLink.setHref(UriBuilder.fromResource(BooksResource.class).build().toString());
     loginLink.setHref(LoginResource.LOGIN_URI_BUILDER.build().toString());

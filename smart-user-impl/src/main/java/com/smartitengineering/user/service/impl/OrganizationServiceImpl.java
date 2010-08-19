@@ -4,16 +4,12 @@
  */
 package com.smartitengineering.user.service.impl;
 
-import com.smartitengineering.dao.common.CommonReadDao;
-import com.smartitengineering.dao.common.CommonWriteDao;
-import com.smartitengineering.dao.common.queryparam.MatchMode;
+import com.smartitengineering.dao.common.queryparam.Order;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl;
-import com.smartitengineering.domain.PersistentDTO;
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Privilege;
-import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.SecuredObject;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.domain.User;
@@ -23,6 +19,8 @@ import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.OrganizationService;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
@@ -55,6 +53,79 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
           UniqueConstrainedField.OTHER;
       throw new RuntimeException(message, e);
     }
+  }
+
+  @Override
+  public Collection<Organization> getAllOrganization() {
+    Collection<Organization> organizations = new HashSet<Organization>();
+    try {
+      organizations = super.getAll();
+    }
+    catch (Exception e) {
+    }
+    return organizations;
+  }
+
+  @Override
+  public Collection<Organization> getOrganizations(String organizationNameLike, String shortName, boolean isSmallerThan,
+                                                   int count) {
+
+    List<QueryParameter> params = new ArrayList<QueryParameter>();
+
+    if (StringUtils.isNotBlank(organizationNameLike)) {
+      final QueryParameter orgNameLikeParam = QueryParameterFactory.getStringLikePropertyParam("name",
+                                                                                               organizationNameLike);
+      params.add(orgNameLikeParam);
+    }
+//      else{
+//        params.add(QueryParameterFactory.getStringLikePropertyParam("name", ""));
+//      }
+
+    if (StringUtils.isNotBlank(shortName)) {
+      if (isSmallerThan) {
+        params.add(QueryParameterFactory.getLesserThanPropertyParam("uniqueShortName", shortName));
+      }
+      else {
+        params.add(QueryParameterFactory.getGreaterThanPropertyParam("uniqueShortName", shortName));
+      }
+    }
+
+    params.add(QueryParameterFactory.getMaxResultsParam(count));
+    params.add(QueryParameterFactory.getOrderByParam("id", Order.DESC));
+    params.add(QueryParameterFactory.getDistinctPropProjectionParam("id"));
+
+    List<Integer> organizationIDs = getOtherList(params);
+
+    if (organizationIDs != null && !organizationIDs.isEmpty()) {
+      List<Organization> organizations = new ArrayList<Organization>(super.getByIds(organizationIDs));
+      Collections.sort(organizations, new Comparator<Organization>() {
+
+        @Override
+        public int compare(Organization o1, Organization o2) {
+          //return o1.getId().compareTo(o2.getId()) * -1;
+          return o1.getUniqueShortName().compareTo(o2.getUniqueShortName()) * -1;
+        }
+      });
+      return organizations;
+    }
+    else {
+      return Collections.emptySet();
+    }
+
+  }
+
+  @Override
+  public Organization getOrganizationByUniqueShortName(String uniqueShortName) {
+    QueryParameter qp;
+    qp = QueryParameterFactory.getEqualPropertyParam("uniqueShortName", uniqueShortName);
+    Organization organization = new Organization("", "");
+    try {
+      organization = super.getSingle(qp);
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+    return organization;
   }
 
   @Override
@@ -111,17 +182,6 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
   }
 
   @Override
-  public Collection<Organization> getAllOrganization() {
-    Collection<Organization> organizations = new HashSet<Organization>();
-    try {
-      organizations = super.getAll();
-    }
-    catch (Exception e) {
-    }
-    return organizations;
-  }
-
-  @Override
   public void validateOrganization(Organization organization) {
     if (organization.getId() == null) {
       Integer count = (Integer) super.getOther(
@@ -150,20 +210,9 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
     }
   }
 
-  @Override
-  public Organization getOrganizationByUniqueShortName(String uniqueShortName) {
-    QueryParameter qp;
-    qp = QueryParameterFactory.getEqualPropertyParam("uniqueShortName", uniqueShortName);
-    Organization organization = new Organization("", "");
-    try {
-      organization = super.getSingle(qp);
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-    }
-    return organization;
-  }
+  
 
+  @Override
   public void populateOrganization(User user) throws Exception {
     Integer organizationID = user.getParentOrganizationID();
     if (user.getParentOrganizationID() != null) {
@@ -176,6 +225,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
     }
   }
 
+  @Override
   public void populateOrganization(UserGroup userGroup) throws Exception {
     Integer organizationID = userGroup.getParentOrganizationID();
     if (userGroup.getParentOrganizationID() != null) {
@@ -188,6 +238,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
     }
   }
 
+  @Override
   public void populateOrganization(SecuredObject securedObject) throws Exception {
     Integer organizationID = securedObject.getParentOrganizationID();
     if (organizationID != null) {
@@ -200,6 +251,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
     }
   }
 
+  @Override
   public void populateOrganization(Privilege privilege) throws Exception {
     Integer organizationID = privilege.getParentOrganizationID();
     if (privilege.getParentOrganizationID() != null) {
