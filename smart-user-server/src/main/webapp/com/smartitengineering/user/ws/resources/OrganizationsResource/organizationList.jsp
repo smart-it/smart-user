@@ -14,6 +14,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
   "http://www.w3.org/TR/html4/loose.dtd">
 
+<div id="rightmenu">
+  <div id="rightmenu_header">Organization-Creation</div>
+  <div id="rightmenu_body">
+    <ul>
+      <li><a href="javascript: Orgpageselect()">Create</a></li>
+    </ul>
+  </div>
+</div>
 
 <c:if test="${param['lang']!=null}">
   <fmt:setLocale scope="session" value="${param['lang']}"/>
@@ -53,11 +61,6 @@
 
     </div>
   </c:forEach>
-
-
-  <div class="tablecontent_label">
-    <a href="javascript: Orgpageselect()">Create</a>
-  </div>
 
 </div>
 

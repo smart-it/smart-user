@@ -17,8 +17,14 @@
 </c:if>
 
 
+<div id="rightmenu">
+  <div id="rightmenu_header"><label>Individual-User</label></div>
 
-<div><a href="javascript: Orgpageselect()"><fmt:message key="org.tablehead4"/></a></div>
+  <div id="rightmenu_body">
+    <ul>
+      <li><a href="javascript: Orgpageselect()"><fmt:message key="org.tablehead4"/></a></li>
+    </ul></div>
+</div>
 
 <div id="showList" class="show">
   

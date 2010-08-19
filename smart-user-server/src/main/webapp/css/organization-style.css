@@ -1,4 +1,4 @@
-Document   : organization-style
+/*Document   : organization-style
 Created on : Jul 20, 2010, 10:21:41 AM
 Author     : uzzal
 Description:
@@ -21,24 +21,24 @@ root {
   display: none;
 }
 #create{
-
-  /*  background-image: url(../images/gallery_bg.gif);
+/*
+    background-image: url(../images/gallery_bg.gif);
       background-repeat: repeat;
-      background-position: top left;*/
+      background-position: top left;
 
-  /*    -moz-border-radius: 1em;
+      -moz-border-radius: 1em;
       -webkit-border-radius: 1em;
       border-radius: 1em;
-  */
-  /*background-color: #F5EEFD;*/
-  /*background-color: #F5EE00;*/
+  
+  background-color: #F5EEFD;
+  background-color: #F5EE00;*/
 
   text-align: left;
-  margin: 50px 0px 0px 150px;
-  /*margin: 0 auto;*/
+  /*margin: 10px 0px 0px 150px;*/
+  margin: 0 auto;
   border: 2px solid;
   border-color:#24E0FB;
-  width:60%;
+  width:90%;
   font-family: Arial,Helvetica,sans-serif;
 }
 
@@ -55,6 +55,7 @@ root {
       -webkit-border-radius: 1em;
       border-radius: 1em;
   */
+  width: auto;
   text-align: center;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -214,9 +215,11 @@ root {
 
 #individual_org_details_header{
   /*margin-left: 110px;*/
-  margin: 0 auto;
+  margin-top: 10px;
+  margin-left: 3px;
+  /*margin: 0 auto;*/
   padding-top: 5px;
-  width: 70%;
+  width: 99%;
   height: 25px;
   background-color:#CCCFFF;
 }
@@ -231,18 +234,19 @@ root {
 
 #individual_org_details_content{
   /*margin-left: 110px;*/
-  margin: 0 auto;
+  /*margin: 0 auto;*/
+  margin-left: 3px;
   padding-top: 10px;
   padding-bottom: 10px;
   background-image: url(../images/l.gif);
   background-repeat:repeat;
-  background-position:top ;
-  width:70%;
+  background-position: right;
+  width:99%;
 }
 
 .individual_org_label{
   float: left;
-  width: 40%;
+  width: 27%;
   padding: 2px 2px 5px 10px;
   text-align: left;
   /*border: 1px solid;*/
@@ -250,7 +254,7 @@ root {
 
 .individual_org_data{
   float: left;
-  width: 55%;
+  width: 60%;
   padding: 2px 2px 5px 0px;
   /*border: 1px solid;*/
 }
@@ -292,6 +296,8 @@ root {
 #rightmenu_header{
   padding:4px 0px 0px 4px;
   text-align: center;
+  color: #23819C;
+  font-weight: bold;
   background-image: url(/images/top.jpg);
   height: 25px;
   border: 1px solid;

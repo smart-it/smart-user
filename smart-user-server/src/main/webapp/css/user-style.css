@@ -23,17 +23,17 @@ root {
 }
 #create{
   text-align: left;
-  margin: 50px 0px 0px 150px;
-  /*margin: 0 auto;*/
+  /*margin: 50px 0px 0px 150px;*/
+  margin: 5px 1px 1px 5px;
   border: 2px solid;
   border-color:#24E0FB;
-  width:60%;
+  width:98%;
   font-family: Arial,Helvetica,sans-serif;
 }
 
 #userslist{
-  margin: 0 auto;
-  width: 70%;
+  margin: 2px 1px 1px 1px;
+  width: 99%;
   border: 1px outset;
   border-color:#FDFEFF;
 }
@@ -165,9 +165,10 @@ root {
 
 #individual_user_details_header{
   /*margin-left: 110px;*/
-  margin: 0 auto;
+  margin-top: 10px;
+  margin-left: 3px;
   padding-top: 5px;
-  width: 70%;
+  width: 99%;
   height: 25px;
   background-color:#CCCFFF;
 }
@@ -188,8 +189,8 @@ root {
   padding-bottom: 10px;
   background-image: url(../images/l.gif);
   background-repeat:repeat;
-  background-position:top ;
-  width:70%;
+  background-position: right;
+  width:99%;
 }
 
 .individual_user_label{

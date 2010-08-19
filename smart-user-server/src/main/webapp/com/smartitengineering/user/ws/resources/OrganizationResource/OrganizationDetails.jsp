@@ -13,7 +13,7 @@
   "http://www.w3.org/TR/html4/loose.dtd">
 
 <div id="rightmenu">
-  <div id="rightmenu_header"><label>organization</label></div>
+  <div id="rightmenu_header"><label>Organization</label></div>
 
   <div id="rightmenu_body">
   <ul>
