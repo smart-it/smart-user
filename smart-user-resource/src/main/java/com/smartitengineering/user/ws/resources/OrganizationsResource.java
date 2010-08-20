@@ -355,6 +355,7 @@ public class OrganizationsResource extends AbstractResource {
 
         
     }
-      return responseBuilder.build();
+      //return responseBuilder.build();
+      return getHtml();
   }
 }

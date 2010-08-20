@@ -131,7 +131,8 @@ public class OrganizationResource extends AbstractResource {
         catch (Exception ex) {
             responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
         }
-        return responseBuilder.build();
+        //return responseBuilder.build();
+        return getHtml();
     }
 
     @POST
@@ -210,7 +211,9 @@ public class OrganizationResource extends AbstractResource {
     public Response deletePost(){
       Services.getInstance().getOrganizationService().delete(organization);
         ResponseBuilder responseBuilder = Response.ok();
-        return responseBuilder.build();
+
+        return new OrganizationsResource().getHtml();
+        //return responseBuilder.build();
     }
 
     private Organization getObjectFromContent(String message){
