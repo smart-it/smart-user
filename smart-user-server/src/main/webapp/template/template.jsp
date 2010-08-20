@@ -7,8 +7,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-  <<<<<<< HEAD
-  "http://www.w3.org/TR/html4/loose.dtd">
 
 <%--Uzzal--%>
 
@@ -32,7 +30,7 @@
 
       function init() {
 
-        $('#right').append( $('#rightmenu') );
+        $('#right').append( $('#leftmenu') );
       }
 
     </script>
@@ -41,7 +39,6 @@
       $(document).ready(function(){
                 
         $.ajax({
-          type: "GET",
           url: "http://localhost:9090/orgs",
           dataType: "xml",
           success: function(xml) {
@@ -62,7 +59,8 @@
             $("#tablecontentname").html(contentname);
                         
 
-            var linkvalue="";
+            var linkvalue_next="";
+            var linkvalue_prev="";
             $(xml).find('link').each(function(){
 
               var nextlink = $(this).attr("rel");
@@ -72,8 +70,8 @@
               {
 
                 var href = $(this).attr("href");
-                linkvalue += "<a href=\""+href+"\">"+nextlink+"</a>";
-                $("#tablecontentlink").html(linkvalue);
+                linkvalue_next += "<a href=\""+href+"\">"+nextlink+"</a>";
+                $("#tablecontentlink_of_next").html(linkvalue_next);
 
               }
 
@@ -81,8 +79,8 @@
               {
                 var href = $(this).attr("href");
 
-                linkvalue += "<a href=\""+href+"\">"+nextlink+"</a>";
-                $("#tablecontentlink").html(linkvalue);
+                linkvalue_prev += "<a href=\""+href+"\">"+nextlink+"</a>";
+                $("#tablecontentlink_of_previous").html(linkvalue_prev);
 
               }
             });

@@ -12,10 +12,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
   "http://www.w3.org/TR/html4/loose.dtd">
 
-<div id="rightmenu">
-  <div id="rightmenu_header"><label>Organization</label></div>
+<div id="leftmenu">
+  <div id="leftmenu_header"><label>Organization</label></div>
 
-  <div id="rightmenu_body">
+  <div id="leftmenu_body">
   <ul>
 
     <li><a href="javascript: Orgpageselect()">Edit</a></li>

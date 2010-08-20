@@ -16,9 +16,9 @@
 
 <%--Uzzalllllll--%>
 
-<div id="rightmenu">
-  <div id="rightmenu_header">Organization-Creation</div>
-  <div id="rightmenu_body">
+<div id="leftmenu">
+  <div id="leftmenu_header">Organization-Creation</div>
+  <div id="leftmenu_body">
     <ul>
       <li><a href="javascript: Orgpageselect()">Create</a></li>
     </ul>
@@ -58,7 +58,12 @@
       
   </div>
 
-  <div id="tablecontentlink" ></div>
+    <div class="clear"></div>
+
+  <div id="tablecontentlink_of_next" ></div>
+  <div id="tablecontentlink_of_previous" ></div>
+
+  <div class="clear"></div>
 
 </div>
 
@@ -109,7 +114,7 @@
       <div class="inner-right"><input type="text" name="zip" value="" class="textField"></div>
       <div class="clear"></div>
 
-      <div id="btnfield" align="center"><input type="submit" value="submit" name="submitbtn" onclick="isEmpty()" onmouseover="onmouse_over()" id="submit"></div>
+      <div id="btnfield"><input type="submit" value="submit" name="submitbtn" onclick="isEmpty()" onmouseover="onmouse_over()" id="submit"></div>
       <div class="clear"></div>
 
     </form>
