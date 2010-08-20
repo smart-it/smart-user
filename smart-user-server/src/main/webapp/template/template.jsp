@@ -25,10 +25,12 @@
                 
                 $.ajax({
                     type: "GET",
-                    url: "http://localhost:9090/orgs",
+                    //url: "http://localhost:9090/orgs",
+                    url: window.location,
                     dataType: "xml",
                     success: function(xml) {
-                    
+
+                    alert(xml);
                         var contentid="";
                         var contentname="";
                         $(xml).find('entry').each(function(){
