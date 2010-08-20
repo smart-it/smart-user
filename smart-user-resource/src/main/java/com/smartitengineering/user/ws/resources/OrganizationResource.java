@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.core.MediaType;
@@ -25,6 +26,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
@@ -44,6 +46,9 @@ public class OrganizationResource extends AbstractResource {
 
     static final UriBuilder ORGANIZATION_URI_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
     static final UriBuilder ORGANIZATION_CONTENT_URI_BUILDER;
+
+    @Context
+    private HttpServletRequest servletRequest;
 
     static {
         ORGANIZATION_CONTENT_URI_BUILDER = ORGANIZATION_URI_BUILDER.clone();
@@ -69,8 +74,16 @@ public class OrganizationResource extends AbstractResource {
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
     public Response get() {
-        Feed organizationFeed = getOrganizationFeed();
-        ResponseBuilder responseBuilder = Response.ok(organizationFeed);
+        ResponseBuilder responseBuilder = Response.ok();
+        try{
+            Feed organizationFeed = getOrganizationFeed();
+            responseBuilder =  Response.ok(organizationFeed);
+        }catch(Exception ex){
+            ex.printStackTrace();
+            responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+        }
+        
+        
         return responseBuilder.build();
     }
 
@@ -86,8 +99,9 @@ public class OrganizationResource extends AbstractResource {
     @Produces(MediaType.TEXT_HTML)
     public Response getHtml(){
         ResponseBuilder responseBuilder = Response.ok();
-        
-        Viewable view = new Viewable("OrganizationDetails", organization, OrganizationResource.class);
+        servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationResource/OrganizationDetails.jsp");
+//        Viewable view = new Viewable("OrganizationDetails", organization, OrganizationResource.class);
+        Viewable view = new Viewable("/template/template.jsp", organization);
         responseBuilder.entity(view);
         return responseBuilder.build();
     }
@@ -117,7 +131,8 @@ public class OrganizationResource extends AbstractResource {
         catch (Exception ex) {
             responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
         }
-        return responseBuilder.build();
+        //return responseBuilder.build();
+        return getHtml();
     }
 
     @POST
@@ -172,6 +187,7 @@ public class OrganizationResource extends AbstractResource {
         newOrganization.setVersion(Integer.valueOf(keyValueMap.get("version")));
 
         Address address = new Address();
+        address.setStreetAddress(keyValueMap.get("streetAddress"));
         address.setCity(keyValueMap.get("city"));
         address.setCountry(keyValueMap.get("country"));
         address.setState(keyValueMap.get("state"));
@@ -179,7 +195,7 @@ public class OrganizationResource extends AbstractResource {
 
         newOrganization.setAddress(address);
 
-        if(keyValueMap.get("submit").equals("update")){
+        if(keyValueMap.get("submitbtn").toUpperCase().equals("UPDATE")){
           return update(newOrganization);
         }else{
           return delete();
@@ -195,6 +211,7 @@ public class OrganizationResource extends AbstractResource {
     public Response deletePost(){
       Services.getInstance().getOrganizationService().delete(organization);
         ResponseBuilder responseBuilder = Response.ok();
+        
         return responseBuilder.build();
     }
 
@@ -382,4 +399,9 @@ public class OrganizationResource extends AbstractResource {
         
         return organizationFeed;
     }
+
+    public void setServletRequest(HttpServletRequest servletRequest) {
+        this.servletRequest = servletRequest;
+    }
+
 }

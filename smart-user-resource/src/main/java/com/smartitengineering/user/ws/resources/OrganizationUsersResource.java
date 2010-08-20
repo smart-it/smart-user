@@ -48,6 +48,9 @@ public class OrganizationUsersResource extends AbstractResource{
     static final UriBuilder ORGANIZATION_USERS_BEFORE_USERNAME_URI_BUILDER;
     static final UriBuilder ORGANIZATION_USERS_AFTER_USERNAME_URI_BUILDER;
 
+    @Context
+    private HttpServletRequest servletRequest;
+
     static{
         ORGANIZATION_USERS_URI_BUILDER = UriBuilder.fromResource(OrganizationUsersResource.class);
 
@@ -71,8 +74,7 @@ public class OrganizationUsersResource extends AbstractResource{
     @PathParam("uniqueShortName")
     private String organizationUniqueShortName;
 
-    @Context
-    private HttpServletRequest servletRequest;
+    
 
     public OrganizationUsersResource(@PathParam("uniqueShortName")String organizationUniqueShortName){
         this.organizationUniqueShortName = organizationUniqueShortName;
@@ -85,7 +87,10 @@ public class OrganizationUsersResource extends AbstractResource{
         ResponseBuilder responseBuilder = Response.ok();
         Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName);
 
-        Viewable view = new Viewable("userList", users, OrganizationUsersResource.class);
+        servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationUsersResource/userList.jsp");
+        Viewable view = new Viewable("/template/template.jsp", users);
+
+//        Viewable view = new Viewable("userList", users, OrganizationUsersResource.class);
         responseBuilder.entity(view);
         return responseBuilder.build();
         
