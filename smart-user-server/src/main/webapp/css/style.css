@@ -15,7 +15,9 @@ root {
     display: block;
 }
 body{
-    background: url(../images/main_bg1.gif) repeat;
+    /*background: url(../images/main_bg1.gif) repeat;*/
+    /*background: url(../images/bodybg.jpg) repeat;*/
+    background-color: #EEEEEE;
     width:auto;
     text-align: center;
 }
@@ -47,7 +49,7 @@ body{
 #options{
     background: url(../images/bgg.png) repeat;
     width: auto;
-    height: 70px;
+    height: 80px;
 }
 
 #options form{
@@ -73,23 +75,27 @@ body{
 #content{
     background: url(../images/bg_shadow_bot.gif) repeat;
     height: 672px;
-    float: left;
-    /*height: auto;*/
-    width: 75%;
+    float: right;
+    width: 73.6%;
 }
 
 
 #right{
     background: url(../images/)  no-repeat;
     height:672px;
-    float: right;
-    width: 24%;
+    float: left;
+    width: 26.2%;
     border: 1px solid;
     border-color: #24E0FB;
+    background-color: #FFFFFF;
 }
 
 #footer{
     background: url(../images/bgg.png) repeat;
     width: auto;
-    height: 75px;
+    height: 80px;
+}
+
+.clear{
+  clear: both;
 }

@@ -11,12 +11,14 @@ import com.sun.jersey.api.view.Viewable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -31,6 +33,7 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
+//@Path("/orgs")
 @Path("/orgs/{organizationUniqueShortName}/privs")
 public class OrganizationPrivilegesResource extends AbstractResource{
 
@@ -39,6 +42,9 @@ public class OrganizationPrivilegesResource extends AbstractResource{
     static UriBuilder ORGANIZATION_PRIVILEGE_URIBUILDER;
     static UriBuilder ORGANIZATION_PRIVILEGE_AFTER_NAME_URIBUILDER;
     static UriBuilder ORGANIZATION_PRIVILEGE_BEFORE_NAME_URIBUILDER;
+
+    @Context
+    private HttpServletRequest servletRequest;
 
     static{
         ORGANIZATION_PRIVILEGE_URIBUILDER = UriBuilder.fromResource(OrganizationPrivilegesResource.class);
@@ -85,7 +91,10 @@ public class OrganizationPrivilegesResource extends AbstractResource{
        //Collection<SecuredObject> securedObjects = Services.getInstance().getSecuredObjectService().
       Collection<Privilege> privileges = Services.getInstance().getPrivilegeService().getPrivilegesByOrganization(
           organizationUniqueShortName);
-        Viewable view = new Viewable("OrgPrivilegeList", privileges, OrganizationPrivilegeResource.class);
+      
+        servletRequest.setAttribute("templateContent2", "/com/smartitengineering/user/ws/resources/OrganizationPrivilegeResource/OrgPrivilegeList.jsp");
+//        Viewable view = new Viewable("OrgPrivilegeList", privileges, OrganizationPrivilegeResource.class);
+        Viewable view = new Viewable("/template/template.jsp", privileges);
         responseBuilder.entity(view);
         return responseBuilder.build();
     }
