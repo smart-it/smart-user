@@ -128,6 +128,14 @@
 
 
                 });
+                $("#submit").click(function(){
+
+                alert(window.location);
+                var usn =$("#uniqueShortName").val()
+                window.location.replace = "http://localhost:9090/orgs/shortname/"+usn;
+
+                });
+
 
 
             });
