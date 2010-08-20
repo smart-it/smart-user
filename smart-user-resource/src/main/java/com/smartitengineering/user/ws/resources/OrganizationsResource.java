@@ -148,9 +148,9 @@ public class OrganizationsResource extends AbstractResource {
         Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
            uniqueShortName, uniqueShortName, true, count);
         servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
-//        servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationPrivilegeResource/OrgPrivilegeList.jsp");
-        Viewable view = new Viewable("/template/template.jsp", organizations);       
-        
+
+        Viewable view = new Viewable("/template/template.jsp", organizations);
+
         responseBuilder.entity(view);
         return responseBuilder.build();
     }

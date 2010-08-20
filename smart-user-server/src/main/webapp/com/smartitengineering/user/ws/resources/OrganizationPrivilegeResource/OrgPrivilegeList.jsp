@@ -13,100 +13,99 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Organization Privileges</title>
-        <link type="text/css" rel="stylesheet" href="/css/privilegeList.css"/>
-        <script type="text/javascript" src="/script/javascript_1.js"></script>
-    </head>
-    <body>
-        <div>
-            <div class="show" id="showList" style="width: 80%;position: relative;clear: left">
-                <div style="background-color: #77e445">
+            <div class="show" id="showList">
+
+                <div id="title_of_organization">
                     <h1 id="header" >Privileges</h1>
                 </div>
 
-                <div style="text-decoration: underline;border-color: #13200d">
+                <div id="top_row">
 
-
-                    <div class="tableheadname">
-                        <h4>Display Name</h4>
+                    <div class="table_privs_headers">
+                      <label>Display Name</label>
                     </div>
 
-                    <div class="tableheadPM">
-                        <h4> permission Mask</h4>
+                    <div class="table_privs_headers">
+                      <label>Permission Mask</label>
                     </div>
-                    <div class="tableheadSOI">
-                        <h4> Secured Object ID</h4>
+
+                    <div class="table_privs_headers">
+                      <label>Secured Object ID</label>
                     </div>
-                    <div class="tableheaddetails">
-                        <h4> Details</h4>
+
+                    <div class="table_privs_headers">
+                      <label>Details</label>
                     </div>
+
                 </div>
 
 
 
+              <c:forEach var="privilege" items="${it}">
 
-                <div>
-                    <c:forEach var="privilege" items="${it}">
-                        <div class="teblecontentname">
-                            <h4><c:out value="${privilege.displayName}" /></h4>
+                <div id="individual_row">
+                        <div class="table_privs_contents">
+                          <label><c:out value="${privilege.displayName}" /></label>
                         </div>
 
-                        <div class="teblecontentPM">
+                        <div class="table_privs_contents">
                             <script type="text/javascript">
                                 PM=${privilege.permissionMask};
                                 PM=PM+' ';
                             </script>
-                            <h4><c:out value="${privilege.permissionMask}" /></h4>
+                                <label><c:out value="${privilege.permissionMask}" /></label>
 
                         </div>
 
-                        <div class="teblecontentSOI">
+                        <div class="table_privs_contents">
 
-                            <h4><c:out value="${privilege.securedObject}"/></h4>
+                          <label><c:out value="${privilege.securedObject}"/></label>
 
                         </div>
-                        <div class="teblecontentdetails">
-                            <a href="orgs/privs/${privilege.name}"><h4>Details</h4></a>
+                        <div class="table_privs_contents">
+                          <label><a href="orgs/privs/${privilege.name}">Details</a></label>
                         </div>
-
-
 
                     </div>
 
                 </c:forEach>
+
                 <div>
-                    <a href="javascript: Orgpageselect()"><h4>Create</h4></a>
+                    <a href="javascript: Orgpageselect()">Create</a>
                 </div>
 
             </div>
-            <div id="create" align="center" class="hide">
+
+          
+            <div id="create" class="hide">
 
                 <form action="http://russel:9090/orgs/privs" method="post" accept="application/json" enctype="" id="privilegeform">
 
-                    <div  align="left"><label>Name:</label></div><div  align="left"><input type="text" name="name" size="40"></div>
+                    <div class="inner-left"><label>Name:</label></div>
+                    <div class="inner-right"><input type="text" name="name"></div>
 
-                    <div  align="left"><label>Display Name:</label></div><div align="left"><input type="text" name="displayName" size="40" value=""></div>
+                    <div class="inner-left"><label>Display Name:</label></div>
+                    <div class="inner-right"><input type="text" name="displayName"></div>
 
-                    <div  align="left"><label>Short Description:</label></div><div  align="left"><input type="text" name="shortdes" size="40" value=""></div>
+                    <div class="inner-left"><label>Short Description:</label></div>
+                    <div class="inner-right"><input type="text" name="shortdes"></div>
 
-                    <div  align="left"><label>Secure Object:</label></div><div  align="left"><input type="text" name="secureObject" size="40" value=""></div>
+                    <div class="inner-left"><label>Secure Object:</label></div>
+                    <div class="inner-right"><input type="text" name="secureObject"></div>
 
-                    <div  align="left"><label>Permission Mask:</label></div><div  align="left"><input type="text" name="permissionMask" size="40" value=""></div>
+                    <div class="inner-left"><label>Permission Mask:</label></div>
+                    <div class="inner-right"><input type="text" name="permissionMask"></div>
 
-                    <div  align="left"><label>Parent Organization Id:</label></div><div align="left"><input type="text" name="parentOrganizationId" size="40" value=""></div>
+                    <div class="inner-left"><label>Parent Organization Id:</label></div>
+                    <div class="inner-right"><input type="text" name="parentOrganizationId"></div>
 
-                    <div  align="left"><label>Secure Object Id:</label></div><div align="left"><input type="text" name="secureObjectId" size="40" value=""></div>
+                    <div class="inner-left"><label>Secure Object Id:</label></div>
+                    <div class="inner-right"><input type="text" name="secureObjectId"></div>
 
-                    <div  align="left"><label>Last Modified Date:</label></div><div  align="left"><input type="text" name="lastModified" size="40" value=""></div>
+                    <div class="inner-left"><label>Last Modified Date:</label></div>
+                    <div class="inner-right"><input type="text" name="lastModified"></div>
 
-                    <div  align="left"><input type="submit" value="submit" name="submitBtn"></div>
+                    <div><input type="submit" value="submit" name="submitBtn"></div>
                 </form>
 
             </div>
-        </div>
-
-    </body>
-</html>
