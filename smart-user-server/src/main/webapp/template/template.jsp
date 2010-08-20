@@ -146,10 +146,10 @@
                         dataType: "xml",
                         success: function(xhr){
                             //                            alert('Short Name is not unique')
-                            $("#alertlabel").html('Short Name is not unique');
+                            $("#alertlabel").html('Short Name is not unique: try another');
                         },
                         error: function(xhr){
-                            $("#alertlabel").html('Perfect');
+                            $("#alertlabel").html('Perfect: Carry On');
                         }
 
                     });
@@ -199,7 +199,8 @@
                             $("#tablecontentname-user").html(contenttitle);
                             $("#tablecontentid-user").html(contentid);
 
-                            var linkvalue="";
+                            var linkvalue_next_user="";
+                            var linkvalue_prev_user="";
                              $(xml).find('link').each(function(){
 
                                     var nextlink = $(this).attr("rel");
@@ -208,16 +209,16 @@
                                     {
 
                                         var href = $(this).attr("href");
-                                        linkvalue += "<a href=" +href+ ">"+nextlink+"\t</a>";
-                                        $("#teblecontentlink").html(linkvalue);
+                                        linkvalue_next_user += "<a href=" +href+ ">"+nextlink+"\t</a>";
+                                        $("#tablecontentlink_of_next_user").html(linkvalue_next_user);
 
                                     }
                                     if(nextlink=='previous')
                                     {
                                         var href = $(this).attr("href");
 
-                                        linkvalue += "<a href="+href+">\t"+nextlink+"</a>";
-                                        $("#teblecontentlink").html(linkvalue);
+                                        linkvalue_prev_user += "<a href="+href+">\t"+nextlink+"</a>";
+                                        $("#tablecontentlink_of_prev_user").html(linkvalue_prev_user);
                                     }
                                 });
 
