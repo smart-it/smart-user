@@ -153,7 +153,7 @@ public class OrganizationUserResource extends AbstractResource{
         newUser.setId(Integer.valueOf(keyValueMap.get("id")));
         newUser.setUsername(keyValueMap.get("userName"));
         newUser.setPassword(keyValueMap.get("password"));
-        
+        newUser.setVersion(Integer.valueOf(keyValueMap.get("version")));
         
 
         Organization parentOrganization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(user.getOrganization().getUniqueShortName());
@@ -176,17 +176,17 @@ public class OrganizationUserResource extends AbstractResource{
     public Response update(User newUser) {
         ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
         try {
-            if(user.getRoleIDs() != null){
-                Services.getInstance().getRoleService().populateRole(user);
+            if(newUser.getRoleIDs() != null){
+                Services.getInstance().getRoleService().populateRole(newUser);
             }
-            if(user.getPrivilegeIDs() != null){
-                Services.getInstance().getPrivilegeService().populatePrivilege(user);
+            if(newUser.getPrivilegeIDs() != null){
+                Services.getInstance().getPrivilegeService().populatePrivilege(newUser);
             }
-            if(user.getParentOrganizationID() == null){
+            if(newUser.getParentOrganizationID() == null){
                 throw new Exception("No organization found");
             }
-            Services.getInstance().getOrganizationService().populateOrganization(user);
-            Services.getInstance().getUserService().save(newUser);
+            Services.getInstance().getOrganizationService().populateOrganization(newUser);            
+            Services.getInstance().getUserService().update(newUser);
             user = Services.getInstance().getUserService().getUserByUsername(newUser.getUsername());
             responseBuilder = Response.ok(getUserFeed());
         }

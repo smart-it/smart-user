@@ -17,7 +17,7 @@
 </c:if>
 
 
-<html>
+<%--<html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><c:out value="${it.username}"></c:out></title>
@@ -27,38 +27,9 @@
         <script type="text/javascript" src="/script/javascript_1.js"></script>
         <script type="text/javascript" src="/script/jquery-1.4.2.js"></script>
     </head>
-    <script type="text/javascript">
-        $(document).ready(function(){
-             $(".submit").click(function(){
-                               alert ("potak")
-                               var name = $("input#name");
-                               var password = $("input#password");
+   
 
-                            var datastring = 'name='+ name + '&password='+ password;
-
-
-                            });
-
-                           $.ajax({
-                                type: "POST",
-                                url: window.location,
-                                data: datastring,
-                                success: function(){
-                                    alert ("oooo")
-                                    $('#form_organizationentry').html("<div id='message'></div>");
-                                    $('#message').html("<h2>Form submitted successfully</h2")
-                                    alert("kkk")
-                                    .hide()
-                                    .fade(1500, function(){
-                                        $('#message');
-                                    });
-                                }
-                           });
-                           return false;
-        })
-    </script>
-
-    <body>
+    <body>--%>
         
 
 
@@ -110,6 +81,8 @@
         
        <div class="inner-left"><label><fmt:message key="org.usrtablehead1"/></label></div>
        <div class="inner-right" align="left"><input type="hidden" name="id" value="${it.id}" class="textField" id="id"></div>
+       <div class="inner-left"><label><fmt:message key="org.usrtablehead3"/></label></div>
+       <div class="inner-right" align="left"><input type="text" name="version" value="${it.version}" class="textField" id="version"></div>
 
       <div class="inner-left"><label><fmt:message key="org.usrtablehead2"/></label></div>
       <div class="inner-right" align="left"><input type="text" name="userName" value="${it.username}" class="textField" id="name"></div>
