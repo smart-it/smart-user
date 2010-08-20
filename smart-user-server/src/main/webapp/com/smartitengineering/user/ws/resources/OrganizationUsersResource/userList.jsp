@@ -233,13 +233,15 @@
 
                     <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput3"/></label></div><div id="inner-right-2" align="left"><input type="text" name="lastName" id="lname" size="40" value=""></div>
 
+                    <div id="inner-left-1" align="right"><label><fmt:message key="org.usrtablehead2"/></label></div><div id="inner-right-1" align="left"><input type="text" name="userName" id="fname" size="40" value=""></div>
+
                     <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput4"/></label></div><div id="inner-right-2" align="left"><input id="password" type="password" name="password" size="40" value=""></div>
 
                     <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput7"/></label></div><div id="inner-right-2" align="left"><input id="confirmPassword" type="password" name="confirmPassword" size="40" value=""></div>
 
                     <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput5"/></label></div><div id="inner-right-2" align="left"><input type="text" name="phone" id="phone" size="40" value=""></div>
 
-                    <div id="inner-left-2" align="center"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submit" type="submit" class="submit" value="submit"></div>
+                    <div id="inner-left-2" align="center"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submitbtn" type="submit" class="submit" value="submit"></div>
                 </form>
 
 
