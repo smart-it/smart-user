@@ -32,5 +32,7 @@ public interface UserService {
 
     public Collection<User> getUserByOrganization(String organizationName);
 
+    public Collection<User> getUserByOrganization(String organizationName, String userName, boolean isSmallerThan, int count);
+
     public void validateUser(User user);
 }

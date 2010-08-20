@@ -18,6 +18,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -61,10 +62,12 @@ public class OrganizationUsersResource extends AbstractResource{
         }
     }
     
-    @PathParam("count")
+    @QueryParam("count")
     private Integer count;
     @PathParam("uniqueShortName")
     private String organizationUniqueShortName;
+
+    
 
     public OrganizationUsersResource(@PathParam("uniqueShortName")String organizationUniqueShortName){
         this.organizationUniqueShortName = organizationUniqueShortName;
@@ -95,10 +98,42 @@ public class OrganizationUsersResource extends AbstractResource{
     }
 
     @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path("/before/{beforeUserName}")
+    public Response getBeforeHtml(@PathParam("beforeUserName") String beforeUserName){
+      ResponseBuilder responseBuilder = Response.ok();
+      if(count == null)
+            count = 10;
+       Collection<User> users = Services.getInstance().getUserService().getUsers(
+           null, beforeUserName, true, count);
+
+       servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
+        Viewable view = new Viewable("/template/template.jsp", users);
+        responseBuilder.entity(view);
+        return responseBuilder.build();
+    }
+
+    @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
     @Path("/after/{afterUserName}")
     public Response getAfter(@PathParam("afterUserName") String afterUserName) {
       return get(organizationUniqueShortName,afterUserName, false);
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path("/after/{afterUserName}")
+    public Response getAfterHtml(@PathParam("afterUserName") String afterUserName){
+
+      ResponseBuilder responseBuilder = Response.ok();
+      if(count == null)
+            count = 10;
+       Collection<User> users = Services.getInstance().getUserService().getUsers(
+           null, afterUserName, true, count);
+       servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
+        Viewable view = new Viewable("/template/template.jsp", users);
+        responseBuilder.entity(view);
+        return responseBuilder.build();
     }
 
     @GET
@@ -120,9 +155,7 @@ public class OrganizationUsersResource extends AbstractResource{
         parentLink.setRel("parent");
         atomFeed.addLink(parentLink);
 
-
-        Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(uniqueOrganizationName);
-        
+        Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(uniqueOrganizationName, userName, isBefore, count);        
 
         if(users != null && !users.isEmpty()){
 
@@ -136,7 +169,7 @@ public class OrganizationUsersResource extends AbstractResource{
             // link to the next organizations based on count
             Link nextLink = abderaFactory.newLink();
             nextLink.setRel(Link.REL_NEXT);
-            User lastUser = userList.get(0);
+            User lastUser = userList.get(userList.size() -1);
 
 
             for(String key:queryParam.keySet()){
@@ -152,7 +185,7 @@ public class OrganizationUsersResource extends AbstractResource{
             /* link to the previous organizations based on count */
             Link prevLink = abderaFactory.newLink();
             prevLink.setRel(Link.REL_PREVIOUS);
-            User firstUser = userList.get(users.size() - 1);
+            User firstUser = userList.get(0);
 
             prevLink.setHref(previousUri.build(organizationUniqueShortName, firstUser.getUsername()).toString());
             atomFeed.addLink(prevLink);

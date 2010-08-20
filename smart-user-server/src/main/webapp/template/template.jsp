@@ -51,6 +51,7 @@
 
                 $.ajax({
                     type: "GET",
+
                     url: window.location,
                     dataType: "xml",
                     success: function(xml) {
