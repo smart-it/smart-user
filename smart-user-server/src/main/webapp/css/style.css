@@ -32,19 +32,42 @@ body{
 
 #header{
     /*background: url(../images/hdr.jpg) repeat;*/
+    background-color: #FFFFFF;
     width: auto;
     height: 75px;
 }
 
+#sitel_logo{
 
-#header label{
+}
+
+#sitel_slogan{
+  padding-left: 23px;
+}
+
+#sitel_slogan label{
+  font-family: verdana, tahoma;
+  font-size: 15pt;
+  font-weight:  bolder;
+  font-style: oblique;
+  letter-spacing: 1px;
+  color: #99BB99;
+}
+
+#img-sitel-logo{
+  width: 300px;
+  height: 50px;
+}
+
+
+/*#header label{
    font-family: verdana, tahoma;
    font-size: 40pt;
    font-style: normal;
    font-weight:  bolder;
    letter-spacing: 1px;
    color: #99BB99;
-}
+}*/
 
 #options{
     background: url(../images/bgg.png) repeat;

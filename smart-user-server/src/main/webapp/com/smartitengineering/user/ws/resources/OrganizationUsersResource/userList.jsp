@@ -16,121 +16,101 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 
- 
-
-        <div id="leftmenu">
-          <div id="leftmenu_header">User-Creation</div>
-            <div id="leftmenu_body">
-              <ul>
-                <li><a href="javascript: Orgpageselect()">Create</a></li>
-              </ul>
-            </div>
-        </div>
+<div id="leftmenu">
+  <div id="leftmenu_header">User-Creation</div>
+  <div id="leftmenu_body">
+    <ul>
+      <li><a href="javascript: Orgpageselect()">Create</a></li>
+    </ul>
+  </div>
+</div>
 
 
-        <c:if test="${param['lang']!=null}">
-          <fmt:setLocale scope="session" value="${param['lang']}"/>
-        </c:if>
+<c:if test="${param['lang']!=null}">
+  <fmt:setLocale scope="session" value="${param['lang']}"/>
+</c:if>
+
+<div class="show" id="showList">
+
+        <div id="title_of_organization_users">
+          <label><fmt:message key="org.usrtitle"/></label>
+      </div>
 
 
+  <div id="top_row">
+
+    <%--<div id="userslist">--%>
+
+      <div class="tableheadname_user">
+        <label class="tablehead_label"><fmt:message key="org.usrtablehead1"/></label>
+      </div>
+
+      <div class="tableheadname_user">
+        <label class="tablehead_label"><fmt:message key="org.usrtablehead2"/></label>
+      </div>
+
+    <%--</div>--%>
+  </div>
 
 
-<%--<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
-        <title>
-            <div id="header"><h1>User List</h1></div>
-        </title>
-        <script type="text/javascript" src="/script/javascript_1.js"></script>
-        <script type="text/javascript" src="/script/jquery-1.4.2.js"></script>
-        <script type="text/javascript" src="/script/jquery.validate.js"></script>
-        <link rel="Stylesheet" href="/css/organization-style.css">
-    </head>--%>
+  <div>
+
+      <div class="tablecontentname" id="tablecontentid-user"></div>
     
+      <div class="tablecontentname" id="tablecontentname-user"></div>
     
-
-    <%--<body>--%>
-
-        <div class="show" id="showList">
-            <div id="title_of_organization">
-                <label><fmt:message key="org.usrtitle"/></label>
-            </div>
+  </div>
 
 
-            <div id="top_row">
+  <div id="teblecontentlink"></div>
 
-                <div id="userslist">
 
-                    <%--<div id="title_of_organization_users">
-                        <label><fmt:message key="org.usrtitle"/></label>
-                    </div>
---%>
-                    
-
-                        <div class="tableheadname_user">
-                            <label class="tablehead_label"><fmt:message key="org.usrtablehead1"/></label>
-                        </div>
-
-                        <div class="tableheadname_user">
-                            <label class="tablehead_label"><fmt:message key="org.usrtablehead2"/></label>
-                        </div>
-
-                    </div>
-                </div>
+</div>
 
 
 
+<div class="hide"  id="create">
 
-                <div id="individual_row">
-                    <div>
-                        <div id="teblecontentid"></div>
-                    </div>
+  <div id="header_organization_users">
+    <label>Users Entry</label>
+  </div>
 
-                    <div>
-                        <div id="teblecontentname"></div>
-                    </div>
+<div id="form_organizationentry">
+  <form action="http://localhost:9090/orgs/potak/users" accept="application/json" enctype="" id="userform" method="post">
 
-                </div>
+    <div class="inner-left-label"><label><fmt:message key="org.usrinput1"/></label></div>
+    <div class="inner-right-text"><input type="text" name="name" id="fname" class="textfield"></div>
+    <div class="clear"></div>
 
+    <div class="inner-left-label"><label><fmt:message key="org.usrinput2"/></label></div>
+    <div class="inner-right-text"><input type="text" name="midName" id="mname" class="textfield"></div>
+    <div class="clear"></div>
 
-                <div id="teblecontentlink"></div>
+    <div class="inner-left-label"><label><fmt:message key="org.usrinput3"/></label></div>
+    <div class="inner-right-text"><input type="text" name="lastName" id="lname" class="textfield"></div>
+    <div class="clear"></div>
 
+    <div class="inner-left-label"><label><fmt:message key="org.usrtablehead2"/></label></div>
+    <div class="inner-right-text"><input type="text" name="userName" id="fname" class="textfield"></div>
+    <div class="clear"></div>
 
-            </div>
-
-
-            
-
-        
-            <div class="hide"  id="create">
-
-
-                <div id="header_organization_users">
-                    <label>Users Entry</label>
-                </div>
-
-                
-                <form action="" accept="application/json" enctype="" id="userform" method="post">
-
-                    <div id="inner-left-1" align="right"><label><fmt:message key="org.usrinput1"/></label></div><div id="inner-right-1" align="left"><input type="text" name="name" id="fname" size="40" value=""></div>
-
-                    <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput2"/></label></div><div id="inner-right-2" align="left"><input type="text" name="midName" id="mname" size="40" value=""></div>
-
-                    <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput3"/></label></div><div id="inner-right-2" align="left"><input type="text" name="lastName" id="lname" size="40" value=""></div>
-
-                    <div id="inner-left-1" align="right"><label><fmt:message key="org.usrtablehead2"/></label></div><div id="inner-right-1" align="left"><input type="text" name="userName" id="fname" size="40" value=""></div>
-
-                    <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput4"/></label></div><div id="inner-right-2" align="left"><input id="password" type="password" name="password" size="40" value=""></div>
-
-                    <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput7"/></label></div><div id="inner-right-2" align="left"><input id="confirmPassword" type="password" name="confirmPassword" size="40" value=""></div>
-
-                    <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput5"/></label></div><div id="inner-right-2" align="left"><input type="text" name="phone" id="phone" size="40" value=""></div>
-
-                    <div id="inner-left-2" align="center"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submitbtn"  type="submit" class="submit" value="submit"></div>
-                </form>
+    <div class="inner-left-label"><label><fmt:message key="org.usrinput4"/></label></div>
+    <div class="inner-right-text"><input id="password" type="password" name="password" class="textfield"></div>
+    <div class="clear"></div>
 
 
-            </div>
+    <div class="inner-left-label"><label><fmt:message key="org.usrinput7"/></label></div>
+    <div class="inner-right-text"><input id="confirmPassword" type="password" name="confirmPassword" class="textfield"></div>
+    <div class="clear"></div>
+
+    <div class="inner-left-label"><label><fmt:message key="org.usrinput5"/></label></div>
+    <div class="inner-right-text"><input type="text" name="phone" id="phone" class="textfield"></div>
+    <div class="clear"></div>
+
+    <div id="btnfield"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submitbtn" type="submit" class="submit" value="submit"></div>
+    <div class="clear"></div>
+  </form>
   
+</div>
 
-  
+</div>

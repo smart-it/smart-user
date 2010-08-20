@@ -34,7 +34,7 @@ body{
 .content{
     background: url(../image/bg.gif) repeat-y center;
     width: 886px;
-    margin: o;
+    margin: 0;
     padding: 0;
     
 }

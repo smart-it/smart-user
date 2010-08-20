@@ -305,14 +305,6 @@ root {
     color: #333399;
 }
 
-label.error
-{ width: 250px;
-  display: block;
-  float: left;
-  color: red;
-  padding-left: 10px;
-}
-
 #uniqueShortName2
 {
     font-family: sans-serif;
@@ -370,64 +362,4 @@ label.error
 
 .clear{
   clear: both;
-}
-
-/*MENU*/
-
-#leftmenu{
-  /*background-image: url(/images/top.jpg);*/
-  /*background-repeat:repeat;*/
-  /*background-position: top left;*/
-  margin: 10px 5px 5px 5px;
-  text-align: right;
-  height:auto;
-}
-
-#leftmenu_header{
-  padding:4px 0px 0px 4px;
-  text-align: center;
-  color: #23819C;
-  font-weight: bold;
-  background-image: url(/images/top.jpg);
-  height: 25px;
-  border: 1px solid;
-  border-color: #FFFFFF;
-}
-
-#leftmenu_header label{
-  font-family: sans-serif, tahoma, verdana;
-}
-
-#leftmenu_body{
-  background-color:#736F6E;
-  background-image: url(/images/top.jpg);
-  background-repeat: repeat;
-  background-position:bottom left;
-  border: 1px solid;
-  border-color: #FFFFFF;
-
-}
-
-#leftmenu ul{
-  padding:0px 6px 15px 50px;
-  text-align: left;
-}
-
-#leftmenu ul li{
-  list-style:  url(../images/arrow.gif) outside;
-  color:#E8C6FF;
-
-  border-bottom: #0000CC 1px solid;
-  line-height:25px;
-  width:80px;
-
-
-}
-#leftmenu ul li a{
-  font-family: sans-serif, tahoma, verdana;
-  font-weight: bold;
-  color:#23819C;
-  font-size: 11pt;
-  text-decoration: none;
-
 }

@@ -92,15 +92,16 @@
 
             <div class="inner-left"><label><fmt:message key="org.inputlabel2"/></label></div>
             <div class="inner-right" align="left"><input type="text" name="uniqueShortName" Id="uniqueShortName" value="" class="textField"></div>
+            <div class="clear"></div>
 
 
+            <div class="inner-left"></div>
             <div class="inner-right" id="uniqueShortName2" align="left"><input type="button" value="check"></div>
+            <div class="clear"></div>
 
-            <div class="inner-left"></div><div class="inner-right" align="left" id="alert"></div>
-            <label id ="alertlabel"></label>
-           
-
-            
+            <div class="inner-left"></div>
+            <div class="inner-right" align="left" id="alert"></div>
+            <label id ="alertlabel"></label>       
             <div class="clear"></div>
 
 
