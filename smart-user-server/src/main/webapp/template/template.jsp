@@ -124,11 +124,9 @@
 
 
 
-                     $("#uniqueShortName2").click(function(){
+     $("#uniqueShortName2").click(function(){
 
-
-
-      $("#organizationform").validate({
+       $("#organizationform").validate({
         rules: {
           name: "required",// simple rule, converted to {required:true}
           uniqueShortName: "required",
