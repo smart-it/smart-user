@@ -29,6 +29,8 @@ public interface OrganizationService {
 
     public Collection<Organization> getAllOrganization();
 
+    public Collection<Organization> getOrganizations(String organizationNameLike, String shortName, boolean isSmallerThan, int count);
+
     public Organization getOrganizationByUniqueShortName(String uniqueShortName);
 
     public void populateOrganization(User user) throws Exception;

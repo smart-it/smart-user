@@ -129,6 +129,16 @@
     <bean id="userService" class="com.smartitengineering.user.service.impl.UserServiceImpl" parent="abstractDao"/>
 
     <bean id="roleService" class="com.smartitengineering.user.service.impl.RoleServiceImpl" parent="abstractDao"/>
+
+    <bean id="authorizationService" class="com.smartitengineering.user.service.impl.AuthorizationServiceImpl">
+        <property name="securedObjectService">
+            <ref bean="securedObjectService"/>
+        </property>
+        <property name="userService">
+            <ref bean="userService"/>
+        </property>
+    </bean>
+
     
     <!-- **************************************************************** -->
     <!-- ********************* Smart Util Reg *************************** -->

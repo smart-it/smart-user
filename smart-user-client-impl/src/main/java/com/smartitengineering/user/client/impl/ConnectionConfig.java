@@ -11,16 +11,25 @@ package com.smartitengineering.user.client.impl;
  */
 public class ConnectionConfig {
 
-    private String basicUrl;
+    private String basicUri;
     private int port;
+    private String host;
     private String contextPath;
 
-    public String getBasicUrl() {
-        return basicUrl;
+  public String getHost() {
+    return host;
+  }
+
+  public void setHost(String host) {
+    this.host = host;
+  }
+
+    public String getBasicUri() {
+        return basicUri;
     }
 
-    public void setBasicUrl(String basicUrl) {
-        this.basicUrl = basicUrl;
+    public void setBasicUri(String basicUrl) {
+        this.basicUri = basicUrl;
     }
 
     public String getContextPath() {

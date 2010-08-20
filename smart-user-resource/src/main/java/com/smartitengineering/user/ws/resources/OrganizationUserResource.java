@@ -6,16 +6,26 @@
 package com.smartitengineering.user.ws.resources;
 
 
+import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.User;
 import com.sun.jersey.api.view.Viewable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import java.util.Date;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.HashMap;
+import java.util.Map;
+
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
 
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -32,6 +42,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
+import org.apache.commons.lang.StringUtils;
 
 
 /**
@@ -90,6 +101,71 @@ public class OrganizationUserResource extends AbstractResource{
 //        Viewable view = new Viewable("OrganizationUserDetails", user, OrganizationUserResource.class);
         responseBuilder.entity(view);
         return responseBuilder.build();
+    }
+
+    @POST
+    public Response post(@HeaderParam("Content-type")String contentType, String message){
+      ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+
+      if(StringUtils.isBlank(message)){
+        responseBuilder = Response.status(Status.BAD_REQUEST);
+        responseBuilder.build();
+      }
+
+      final boolean isHtmlPost;
+      if (StringUtils.isBlank(contentType)) {
+        contentType = MediaType.APPLICATION_OCTET_STREAM;
+        isHtmlPost = false;
+      }
+      else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+        contentType = MediaType.APPLICATION_OCTET_STREAM;
+        isHtmlPost = true;
+        try {
+          //Will search for the first '=' if not found will take the whole string
+          final int startIndex = 0;//message.indexOf("=") + 1;
+          //Consider the first '=' as the start of a value point and take rest as value
+          final String realMsg = message.substring(startIndex);
+          //Decode the message to ignore the form encodings and make them human readable
+          message = URLDecoder.decode(realMsg, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex) {
+          ex.printStackTrace();
+        }
+      }
+      else {
+        contentType = contentType;
+        isHtmlPost = false;
+      }
+
+      if(isHtmlPost){
+        Map<String, String> keyValueMap = new HashMap<String, String>();
+
+        String[] keyValuePairs = message.split("&");
+
+        for(int i=0; i<keyValuePairs.length; i++){
+
+          String[] keyValuePair = keyValuePairs[i].split("=");
+          keyValueMap.put(keyValuePair[0], keyValuePair[1]);
+        }
+
+        User newUser = new User();
+
+        newUser.setId(Integer.valueOf(keyValueMap.get("id")));
+        newUser.setUsername(keyValueMap.get("userName"));
+        newUser.setPassword(keyValueMap.get("password"));
+        
+        
+
+        Organization parentOrganization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.get("orgName"));
+        newUser.setOrganization(parentOrganization);
+        
+        if(keyValueMap.get("perform").equals("update")){
+          return update(newUser);
+        }else{
+          return delete();
+        }
+      }
+      return responseBuilder.build();
     }
 
     @PUT

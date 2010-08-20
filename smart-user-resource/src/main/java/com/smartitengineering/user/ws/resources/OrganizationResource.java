@@ -12,6 +12,7 @@ import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -60,8 +61,12 @@ public class OrganizationResource extends AbstractResource {
         }
     }
     private Organization organization;
+    
+    @PathParam("uniqueShortName")
+    private String uniqueShortName;
 
     public OrganizationResource(@PathParam("uniqueShortName") String uniqueShortName) {
+        this.uniqueShortName = uniqueShortName;
         organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(uniqueShortName);
         
     }
@@ -100,8 +105,18 @@ public class OrganizationResource extends AbstractResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(Organization newOrganization) {
         ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-        try {            
-            Services.getInstance().getOrganizationService().update(newOrganization);
+        try {
+          
+          organization.getAddress().setCity(newOrganization.getAddress().getCity());
+          organization.getAddress().setCountry(newOrganization.getAddress().getCountry());
+          organization.getAddress().setState(newOrganization.getAddress().getState());
+          organization.getAddress().setStreetAddress(newOrganization.getAddress().getStreetAddress());
+          organization.getAddress().setZip(newOrganization.getAddress().getZip());
+
+          organization.setName(newOrganization.getName());
+          organization.setLastModifiedDate(new Date());
+          
+            Services.getInstance().getOrganizationService().update(organization);
             organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(newOrganization.getUniqueShortName());
             responseBuilder = Response.ok(getOrganizationFeed());
         }        
@@ -112,7 +127,7 @@ public class OrganizationResource extends AbstractResource {
     }
 
     @POST
-    public Response updatePost(@HeaderParam("Content-type") String contentType, String message){
+    public Response post(@HeaderParam("Content-type")String contentType, String message){
       ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
 
       if(StringUtils.isBlank(message)){
@@ -130,7 +145,7 @@ public class OrganizationResource extends AbstractResource {
         isHtmlPost = true;
         try {
           //Will search for the first '=' if not found will take the whole string
-          final int startIndex = message.indexOf("=") + 1;
+          final int startIndex = 0;//message.indexOf("=") + 1;
           //Consider the first '=' as the start of a value point and take rest as value
           final String realMsg = message.substring(startIndex);
           //Decode the message to ignore the form encodings and make them human readable
@@ -145,7 +160,51 @@ public class OrganizationResource extends AbstractResource {
         isHtmlPost = false;
       }
 
-      if (isHtmlPost) {
+      if(isHtmlPost){
+        Map<String, String> keyValueMap = new HashMap<String, String>();
+
+        String[] keyValuePairs = message.split("&");
+
+        for(int i=0; i<keyValuePairs.length; i++){
+
+          String[] keyValuePair = keyValuePairs[i].split("=");
+          keyValueMap.put(keyValuePair[0], keyValuePair[1]);
+        }
+
+        Organization newOrganization = new Organization();
+        newOrganization.setId( Integer.valueOf(keyValueMap.get("id")));
+        newOrganization.setName(keyValueMap.get("name"));
+        newOrganization.setUniqueShortName(keyValueMap.get("uniqueShortName"));
+        newOrganization.setVersion(Integer.valueOf(keyValueMap.get("version")));
+
+        Address address = new Address();
+        address.setCity(keyValueMap.get("city"));
+        address.setCountry(keyValueMap.get("country"));
+        address.setState(keyValueMap.get("state"));
+        address.setZip(keyValueMap.get("zip"));
+
+        newOrganization.setAddress(address);
+
+        if(keyValueMap.get("submit").equals("update")){
+          return update(newOrganization);
+        }else{
+          return delete();
+        }        
+      }
+      return responseBuilder.build();
+
+    }
+
+
+    @POST
+    @Produces(MediaType.APPLICATION_ATOM_XML)
+    public Response deletePost(){
+      Services.getInstance().getOrganizationService().delete(organization);
+        ResponseBuilder responseBuilder = Response.ok();
+        return responseBuilder.build();
+    }
+
+    private Organization getObjectFromContent(String message){
 
         Map<String, String> keyValueMap = new HashMap<String, String>();
 
@@ -157,47 +216,152 @@ public class OrganizationResource extends AbstractResource {
           keyValueMap.put(keyValuePair[0], keyValuePair[1]);
         }
 
-        Organization organization = new Organization();
-        organization.setId( Integer.valueOf(keyValueMap.get("id")));
-        organization.setName(keyValueMap.get("name"));
-        organization.setUniqueShortName(keyValueMap.get("uniqueShortName"));
+        Organization newOrganization = new Organization();
+
+        if(keyValueMap.get("id") != null){
+          newOrganization.setId(Integer.valueOf(keyValueMap.get("id")));
+        }
+
+        if(keyValueMap.get("name") != null){
+          newOrganization.setName(keyValueMap.get("name"));
+        }
+        if(keyValueMap.get("uniqueShortName") != null){
+          newOrganization.setUniqueShortName(keyValueMap.get("uniqueShortName"));
+        }
+
+
 
         Address address = new Address();
-        address.setCity(keyValueMap.get("city"));
-        address.setCountry(keyValueMap.get("country"));
-        address.setState(keyValueMap.get("state"));
-        address.setZip(keyValueMap.get("zip"));
 
-        organization.setAddress(address);
+        if(keyValueMap.get("city") != null){
+          address.setCity(keyValueMap.get("city"));
+        }
 
-        try {
-          Services.getInstance().getOrganizationService().update(organization);
-          organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organization.
-              getUniqueShortName());
-          responseBuilder = Response.ok(getOrganizationFeed());
+        if(keyValueMap.get("country") != null){
+          address.setCountry(keyValueMap.get("country"));
         }
-        catch (Exception ex) {
-          responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+
+        if(keyValueMap.get("state")!= null){
+          address.setState(keyValueMap.get("state"));
         }
-        return responseBuilder.build();
-      }
-      return responseBuilder.build();
+        if(keyValueMap.get("zip") != null){
+          address.setZip(keyValueMap.get("zip"));
+        }
+
+        return newOrganization;
+
     }
 
-    @POST
-    @Produces(MediaType.APPLICATION_ATOM_XML)
-    public Response deletePost(){
-      Services.getInstance().getOrganizationService().delete(organization);
-        ResponseBuilder responseBuilder = Response.ok();
-        return responseBuilder.build();
-    }
+//    @POST
+//    public Response updatePost(@HeaderParam("Content-type") String contentType, String message){
+//      ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+//
+//      if(StringUtils.isBlank(message)){
+//        responseBuilder = Response.status(Status.BAD_REQUEST);
+//        responseBuilder.build();
+//      }
+//
+//      final boolean isHtmlPost;
+//      if (StringUtils.isBlank(contentType)) {
+//        contentType = MediaType.APPLICATION_OCTET_STREAM;
+//        isHtmlPost = false;
+//      }
+//      else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+//        contentType = MediaType.APPLICATION_OCTET_STREAM;
+//        isHtmlPost = true;
+//        try {
+//          //Will search for the first '=' if not found will take the whole string
+//          final int startIndex = 0;//message.indexOf("=") + 1;
+//          //Consider the first '=' as the start of a value point and take rest as value
+//          final String realMsg = message.substring(startIndex);
+//          //Decode the message to ignore the form encodings and make them human readable
+//          message = URLDecoder.decode(realMsg, "UTF-8");
+//        }
+//        catch (UnsupportedEncodingException ex) {
+//          ex.printStackTrace();
+//        }
+//      }
+//      else {
+//        contentType = contentType;
+//        isHtmlPost = false;
+//      }
+//
+//      if (isHtmlPost) {
+//
+//        Map<String, String> keyValueMap = new HashMap<String, String>();
+//
+//        String[] keyValuePairs = message.split("&");
+//
+//        for(int i=0; i<keyValuePairs.length; i++){
+//
+//          String[] keyValuePair = keyValuePairs[i].split("=");
+//          keyValueMap.put(keyValuePair[0], keyValuePair[1]);
+//        }
+//
+//        Organization newOrganization = new Organization();
+//        newOrganization.setId( Integer.valueOf(keyValueMap.get("id")));
+//        newOrganization.setName(keyValueMap.get("name"));
+//        newOrganization.setUniqueShortName(keyValueMap.get("uniqueShortName"));
+//        newOrganization.setVersion(Integer.valueOf(keyValueMap.get("version")));
+//
+//        Address address = new Address();
+//        address.setCity(keyValueMap.get("city"));
+//        address.setCountry(keyValueMap.get("country"));
+//        address.setState(keyValueMap.get("state"));
+//        address.setZip(keyValueMap.get("zip"));
+//
+//        newOrganization.setAddress(address);
+//
+//        try {
+//
+//          Organization oldOrganization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(uniqueShortName);
+//
+//          oldOrganization.setName(newOrganization.getName());
+//
+//          // address setting
+//          oldOrganization.getAddress().setCity(newOrganization.getAddress().getCity());
+//          oldOrganization.getAddress().setCountry(newOrganization.getAddress().getCountry());
+//          oldOrganization.getAddress().setState(newOrganization.getAddress().getState());
+//          oldOrganization.getAddress().setStreetAddress(newOrganization.getAddress().getStreetAddress());
+//          oldOrganization.getAddress().setZip(newOrganization.getAddress().getZip());
+//
+//
+//
+//          Services.getInstance().getOrganizationService().update(oldOrganization);
+//          organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organization.
+//              getUniqueShortName());
+//          responseBuilder = Response.ok(getOrganizationFeed());
+//        }
+//        catch (Exception ex) {
+//          responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+//          ex.printStackTrace();
+//        }
+//        return responseBuilder.build();
+//      }
+//      return responseBuilder.build();
+//    }
+//
+//    @POST
+//    @Produces(MediaType.APPLICATION_ATOM_XML)
+//    public Response deletePost(){
+//      Services.getInstance().getOrganizationService().delete(organization);
+//        ResponseBuilder responseBuilder = Response.ok();
+//        return responseBuilder.build();
+//    }
 
 
     @DELETE
     //@POST
     public Response delete() {
+      ResponseBuilder responseBuilder = Response.ok();
+      
+      try{
         Services.getInstance().getOrganizationService().delete(organization);
-        ResponseBuilder responseBuilder = Response.ok();
+      }catch(Exception ex){
+        ex.printStackTrace();
+        responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+      }
+        
         return responseBuilder.build();
     }
 

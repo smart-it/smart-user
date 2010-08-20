@@ -95,3 +95,7 @@ body{
     width: auto;
     height: 80px;
 }
+
+.clear{
+  clear: both;
+}

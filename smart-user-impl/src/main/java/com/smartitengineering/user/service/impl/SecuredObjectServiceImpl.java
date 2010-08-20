@@ -79,7 +79,7 @@ public class SecuredObjectServiceImpl extends AbstractCommonDaoImpl<SecuredObjec
 
     @Override
     public SecuredObject getByOrganizationAndObjectID(String organizationName, String objectID){
-        return super.getSingle(QueryParameterFactory.getStringLikePropertyParam("objectID", objectID),
+        return super.getSingle(QueryParameterFactory.getEqualPropertyParam("objectID", objectID),
                QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT,
                QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationName)));
 

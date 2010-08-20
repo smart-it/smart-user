@@ -5,7 +5,7 @@
 --%>
 
 <%@page import="java.util.Collection"%>
-<%@page import="com.smartitengineering.user.domain.Organization"%>
+<%--<%@page import="com.smartitengineering.user.domain.Organization"%>--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -13,7 +13,9 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
   "http://www.w3.org/TR/html4/loose.dtd">
+
 <%--Uzzalllllll--%>
+
 <div id="rightmenu">
   <div id="rightmenu_header">Organization-Creation</div>
   <div id="rightmenu_body">
@@ -30,6 +32,7 @@
 
 <div class="show" id="showList">
 
+
   <div id="title_of_organization">
     <label><fmt:message key="org.title"/></label>
   </div>
@@ -37,37 +40,35 @@
   <div id="top_row">
 
     <div class="tableheadname">
-      <label class="tablehead_label"><fmt:message key="org.tablehead3"/></label>
+      <label class="tablehead_label"><fmt:message key="org.tablehead2"/></label>
     </div>
 
-
     <div class="tableheadname">
-      <label class="tablehead_label"><fmt:message key="org.tablehead2"/></label>
+      <label class="tablehead_label"><fmt:message key="org.tablehead3"/></label>
     </div>
 
   </div>
 
 
-  <c:forEach var="organization" items="${it}">
-    <div id="individual_row">
+  <div>
 
-      <div class="tablecontentname">
-        <a href="orgs/shortname/${organization.uniqueShortName}" target="_blank"><label class="tablecontent_label" id=""></label></a>
-      </div>
+      <div class="tablecontentname" id="tablecontentname"></div>
 
-      <div class="tablecontentname">
-        <a href="orgs/shortname/${organization.uniqueShortName}" target="_blank"><label class="tablecontent_label" id="tableContentTitle"></label></a>
-      </div>
+      <div class="tablecontentname" id="tablecontentid"></div>
+      
+  </div>
 
-    </div>
-  </c:forEach>
+  <div id="tablecontentlink" ></div>
 
 </div>
+
 
 <fmt:message key="org.inputlabel1" var="update"/>
 
 
+
 <div class="hide" id="create">
+
 
   <div id="header_organization">
     <label>Organization Entry Form</label>
@@ -108,11 +109,11 @@
       <div class="inner-right"><input type="text" name="zip" value="" class="textField"></div>
       <div class="clear"></div>
 
-      <div id="btnfield"><input type="submit" value="submit" name="submitBtn"></div>
+      <div id="btnfield" align="center"><input type="submit" value="submit" name="submitbtn" onclick="isEmpty()" onmouseover="onmouse_over()" id="submit"></div>
       <div class="clear"></div>
 
     </form>
 
   </div>
 </div>
-      <%--uzzallllll--%>
+<%--uzzallllll--%>

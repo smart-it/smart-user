@@ -30,16 +30,16 @@ public class RootResource extends AbstractResource {
   public Response get() {
     ResponseBuilder responseBuilder = Response.ok();
     Feed atomFeed = getFeed("ROA Demo", INIT_DATE);
-    Link booksLink = Abdera.getNewFactory().newLink();
-    //booksLink.setHref(UriBuilder.fromResource(BooksResource.class).build().toString());
-    booksLink.setHref("test1");
-    booksLink.setRel("books");
-    atomFeed.addLink(booksLink);
-    Link authorsLink = Abdera.getNewFactory().newLink();
-    authorsLink.setHref(UriBuilder.fromResource(OrganizationsResource.class).build().toString());
-    authorsLink.setHref("Organizations");
-    authorsLink.setRel("Organizations");
-    atomFeed.addLink(authorsLink);
+
+    Link loginLink = Abdera.getNewFactory().newLink();
+    //loginLink.setHref(UriBuilder.fromResource(BooksResource.class).build().toString());
+    loginLink.setHref(LoginResource.LOGIN_URI_BUILDER.build().toString());
+    loginLink.setRel("Login");
+    atomFeed.addLink(loginLink);
+    Link organizationsLink = Abdera.getNewFactory().newLink();    
+    organizationsLink.setHref(OrganizationsResource.ORGANIZATION_URI_BUILDER.build().toString());
+    organizationsLink.setRel("Organizations");
+    atomFeed.addLink(organizationsLink);
     responseBuilder.entity(atomFeed);
     return responseBuilder.build();
   }
