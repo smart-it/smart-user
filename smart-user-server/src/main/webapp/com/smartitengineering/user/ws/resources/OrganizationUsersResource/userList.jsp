@@ -127,11 +127,8 @@
                            });
 
 
-                           $(".submit").click(function(){
                            
-
-                           });
-                          <%-- $(".submit").click(function(){
+                           $(".submit").click(function(){
                                alert ("potak")
                                var fname = $("input#fname");
                                var mname = $("input#mname");
@@ -139,7 +136,7 @@
                                var password = $("input#password");
                                var phone = $("input#phone")
                             var datastring = 'name='+ fname + '&midName='+ mname + '&lastName='+ lname + '&password='+ password + '&phone='+ phone;
-                           alert (datastring)
+                           
                            
                             });
 
@@ -158,7 +155,7 @@
                                     });
                                 }
                            });
-                           return false;--%>
+                           return false;
                        
 });
     </script>
@@ -225,7 +222,7 @@
                 </div>
 
                 
-                <form action="http://localhost:9090/orgs/potak/users" accept="application/json" enctype="" id="userform" method="post">
+                <form action="" accept="application/json" enctype="" id="userform" method="post">
 
                     <div id="inner-left-1" align="right"><label><fmt:message key="org.usrinput1"/></label></div><div id="inner-right-1" align="left"><input type="text" name="name" id="fname" size="40" value=""></div>
 

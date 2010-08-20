@@ -25,7 +25,39 @@
       
         <link rel="Stylesheet" href="/css/organization-style.css">
         <script type="text/javascript" src="/script/javascript_1.js"></script>
+        <script type="text/javascript" src="/script/jquery-1.4.2.js"></script>
     </head>
+    <script type="text/javascript">
+        $(document).ready(function(){
+             $(".submit").click(function(){
+                               alert ("potak")
+                               var name = $("input#name");
+                               var password = $("input#password");
+
+                            var datastring = 'name='+ name + '&password='+ password;
+
+
+                            });
+
+                           $.ajax({
+                                type: "POST",
+                                url: window.location,
+                                data: datastring,
+                                success: function(){
+                                    alert ("oooo")
+                                    $('#form_organizationentry').html("<div id='message'></div>");
+                                    $('#message').html("<h2>Form submitted successfully</h2")
+                                    alert("kkk")
+                                    .hide()
+                                    .fade(1500, function(){
+                                        $('#message');
+                                    });
+                                }
+                           });
+                           return false;
+        })
+    </script>
+
     <body>
         
 
@@ -44,6 +76,8 @@
   <div id="individual_user_details_header"><label><c:out value="${it.username}"></c:out></label></div>
 
   <div id="individual_user_details_content">
+
+      
 
   <div class="individual_user_label"><label><fmt:message key="org.usrtablehead2"/></label></div>
   <div class="individual_user_data"><label>${it.username}</label></div>
@@ -71,14 +105,17 @@
 
   <div id="form_organizationentry">
     
-    <form method="POST" action ="http://localhost:9090/orgs/shortname/${it.username}" accept="application/json" id="organizationform">
+    <form method="POST" action ="" accept="application/json" id="organizationform">
 
+        
+       <div class="inner-left"><label><fmt:message key="org.usrtablehead1"/></label></div>
+       <div class="inner-right" align="left"><input type="hidden" name="id" value="${it.id}" class="textField" id="id"></div>
 
       <div class="inner-left"><label><fmt:message key="org.usrtablehead2"/></label></div>
-      <div class="inner-right" align="left"><input type="text" name="name" value="${it.username}" class="textField"></div>
+      <div class="inner-right" align="left"><input type="text" name="userName" value="${it.username}" class="textField" id="name"></div>
 
       <div class="inner-left"><label><fmt:message key="org.usrinput4"/></label></div>
-      <div class="inner-right" align="left"><input type="text" name="uniqueShortName" value="${it.password}" class="textField"></div>
+      <div class="inner-right" align="left"><input type="text" name="password" value="${it.password}" class="textField" id="password"></div>
 
 
 
