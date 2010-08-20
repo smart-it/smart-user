@@ -38,7 +38,6 @@ import org.apache.commons.lang.StringUtils;
 public class LoginResource extends AbstractResource {
 
   static final UriBuilder LOGIN_URI_BUILDER = UriBuilder.fromResource(LoginResource.class);
-  
   @QueryParam("username")
   private String userNameWithOrganizationName;
 //  @FormParam("user")
@@ -58,34 +57,44 @@ public class LoginResource extends AbstractResource {
 
     Feed atomFeed = getFeed("Login Resource", new Date());
 
-        Link organizationsLink = Abdera.getNewFactory().newLink();
-        organizationsLink.setHref(OrganizationsResource.ORGANIZATION_URI_BUILDER.build().toString());
-        organizationsLink.setRel("Organizations");
-        atomFeed.addLink(organizationsLink);
+    Link organizationsLink = Abdera.getNewFactory().newLink();
+    organizationsLink.setHref(OrganizationsResource.ORGANIZATION_URI_BUILDER.build().toString());
+    organizationsLink.setRel("Organizations");
+    atomFeed.addLink(organizationsLink);
 
-        User user = Services.getInstance().getUserService().getUserByUsername(userNameWithOrganizationName);
-        String userName = user.getUsername();
-        String shortName = user.getOrganization().getUniqueShortName();
+    User user = Services.getInstance().getUserService().getUserByUsername(userNameWithOrganizationName);
+    String userName = user.getUsername();
+    String shortName = user.getOrganization().getUniqueShortName();
 
-        Link UserLink = Abdera.getNewFactory().newLink();
-        UserLink.setHref(OrganizationUserResource.USER_URI_BUILDER.build(shortName,userName).toString());
-        UserLink.setRel("User");
-        atomFeed.addLink(UserLink);
+    Link UserLink = Abdera.getNewFactory().newLink();
+    UserLink.setHref(OrganizationUserResource.USER_URI_BUILDER.build(shortName, userName).toString());
+    UserLink.setRel("User");
+    atomFeed.addLink(UserLink);
 
 
-        Link organizationLink = Abdera.getNewFactory().newLink();
-        organizationLink.setHref(OrganizationResource.ORGANIZATION_URI_BUILDER.build(shortName).toString());
-        organizationLink.setRel("Organization");
-        atomFeed.addLink(organizationLink);
+    Link organizationLink = Abdera.getNewFactory().newLink();
+    organizationLink.setHref(OrganizationResource.ORGANIZATION_URI_BUILDER.build(shortName).toString());
+    organizationLink.setRel("Organization");
+    atomFeed.addLink(organizationLink);
 
-        Link usersLink = Abdera.getNewFactory().newLink();
-        usersLink.setHref(OrganizationUsersResource.ORGANIZATION_USERS_URI_BUILDER.build(shortName).toString());
-        usersLink.setRel("Users");
-        atomFeed.addLink(usersLink);
+    Link usersLink = Abdera.getNewFactory().newLink();
+    usersLink.setHref(OrganizationUsersResource.ORGANIZATION_USERS_URI_BUILDER.build(shortName).toString());
+    usersLink.setRel("Users");
+    atomFeed.addLink(usersLink);
 
-        responseBuilder.entity(atomFeed);
+    Link aclAuthLink = Abdera.getNewFactory().newLink();
+    aclAuthLink.setHref(AuthorizationResource.ACL_AUTHORIZATION_URI_BUILDER.build().toString());
+    aclAuthLink.setRel("aclAuth");
+    atomFeed.addLink(aclAuthLink);
 
-        return responseBuilder.build();
+    Link roleAuthLink = Abdera.getNewFactory().newLink();
+    roleAuthLink.setHref(AuthorizationResource.ROLE_AUTHORIZATION_URI_BUILDER.build().toString());
+    roleAuthLink.setRel("roleAuth");
+    atomFeed.addLink(roleAuthLink);
+
+    responseBuilder.entity(atomFeed);
+
+    return responseBuilder.build();
 //    if (StringUtils.isBlank(message)) {
 //      responseBuilder = Response.status(Status.BAD_REQUEST);
 //      return responseBuilder.build();
