@@ -14,5 +14,5 @@ import java.util.Collection;
  */
 public interface AuthorizationResource extends Resource{
   
-  public Integer getAclAuthorization();
+  public Integer getAuthorization();
 }

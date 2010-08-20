@@ -20,5 +20,7 @@ public interface LoginResource extends Resource {
 
   public OrganizationResource getOrganizationResource();
 
-  public AuthorizationResource getAuthorizationResource(String username, String organizationName, String oid, Integer permission);
+  public AuthorizationResource getAclAuthorizationResource(String username, String organizationName, String oid, Integer permission);
+
+  public AuthorizationResource getRoleAuthorizationResource(String username, String configAttribute);
 }
