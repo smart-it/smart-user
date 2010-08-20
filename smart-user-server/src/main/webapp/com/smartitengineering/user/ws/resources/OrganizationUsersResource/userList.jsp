@@ -31,7 +31,6 @@
   <fmt:setLocale scope="session" value="${param['lang']}"/>
 </c:if>
 
-<div class="show" id="showList">
 
 
 
