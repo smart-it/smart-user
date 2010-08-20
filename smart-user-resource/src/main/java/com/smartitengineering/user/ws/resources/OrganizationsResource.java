@@ -200,7 +200,7 @@ public class OrganizationsResource extends AbstractResource {
             // link to the next organizations based on count
             Link nextLink = abderaFactory.newLink();
             nextLink.setRel(Link.REL_NEXT);
-            Organization lastOrganization = organizationList.get(0);
+            Organization lastOrganization = organizationList.get(organizationList.size() -1);
 
 
                         
@@ -218,7 +218,7 @@ public class OrganizationsResource extends AbstractResource {
             /* link to the previous organizations based on count */
             Link prevLink = abderaFactory.newLink();
             prevLink.setRel(Link.REL_PREVIOUS);
-            Organization firstOrganization = organizationList.get(organizations.size() - 1);
+            Organization firstOrganization = organizationList.get(0);
 
             prevLink.setHref(previousUri.build(firstOrganization.getUniqueShortName()).toString());
             //prevLink.setHref(nameLike)

@@ -54,6 +54,9 @@
                     url: window.location,
                     dataType: "xml",
                     success: function(xml) {
+                    
+                    alert(xml);
+
                         var contentid="";
                         var contentname="";
                         $(xml).find('entry').each(function(){
@@ -115,11 +118,11 @@
                         type: "GET",
                         url: "http://localhost:9090/orgs/shortname/"+usn,
                         dataType: "xml",
-                        success: function(xhr){
+                        success: function(xml){
                             //                            alert('Short Name is not unique')
                             $("#alertlabel").html('Short Name is not unique');
                         },
-                        error: function(xhr){
+                        error: function(xml){
                             $("#alertlabel").html('Perfect');
                         }
 

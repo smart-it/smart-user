@@ -10,26 +10,27 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--<%@taglib prefix="pg" uri="/WEB-INF/taglib139.tld" %>--%>
-<%@page import="com.smartitengineering.user.domain.User"%>
+<%--<%@page import="com.smartitengineering.user.domain.User"%>--%>
+<%@page import="com.smartitengineering.user.domain.Organization"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 
  
 
-<div id="leftmenu">
-  <div id="leftmenu_header">User-Creation</div>
-    <div id="leftmenu_body">
-      <ul>
-        <li><a href="javascript: Orgpageselect()">Create</a></li>
-      </ul>
-    </div>
-</div>
+        <div id="leftmenu">
+          <div id="leftmenu_header">User-Creation</div>
+            <div id="leftmenu_body">
+              <ul>
+                <li><a href="javascript: Orgpageselect()">Create</a></li>
+              </ul>
+            </div>
+        </div>
 
 
-<c:if test="${param['lang']!=null}">
-  <fmt:setLocale scope="session" value="${param['lang']}"/>
-</c:if>
+        <c:if test="${param['lang']!=null}">
+          <fmt:setLocale scope="session" value="${param['lang']}"/>
+        </c:if>
 
 
 
@@ -125,8 +126,12 @@
                                
                            });
 
-                           
+
                            $(".submit").click(function(){
+                           
+
+                           });
+                          <%-- $(".submit").click(function(){
                                alert ("potak")
                                var fname = $("input#fname");
                                var mname = $("input#mname");
@@ -153,7 +158,7 @@
                                     });
                                 }
                            });
-                           return false;
+                           return false;--%>
                        
 });
     </script>
@@ -171,11 +176,11 @@
 
                 <div id="userslist">
 
-                    <div id="title_of_organization_users">
+                    <%--<div id="title_of_organization_users">
                         <label><fmt:message key="org.usrtitle"/></label>
                     </div>
-
-                    <div id="top_row">
+--%>
+                    
 
                         <div class="tableheadname_user">
                             <label class="tablehead_label"><fmt:message key="org.usrtablehead1"/></label>
@@ -209,11 +214,9 @@
             </div>
 
 
-            <fmt:message key="org.usrinput6" var="submitbtn"/>
+            
 
-        </div>
-
-
+        
             <div class="hide"  id="create">
 
 
@@ -222,7 +225,7 @@
                 </div>
 
                 
-                <form action="" accept="application/json" enctype="" id="userform">
+                <form action="http://localhost:9090/orgs/potak/users" accept="application/json" enctype="" id="userform" method="post">
 
                     <div id="inner-left-1" align="right"><label><fmt:message key="org.usrinput1"/></label></div><div id="inner-right-1" align="left"><input type="text" name="name" id="fname" size="40" value=""></div>
 
@@ -235,7 +238,8 @@
                     <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput7"/></label></div><div id="inner-right-2" align="left"><input id="confirmPassword" type="password" name="confirmPassword" size="40" value=""></div>
 
                     <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput5"/></label></div><div id="inner-right-2" align="left"><input type="text" name="phone" id="phone" size="40" value=""></div>
-                        <fmt:message key="org.usrinput6" var="submitbtn"/>
+
+                    <div id="inner-left-2" align="center"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submit" type="submit" class="submit" value="submit"></div>
                 </form>
 
 
