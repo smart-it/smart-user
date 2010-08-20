@@ -81,7 +81,7 @@
 
   <div id="form_organizationentry">
 
-    <form method="POST" action ="http://russel:9090/orgs/shortname/${it.uniqueShortName}" accept="application/json" id="organizationform">
+    <form method="POST" action ="http://localhost:9090/orgs/shortname/${it.uniqueShortName}" accept="application/json" id="organizationform">
 
       <div class="inner-left"><label><fmt:message key="org.tablehead2"/></label></div>
       <div class="inner-right"><input type="text" name="name" value="${it.name}" class="textField"></div>
@@ -121,6 +121,10 @@
 
       <div class="clear"></div>
       <div id="btnfield"><input type="submit" value="UPDATE" name="submitbtn"></div>
+      <div class="clear"></div>
+
+      <div class="clear"></div>
+      <div><input type="submit" value="DELETE" name="submitbtn"></div>
       <div class="clear"></div>
 
     </form>

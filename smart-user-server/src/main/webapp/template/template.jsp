@@ -10,7 +10,7 @@
 
   <%--Uzzal--%>
 
-  <html>
+<html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -67,24 +67,19 @@
 
   </script>
 
-
-  <%--      $("li.fade").hover(function(){
-          $(this).fadeOut(50);$(this).fadeIn(100);});--%>
-
-
   <script type="text/javascript">
     $(document).ready(function(){
-                
+
       $.ajax({
         url: "http://localhost:9090/orgs",
         dataType: "xml",
         success: function(xml) {
-                    
+
           var contentid="";
           var contentname="";
           $(xml).find('entry').each(function(){
             var id = $(this).find('id').text();
-                                
+
             var title = $(this).find('title').text();
             var link = $(this).find('link').attr('href');
             // alert(link);
@@ -94,7 +89,7 @@
           });
           $("#tablecontentid").html(contentid);
           $("#tablecontentname").html(contentname);
-                        
+
 
           var linkvalue_next="";
           var linkvalue_prev="";
@@ -124,8 +119,12 @@
 
 
         }
-               
+
       });
+
+
+
+                     $("#uniqueShortName2").click(function(){
 
 
 
@@ -140,7 +139,28 @@
         }
       });
 
+                    var usn =$("#uniqueShortName").val();
+
+                    $.ajax({
+                        type: "GET",
+                        url: "http://localhost:9090/orgs/shortname/"+usn,
+                        dataType: "xml",
+                        success: function(xhr){
+                            //                            alert('Short Name is not unique')
+                            $("#alertlabel").html('Short Name is not unique');
+                        },
+                        error: function(xhr){
+                            $("#alertlabel").html('Perfect');
+                        }
+
+                    });
+
+
+                });
+
+
     });
+
 
 
   </script>
@@ -158,7 +178,6 @@
                               <td>
                                    <input type="text" id="searchbox" name="search" size="75">
                               </td>
-
                               <td>
                              <input type="submit" id="btnSearch" value="search">
                              <input type="image" src="../images/butup.gif" id="btnSearch" value="Search" alt="[Submit]" name="submit">
@@ -166,7 +185,6 @@
                     </tr>
                 </table>
                 </form>--%>
-
 
     </div>
 

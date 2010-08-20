@@ -288,6 +288,43 @@ root {
   width:99%;
 }
 
+
+.tablehead_label{
+    font-family: sans-serif;
+    font-size: 7pt;
+    font-weight: bold;
+    color:#333366;
+}
+
+.tablecontent_label{
+    font-family: sans-serif;
+    font-size: 10pt;
+    font-weight: 400;
+    font-style: oblique;
+    text-decoration: none;
+    color: #333399;
+}
+#uniqueShortName2
+{
+    font-family: sans-serif;
+    font-size: 10pt;
+    font-weight: 400;
+    font-style: oblique;
+    text-decoration: none;
+    color: #333399;
+}
+#alert
+{
+    font-family: sans-serif;
+    font-size: 10pt;
+    font-weight: 400;
+    font-style: oblique;
+    text-decoration: none;
+    color: #333399;
+}
+#alertlabel{
+    color: #333399;
+}
 .individual_org_label{
   float: left;
   width: 27%;
@@ -384,4 +421,5 @@ root {
   color:#23819C;
   font-size: 10pt;
   text-decoration: none;
+
 }
