@@ -41,8 +41,10 @@
         $(document).ready(function(){
 
                     $.ajax({
+
+
                         type: "GET",
-                        url: "http://localhost:9090/orgs/SITEL/users",
+                        url: window.location,
                         datatype: "xml",
 
                         success: function(xml){
@@ -116,6 +118,35 @@
                            });
 
                            
+                           $(".submit").click(function(){
+                               alert ("potak")
+                               var fname = $("input#fname");
+                               var mname = $("input#mname");
+                               var lname = $("input#lname");
+                               var password = $("input#password");
+                               var phone = $("input#phone")
+                            var datastring = 'name='+ fname + '&midName='+ mname + '&lastName='+ lname + '&password='+ password + '&phone='+ phone;
+                           alert (datastring)
+                           
+                            });
+
+                           $.ajax({
+                                type: "POST",
+                                url: window.location,
+                                data: datastring,
+                                success: function(){
+                                    alert ("oooo")
+                                    $('#create').html("<div id='message'></div>");
+                                    $('#message').html("<h2>Form submitted successfully</h2")
+                                    alert("kkk")
+                                    .hide()
+                                    .fade(1500, function(){
+                                        $('#message');
+                                    });
+                                }
+                           });
+                           return false;
+                       
 });
     </script>
     
@@ -173,22 +204,22 @@
 
         <div class="hide"  id="create">
 
-            <form action="http://localhost:9090/users" method="post" accept="application/json" enctype="" id="userform">
+            <form action="" accept="application/json" enctype="" id="userform">
 
-                <div id="inner-left-1" align="right"><label><fmt:message key="org.usrinput1"/></label></div><div id="inner-right-1" align="left"><input type="text" name="name" size="40" value=""></div>
+                <div id="inner-left-1" align="right"><label><fmt:message key="org.usrinput1"/></label></div><div id="inner-right-1" align="left"><input type="text" name="name" id="fname" size="40" value=""></div>
 
-                <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput2"/></label></div><div id="inner-right-2" align="left"><input type="text" name="midName" size="40" value=""></div>
+                <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput2"/></label></div><div id="inner-right-2" align="left"><input type="text" name="midName" id="mname" size="40" value=""></div>
 
-                <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput3"/></label></div><div id="inner-right-2" align="left"><input type="text" name="lastName" size="40" value=""></div>
+                <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput3"/></label></div><div id="inner-right-2" align="left"><input type="text" name="lastName" id="lname" size="40" value=""></div>
 
                 <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput4"/></label></div><div id="inner-right-2" align="left"><input id="password" type="password" name="password" size="40" value=""></div>
 
                 <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput7"/></label></div><div id="inner-right-2" align="left"><input id="confirmPassword" type="password" name="confirmPassword" size="40" value=""></div>
 
-                <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput5"/></label></div><div id="inner-right-2" align="left"><input type="text" name="uniqueShortName" size="40" value=""></div>
+                <div id="inner-left-2" align="right"><label><fmt:message key="org.usrinput5"/></label></div><div id="inner-right-2" align="left"><input type="text" name="phone" id="phone" size="40" value=""></div>
 
 
-                <div class="inner-right-8" align="center"><input type="submit" value="${submitbtn}" name="submitBtn" ></div>
+                <div class="inner-right-8" align="center"><input type="submit" class="submit" value="${submitbtn}" name="submitBtn" ></div>
 
             </form>
 

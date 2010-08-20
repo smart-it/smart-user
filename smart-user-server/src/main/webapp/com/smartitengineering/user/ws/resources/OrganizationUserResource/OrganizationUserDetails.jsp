@@ -47,7 +47,7 @@
         <div id="form_organizationentry" align="center">
             <fmt:message key="org.usrinput6" var="submitbtn"/>
 
-        <form method="POST" action ="http://russel:9090/orgs/shortname/${it.username}" accept="application/json" id="organizationform">
+        <form method="POST" action ="http://localhost:9090/orgs/shortname/${it.username}" accept="application/json" id="organizationform">
 
             <div class="inner-left"><label><fmt:message key="org.usrtablehead2"/></label></div>
             <div class="inner-right" align="left"><input type="text" name="name" value="${it.username}" class="textField"></div>
