@@ -87,7 +87,7 @@ root {
 
 .inner-left{
   /*padding: 14px 0px 10px 10px;*/
-  padding: 10px 10px 10px 0px;
+  padding: 13px 10px 17px 0px;
   width:35%;
   float:left;
   text-align: left;
@@ -96,7 +96,7 @@ root {
 
 .inner-left label{
   font-family: vardana, sans-serif;
-  font-size: 10pt;
+  font-size: 12pt;
   font-weight: 500;
   font-style: normal;
   color:#330066;
@@ -111,7 +111,7 @@ root {
 }
 
 .textField{
-  height: 20px;
+  height: 30px;
   border: 1px outset;
   /*border-style: ridge*/
   border-color:#9A03FE;
@@ -176,7 +176,7 @@ root {
   background-color: #cbd0c8;
   padding-top: 6px;
   padding-bottom: 6px;
-  /*padding-left: 20px;*/
+  padding-left: 20px;
 }
 
 .tablecontentname{
@@ -186,7 +186,7 @@ root {
   /*border: 1px solid;*/
 }
 .id{
-  padding:5px 5px 5px 20px;
+  padding:5px 5px 5px 10px;
   width: 93%;
   border-bottom-style: double;
   border-color:#009999;
@@ -238,10 +238,19 @@ root {
   float: left;
 }
 
-#teblecontentlink
+#tablecontentlink_of_next
 {
+  padding-top: 7px;
   text-align: center;
-  float: left;
+  float: right;
+  width: 15%;
+}
+
+#tablecontentlink_of_previous
+{
+  padding-top: 7px;
+  text-align: center;
+  float: right;
   width: 15%;
 }
 
@@ -250,7 +259,7 @@ root {
 
 #individual_org_details_header{
   /*margin-left: 110px;*/
-  margin-top: 10px;
+  margin-top: 2px;
   margin-left: 3px;
   /*margin: 0 auto;*/
   padding-top: 5px;
@@ -356,7 +365,7 @@ root {
 
 /*MENU*/
 
-#rightmenu{
+#leftmenu{
   /*background-image: url(/images/top.jpg);*/
   /*background-repeat:repeat;*/
   /*background-position: top left;*/
@@ -365,7 +374,7 @@ root {
   height:auto;
 }
 
-#rightmenu_header{
+#leftmenu_header{
   padding:4px 0px 0px 4px;
   text-align: center;
   color: #23819C;
@@ -376,11 +385,11 @@ root {
   border-color: #FFFFFF;
 }
 
-#rightmenu_header label{
+#leftmenu_header label{
   font-family: sans-serif, tahoma, verdana;
 }
 
-#rightmenu_body{
+#leftmenu_body{
   background-color:#736F6E;
   background-image: url(/images/top.jpg);
   background-repeat: repeat;
@@ -390,12 +399,12 @@ root {
 
 }
 
-#rightmenu ul{
+#leftmenu ul{
   padding:0px 6px 15px 50px;
   text-align: left;
 }
 
-#rightmenu ul li{
+#leftmenu ul li{
   list-style:  url(../images/arrow.gif) outside;
   color:#E8C6FF;
 
@@ -405,7 +414,7 @@ root {
 
 
 }
-#rightmenu ul li a{
+#leftmenu ul li a{
   font-family: sans-serif, tahoma, verdana;
   font-weight: bold;
   color:#23819C;

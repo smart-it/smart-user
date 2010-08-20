@@ -16,9 +16,9 @@
 
 
 
-<div id="rightmenu">
-  <div id="rightmenu_header">User-Creation</div>
-    <div id="rightmenu_body">
+<div id="leftmenu">
+  <div id="leftmenu_header">User-Creation</div>
+    <div id="leftmenu_body">
       <ul>
         <li><a href="javascript: Orgpageselect()">Create</a></li>
       </ul>

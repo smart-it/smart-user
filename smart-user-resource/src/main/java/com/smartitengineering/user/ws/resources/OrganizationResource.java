@@ -186,6 +186,7 @@ public class OrganizationResource extends AbstractResource {
         newOrganization.setVersion(Integer.valueOf(keyValueMap.get("version")));
 
         Address address = new Address();
+        address.setStreetAddress(keyValueMap.get("streetAddress"));
         address.setCity(keyValueMap.get("city"));
         address.setCountry(keyValueMap.get("country"));
         address.setState(keyValueMap.get("state"));
@@ -193,7 +194,7 @@ public class OrganizationResource extends AbstractResource {
 
         newOrganization.setAddress(address);
 
-        if(keyValueMap.get("submit").equals("update")){
+        if(keyValueMap.get("submitbtn").toUpperCase().equals("UPDATE")){
           return update(newOrganization);
         }else{
           return delete();

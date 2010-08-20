@@ -17,10 +17,10 @@
 </c:if>
 
 
-<div id="rightmenu">
-  <div id="rightmenu_header"><label>Individual-User</label></div>
+<div id="leftmenu">
+  <div id="leftmenu_header"><label>Individual-User</label></div>
 
-  <div id="rightmenu_body">
+  <div id="leftmenu_body">
     <ul>
       <li><a href="javascript: Orgpageselect()"><fmt:message key="org.tablehead4"/></a></li>
     </ul></div>

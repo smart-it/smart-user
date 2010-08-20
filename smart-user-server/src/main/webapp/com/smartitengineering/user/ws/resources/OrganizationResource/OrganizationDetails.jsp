@@ -12,10 +12,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
   "http://www.w3.org/TR/html4/loose.dtd">
 
-<div id="rightmenu">
-  <div id="rightmenu_header"><label>Organization</label></div>
+<div id="leftmenu">
+  <div id="leftmenu_header"><label>Organization</label></div>
 
-  <div id="rightmenu_body">
+  <div id="leftmenu_body">
   <ul>
 
     <li><a href="javascript: Orgpageselect()">Edit</a></li>
@@ -81,7 +81,7 @@
 
   <div id="form_organizationentry">
 
-    <form method="POST" action ="http://russel:9090/orgs/shortname/${it.uniqueShortName}" accept="application/json" id="organizationform">
+    <form method="POST" action ="http://localhost:9090/orgs/shortname/${it.uniqueShortName}" accept="application/json" id="organizationform">
 
       <div class="inner-left"><label><fmt:message key="org.tablehead2"/></label></div>
       <div class="inner-right"><input type="text" name="name" value="${it.name}" class="textField"></div>
