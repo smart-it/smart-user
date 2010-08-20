@@ -49,8 +49,24 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
     }
     catch (StaleStateException e) {
       String message =
-             ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
-          UniqueConstrainedField.OTHER;
+             ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
+      throw new RuntimeException(message, e);
+    }
+  }
+
+  @Override
+  public void update(Organization organization) {
+    validateOrganization(organization);
+    try {
+      super.update(organization);
+    }
+    catch (ConstraintViolationException e) {
+      String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
+      throw new RuntimeException(message, e);
+    }
+    catch (StaleStateException e) {
+      String message =
+             ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
       throw new RuntimeException(message, e);
     }
   }
@@ -77,9 +93,11 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
                                                                                                organizationNameLike);
       params.add(orgNameLikeParam);
     }
+
 //      else{
 //        params.add(QueryParameterFactory.getStringLikePropertyParam("name", ""));
 //      }
+
 
     if (StringUtils.isNotBlank(shortName)) {
       if (isSmallerThan) {
@@ -104,13 +122,21 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
         public int compare(Organization o1, Organization o2) {
           //return o1.getId().compareTo(o2.getId()) * -1;
           return o1.getUniqueShortName().compareTo(o2.getUniqueShortName()) * -1;
+          //return o2.getUniqueShortName().compareTo(o1.getUniqueShortName()) * -1;
         }
       });
+      if (isSmallerThan) {
+        Collections.reverse(organizations);
+      }
+
+
+
       return organizations;
     }
     else {
       return Collections.emptySet();
     }
+
 
   }
 
@@ -129,20 +155,30 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
   }
 
   @Override
-  public void update(Organization organization) {
-    validateOrganization(organization);
-    try {
-      super.update(organization);
+  public void validateOrganization(Organization organization) {
+    if (organization.getId() == null) {
+      Integer count = (Integer) super.getOther(
+          QueryParameterFactory.getElementCountParam("uniqueShortName"), QueryParameterFactory.
+          getStringLikePropertyParam(
+          "uniqueShortName",
+          organization.getUniqueShortName()));
+      if (count.intValue() > 0) {
+        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.ORGANIZATION_UNIQUE_SHORT_NAME.
+            name());
+      }
     }
-    catch (ConstraintViolationException e) {
-      String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
-      throw new RuntimeException(message, e);
-    }
-    catch (StaleStateException e) {
-      String message =
-             ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
-          UniqueConstrainedField.OTHER;
-      throw new RuntimeException(message, e);
+    else {
+      Integer count = (Integer) super.getOther(
+          QueryParameterFactory.getElementCountParam("uniqueShortName"),
+          QueryParameterFactory.getConjunctionParam(
+          QueryParameterFactory.getNotEqualPropertyParam("id",
+                                                         organization.getId()), QueryParameterFactory.
+          getStringLikePropertyParam(
+          "uniqueShortName", organization.getUniqueShortName())));
+      if (count.intValue() > 0) {
+        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.ORGANIZATION_UNIQUE_SHORT_NAME.
+            name());
+      }
     }
   }
 
@@ -182,37 +218,6 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
   }
 
   @Override
-  public void validateOrganization(Organization organization) {
-    if (organization.getId() == null) {
-      Integer count = (Integer) super.getOther(
-          QueryParameterFactory.getElementCountParam("uniqueShortName"), QueryParameterFactory.
-          getStringLikePropertyParam(
-          "uniqueShortName",
-          organization.getUniqueShortName()));
-      if (count.intValue() > 0) {
-        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
-            UniqueConstrainedField.ORGANIZATION_UNIQUE_SHORT_NAME.name());
-      }
-    }
-    else {
-      Integer count = (Integer) super.getOther(
-          QueryParameterFactory.getElementCountParam("uniqueShortName"),
-          QueryParameterFactory.getConjunctionParam(
-          QueryParameterFactory.getNotEqualPropertyParam("id",
-                                                         organization.getId()), QueryParameterFactory.
-          getStringLikePropertyParam(
-          "uniqueShortName", organization.getUniqueShortName())));
-      if (count.intValue() > 0) {
-        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
-            UniqueConstrainedField.ORGANIZATION_UNIQUE_SHORT_NAME.name());
-      }
-
-    }
-  }
-
-  
-
-  @Override
   public void populateOrganization(User user) throws Exception {
     Integer organizationID = user.getParentOrganizationID();
     if (user.getParentOrganizationID() != null) {
@@ -222,6 +227,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
         throw new Exception("No organization found");
       }
       user.setOrganization(parentOrganization);
+
     }
   }
 
@@ -262,5 +268,6 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
       }
       privilege.setParentOrganization(parentOrganization);
     }
+
   }
 }

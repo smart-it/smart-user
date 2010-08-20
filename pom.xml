@@ -49,11 +49,18 @@
     <distributionManagement>
         <!-- deploy site here -->
         <site>
-          <id>smartit-googlecode</id>
-          <name>Smart IT Engineering GoogleCode repository</name>
-          <url>svn:https://imyousuf@smart-it.googlecode.com/svn/maven2/site/user</url>
+            <id>smartit-googlecode</id>
+            <name>Smart IT Engineering GoogleCode repository</name>
+            <url>svn:https://imyousuf@smart-it.googlecode.com/svn/maven2/site/user</url>
         </site>
     </distributionManagement>
+    <dependencies>
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>
@@ -104,6 +111,10 @@
         <module>smart-user-resource</module>
         <module>smart-user-security</module>
         <module>smart-user-server</module>
-    <module>smart-user-client-impl</module>
+        <!--<module>smart-user-ui</module>-->
+<!--        <module>smart-user-client-impl</module>-->
   </modules>
+
+      
+  
 </project>

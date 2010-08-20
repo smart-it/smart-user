@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_5.xsd">
     <display-name>>Smart User Server</display-name>
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
             classpath:com/smartitengineering/user/server/app-context.xml            
         </param-value>
+    </context-param>
+    <context-param>
+        <param-name> javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+        <param-value>ApplicationResource</param-value>
+    </context-param>
+    <context-param>
+        <param-name> javax.servlet.jsp.jstl.fmt.fallbackLocale</param-name>
+        <param-value>en</param-value>
+    </context-param>
+    <context-param>
+        <param-name> javax.servlet.jsp.jstl.fmt.locale</param-name>
+        <param-value>en</param-value>
     </context-param>
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -31,7 +43,7 @@
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
-            <param-value>/(images|css|jsp)/.*</param-value>
+            <param-value>/(images|css|jsp|script)/.*</param-value>
         </init-param>
     </filter>
     <filter-mapping>

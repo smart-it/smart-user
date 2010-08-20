@@ -46,7 +46,8 @@ public class OrganizationResource extends AbstractResource {
     ORGANIZATION_CONTENT_URI_BUILDER = ORGANIZATION_URI_BUILDER.clone();
     try {
       ORGANIZATION_CONTENT_URI_BUILDER.path(OrganizationResource.class.getMethod("getOrganization"));
-    } catch (Exception ex) {
+    }
+    catch (Exception ex) {
       ex.printStackTrace();
       throw new InstantiationError();
     }
@@ -104,11 +105,14 @@ public class OrganizationResource extends AbstractResource {
       organization.setLastModifiedDate(new Date());
 
       Services.getInstance().getOrganizationService().update(organization);
-      organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(newOrganization.getUniqueShortName());
+      organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(newOrganization.
+          getUniqueShortName());
       responseBuilder = Response.ok(getOrganizationFeed());
-    } catch (Exception ex) {
+    }
+    catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
+
     return responseBuilder.build();
   }
 
@@ -121,13 +125,15 @@ public class OrganizationResource extends AbstractResource {
     if (StringUtils.isBlank(message)) {
       responseBuilder = Response.status(Status.BAD_REQUEST);
       responseBuilder.build();
+
     }
 
     final boolean isHtmlPost;
     if (StringUtils.isBlank(contentType)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
       isHtmlPost = false;
-    } else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+    }
+    else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
       isHtmlPost = true;
       try {
@@ -137,10 +143,12 @@ public class OrganizationResource extends AbstractResource {
         final String realMsg = message.substring(startIndex);
         //Decode the message to ignore the form encodings and make them human readable
         message = URLDecoder.decode(realMsg, "UTF-8");
-      } catch (UnsupportedEncodingException ex) {
+      }
+      catch (UnsupportedEncodingException ex) {
         ex.printStackTrace();
       }
-    } else {
+    }
+    else {
       contentType = contentType;
       isHtmlPost = false;
     }
@@ -151,7 +159,8 @@ public class OrganizationResource extends AbstractResource {
         Services.getInstance().getOrganizationService().update(newOrganization);
         //organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organization.getUniqueShortName());
         responseBuilder = Response.ok(getOrganizationFeed());
-      } catch (Exception ex) {
+      }
+      catch (Exception ex) {
         responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
       }
     }
@@ -162,15 +171,8 @@ public class OrganizationResource extends AbstractResource {
 
     Map<String, String> keyValueMap = new HashMap<String, String>();
 
-    String[] keyValuePairs = message.split("&");
-
-    for (int i = 0; i < keyValuePairs.length; i++) {
-
-      String[] keyValuePair = keyValuePairs[i].split("=");
-      keyValueMap.put(keyValuePair[0], keyValuePair[1]);
-    }
-
     Organization newOrganization = new Organization();
+
 
     if (keyValueMap.get("id") != null) {
       newOrganization.setId(Integer.valueOf(keyValueMap.get("id")));
@@ -217,7 +219,8 @@ public class OrganizationResource extends AbstractResource {
 
     try {
       Services.getInstance().getOrganizationService().delete(organization);
-    } catch (Exception ex) {
+    }
+    catch (Exception ex) {
       ex.printStackTrace();
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
@@ -232,6 +235,7 @@ public class OrganizationResource extends AbstractResource {
 
     // add a self link
     organizationFeed.addLink(getSelfLink());
+
 
     // add a edit link
     Link editLink = abderaFactory.newLink();

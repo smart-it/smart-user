@@ -2,16 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.ws.resources;
-
 
 /**
  *
  * @author russel
  */
 
+
+
 import com.smartitengineering.user.domain.Address;
+
 import com.smartitengineering.user.domain.Organization;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
@@ -20,7 +21,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import java.util.Map;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -29,6 +34,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -42,31 +48,29 @@ import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
 
-
-
-
 @Path("/orgs")
-public class OrganizationsResource extends AbstractResource{
+//@Path("/privs")
+public class OrganizationsResource extends AbstractResource {
 
     static final UriBuilder ORGANIZATION_URI_BUILDER;
     static final UriBuilder ORGANIZATION_AFTER_SHORTNAME_URI_BUILDER;
     static final UriBuilder ORGANIZATION_BEFORE_SHORTNAME_URI_BUILDER;
+    @Context
+    private HttpServletRequest servletRequest;
 
-    static{
+    static {
         ORGANIZATION_URI_BUILDER = UriBuilder.fromResource(OrganizationsResource.class);
         ORGANIZATION_BEFORE_SHORTNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationsResource.class);
 
-        try{
+        try {
             ORGANIZATION_BEFORE_SHORTNAME_URI_BUILDER.path(OrganizationsResource.class.getMethod("getBefore", String.class));
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         ORGANIZATION_AFTER_SHORTNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationsResource.class);
-        try{
+        try {
             ORGANIZATION_AFTER_SHORTNAME_URI_BUILDER.path(OrganizationsResource.class.getMethod("getAfter", String.class));
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -76,8 +80,7 @@ public class OrganizationsResource extends AbstractResource{
 
     @QueryParam("shortname")
     private String uniqueShortName;
-//    @QueryParam("author_nick")
-//    private String authorNickName;
+
     @QueryParam("count")
     private Integer count;
 
@@ -93,9 +96,13 @@ public class OrganizationsResource extends AbstractResource{
     @Path("/before/{beforeShortName}")
     public Response getBeforeHtml(@PathParam("beforeShortName") String beforeShortName){
       ResponseBuilder responseBuilder = Response.ok();
+      if(count == null)
+            count = 10;
        Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
            null, beforeShortName, true, count);
-        Viewable view = new Viewable("organizationList", organizations, OrganizationsResource.class);
+
+       servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
+        Viewable view = new Viewable("/template/template.jsp", organizations);
         responseBuilder.entity(view);
         return responseBuilder.build();
     }
@@ -105,7 +112,7 @@ public class OrganizationsResource extends AbstractResource{
     @Produces(MediaType.APPLICATION_ATOM_XML)
     @Path("/after/{afterShortName}")
     public Response getAfter(@PathParam("afterShortName") String afterShortName) {
-      return get(afterShortName, false);
+        return get(afterShortName, false);
     }
 
     @GET
@@ -114,9 +121,12 @@ public class OrganizationsResource extends AbstractResource{
     public Response getAfterHtml(@PathParam("afterShortName") String afterShortName){
 
       ResponseBuilder responseBuilder = Response.ok();
+      if(count == null)
+            count = 10;
        Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
            null, afterShortName, true, count);
-        Viewable view = new Viewable("organizationList", organizations, OrganizationsResource.class);
+       servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
+        Viewable view = new Viewable("/template/template.jsp", organizations); 
         responseBuilder.entity(view);
         return responseBuilder.build();
     }
@@ -124,28 +134,36 @@ public class OrganizationsResource extends AbstractResource{
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
     public Response get() {
-      return get(null, true);
+        return get(null, true);
     }
 
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public Response getHtml(){
+    public Response getHtml() {
         ResponseBuilder responseBuilder = Response.ok();
-       Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
+
+        if(count == null)
+            count = 10;
+
+        Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
            uniqueShortName, uniqueShortName, true, count);
-        Viewable view = new Viewable("organizationList", organizations, OrganizationsResource.class);
+        servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
+//        servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationPrivilegeResource/OrgPrivilegeList.jsp");
+        Viewable view = new Viewable("/template/template.jsp", organizations);       
+        
         responseBuilder.entity(view);
         return responseBuilder.build();
     }
 
-
 //    @GET
 //    @Produces(MediaType.APPLICATION_ATOM_XML)
+
     public Response get(String organizationName, boolean isBefore)
     {
       if (count == null) {
         count = 10;
       }
+
         ResponseBuilder responseBuilder = Response.ok();
 
         // create a new atom feed
@@ -170,7 +188,7 @@ public class OrganizationsResource extends AbstractResource{
 //        serviceOrganization.add(new Organization("mehmood equity", "2"));
 //        Collection<Organization> organizations = serviceOrganization;
 
-        if(organizations != null && !organizations.isEmpty()){
+        if (organizations != null && !organizations.isEmpty()) {
 
             MultivaluedMap<String, String> queryParam = uriInfo.getQueryParameters();
             List<Organization> organizationList = new ArrayList<Organization>(organizations);
@@ -182,9 +200,12 @@ public class OrganizationsResource extends AbstractResource{
             // link to the next organizations based on count
             Link nextLink = abderaFactory.newLink();
             nextLink.setRel(Link.REL_NEXT);
-            Organization lastOrganization = organizationList.get(0);
+            Organization lastOrganization = organizationList.get(organizationList.size() -1);
+
+
                         
             for(String key:queryParam.keySet()){
+
                 final Object[] values = queryParam.get(key).toArray();
                 nextUri.queryParam(key, values);
                 previousUri.queryParam(key, values);
@@ -197,30 +218,30 @@ public class OrganizationsResource extends AbstractResource{
             /* link to the previous organizations based on count */
             Link prevLink = abderaFactory.newLink();
             prevLink.setRel(Link.REL_PREVIOUS);
-            Organization firstOrganization = organizationList.get(organizations.size() - 1);
-            
+            Organization firstOrganization = organizationList.get(0);
+
             prevLink.setHref(previousUri.build(firstOrganization.getUniqueShortName()).toString());
             //prevLink.setHref(nameLike)
             atomFeed.addLink(prevLink);
-            
+
             // add entry of individual organization
             for (Organization organization : organizations) {
-              Entry organizationEntry = abderaFactory.newEntry();
-              
-              organizationEntry.setId(organization.getUniqueShortName().toString());
-              organizationEntry.setTitle(organization.getName());
-              organizationEntry.setSummary(organization.getName());
-              organizationEntry.setUpdated(organization.getLastModifiedDate());
+                Entry organizationEntry = abderaFactory.newEntry();
 
-              /* setting link to the individual organization resource*/
-              
-              Link organizationLink = abderaFactory.newLink();              
-              organizationLink.setHref(OrganizationResource.ORGANIZATION_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
-              organizationLink.setRel(Link.REL_ALTERNATE);
-              organizationLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
-              organizationEntry.addLink(organizationLink);
-              
-              atomFeed.addEntry(organizationEntry);
+                organizationEntry.setId(organization.getUniqueShortName().toString());
+                organizationEntry.setTitle(organization.getName());
+                organizationEntry.setSummary(organization.getName());
+                organizationEntry.setUpdated(organization.getLastModifiedDate());
+
+                /* setting link to the individual organization resource*/
+
+                Link organizationLink = abderaFactory.newLink();
+                organizationLink.setHref(OrganizationResource.ORGANIZATION_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
+                organizationLink.setRel(Link.REL_ALTERNATE);
+                organizationLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
+                organizationEntry.addLink(organizationLink);
+
+                atomFeed.addEntry(organizationEntry);
             }
         }
         responseBuilder.entity(atomFeed);
@@ -230,20 +251,21 @@ public class OrganizationsResource extends AbstractResource{
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response post(Organization organization) {
-    ResponseBuilder responseBuilder;
-    try {
-      //Services.getInstance().getOrganizationService().populateAuthor(organization);
-      Services.getInstance().getOrganizationService().save(organization);
-      responseBuilder = Response.status(Response.Status.CREATED);
-      responseBuilder.location(OrganizationResource.ORGANIZATION_URI_BUILDER.clone().build(organization.getName()));
-      
-    }    
-    catch (Exception ex) {
-      responseBuilder = Response.status(Response.Status.INTERNAL_SERVER_ERROR);
-      ex.printStackTrace();
+        ResponseBuilder responseBuilder;
+        try {
+            //Services.getInstance().getOrganizationService().populateAuthor(organization);
+            Services.getInstance().getOrganizationService().save(organization);
+            responseBuilder = Response.status(Response.Status.CREATED);
+            responseBuilder.location(OrganizationResource.ORGANIZATION_URI_BUILDER.clone().build(organization.getName()));
+
+        } catch (Exception ex) {
+            responseBuilder = Response.status(Response.Status.INTERNAL_SERVER_ERROR);
+            ex.printStackTrace();
+        }
+        return responseBuilder.build();
     }
-    return responseBuilder.build();
-  }
+
+  
 
     private Organization getObjectFromContent(String message){
       
