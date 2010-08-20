@@ -363,24 +363,25 @@ root {
 }
 
 #leftmenu ul{
-  padding:0px 6px 15px 50px;
+  padding:0px 6px 15px 40px;
   text-align: left;
 }
 
+
 #leftmenu ul li{
-  list-style:  url(../images/arrow.gif) outside;
+  list-style:  url(../images/arrow.gif) inside;
   color:#E8C6FF;
 
-  border-bottom: #0000CC 1px solid;
-  line-height:25px;
-  width:80px;
-
+  border-bottom: #F3F8F4 1px solid;
+  line-height:20px;
+  width:150px;
 
 }
 #leftmenu ul li a{
   font-family: sans-serif, tahoma, verdana;
+  font-weight: 600;
   font-weight: bold;
   color:#23819C;
-  font-size: 11pt;
+  font-size: 10pt;
   text-decoration: none;
 }
