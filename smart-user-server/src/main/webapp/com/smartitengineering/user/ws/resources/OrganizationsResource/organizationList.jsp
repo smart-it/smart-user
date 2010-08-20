@@ -56,7 +56,8 @@
       
   </div>
 
-  <div id="tablecontentlink" ></div>
+  <div id="tablecontentlink_of_next" ></div>
+  <div id="tablecontentlink_of_previous" ></div>
 
 </div>
 
