@@ -150,8 +150,8 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
                 @Override
                 public int compare(Organization o1, Organization o2) {
                     //return o1.getId().compareTo(o2.getId()) * -1;
-                    //return o1.getUniqueShortName().compareTo(o2.getUniqueShortName()) * -1;
-                    return o2.getUniqueShortName().compareTo(o1.getUniqueShortName()) * -1;
+                    return o1.getUniqueShortName().compareTo(o2.getUniqueShortName()) * -1;
+                    //return o2.getUniqueShortName().compareTo(o1.getUniqueShortName()) * -1;
                 }
             });
             if (isSmallerThan) {

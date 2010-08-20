@@ -137,15 +137,19 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
       List<Integer> userIDs = getOtherList(params);
 
       if (userIDs != null && !userIDs.isEmpty()) {
-      List<User> organizations = new ArrayList<User>(super.getByIds(userIDs));
-      Collections.sort(organizations, new Comparator<User>(){
+      List<User> users = new ArrayList<User>(super.getByIds(userIDs));
+      Collections.sort(users, new Comparator<User>(){
 
         @Override
         public int compare(User o1, User o2) {
           return o1.getId().compareTo(o2.getId()) * -1;
         }
       });
-      return organizations;
+      if (isSmallerThan) {
+                Collections.reverse(users);
+            }
+
+      return users;
     }
     else {
       return Collections.emptySet();
@@ -167,6 +171,63 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
 
         QueryParameter qp = QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationShortName));
         return super.getList(qp);
+    }
+
+    public Collection<User> getUserByOrganization(String organizationName, String userName, boolean isSmallerThan, int count){
+      List<QueryParameter> params = new ArrayList<QueryParameter>();
+
+//      if(StringUtils.isNotBlank(userNameLike)){
+//        final QueryParameter orgNameLikeParam =   QueryParameterFactory.getNestedParametersParam("username",
+//                                                                                               FetchMode.EAGER,
+//                                                                                               QueryParameterFactory.getStringLikePropertyParam("username", userNameLike));
+//        params.add(orgNameLikeParam);
+//      }
+//      else{
+//        params.add(QueryParameterFactory.getNestedParametersParam("username", FetchMode.EAGER));
+//      }
+      if(StringUtils.isNotBlank(organizationName)){
+        final QueryParameter orgNameParam = QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT,
+                                                                                           QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationName));
+        params.add(orgNameParam);
+      }
+      else{
+        return Collections.emptyList();
+      }
+
+      if(StringUtils.isNotBlank(userName)){
+        if(isSmallerThan){
+          params.add(QueryParameterFactory.getLesserThanPropertyParam("username", userName));
+        }else{
+          params.add(QueryParameterFactory.getGreaterThanPropertyParam("username", userName));
+        }
+      }
+
+      params.add(QueryParameterFactory.getMaxResultsParam(count));
+      //params.add(QueryParameterFactory.getOrderByParam("id", Order.DESC));
+      params.add(QueryParameterFactory.getOrderByParam("username", Order.ASC));
+      params.add(QueryParameterFactory.getDistinctPropProjectionParam("id"));
+
+      List<Integer> userIDs = getOtherList(params);
+
+      if (userIDs != null && !userIDs.isEmpty()) {
+      List<User> users = new ArrayList<User>(super.getByIds(userIDs));
+      Collections.sort(users, new Comparator<User>(){
+
+        @Override
+        public int compare(User o1, User o2) {
+          //return o1.getId().compareTo(o2.getId()) * -1;
+          return o1.getUsername().compareTo(o2.getUsername());
+        }
+      });
+      if (isSmallerThan) {
+                Collections.reverse(users);
+            }
+
+      return users;
+    }
+    else {
+      return Collections.emptySet();
+    }
     }
 
     @Override

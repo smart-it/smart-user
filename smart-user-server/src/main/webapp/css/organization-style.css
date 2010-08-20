@@ -304,6 +304,14 @@ root {
     text-decoration: none;
     color: #333399;
 }
+
+label.error
+{ width: 250px;
+  display: block;
+  float: left;
+  color: red;
+  padding-left: 10px;
+}
 #uniqueShortName2
 {
     font-family: sans-serif;

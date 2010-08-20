@@ -80,11 +80,32 @@
           $(xml).find('entry').each(function(){
             var id = $(this).find('id').text();
 
+
             var title = $(this).find('title').text();
             var link = $(this).find('link').attr('href');
             // alert(link);
             contentid += "<div class=\"id\"><a href="  + link +">"+id+"</a></div>";
             contentname += "<div class=\"title\"><a href=" + link + ">" +title+"</a></div>";
+
+                $.ajax({
+                    type: "GET",
+                    url: window.location,
+                    dataType: "xml",
+                    success: function(xml) {
+                    
+                    alert(xml);
+
+                        var contentid="";
+                        var contentname="";
+                        $(xml).find('entry').each(function(){
+                            var id = $(this).find('id').text();
+                            
+                            var title = $(this).find('title').text();
+                            var link = $(this).find('link').attr('href');
+                            // alert(link);
+                            contentid += "<div class=\"id\"><a href="  + link +">"+id+"</a></div>";
+                            contentname += "<div class=\"title\"><a href=" + link + ">" +title+"</a></div>";
+
 
           });
           $("#tablecontentid").html(contentid);
@@ -143,11 +164,11 @@
                         type: "GET",
                         url: "http://localhost:9090/orgs/shortname/"+usn,
                         dataType: "xml",
-                        success: function(xhr){
+                        success: function(xml){
                             //                            alert('Short Name is not unique')
                             $("#alertlabel").html('Short Name is not unique');
                         },
-                        error: function(xhr){
+                        error: function(xml){
                             $("#alertlabel").html('Perfect');
                         }
 

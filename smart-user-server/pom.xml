@@ -110,7 +110,7 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
-    </dependencies>
+   </dependencies>
 <!--    <build>
         <finalName>smartuser</finalName>
         <plugins>

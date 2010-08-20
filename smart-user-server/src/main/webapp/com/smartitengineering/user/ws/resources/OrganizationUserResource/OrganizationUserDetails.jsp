@@ -17,6 +17,19 @@
 </c:if>
 
 
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title><c:out value="${it.username}"></c:out></title>
+    
+      
+        <link rel="Stylesheet" href="/css/organization-style.css">
+        <script type="text/javascript" src="/script/javascript_1.js"></script>
+    </head>
+    <body>
+        
+
+
 <div id="leftmenu">
   <div id="leftmenu_header"><label>Individual-User</label></div>
 
@@ -53,9 +66,13 @@
 
   <fmt:message key="org.usrinput6" var="submitbtn"/>
 
+
+        
+
   <div id="form_organizationentry">
     
-    <form method="POST" action ="http://russel:9090/orgs/shortname/${it.username}" accept="application/json" id="organizationform">
+    <form method="POST" action ="http://localhost:9090/orgs/shortname/${it.username}" accept="application/json" id="organizationform">
+
 
       <div class="inner-left"><label><fmt:message key="org.usrtablehead2"/></label></div>
       <div class="inner-right" align="left"><input type="text" name="name" value="${it.username}" class="textField"></div>
