@@ -220,3 +220,24 @@ root {
     text-decoration: none;
     color: #333399;
 }
+#uniqueShortName2
+{
+    font-family: sans-serif;
+    font-size: 10pt;
+    font-weight: 400;
+    font-style: oblique;
+    text-decoration: none;
+    color: #333399;
+}
+#alert
+{
+    font-family: sans-serif;
+    font-size: 10pt;
+    font-weight: 400;
+    font-style: oblique;
+    text-decoration: none;
+    color: #333399;
+}
+#alertlabel{
+    color: #333399;
+}

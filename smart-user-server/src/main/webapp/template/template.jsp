@@ -25,10 +25,9 @@
                 
                 $.ajax({
                     type: "GET",
-                    url: "http://localhost:9090/orgs",
+                    url: window.location,
                     dataType: "xml",
-                    success: function(xml) {
-                    
+                    success: function(xml) {                                             
                         var contentid="";
                         var contentname="";
                         $(xml).find('entry').each(function(){
@@ -45,48 +44,66 @@
                         $("#teblecontentname").html(contentname);
                         
 
-                            var linkvalue="";
-                            $(xml).find('link').each(function(){
+                        var linkvalue="";
+                        $(xml).find('link').each(function(){
 
-                                var nextlink = $(this).attr("rel");
+                            var nextlink = $(this).attr("rel");
 
 
-                                if(nextlink=='next')
-                                {
+                            if(nextlink=='next')
+                            {
 
-                                    var href = $(this).attr("href");
-                                    linkvalue += "<a href=\""+href+"\">"+nextlink+"</a>";
-                                    $("#teblecontentlink").html(linkvalue);
+                                var href = $(this).attr("href");
+                                linkvalue += "<div><a href=\""+href+"\">"+nextlink+"</a></div>";
+                                $("#teblecontentlink").html(linkvalue);
+                                
 
-                                }
+                            }
 
-                                if(nextlink=='previous')
-                                {
-                                    var href = $(this).attr("href");
+                            if(nextlink=='previous')
+                            {
+                                
+                                var href = $(this).attr("href");
+                                linkvalue += "<div><a href=\""+href+"\">"+nextlink+"</a></div>";
+                                $("#teblecontentlink").html(linkvalue);                                
 
-                                    linkvalue += "<a href=\""+href+"\">"+nextlink+"</a>";
-                                    $("#teblecontentlink").html(linkvalue);
+                            }
+                        });
 
-                                }
-                            });
-
+                        
 
                     }
                
                 });
+                $("#uniqueShortName2").click(function(){
+                    
+                    var usn =$("#uniqueShortName").val();                    
+                    $.ajax({
+                        type: "GET",
+                        url: "http://localhost:9090/orgs/shortname/"+usn,
+                        dataType: "xml",
+                        success: function(xhr){
+//                            alert('Short Name is not unique')
+                            $("#alertlabel").html('Short Name is not unique');
+                        },
+                        error: function(xhr){
+                            $("#alertlabel").html('Perfect');
+                        }
 
+                        
 
-
-                $("#organizationform").validate({
-                    rules: {
-                        name: "required",// simple rule, converted to {required:true}
-                        uniqueShortName: "required",
-                        country: "required"
-                    },
-                    messages: {
-                        comment: "Please enter a comment."
-                    }
+                               
+                    });
                 });
+
+                //            $("#uniqueShortName2").click(function(){
+                //            alert('potak');
+                //
+                
+                //                
+                //            });
+
+        
 
             });
 

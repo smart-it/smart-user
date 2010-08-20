@@ -92,10 +92,11 @@
             <div class="inner-right" align="left"><input type="text" name="name" value="" class="textField"></div>
 
             <div class="inner-left"><label><fmt:message key="org.inputlabel2"/></label></div>
-            <div class="inner-right" align="left"><input type="text" name="uniqueShortName" Id="uniqueShortName" value="" class="textField"></div>
+            <div class="inner-right" align="left"><input type="text" Id="uniqueShortName" value="" class="textField"></div>
+            <div class="inner-right" id="uniqueShortName2" align="left"><input type="button" value="check"></div>
 
-            <div class="inner-left"></div><div class="inner-right" align="left"><label>!!!! already exists!!! try another!!!</label></div>
-
+            <div class="inner-left"></div><div class="inner-right" align="left" id="alert"></div>
+            <label id ="alertlabel"></label>
             <div class="inner-left"><label><fmt:message key="org.inputlabel3"/></label></div>
             <div class="inner-right" align="left"><input type="text" name="streetAddress" value="" class="textField"></div>
 

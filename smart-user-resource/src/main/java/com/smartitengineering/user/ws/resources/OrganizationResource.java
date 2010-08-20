@@ -69,8 +69,16 @@ public class OrganizationResource extends AbstractResource {
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
     public Response get() {
-        Feed organizationFeed = getOrganizationFeed();
-        ResponseBuilder responseBuilder = Response.ok(organizationFeed);
+        ResponseBuilder responseBuilder = Response.ok();
+        try{
+            Feed organizationFeed = getOrganizationFeed();
+            responseBuilder =  Response.ok(organizationFeed);
+        }catch(Exception ex){
+            ex.printStackTrace();
+            responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+        }
+        
+        
         return responseBuilder.build();
     }
 
