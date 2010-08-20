@@ -143,6 +143,123 @@
 
 
         </script>
+
+        <!-- ROCKY -->
+
+        <script type="text/javascript">
+        $(document).ready(function(){
+
+                    $.ajax({
+
+
+                        type: "GET",
+                        url: window.location,
+                        datatype: "xml",
+
+                        success: function(xml){
+                            alert(xml)
+                            var contenttitle="";
+                            var contentid = "";
+                            $(xml).find('entry').each(function(){
+                                var title = $(this).find('title').text();
+
+                                var id = $(this).find('id').text();
+                                var link = $(this).find('link').attr('href');
+
+                                contenttitle += "<div class=\"title\"><a href="+ link +">" + title + "</a>";
+                                //alert(contenttitle)
+
+                                contentid += "<div class=\"id\">" + id + "</div>";
+
+                            });
+                            $("#teblecontentname").html(contenttitle);
+                            $("#teblecontentid").html(contentid);
+
+                            var linkvalue="";
+                             $(xml).find('link').each(function(){
+
+                                    var nextlink = $(this).attr("rel");
+
+                                    if(nextlink=='next')
+                                    {
+
+                                        var href = $(this).attr("href");
+                                        linkvalue += "<a href=" +href+ ">"+nextlink+"\t</a>";
+                                        $("#teblecontentlink").html(linkvalue);
+
+                                    }
+                                    if(nextlink=='previous')
+                                    {
+                                        var href = $(this).attr("href");
+
+                                        linkvalue += "<a href="+href+">\t"+nextlink+"</a>";
+                                        $("#teblecontentlink").html(linkvalue);
+                                    }
+                                });
+
+                        }
+
+
+                    });
+
+                     $("#userform").validate({
+                               rules: {
+                                   name: "required",
+                                   midName: "required",
+                                   lastName: "required",
+
+                                  password: {
+                                      required: true,
+                                      minlength: 6
+                                  },
+
+                                  confirmPassword: {
+                                      equalTo: "#password"
+                                  },
+                                  uniqueShortName: "required"
+
+                               },
+                               messages: {
+
+                                   password: "Password must be atleast of 6 characters"
+                               }
+
+                           });
+
+
+
+                           $(".submit").click(function(){
+                               alert ("potak")
+                               var fname = $("input#fname");
+                               var mname = $("input#mname");
+                               var lname = $("input#lname");
+                               var password = $("input#password");
+                               var phone = $("input#phone")
+                            var datastring = 'name='+ fname + '&midName='+ mname + '&lastName='+ lname + '&password='+ password + '&phone='+ phone;
+
+
+                            });
+
+                           $.ajax({
+                                type: "POST",
+                                url: window.location,
+                                data: datastring,
+                                success: function(){
+                                    <%--alert ("oooo")
+                                    $('#create').html("<div id='message'></div>");
+                                    $('#message').html("<h2>Form submitted successfully</h2")
+                                    alert("kkk")
+                                    .hide()
+                                    .fade(1500, function(){
+                                        $('#message');
+                                    });--%>
+                                }
+                           });
+                           return false;
+
+});
+    </script>
+ <!-- ROCKY -->
     </head>
 
     <body>

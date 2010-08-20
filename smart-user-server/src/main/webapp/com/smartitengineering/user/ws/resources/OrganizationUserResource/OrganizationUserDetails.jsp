@@ -123,6 +123,10 @@
       <div id="btnfield" align="center"><input type="submit" value="UPDATE" name="submitbtn"></div>
       <div style="clear: both"></div>
 
+      <div style="clear: both"></div>
+      <div id="btnfield" align="center"><input type="submit" value="DELETE" name="submitbtn"></div>
+      <div style="clear: both"></div>
+
     </form>
 
   </div>
