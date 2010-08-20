@@ -310,6 +310,11 @@ public class OrganizationsResource extends AbstractResource {
         if(keyValueMap.get("zip") != null){
           address.setZip(keyValueMap.get("zip"));
         }
+        if(keyValueMap.get("streetAddress") != null){
+          address.setStreetAddress(keyValueMap.get("streetAddress"));
+        }
+
+        newOrganization.setAddress(address);
 
         return newOrganization;
     }
@@ -348,13 +353,15 @@ public class OrganizationsResource extends AbstractResource {
         isHtmlPost = false;
       }
 
+      Organization newOrganization = new Organization();
+
       if(isHtmlPost){
 
-        Organization newOrganization = getObjectFromContent(message);
+        newOrganization = getObjectFromContent(message);
         Services.getInstance().getOrganizationService().save(newOrganization);
 
         
     }
-      return responseBuilder.build();
+      return responseBuilder.build();      
   }
 }

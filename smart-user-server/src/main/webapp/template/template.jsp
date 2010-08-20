@@ -51,12 +51,11 @@
 
                 $.ajax({
                     type: "GET",
+
                     url: window.location,
                     dataType: "xml",
-                    success: function(xml) {
-                    
-                    alert(xml);
-
+                    success: function(xml) {                    
+                    //alert(xml);
                         var contentid="";
                         var contentname="";
                         $(xml).find('entry').each(function(){
@@ -130,6 +129,14 @@
 
 
                 });
+                $("#submit").click(function(){
+
+                alert(window.location);
+                var usn =$("#uniqueShortName").val()
+                window.location.replace = "http://localhost:9090/orgs/shortname/"+usn;
+
+                });
+
 
 
             });
