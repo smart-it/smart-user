@@ -158,8 +158,9 @@ public class OrganizationUserResource extends AbstractResource{
 
         Organization parentOrganization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.get("orgName"));
         newUser.setOrganization(parentOrganization);
+        newUser.setParentOrganizationID(parentOrganization.getId());
         
-        if(keyValueMap.get("perform").equals("update")){
+        if(keyValueMap.get("submitbtn").toUpperCase().equals("UPDATE")){
           return update(newUser);
         }else{
           return delete();
