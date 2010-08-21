@@ -38,12 +38,42 @@
                 
             }
             
-         </script>
-
-         
+        </script>
 
 
-  <script type="text/javascript">
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                $("#leftmenu_body ul li").hover(function () {
+                    $(this).css({'background-color' : '#F7F5FE','color' : 'Black'});
+                }, function () {
+                    var cssObj = {
+                        'background-color' : '',
+                        'color' : '#23819C'
+                    }
+                    $(this).css(cssObj);
+                });
+
+            });
+
+            $(document).ready(function () {
+                $("#leftmenu_body ul li a").hover(function () {
+                    $(this).css({'color' : 'Black', 'font-weight' : 'bolder', 'font-size':'11pt'});
+                }, function () {
+                    var cssObj = {
+                        'background-color' : '',
+                        'font-weight' : '',
+                        'font-size':'10pt',
+                        'color' : '#23819C'
+                    }
+                    $(this).css(cssObj);
+                });
+
+            });
+
+        </script>
+
+        <script type="text/javascript">
 
             $(document).ready(function(){
                 
@@ -74,11 +104,11 @@
 
 
 
-            var linkvalue_next="";
-            var linkvalue_prev="";
-            $(xml).find('link').each(function(){
+                        var linkvalue_next="";
+                        var linkvalue_prev="";
+                        $(xml).find('link').each(function(){
 
-                            var nextlink = $(this).attr("rel");                          
+                            var nextlink = $(this).attr("rel");
 
                             if(nextlink=='next')
                             {
@@ -94,8 +124,8 @@
                             {
                                 var href = $(this).attr("href");
 
-                linkvalue_prev += "<a href=\""+href+"\">"+nextlink+"</a>";
-                $("#tablecontentlink_of_previous").html(linkvalue_prev);
+                                linkvalue_prev += "<a href=\""+href+"\">"+nextlink+"</a>";
+                                $("#tablecontentlink_of_previous").html(linkvalue_prev);
 
 
                             }
@@ -130,9 +160,9 @@
                 });
                 $("#submit").click(function(){
 
-                alert(window.location);
-                var usn =$("#uniqueShortName").val()
-                window.location.replace = "http://localhost:9090/orgs/shortname/"+usn;
+                    alert(window.location);
+                    top.location.href = 'http://localhost:9090/orgs';
+
 
                 });
 
