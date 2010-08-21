@@ -139,7 +139,7 @@
 
 
 
-$("#form_organizationentry").focus(function(){
+$("#uniqueShortName").(function(){
 
                 var usn =$("#uniqueShortName").val();
 
