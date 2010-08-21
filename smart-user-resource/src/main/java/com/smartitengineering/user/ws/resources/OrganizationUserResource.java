@@ -2,15 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.ws.resources;
 
-
+import com.smartitengineering.user.domain.Address;
+import com.smartitengineering.user.domain.BasicIdentity;
+import com.smartitengineering.user.domain.GeoLocation;
+import com.smartitengineering.user.domain.Name;
 import com.smartitengineering.user.domain.Organization;
+import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.domain.User;
+import com.smartitengineering.user.domain.UserPerson;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 
 import java.util.Date;
 
@@ -44,184 +49,211 @@ import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
 
-
 /**
  *
  * @author russel
  */
 @Path("/orgs/{organizationShortName}/users/username/{userName}")
-public class OrganizationUserResource extends AbstractResource{
+public class OrganizationUserResource extends AbstractResource {
 
-    private User user;
+  private User user;
+  static final UriBuilder USER_URI_BUILDER = UriBuilder.fromResource(OrganizationUserResource.class);
+  static final UriBuilder USER_CONTENT_URI_BUILDER;
 
-    static final UriBuilder USER_URI_BUILDER = UriBuilder.fromResource(OrganizationUserResource.class);
-    static final UriBuilder USER_CONTENT_URI_BUILDER;
+  static {
+    USER_CONTENT_URI_BUILDER = USER_URI_BUILDER.clone();
+    try {
+      USER_CONTENT_URI_BUILDER.path(OrganizationUserResource.class.getMethod("getUser"));
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      throw new InstantiationError();
 
-    @Context
-    private HttpServletRequest servletRequest;
-
-    static{
-        USER_CONTENT_URI_BUILDER = USER_URI_BUILDER.clone();
-        try{
-            USER_CONTENT_URI_BUILDER.path(OrganizationUserResource.class.getMethod("getUser"));
-        }catch(Exception ex){
-            ex.printStackTrace();
-            throw new InstantiationError();
-        }
     }
+  }
 
-    public OrganizationUserResource(@PathParam("organizationShortName") String organizationShortName,@PathParam("userName") String userName){
-        user = Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationShortName, userName);
-    }
+  public OrganizationUserResource(@PathParam("organizationShortName") String organizationShortName, @PathParam("userName") String userName) {
+    //userPerson = Services.getInstance().getUserPersonService().getUserPersonByUsernameAndOrgName(userName, organizationShortName);
+    user = Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationShortName, userName);
+  }
 
-    @GET
-    @Produces(MediaType.APPLICATION_ATOM_XML)
-    public Response get(){
-        Feed userFeed = getUserFeed();
-        ResponseBuilder responseBuilder = Response.ok(userFeed);
-        return responseBuilder.build();
-    }
+  @GET
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  public Response get() {
+    Feed userFeed = getUserFeed();
+    ResponseBuilder responseBuilder = Response.ok(userFeed);
+    return responseBuilder.build();
+  }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/content")
-    public Response getUser() {
-        ResponseBuilder responseBuilder = Response.ok(user);
-        return responseBuilder.build();
-    }
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/content")
+  public Response getUser() {
+    ResponseBuilder responseBuilder = Response.ok(user);
+    return responseBuilder.build();
+  }
 
-    @GET
-    @Produces(MediaType.TEXT_HTML)
-    public Response getHtml(){
-        ResponseBuilder responseBuilder = Response.ok();
+  @GET
+  @Produces(MediaType.TEXT_HTML)
+  public Response getHtml() {
+    ResponseBuilder responseBuilder = Response.ok();
 
-        servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationUserResource/OrganizationUserDetails.jsp");
-        Viewable view = new Viewable("/template/template.jsp", user);
+    Viewable view = new Viewable("OrganizationUserDetails", user, OrganizationUserResource.class);
+    responseBuilder.entity(view);
+    return responseBuilder.build();
+  }
 
-//        Viewable view = new Viewable("OrganizationUserDetails", user, OrganizationUserResource.class);
-        responseBuilder.entity(view);
-        return responseBuilder.build();
-    }
+  @PUT
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response update(User newUser) {
 
-    @POST
-    public Response post(@HeaderParam("Content-type")String contentType, String message){
-      ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-
-      if(StringUtils.isBlank(message)){
-        responseBuilder = Response.status(Status.BAD_REQUEST);
-        responseBuilder.build();
+    ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+    try {
+      if (newUser.getRoleIDs() != null) {
+        Services.getInstance().getRoleService().populateRole(newUser);
       }
-
-      final boolean isHtmlPost;
-      if (StringUtils.isBlank(contentType)) {
-        contentType = MediaType.APPLICATION_OCTET_STREAM;
-        isHtmlPost = false;
+      if (newUser.getPrivilegeIDs() != null) {
+        Services.getInstance().getPrivilegeService().populatePrivilege(newUser);
       }
-      else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
-        contentType = MediaType.APPLICATION_OCTET_STREAM;
-        isHtmlPost = true;
-        try {
-          //Will search for the first '=' if not found will take the whole string
-          final int startIndex = 0;//message.indexOf("=") + 1;
-          //Consider the first '=' as the start of a value point and take rest as value
-          final String realMsg = message.substring(startIndex);
-          //Decode the message to ignore the form encodings and make them human readable
-          message = URLDecoder.decode(realMsg, "UTF-8");
-        }
-        catch (UnsupportedEncodingException ex) {
-          ex.printStackTrace();
-        }
+      if (newUser.getParentOrganizationID() == null) {
+        throw new Exception("No organization found");
       }
-      else {
-        contentType = contentType;
-        isHtmlPost = false;
-      }
+      newUser = Services.getInstance().getUserService().getUserByUsername(newUser.getUsername());
+      
+      Services.getInstance().getOrganizationService().populateOrganization(newUser);
+      
+      Services.getInstance().getUserService().update(user);
 
-      if(isHtmlPost){
-        Map<String, String> keyValueMap = new HashMap<String, String>();
+      responseBuilder = Response.ok(getUserFeed());
+    } catch (Exception ex) {
+      responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+      ex.printStackTrace();
+    }
+    return responseBuilder.build();
+  }
 
-        String[] keyValuePairs = message.split("&");
+  private Feed getUserFeed() throws UriBuilderException, IllegalArgumentException {
+    Feed userFeed = getFeed(user.getUsername(), new Date());
+    userFeed.setTitle(user.getUsername());
 
-        for(int i=0; i<keyValuePairs.length; i++){
+    // add a self link
+    userFeed.addLink(getSelfLink());
 
-          String[] keyValuePair = keyValuePairs[i].split("=");
-          keyValueMap.put(keyValuePair[0], keyValuePair[1]);
-        }
+    // add a edit link
+    Link editLink = abderaFactory.newLink();
+    editLink.setHref(uriInfo.getRequestUri().toString());
+    editLink.setRel(Link.REL_EDIT);
+    editLink.setMimeType(MediaType.APPLICATION_JSON);
+    userFeed.addLink(editLink);
 
-        User newUser = new User();
+    // add a alternate link
+    Link altLink = abderaFactory.newLink();
+    altLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(user.getOrganization().getUniqueShortName(), user.getUsername()).toString());
+    altLink.setRel(Link.REL_ALTERNATE);
+    altLink.setMimeType(MediaType.APPLICATION_JSON);
+    userFeed.addLink(altLink);
 
-        newUser.setId(Integer.valueOf(keyValueMap.get("id")));
-        newUser.setUsername(keyValueMap.get("userName"));
-        newUser.setPassword(keyValueMap.get("password"));
-        
-        
+    return userFeed;
+  }
 
-        Organization parentOrganization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.get("orgName"));
-        newUser.setOrganization(parentOrganization);
-        
-        if(keyValueMap.get("perform").equals("update")){
-          return update(newUser);
-        }else{
-          return delete();
-        }
-      }
-      return responseBuilder.build();
+  @DELETE
+  public Response delete() {
+    Services.getInstance().getUserService().delete(user);
+    ResponseBuilder responseBuilder = Response.ok();
+    return responseBuilder.build();
+  }
+
+  @POST
+  @Path("/delete")
+  public Response deletePost() {
+    Services.getInstance().getUserService().delete(user);
+    ResponseBuilder responseBuilder = Response.ok();
+    return responseBuilder.build();
+  }
+
+  @POST
+  @Path("/update")
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  public Response updatePost(@HeaderParam("Content-type") String contentType, String message) {
+    ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+
+    if (StringUtils.isBlank(message)) {
+      responseBuilder = Response.status(Status.BAD_REQUEST);
+      responseBuilder.build();
     }
 
-    @PUT
-    @Produces(MediaType.APPLICATION_ATOM_XML)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(User newUser) {
-        ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-        try {
-            if(user.getRoleIDs() != null){
-                Services.getInstance().getRoleService().populateRole(user);
-            }
-            if(user.getPrivilegeIDs() != null){
-                Services.getInstance().getPrivilegeService().populatePrivilege(user);
-            }
-            if(user.getParentOrganizationID() == null){
-                throw new Exception("No organization found");
-            }
-            Services.getInstance().getOrganizationService().populateOrganization(user);
-            Services.getInstance().getUserService().save(newUser);
-            user = Services.getInstance().getUserService().getUserByUsername(newUser.getUsername());
-            responseBuilder = Response.ok(getUserFeed());
-        }
-        catch (Exception ex) {
-            responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
-            ex.printStackTrace();
-        }
-        return responseBuilder.build();
+    final boolean isHtmlPost;
+    if (StringUtils.isBlank(contentType)) {
+      contentType = MediaType.APPLICATION_OCTET_STREAM;
+      isHtmlPost = false;
+    } else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+      contentType = MediaType.APPLICATION_OCTET_STREAM;
+      isHtmlPost = true;
+      try {
+        //Will search for the first '=' if not found will take the whole string
+        final int startIndex = 0;//message.indexOf("=") + 1;
+        //Consider the first '=' as the start of a value point and take rest as value
+        final String realMsg = message.substring(startIndex);
+        //Decode the message to ignore the form encodings and make them human readable
+        message = URLDecoder.decode(realMsg, "UTF-8");
+      } catch (UnsupportedEncodingException ex) {
+        ex.printStackTrace();
+      }
+    } else {
+      contentType = contentType;
+      isHtmlPost = false;
     }
 
-    private Feed getUserFeed() throws UriBuilderException, IllegalArgumentException{
-        Feed userFeed = getFeed(user.getUsername(), new Date());
-        userFeed.setTitle(user.getUsername());
+    if (isHtmlPost) {
+      User newUser = getUserFromContent(message);
+      try {
+        Services.getInstance().getUserService().update(newUser);
+        responseBuilder = Response.ok(getUserFeed());
+      } catch (Exception ex) {
+        responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+      }
+    }
+    return responseBuilder.build();
+  }
 
-        // add a self link
-        userFeed.addLink(getSelfLink());
+  private User getUserFromContent(String message) {
 
-        // add a edit link
-        Link editLink = abderaFactory.newLink();
-        editLink.setHref(uriInfo.getRequestUri().toString());
-        editLink.setRel(Link.REL_EDIT);
-        editLink.setMimeType(MediaType.APPLICATION_JSON);
+    Map<String, String> keyValueMap = new HashMap<String, String>();
 
-        // add a alternate link
-        Link altLink = abderaFactory.newLink();
-        altLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(user.getUsername()).toString());
-        altLink.setRel(Link.REL_ALTERNATE);
-        altLink.setMimeType(MediaType.APPLICATION_JSON);
-        userFeed.addLink(altLink);
+    String[] keyValuePairs = message.split("&");
 
-        return userFeed;
+    for (int i = 0; i < keyValuePairs.length; i++) {
+
+      String[] keyValuePair = keyValuePairs[i].split("=");
+      keyValueMap.put(keyValuePair[0], keyValuePair[1]);
     }
 
-    @DELETE
-    public Response delete() {
-        Services.getInstance().getUserService().delete(user);
-        ResponseBuilder responseBuilder = Response.ok();
-        return responseBuilder.build();
+    User newUser = new User();
+
+    if (keyValueMap.get("id") != null) {
+      newUser.setId(Integer.valueOf(keyValueMap.get("id")));
     }
+
+    if (keyValueMap.get("version") != null) {
+      newUser.setVersion(Integer.valueOf(keyValueMap.get("version")));
+    }
+
+    if (keyValueMap.get("userName") != null) {
+      newUser.setUsername(keyValueMap.get("userName"));
+    }
+    if (keyValueMap.get("password") != null) {
+      newUser.setPassword(keyValueMap.get("password"));
+    }
+
+    if (keyValueMap.get("uniqueShortName") != null) {
+
+      Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.
+          get("uniqueShortName"));
+
+      if (parentOrg != null) {
+        newUser.setOrganization(parentOrg);
+      }
+    }
+    return user;
+  }
 }

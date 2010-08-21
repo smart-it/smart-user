@@ -11,7 +11,7 @@ import com.smartitengineering.domain.AbstractPersistentDTO;
  *
  * @author modhu7
  */
-class GeoLocation extends AbstractPersistentDTO<GeoLocation>{
+public class GeoLocation extends AbstractPersistentDTO<GeoLocation>{
 
     private Double longitude;
     private Double latitude;
