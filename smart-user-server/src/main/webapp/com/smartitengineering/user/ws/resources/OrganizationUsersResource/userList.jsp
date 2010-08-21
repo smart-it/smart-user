@@ -10,7 +10,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--<%@taglib prefix="pg" uri="/WEB-INF/taglib139.tld" %>--%>
-<%--<%@page import="com.smartitengineering.user.domain.User"%>--%>
+<%@page import="com.smartitengineering.user.domain.User"%>
 <%@page import="com.smartitengineering.user.domain.Organization"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -64,6 +64,7 @@
 
   <div id="teblecontentlink"></div>
 
+  <span class="message">Form submit successfully</span>
 
 </div>
 
@@ -91,7 +92,7 @@
     <div class="clear"></div>
 
     <div class="inner-left-label"><label><fmt:message key="org.usrtablehead2"/></label></div>
-    <div class="inner-right-text"><input type="text" name="userName" id="fname" class="textfield"></div>
+    <div class="inner-right-text"><input type="text" name="userName" id="uname" class="textfield"></div>
     <div class="clear"></div>
 
     <div class="inner-left-label"><label><fmt:message key="org.usrinput4"/></label></div>

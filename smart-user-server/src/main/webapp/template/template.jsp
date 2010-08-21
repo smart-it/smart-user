@@ -211,15 +211,18 @@
                                     {
 
                                         var href = $(this).attr("href");
-                                        linkvalue += "<a href=" +href+ ">"+nextlink+"\t</a>";
+                                        linkvalue += "<a href=\"" +href+ "\">"+nextlink+"\t</a>";
                                         $("#teblecontentlink").html(linkvalue);
+
+                                        
+                                        
 
                                     }
                                     if(nextlink=='previous')
                                     {
                                         var href = $(this).attr("href");
 
-                                        linkvalue += "<a href="+href+">\t"+nextlink+"</a>";
+                                        linkvalue += "<a href=\""+href+"\">\t"+nextlink+"</a>";
                                         $("#teblecontentlink").html(linkvalue);
                                     }
                                 });
@@ -234,6 +237,7 @@
                                    name: "required",
                                    midName: "required",
                                    lastName: "required",
+                                   userName: "required",
 
                                   password: {
                                       required: true,
@@ -254,38 +258,38 @@
                            });
 
 
+                         
                            $(".submit").click(function(){
-
-
-                           });
-                           $(".submit").click(function(){
-                               alert ("potak")
-                               var fname = $("input#fname");
+                              $(".message").show();
+                              <%-- var fname = $("input#fname");
                                var mname = $("input#mname");
                                var lname = $("input#lname");
+                               var uname = $("input#uname");
                                var password = $("input#password");
                                var phone = $("input#phone")
-                            var datastring = 'name='+ fname + '&midName='+ mname + '&lastName='+ lname + '&password='+ password + '&phone='+ phone;
+                            var datastring = 'name='+ fname + '&midName='+ mname + '&lastName='+ lname + '&uname='+ uname + '&password='+ password + '&phone='+ phone;
                            alert (datastring)
 
-                            });
-
-                           $.ajax({
+                            $.ajax({
                                 type: "POST",
                                 url: window.location,
                                 data: datastring,
                                 success: function(){
-                                    <%--alert ("oooo")
+                                    alert ("oooo")
                                     $('#create').html("<div id='message'></div>");
                                     $('#message').html("<h2>Form submitted successfully</h2")
                                     alert("kkk")
                                     .hide()
                                     .fade(1500, function(){
                                         $('#message');
-                                    });--%>
+                                    });
                                 }
                            });
-                           return false;
+                           return false;--%>
+
+                            });
+
+                          
 
 });
   </script>
