@@ -15,27 +15,17 @@ import java.util.Collection;
  */
 public interface RoleService {
 
-    void create(Role role);
+  void create(Role role);
 
-    void delete(Role role);
+  void delete(Role role);
 
-    Role getRoleByName(String roleName);
+  Role getRoleByName(String roleName);
 
-    Collection<Role> getRolesByOrganizationAndUser(String organizationShortname, String username);
+  Collection<Role> getAllRoles();
 
-    Collection<Role> getRolesByOrganization(String organizationShortName);
+  Collection<Role> search(RoleFilter filter);
 
-    Collection<Role> getAllRoles();
+  void update(Role role);
 
-    Role getRoleByOrganizationAndUserAndRole(String organizationShortName, String username, String roleName);
-
-    Role getRoleByOrganizationAndRoleName(String organizationShortName, String roleName);
-
-    Collection<Role> search(RoleFilter filter);
-
-    void update(Role role);
-
-    public void populateRole(User user) throws Exception;
-
-    public void populateRole(Role role) throws Exception;
+  public void populateRole(User user) throws Exception;
 }
