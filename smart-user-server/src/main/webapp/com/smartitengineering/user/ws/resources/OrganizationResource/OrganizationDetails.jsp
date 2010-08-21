@@ -108,7 +108,7 @@
       <div class="clear"></div>
 
       <div class="inner-left"><label><fmt:message key="org.inputlabel7"/></label></div>
-      <div class="inner-right"><input type="text" name="zip" value="" class="textField"></div>
+      <div class="inner-right"><input type="text" name="zip"  class="textField" value="${it.address.zip}"></div>
       <div class="clear"></div>
 
 

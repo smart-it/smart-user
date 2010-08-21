@@ -14,9 +14,7 @@
 <%@page import="com.smartitengineering.user.domain.Organization"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-  "http://www.w3.org/TR/html4/loose.dtd">
-
-
+   "http://www.w3.org/TR/html4/loose.dtd">
 
 <div id="leftmenu">
   <div id="leftmenu_header">User-Creation</div>
@@ -71,6 +69,7 @@
 </div>
 
 
+
 <div class="hide"  id="create">
 
   <div id="header_organization_users">
@@ -99,6 +98,7 @@
     <div class="inner-left-label"><label><fmt:message key="org.usrinput4"/></label></div>
     <div class="inner-right-text"><input id="password" type="password" name="password" class="textfield"></div>
     <div class="clear"></div>
+
 
     <div class="inner-left-label"><label><fmt:message key="org.usrinput7"/></label></div>
     <div class="inner-right-text"><input id="confirmPassword" type="password" name="confirmPassword" class="textfield"></div>

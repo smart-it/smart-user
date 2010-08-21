@@ -211,9 +211,8 @@ public class OrganizationResource extends AbstractResource {
     public Response deletePost(){
       Services.getInstance().getOrganizationService().delete(organization);
         ResponseBuilder responseBuilder = Response.ok();
-
-        return new OrganizationsResource().getHtml();
-        //return responseBuilder.build();
+        
+        return responseBuilder.build();
     }
 
     private Organization getObjectFromContent(String message){
@@ -400,4 +399,9 @@ public class OrganizationResource extends AbstractResource {
         
         return organizationFeed;
     }
+
+    public void setServletRequest(HttpServletRequest servletRequest) {
+        this.servletRequest = servletRequest;
+    }
+
 }

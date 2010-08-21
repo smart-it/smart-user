@@ -24,6 +24,7 @@
 
   <script type="text/javascript" src="/script/javascript_1.js"></script>
   <script type="text/javascript" src="/script/jquery-1.4.2.js"></script>
+  <script type="text/javascript" src="/script/jquery.validate.js"></script>
 
   <script type="text/javascript">
 
@@ -82,7 +83,8 @@
 
                     url: window.location,
                     dataType: "xml",
-                    success: function(xml) {
+
+                    success: function(xml) {                    
                         var contentid="";
                         var contentname="";
                         $(xml).find('entry').each(function(){
@@ -171,7 +173,8 @@
 
         </script>
 
-  <script type="text/javascript">
+        <!-- ROCKY -->
+         <script type="text/javascript">
             $(document).ready(function(){
 
                     $.ajax({
@@ -256,7 +259,7 @@
 
 
                            });
-                          <%-- $(".submit").click(function(){
+                           $(".submit").click(function(){
                                alert ("potak")
                                var fname = $("input#fname");
                                var mname = $("input#mname");
@@ -273,21 +276,56 @@
                                 url: window.location,
                                 data: datastring,
                                 success: function(){
-                                    alert ("oooo")
+                                    <%--alert ("oooo")
                                     $('#create').html("<div id='message'></div>");
                                     $('#message').html("<h2>Form submitted successfully</h2")
                                     alert("kkk")
                                     .hide()
                                     .fade(1500, function(){
                                         $('#message');
-                                    });
+                                    });--%>
                                 }
                            });
-                           return false;--%>
+                           return false;
 
 });
   </script>
-</head>
+
+                                 <script type="text/javascript">
+        $(document).ready(function(){
+             $(".submit").click(function(){
+                               alert ("potak")
+                               var id = $("input#id");
+                               var name = $("input#name");
+                               var password = $("input#password");
+                               var version = $("input#version");
+
+                            var datastring = 'id='+ id +'version='+ version + 'name='+ name + '&password='+ password;
+
+
+                            });
+
+                           $.ajax({
+                                type: "POST",
+                                url: window.location,
+                                data: datastring,
+                                success: function(){
+                                    <%--alert ("oooo")
+                                    $('#form_organizationentry').html("<div id='message'></div>");
+                                    $('#message').html("<h2>Form submitted successfully</h2")
+                                    alert("kkk")
+                                    .hide()
+                                    .fade(1500, function(){
+                                        $('#message');
+                                    });--%>
+                                }
+                           });
+                           return false;
+        })
+    </script>
+
+ <!-- ROCKY -->
+    </head>
 
 <body>
   <div id="main" >

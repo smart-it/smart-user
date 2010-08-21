@@ -73,7 +73,6 @@ public class OrganizationUsersResource extends AbstractResource{
     private Integer count;
     @PathParam("uniqueShortName")
     private String organizationUniqueShortName;
-    
 
     public OrganizationUsersResource(@PathParam("uniqueShortName")String organizationUniqueShortName){
         this.organizationUniqueShortName = organizationUniqueShortName;
