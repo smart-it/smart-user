@@ -204,7 +204,7 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
 
       params.add(QueryParameterFactory.getMaxResultsParam(count));
       //params.add(QueryParameterFactory.getOrderByParam("id", Order.DESC));
-      params.add(QueryParameterFactory.getOrderByParam("username", Order.ASC));
+      params.add(QueryParameterFactory.getOrderByParam("id", Order.ASC));
       params.add(QueryParameterFactory.getDistinctPropProjectionParam("id"));
 
       List<Integer> userIDs = getOtherList(params);

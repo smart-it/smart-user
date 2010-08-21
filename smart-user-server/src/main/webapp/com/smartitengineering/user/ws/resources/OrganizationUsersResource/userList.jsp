@@ -9,20 +9,20 @@
 <%@page import="java.util.Collection"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="com.smartitengineering.user.domain.User"%>
+<%--<%@taglib prefix="pg" uri="/WEB-INF/taglib139.tld" %>--%>
+<%--<%@page import="com.smartitengineering.user.domain.User"%>--%>
+<%@page import="com.smartitengineering.user.domain.Organization"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-  "http://www.w3.org/TR/html4/loose.dtd">
-
-
+   "http://www.w3.org/TR/html4/loose.dtd">
 
 <div id="leftmenu">
   <div id="leftmenu_header">User-Creation</div>
-    <div id="leftmenu_body">
-      <ul>
-        <li><a href="javascript: Orgpageselect()">Create</a></li>
-      </ul>
-    </div>
+  <div id="leftmenu_body">
+    <ul>
+      <li><a href="javascript: Orgpageselect()">Create</a></li>
+    </ul>
+  </div>
 </div>
 
 
@@ -32,13 +32,14 @@
 
 <div class="show" id="showList">
 
-  <div id="userslist">
+        <div id="title_of_organization_users">
+          <label><fmt:message key="org.usrtitle"/></label>
+      </div>
 
-    <div id="title_of_organization_users">
-      <label><fmt:message key="org.usrtitle"/></label>
-    </div>
 
-    <div id="top_row">
+  <div id="top_row">
+
+    <%--<div id="userslist">--%>
 
       <div class="tableheadname_user">
         <label class="tablehead_label"><fmt:message key="org.usrtablehead1"/></label>
@@ -48,32 +49,26 @@
         <label class="tablehead_label"><fmt:message key="org.usrtablehead2"/></label>
       </div>
 
-    </div>
-
-
-
-    <c:forEach var="user" items="${it}">
-
-      <div id="individual_row">
-        <div class="tablecontentname_user">
-          <label class="tablecontent_label"> <a href="users/username/${user.username}" ><label><c:out value="${user.id}" /></label></a></label>
-        </div>
-
-        <div class="tablecontentname_user">
-          <label class="tablecontent_label"><a href="users/username/${user.username}" ><label><c:out value="${user.username}"/></label></a></label>
-        </div>
-
-      </div>
-
-    </c:forEach>
-
+    <%--</div>--%>
   </div>
 
+
+  <div>
+
+      <div class="tablecontentname" id="tablecontentname-user"></div>
+    
+      <div class="tablecontentname" id="tablecontentid-user"></div>
+    
+  </div>
+
+
+  <div id="tablecontentlink_of_next_user"></div>
+  <div id="tablecontentlink_of_prev_user"></div>
 
 
 </div>
 
-<fmt:message key="org.usrinput6" var="submitbtn"/>
+
 
 <div class="hide"  id="create">
 
@@ -81,34 +76,42 @@
     <label>Users Entry</label>
   </div>
 
-  <div id="form_organizationentry">
-    <form action="http://russel:9090/users" method="post" accept="application/json" enctype="" id="userform">
+<div id="form_organizationentry">
+  <form action="" accept="application/json" enctype="" id="userform" method="post">
 
-      <div class="inner-left-label"><label><fmt:message key="org.usrinput1"/></label></div>
-      <div class="inner-right-text"><input type="text" name="name" class="textField"></div>
-      <div class="clear"></div>
+    <div class="inner-left-label"><label><fmt:message key="org.usrinput1"/></label></div>
+    <div class="inner-right-text"><input type="text" name="name" id="fname" class="textfield"></div>
+    <div class="clear"></div>
 
-      <div class="inner-left-label"><label><fmt:message key="org.usrinput2"/></label></div>
-      <div class="inner-right-text"><input type="text" name="uniqueShortName" class="textField"></div>
-      <div class="clear"></div>
+    <div class="inner-left-label"><label><fmt:message key="org.usrinput2"/></label></div>
+    <div class="inner-right-text"><input type="text" name="midName" id="mname" class="textfield"></div>
+    <div class="clear"></div>
 
-      <div class="inner-left-label"><label><fmt:message key="org.usrinput3"/></label></div>
-      <div class="inner-right-text"><input type="text" name="uniqueShortName" class="textField"></div>
-      <div class="clear"></div>
+    <div class="inner-left-label"><label><fmt:message key="org.usrinput3"/></label></div>
+    <div class="inner-right-text"><input type="text" name="lastName" id="lname" class="textfield"></div>
+    <div class="clear"></div>
 
-      <div class="inner-left-label"><label><fmt:message key="org.usrinput4"/></label></div>
-      <div class="inner-right-text"><input type="text" name="uniqueShortName" class="textField"></div>
-      <div class="clear"></div>
+    <div class="inner-left-label"><label><fmt:message key="org.usrtablehead2"/></label></div>
+    <div class="inner-right-text"><input type="text" name="userName" id="fname" class="textfield"></div>
+    <div class="clear"></div>
 
-      <div class="inner-left-label"><label><fmt:message key="org.usrinput5"/></label></div>
-      <div class="inner-right-text"><input type="text" name="uniqueShortName" class="textField"></div>
-      <div class="clear"></div>
+    <div class="inner-left-label"><label><fmt:message key="org.usrinput4"/></label></div>
+    <div class="inner-right-text"><input id="password" type="password" name="password" class="textfield"></div>
+    <div class="clear"></div>
 
 
-      <div id="btnfield"><input type="submit" value="${submitbtn}" name="submitBtn" ></div>
-      <div class="clear"></div>
+    <div class="inner-left-label"><label><fmt:message key="org.usrinput7"/></label></div>
+    <div class="inner-right-text"><input id="confirmPassword" type="password" name="confirmPassword" class="textfield"></div>
+    <div class="clear"></div>
 
-    </form>
-  </div>
+    <div class="inner-left-label"><label><fmt:message key="org.usrinput5"/></label></div>
+    <div class="inner-right-text"><input type="text" name="phone" id="phone" class="textfield"></div>
+    <div class="clear"></div>
+
+    <div id="btnfield"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submitbtn" type="submit" class="submit" value="submit"></div>
+    <div class="clear"></div>
+  </form>
+  
+</div>
 
 </div>
