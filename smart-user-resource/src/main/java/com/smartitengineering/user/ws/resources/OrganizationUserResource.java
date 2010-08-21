@@ -4,11 +4,18 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.user.domain.Address;
+import com.smartitengineering.user.domain.BasicIdentity;
+import com.smartitengineering.user.domain.GeoLocation;
+import com.smartitengineering.user.domain.Name;
 import com.smartitengineering.user.domain.Organization;
+import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.domain.User;
+import com.smartitengineering.user.domain.UserPerson;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -57,6 +64,7 @@ public class OrganizationUserResource extends AbstractResource {
   }
 
   public OrganizationUserResource(@PathParam("organizationShortName") String organizationShortName, @PathParam("userName") String userName) {
+    //userPerson = Services.getInstance().getUserPersonService().getUserPersonByUsernameAndOrgName(userName, organizationShortName);
     user = Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationShortName, userName);
   }
 
@@ -90,20 +98,24 @@ public class OrganizationUserResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Consumes(MediaType.APPLICATION_JSON)
   public Response update(User newUser) {
+
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
     try {
-      if (user.getRoleIDs() != null) {
-        Services.getInstance().getRoleService().populateRole(user);
+      if (newUser.getRoleIDs() != null) {
+        Services.getInstance().getRoleService().populateRole(newUser);
       }
-      if (user.getPrivilegeIDs() != null) {
-        Services.getInstance().getPrivilegeService().populatePrivilege(user);
+      if (newUser.getPrivilegeIDs() != null) {
+        Services.getInstance().getPrivilegeService().populatePrivilege(newUser);
       }
-      if (user.getParentOrganizationID() == null) {
+      if (newUser.getParentOrganizationID() == null) {
         throw new Exception("No organization found");
       }
-      Services.getInstance().getOrganizationService().populateOrganization(user);
-      Services.getInstance().getUserService().save(newUser);
-      user = Services.getInstance().getUserService().getUserByUsername(newUser.getUsername());
+      newUser = Services.getInstance().getUserService().getUserByUsername(newUser.getUsername());
+      
+      Services.getInstance().getOrganizationService().populateOrganization(newUser);
+      
+      Services.getInstance().getUserService().update(user);
+
       responseBuilder = Response.ok(getUserFeed());
     } catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
@@ -124,10 +136,11 @@ public class OrganizationUserResource extends AbstractResource {
     editLink.setHref(uriInfo.getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
+    userFeed.addLink(editLink);
 
     // add a alternate link
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(user.getUsername()).toString());
+    altLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(user.getOrganization().getUniqueShortName(), user.getUsername()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(altLink);
@@ -196,30 +209,43 @@ public class OrganizationUserResource extends AbstractResource {
   }
 
   private User getUserFromContent(String message) {
+
     Map<String, String> keyValueMap = new HashMap<String, String>();
 
     String[] keyValuePairs = message.split("&");
 
     for (int i = 0; i < keyValuePairs.length; i++) {
+
       String[] keyValuePair = keyValuePairs[i].split("=");
       keyValueMap.put(keyValuePair[0], keyValuePair[1]);
     }
 
     User newUser = new User();
-    if (keyValueMap.get("id")!=null) {
+
+    if (keyValueMap.get("id") != null) {
       newUser.setId(Integer.valueOf(keyValueMap.get("id")));
     }
-    if (keyValueMap.get("userName")!=null) {
+
+    if (keyValueMap.get("version") != null) {
+      newUser.setVersion(Integer.valueOf(keyValueMap.get("version")));
+    }
+
+    if (keyValueMap.get("userName") != null) {
       newUser.setUsername(keyValueMap.get("userName"));
     }
-    if (keyValueMap.get("password")!=null) {
+    if (keyValueMap.get("password") != null) {
       newUser.setPassword(keyValueMap.get("password"));
     }
 
-    if (keyValueMap.get("orgName")!=null) {
-      Organization parentOrganization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.get("orgName"));
-      newUser.setOrganization(parentOrganization);
+    if (keyValueMap.get("uniqueShortName") != null) {
+
+      Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.
+          get("uniqueShortName"));
+
+      if (parentOrg != null) {
+        newUser.setOrganization(parentOrg);
+      }
     }
-    return newUser;
+    return user;
   }
 }
