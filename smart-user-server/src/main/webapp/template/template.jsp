@@ -130,8 +130,6 @@
 
                             }
                         });
-
-
                     }
 
                 });
@@ -155,19 +153,7 @@
                         }
 
                     });
-
-
                 });
-                $("#submit").click(function(){
-
-                    alert(window.location);
-                    top.location.href = 'http://localhost:9090/orgs';
-
-
-                });
-
-
-
             });
 
 
