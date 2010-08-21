@@ -26,7 +26,7 @@ public interface UserPersonService {
 
     Collection<UserPerson> getAllUserPerson();
 
-    UserPerson getUserPersonByUsername(String username);
+    UserPerson getUserPersonByUsernameAndOrgName(String username, String orgName);
 
     Collection<UserPerson> search(UserPersonFilter filter);
 

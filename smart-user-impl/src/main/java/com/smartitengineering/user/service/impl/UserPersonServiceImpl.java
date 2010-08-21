@@ -33,161 +33,170 @@ import org.hibernate.exception.ConstraintViolationException;
  */
 public class UserPersonServiceImpl implements UserPersonService {
 
-    private CommonReadDao<UserPerson> userPersonReadDao;
-    private CommonWriteDao<UserPerson> userPersonWriteDao;
-    private PersonService personService;
-    private UserService userService;
+  private CommonReadDao<UserPerson> userPersonReadDao;
+  private CommonWriteDao<UserPerson> userPersonWriteDao;
+  private PersonService personService;
+  private UserService userService;
 
-    public PersonService getPersonService() {
-        return personService;
-    }
+  public PersonService getPersonService() {
+    return personService;
+  }
 
-    public void setPersonService(PersonService personService) {
-        this.personService = personService;
-    }
+  public void setPersonService(PersonService personService) {
+    this.personService = personService;
+  }
 
-    public void create(UserPerson userPerson) {
-        getUserService().validateUser(userPerson.getUser());
-        if (userPerson.getPerson().getId() != null) {
-            Integer count = (Integer) getUserPersonReadDao().getOther(
-                    QueryParameterFactory.getElementCountParam("person.id"),
-                    QueryParameterFactory.getEqualPropertyParam(
-                    "person.id", userPerson.getPerson().getId()));
-            if (count.intValue() > 0) {
-                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                        name() + "-" +
-                        UniqueConstrainedField.PERSON.name());
-            }
-        }
-        personService.validatePerson(userPerson.getPerson());
-        try {
-            getUserPersonWriteDao().save(userPerson);
-        } catch (ConstraintViolationException e) {
-            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                    name() + "-" + UniqueConstrainedField.OTHER;
-            throw new RuntimeException(message, e);
-        } catch (StaleStateException e) {
-            String message =
-                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
-                    UniqueConstrainedField.OTHER;
-            throw new RuntimeException(message, e);
-        }
+  public void create(UserPerson userPerson) {
+    getUserService().validateUser(userPerson.getUser());
+    if (userPerson.getPerson().getId() != null) {
+      Integer count = (Integer) getUserPersonReadDao().getOther(
+          QueryParameterFactory.getElementCountParam("person.id"),
+          QueryParameterFactory.getEqualPropertyParam(
+          "person.id", userPerson.getPerson().getId()));
+      if (count.intValue() > 0) {
+        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
+            UniqueConstrainedField.PERSON.name());
+      }
     }
+    personService.validatePerson(userPerson.getPerson());
+    try {
+      getUserPersonWriteDao().save(userPerson);
+    }
+    catch (ConstraintViolationException e) {
+      String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
+      throw new RuntimeException(message, e);
+    }
+    catch (StaleStateException e) {
+      String message =
+             ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
+          UniqueConstrainedField.OTHER;
+      throw new RuntimeException(message, e);
+    }
+  }
 
-    public void update(UserPerson userPerson) {
-        getUserService().validateUser(userPerson.getUser());
-        personService.validatePerson(userPerson.getPerson());
-        try {
-            getUserPersonWriteDao().update(userPerson);
-        } catch (ConstraintViolationException e) {
-            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                    name() + "-" + UniqueConstrainedField.OTHER;
-            throw new RuntimeException(message, e);
-        } catch (StaleStateException e) {
-            String message =
-                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
-                    UniqueConstrainedField.OTHER;
-            throw new RuntimeException(message, e);
-        }
+  public void update(UserPerson userPerson) {
+    getUserService().validateUser(userPerson.getUser());
+    personService.validatePerson(userPerson.getPerson());
+    try {
+      getUserPersonWriteDao().update(userPerson);
     }
+    catch (ConstraintViolationException e) {
+      String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
+      throw new RuntimeException(message, e);
+    }
+    catch (StaleStateException e) {
+      String message =
+             ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
+          UniqueConstrainedField.OTHER;
+      throw new RuntimeException(message, e);
+    }
+  }
 
-    public void delete(UserPerson userPerson) {
-        try {
-            getUserPersonWriteDao().delete(userPerson);
-        } catch (Exception e) {
-        }
+  public void delete(UserPerson userPerson) {
+    try {
+      getUserPersonWriteDao().delete(userPerson);
     }
+    catch (Exception e) {
+    }
+  }
 
-    public Collection<UserPerson> search(UserPersonFilter filter) {
-        QueryParameter qp;
-        List<QueryParameter> queryParameters = new ArrayList<QueryParameter>();
-        if (!StringUtils.isEmpty(filter.getUsername())) {
-            qp = QueryParameterFactory.getNestedParametersParam("user",
-                    FetchMode.DEFAULT,
-                    QueryParameterFactory.getStringLikePropertyParam("username",
-                    filter.getUsername(), MatchMode.ANYWHERE));
-            queryParameters.add(qp);
-        }
-        Collection<UserPerson> userPersons = new HashSet<UserPerson>();
-        if (queryParameters.size() == 0) {
-            try {
-                userPersons = getUserPersonReadDao().getAll();
-            } catch (Exception e) {
-            }
-        } else {
-            try {
-                userPersons = getUserPersonReadDao().getList(queryParameters);
-            } catch (Exception e) {
-            }
-        }
-        return userPersons;
+  public Collection<UserPerson> search(UserPersonFilter filter) {
+    QueryParameter qp;
+    List<QueryParameter> queryParameters = new ArrayList<QueryParameter>();
+    if (!StringUtils.isEmpty(filter.getUsername())) {
+      qp = QueryParameterFactory.getNestedParametersParam("user",
+                                                          FetchMode.DEFAULT,
+                                                          QueryParameterFactory.getStringLikePropertyParam("username",
+                                                                                                           filter.
+          getUsername(), MatchMode.ANYWHERE));
+      queryParameters.add(qp);
     }
+    Collection<UserPerson> userPersons = new HashSet<UserPerson>();
+    if (queryParameters.size() == 0) {
+      try {
+        userPersons = getUserPersonReadDao().getAll();
+      }
+      catch (Exception e) {
+      }
+    }
+    else {
+      try {
+        userPersons = getUserPersonReadDao().getList(queryParameters);
+      }
+      catch (Exception e) {
+      }
+    }
+    return userPersons;
+  }
 
-    public Collection<UserPerson> getAllUserPerson() {
-        Collection<UserPerson> userPersons = new HashSet<UserPerson>();
-        try {
-            userPersons = getUserPersonReadDao().getAll();
-        } catch (Exception e) {
-        }
-        return userPersons;
+  public Collection<UserPerson> getAllUserPerson() {
+    Collection<UserPerson> userPersons = new HashSet<UserPerson>();
+    try {
+      userPersons = getUserPersonReadDao().getAll();
     }
+    catch (Exception e) {
+    }
+    return userPersons;
+  }
 
-    public UserPerson getUserPersonByUsername(String username) {
-        QueryParameter qp;
-        qp =
-                QueryParameterFactory.getNestedParametersParam("user",
-                FetchMode.DEFAULT,
-                QueryParameterFactory.getEqualPropertyParam("username", username));
-        UserPerson userPerson = getUserPersonReadDao().getSingle(qp);
-        return userPerson;
+  public void deleteByPerson(Person person) {
+    if (person == null) {
+      return;
     }
+    QueryParameter qp = QueryParameterFactory.getEqualPropertyParam(
+        "person.id", person.getId());
+    UserPerson userPerson = getUserPersonReadDao().getSingle(qp);
+    if (userPerson != null) {
+      delete(userPerson);
+    }
+  }
 
-    public void deleteByPerson(Person person) {
-        if(person == null) {
-            return;
-        }
-        QueryParameter qp = QueryParameterFactory.getEqualPropertyParam(
-                "person.id", person.getId());
-        UserPerson userPerson = getUserPersonReadDao().getSingle(qp);
-        if (userPerson != null) {
-            delete(userPerson);
-        }
+  public void deleteByUser(User user) {
+    if (user == null) {
+      return;
     }
+    QueryParameter qp = QueryParameterFactory.getEqualPropertyParam(
+        "user.id", user.getId());
+    UserPerson userPerson = getUserPersonReadDao().getSingle(qp);
+    if (userPerson != null) {
+      delete(userPerson);
+    }
+  }
 
-    public void deleteByUser(User user) {
-        if(user == null) {
-            return;
-        }
-        QueryParameter qp = QueryParameterFactory.getEqualPropertyParam(
-                "user.id", user.getId());
-        UserPerson userPerson = getUserPersonReadDao().getSingle(qp);
-        if (userPerson != null) {
-            delete(userPerson);
-        }
-    }
+  public CommonReadDao<UserPerson> getUserPersonReadDao() {
+    return userPersonReadDao;
+  }
 
-    public CommonReadDao<UserPerson> getUserPersonReadDao() {
-        return userPersonReadDao;
-    }
+  public void setUserPersonReadDao(CommonReadDao<UserPerson> userPersonReadDao) {
+    this.userPersonReadDao = userPersonReadDao;
+  }
 
-    public void setUserPersonReadDao(CommonReadDao<UserPerson> userPersonReadDao) {
-        this.userPersonReadDao = userPersonReadDao;
-    }
+  public CommonWriteDao<UserPerson> getUserPersonWriteDao() {
+    return userPersonWriteDao;
+  }
 
-    public CommonWriteDao<UserPerson> getUserPersonWriteDao() {
-        return userPersonWriteDao;
-    }
+  public void setUserPersonWriteDao(
+      CommonWriteDao<UserPerson> userPersonWriteDao) {
+    this.userPersonWriteDao = userPersonWriteDao;
+  }
 
-    public void setUserPersonWriteDao(
-            CommonWriteDao<UserPerson> userPersonWriteDao) {
-        this.userPersonWriteDao = userPersonWriteDao;
-    }
+  public UserService getUserService() {
+    return userService;
+  }
 
-    public UserService getUserService() {
-        return userService;
-    }
+  public void setUserService(UserService userService) {
+    this.userService = userService;
+  }
 
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
+  @Override
+  public UserPerson getUserPersonByUsernameAndOrgName(String username, String orgName) {
+    QueryParameter qp;
+    qp = QueryParameterFactory.getNestedParametersParam("user", FetchMode.DEFAULT, QueryParameterFactory.
+        getConjunctionParam(QueryParameterFactory.getEqualPropertyParam("username", username), QueryParameterFactory.
+        getNestedParametersParam("orgnanization", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam(
+        "uniqueShortName", orgName))));
+
+    UserPerson userPerson = getUserPersonReadDao().getSingle(qp);
+    return userPerson;
+  }
 }
