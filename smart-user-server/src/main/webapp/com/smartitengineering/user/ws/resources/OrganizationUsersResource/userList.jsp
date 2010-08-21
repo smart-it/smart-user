@@ -55,9 +55,9 @@
 
   <div>
 
-      <div class="tablecontentname" id="tablecontentid-user"></div>
-    
       <div class="tablecontentname" id="tablecontentname-user"></div>
+    
+      <div class="tablecontentname" id="tablecontentid-user"></div>
     
   </div>
 

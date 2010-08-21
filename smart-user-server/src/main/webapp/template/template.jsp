@@ -74,258 +74,257 @@
 
   <script type="text/javascript">
 
-            $(document).ready(function(){
+    $(document).ready(function(){
 
 
 
-                $.ajax({
-                    type: "GET",
+      $.ajax({
+        type: "GET",
 
-                    url: window.location,
-                    dataType: "xml",
+        url: window.location,
+        dataType: "xml",
 
-                    success: function(xml) {                    
-                        var contentid="";
-                        var contentname="";
-                        $(xml).find('entry').each(function(){
-                            var id = $(this).find('id').text();
+        success: function(xml) {
+          var contentid="";
+          var contentname="";
+          $(xml).find('entry').each(function(){
+            var id = $(this).find('id').text();
 
-                            var title = $(this).find('title').text();
-                            var link = $(this).find('link').attr('href');
-                            // alert(link);
-                            contentid += "<div class=\"id\"><a href="  + link +">"+id+"</a></div>";
-                            contentname += "<div class=\"title\"><a href=" + link + ">" +title+"</a></div>";
+            var title = $(this).find('title').text();
+            var link = $(this).find('link').attr('href');
+            // alert(link);
+            contentid += "<div class=\"id\"><a href="  + link +">"+id+"</a></div>";
+            contentname += "<div class=\"title\"><a href=" + link + ">" +title+"</a></div>";
 
-                        });
+          });
 
-                        $("#tablecontentid").html(contentid);
-                        $("#tablecontentname").html(contentname);
+          $("#tablecontentid").html(contentid);
+          $("#tablecontentname").html(contentname);
 
 
 
 
-            var linkvalue_next="";
-            var linkvalue_prev="";
-            $(xml).find('link').each(function(){
+          var linkvalue_next="";
+          var linkvalue_prev="";
+          $(xml).find('link').each(function(){
 
-                            var nextlink = $(this).attr("rel");
+            var nextlink = $(this).attr("rel");
 
-                            if(nextlink=='next')
-                            {
-                                var href = $(this).attr("href");
+            if(nextlink=='next')
+            {
+              var href = $(this).attr("href");
 
-                                linkvalue_next += "<a href=\""+href+"\">"+nextlink+"</a>";
-                                $("#tablecontentlink_of_next").html(linkvalue_next);
+              linkvalue_next += "<a href=\""+href+"\">"+nextlink+"</a>";
+              $("#tablecontentlink_of_next").html(linkvalue_next);
 
 
-                            }
+            }
 
-                            if(nextlink=='previous')
-                            {
-                                var href = $(this).attr("href");
+            if(nextlink=='previous')
+            {
+              var href = $(this).attr("href");
 
-                linkvalue_prev += "<a href=\""+href+"\">"+nextlink+"</a>";
-                $("#tablecontentlink_of_previous").html(linkvalue_prev);
+              linkvalue_prev += "<a href=\""+href+"\">"+nextlink+"</a>";
+              $("#tablecontentlink_of_previous").html(linkvalue_prev);
 
 
-                            }
-                        });
+            }
+          });
 
 
-                    }
+        }
 
-                });
+      });
 
 
 
-                $("#uniqueShortName2").click(function(){
+      $("#uniqueShortName2").click(function(){
 
-                    var usn =$("#uniqueShortName").val();
+        var usn =$("#uniqueShortName").val();
 
-                    $.ajax({
-                        type: "GET",
-                        url: "http://localhost:9090/orgs/shortname/"+usn,
-                        dataType: "xml",
-                        success: function(xhr){
-                            //                            alert('Short Name is not unique')
-                            $("#alertlabel").html('Short Name is not unique: try another');
-                        },
-                        error: function(xhr){
-                            $("#alertlabel").html('Perfect: Carry On');
-                        }
+        $.ajax({
+          type: "GET",
+          url: "http://localhost:9090/orgs/shortname/"+usn,
+          dataType: "xml",
+          success: function(xhr){
+            //                            alert('Short Name is not unique')
+            $("#alertlabel").html('Short Name is not unique: try another');
+          },
+          error: function(xhr){
+            $("#alertlabel").html('Perfect: Carry On');
+          }
 
-                    });
+        });
 
 
-                });
-                $("#submit").click(function(){
+      });
+      $("#submit").click(function(){
 
-                alert(window.location);
-                var usn =$("#uniqueShortName").val()
-                window.location.replace = "http://localhost:9090/orgs/shortname/"+usn;
+        alert(window.location);
+        var usn =$("#uniqueShortName").val()
+        window.location.replace = "http://localhost:9090/orgs/shortname/"+usn;
 
-                });
+      });
 
 
 
-            });
+    });
 
 
-        </script>
-
-        <!-- ROCKY -->
-         <script type="text/javascript">
-            $(document).ready(function(){
-
-                    $.ajax({
-
-
-                        type: "GET",
-                        url: window.location,
-                        datatype: "xml",
-
-                        success: function(xml){
-                            var contenttitle="";
-                            var contentid = "";
-                            $(xml).find('entry').each(function(){
-                                var title = $(this).find('title').text();
-
-                                var id = $(this).find('id').text();
-                                var link = $(this).find('link').attr('href');
-
-                                contenttitle += "<div class=\"title\"><a href="+ link +">" + title + "</a>";
-                                //alert(contenttitle)
-
-                                contentid += "<div class=\"id\">" + id + "</div>";
-
-                            });
-                            $("#tablecontentname-user").html(contenttitle);
-                            $("#tablecontentid-user").html(contentid);
-
-                            var linkvalue_next_user="";
-                            var linkvalue_prev_user="";
-                             $(xml).find('link').each(function(){
-
-                                    var nextlink = $(this).attr("rel");
-
-                                    if(nextlink=='next')
-                                    {
-
-                                        var href = $(this).attr("href");
-                                        linkvalue_next_user += "<a href=" +href+ ">"+nextlink+"\t</a>";
-                                        $("#tablecontentlink_of_next_user").html(linkvalue_next_user);
-
-                                    }
-                                    if(nextlink=='previous')
-                                    {
-                                        var href = $(this).attr("href");
-
-                                        linkvalue_prev_user += "<a href="+href+">\t"+nextlink+"</a>";
-                                        $("#tablecontentlink_of_prev_user").html(linkvalue_prev_user);
-                                    }
-                                });
-
-                        }
-
-
-                    });
-
-                     $("#userform").validate({
-                               rules: {
-                                   name: "required",
-                                   midName: "required",
-                                   lastName: "required",
-
-                                  password: {
-                                      required: true,
-                                      minlength: 6
-                                  },
-
-                                  confirmPassword: {
-                                      equalTo: "#password"
-                                  },
-                                  uniqueShortName: "required"
-
-                               },
-                               messages: {
-
-                                   password: "Password must be atleast of 6 characters"
-                               }
-
-                           });
-
-
-                           $(".submit").click(function(){
-
-
-                           });
-                           $(".submit").click(function(){
-                               alert ("potak")
-                               var fname = $("input#fname");
-                               var mname = $("input#mname");
-                               var lname = $("input#lname");
-                               var password = $("input#password");
-                               var phone = $("input#phone")
-                            var datastring = 'name='+ fname + '&midName='+ mname + '&lastName='+ lname + '&password='+ password + '&phone='+ phone;
-                           alert (datastring)
-
-                            });
-
-                           $.ajax({
-                                type: "POST",
-                                url: window.location,
-                                data: datastring,
-                                success: function(){
-                                    <%--alert ("oooo")
-                                    $('#create').html("<div id='message'></div>");
-                                    $('#message').html("<h2>Form submitted successfully</h2")
-                                    alert("kkk")
-                                    .hide()
-                                    .fade(1500, function(){
-                                        $('#message');
-                                    });--%>
-                                }
-                           });
-                           return false;
-
-});
   </script>
 
-                                 <script type="text/javascript">
-        $(document).ready(function(){
-             $(".submit").click(function(){
-                               alert ("potak")
-                               var id = $("input#id");
-                               var name = $("input#name");
-                               var password = $("input#password");
-                               var version = $("input#version");
+  <!-- ROCKY -->
+  <script type="text/javascript">
+    $(document).ready(function(){
 
-                            var datastring = 'id='+ id +'version='+ version + 'name='+ name + '&password='+ password;
+      $.ajax({
 
 
-                            });
+        type: "GET",
+        url: window.location,
+        datatype: "xml",
 
-                           $.ajax({
-                                type: "POST",
-                                url: window.location,
-                                data: datastring,
-                                success: function(){
-                                    <%--alert ("oooo")
-                                    $('#form_organizationentry').html("<div id='message'></div>");
-                                    $('#message').html("<h2>Form submitted successfully</h2")
-                                    alert("kkk")
-                                    .hide()
-                                    .fade(1500, function(){
-                                        $('#message');
-                                    });--%>
-                                }
-                           });
-                           return false;
-        })
-    </script>
+        success: function(xml){
+          var contenttitle="";
+          var contentid = "";
+          alert(window.location);
+          $(xml).find('entry').each(function(){
+            var title = $(this).find('title').text();
 
- <!-- ROCKY -->
-    </head>
+            var id = $(this).find('id').text();
+            var link = $(this).find('link').attr('href');
+                                
+
+            contenttitle += "<div class=\"title\"><a href="+ link +">" + title + "</a>";
+            //alert(contenttitle)
+
+            contentid += "<div class=\"id\">" + id + "</div>";
+
+          });
+          $("#tablecontentname-user").html(contenttitle);
+          $("#tablecontentid-user").html(contentid);
+
+          var linkvalue="";
+          $(xml).find('link').each(function(){
+
+            var nextlink = $(this).attr("rel");
+
+            if(nextlink=='next')
+            {
+
+              var href = $(this).attr("href");
+              linkvalue += "<a href=" +href+ ">"+nextlink+"\t</a>";
+              $("#teblecontentlink").html(linkvalue);
+
+            }
+            if(nextlink=='previous')
+            {
+              var href = $(this).attr("href");
+
+              linkvalue += "<a href="+href+">\t"+nextlink+"</a>";
+              $("#teblecontentlink").html(linkvalue);
+            }
+          });
+
+        }
+
+
+      });
+
+      $("#userform").validate({
+        rules: {
+          name: "required",
+          midName: "required",
+          lastName: "required",
+
+          password: {
+            required: true,
+            minlength: 6
+          },
+
+          confirmPassword: {
+            equalTo: "#password"
+          },
+          uniqueShortName: "required"
+
+        },
+        messages: {
+
+          password: "Password must be atleast of 6 characters"
+        }
+
+      });
+
+
+      $(".submit").click(function(){
+
+
+      });
+      $(".submit").click(function(){
+        alert ("potak")
+        var fname = $("input#fname");
+        var mname = $("input#mname");
+        var lname = $("input#lname");
+        var password = $("input#password");
+        var phone = $("input#phone")
+        var datastring = 'name='+ fname + '&midName='+ mname + '&lastName='+ lname + '&password='+ password + '&phone='+ phone;
+        alert (datastring)
+
+      });
+
+      $.ajax({
+        type: "POST",
+        url: window.location,
+        data: datastring,
+        success: function(){
+    <%--alert ("oooo")
+    $('#create').html("<div id='message'></div>");
+    $('#message').html("<h2>Form submitted successfully</h2")
+    alert("kkk")
+    .hide()
+    .fade(1500, function(){
+        $('#message');
+    });--%>
+                                           }
+                                         });
+                                         return false;
+
+                                       });
+  </script>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $(".submit").click(function(){
+        var id = $("input#id");
+        var name = $("input#name");
+        var password = $("input#password");
+        var version = $("input#version");
+
+        var datastring = 'id='+ id +'version='+ version + 'name='+ name + '&password='+ password;
+
+
+      });
+
+      $.ajax({
+        type: "POST",
+        url: window.location,
+        data: datastring,
+        success: function(){
+    <%--alert ("oooo")
+    $('#form_organizationentry').html("<div id='message'></div>");
+    $('#message').html("<h2>Form submitted successfully</h2")
+    alert("kkk")
+    .hide()
+    .fade(1500, function(){
+        $('#message');
+    });--%>
+           }
+         });
+         return false;
+       })
+  </script>
+  <!-- ROCKY -->
+</head>
 
 <body>
   <div id="main" >
