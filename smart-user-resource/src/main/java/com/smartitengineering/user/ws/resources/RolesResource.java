@@ -99,13 +99,13 @@ public class RolesResource extends AbstractResource{
         rolesLink.setRel("parent");
         atomFeed.addLink(rolesLink);
         
-        //Collection<Role> roles = Services.getInstance().getRoleService().getAllRoles();
-        List<Role> testList = new ArrayList<Role>();
-        testList.add(new Role("Role 1","D Role 1","S Role 1"));
-        testList.add(new Role("Role 2","D Role 2","S Role 2"));
-        testList.add(new Role("Role 3","D Role 3","S Role 3"));
+        Collection<Role> roles = Services.getInstance().getRoleService().getAllRoles();
+//        List<Role> testList = new ArrayList<Role>();
+//        testList.add(new Role("Role 1","D Role 1","S Role 1"));
+//        testList.add(new Role("Role 2","D Role 2","S Role 2"));
+//        testList.add(new Role("Role 3","D Role 3","S Role 3"));
 
-        Collection<Role> roles = testList;
+        //Collection<Role> roles = testList;
 
         if(roles != null && !roles.isEmpty()){
             

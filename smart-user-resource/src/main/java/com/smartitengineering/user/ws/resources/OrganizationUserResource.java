@@ -5,10 +5,13 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Organization;
+import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.domain.User;
+import com.smartitengineering.user.domain.UserPerson;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 
 import java.util.Date;
 
@@ -52,8 +55,6 @@ public class OrganizationUserResource extends AbstractResource {
   private User user;
   static final UriBuilder USER_URI_BUILDER = UriBuilder.fromResource(OrganizationUserResource.class);
   static final UriBuilder USER_CONTENT_URI_BUILDER;
-  @Context
-  private HttpServletRequest servletRequest;
 
   static {
     USER_CONTENT_URI_BUILDER = USER_URI_BUILDER.clone();
@@ -63,11 +64,13 @@ public class OrganizationUserResource extends AbstractResource {
     catch (Exception ex) {
       ex.printStackTrace();
       throw new InstantiationError();
+
     }
   }
 
   public OrganizationUserResource(@PathParam("organizationShortName") String organizationShortName, @PathParam(
       "userName") String userName) {
+    //userPerson = Services.getInstance().getUserPersonService().getUserPersonByUsernameAndOrgName(userName, organizationShortName);
     user = Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationShortName, userName);
   }
 
@@ -92,17 +95,86 @@ public class OrganizationUserResource extends AbstractResource {
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
 
-    servletRequest.setAttribute("templateContent",
-                                "/com/smartitengineering/user/ws/resources/OrganizationUserResource/OrganizationUserDetails.jsp");
-    Viewable view = new Viewable("/template/template.jsp", user);
-
-//        Viewable view = new Viewable("OrganizationUserDetails", user, OrganizationUserResource.class);
+    Viewable view = new Viewable("OrganizationUserDetails", user, OrganizationUserResource.class);
     responseBuilder.entity(view);
     return responseBuilder.build();
   }
 
+  @PUT
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response update(User newUser) {
+
+    ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+    try {
+      if (newUser.getRoleIDs() != null) {
+        Services.getInstance().getRoleService().populateRole(newUser);
+      }
+      if (newUser.getPrivilegeIDs() != null) {
+        Services.getInstance().getPrivilegeService().populatePrivilege(newUser);
+      }
+      if (newUser.getParentOrganizationID() == null) {
+        throw new Exception("No organization found");
+      }
+      newUser = Services.getInstance().getUserService().getUserByUsername(newUser.getUsername());
+
+      Services.getInstance().getOrganizationService().populateOrganization(newUser);
+
+      Services.getInstance().getUserService().update(user);
+
+      responseBuilder = Response.ok(getUserFeed());
+    }
+    catch (Exception ex) {
+      responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+      ex.printStackTrace();
+    }
+    return responseBuilder.build();
+  }
+
+  private Feed getUserFeed() throws UriBuilderException, IllegalArgumentException {
+    Feed userFeed = getFeed(user.getUsername(), new Date());
+    userFeed.setTitle(user.getUsername());
+
+    // add a self link
+    userFeed.addLink(getSelfLink());
+
+    // add a edit link
+    Link editLink = abderaFactory.newLink();
+    editLink.setHref(uriInfo.getRequestUri().toString());
+    editLink.setRel(Link.REL_EDIT);
+    editLink.setMimeType(MediaType.APPLICATION_JSON);
+    userFeed.addLink(editLink);
+
+    // add a alternate link
+    Link altLink = abderaFactory.newLink();
+    altLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(user.getOrganization().getUniqueShortName(),
+                                                           user.getUsername()).toString());
+    altLink.setRel(Link.REL_ALTERNATE);
+    altLink.setMimeType(MediaType.APPLICATION_JSON);
+    userFeed.addLink(altLink);
+
+    return userFeed;
+  }
+
+  @DELETE
+  public Response delete() {
+    Services.getInstance().getUserService().delete(user);
+    ResponseBuilder responseBuilder = Response.ok();
+    return responseBuilder.build();
+  }
+
   @POST
-  public Response post(@HeaderParam("Content-type") String contentType, String message) {
+  @Path("/delete")
+  public Response deletePost() {
+    Services.getInstance().getUserService().delete(user);
+    ResponseBuilder responseBuilder = Response.ok();
+    return responseBuilder.build();
+  }
+
+  @POST
+  @Path("/update")
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  public Response updatePost(@HeaderParam("Content-type") String contentType, String message) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
 
     if (StringUtils.isBlank(message)) {
@@ -128,6 +200,7 @@ public class OrganizationUserResource extends AbstractResource {
       }
       catch (UnsupportedEncodingException ex) {
         ex.printStackTrace();
+
       }
     }
     else {
@@ -136,94 +209,56 @@ public class OrganizationUserResource extends AbstractResource {
     }
 
     if (isHtmlPost) {
-      Map<String, String> keyValueMap = new HashMap<String, String>();
-
-      String[] keyValuePairs = message.split("&");
-
-      for (int i = 0; i < keyValuePairs.length; i++) {
-
-        String[] keyValuePair = keyValuePairs[i].split("=");
-        keyValueMap.put(keyValuePair[0], keyValuePair[1]);
+      User newUser = getUserFromContent(message);
+      try {
+        Services.getInstance().getUserService().update(newUser);
+        responseBuilder = Response.ok(getUserFeed());
       }
+      catch (Exception ex) {
+        responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+      }
+    }
+    return responseBuilder.build();
+  }
 
-      User newUser = new User();
+  private User getUserFromContent(String message) {
 
+    Map<String, String> keyValueMap = new HashMap<String, String>();
+
+    String[] keyValuePairs = message.split("&");
+
+    for (int i = 0; i < keyValuePairs.length; i++) {
+
+      String[] keyValuePair = keyValuePairs[i].split("=");
+      keyValueMap.put(keyValuePair[0], keyValuePair[1]);
+    }
+
+    User newUser = new User();
+
+    if (keyValueMap.get("id") != null) {
       newUser.setId(Integer.valueOf(keyValueMap.get("id")));
-      newUser.setUsername(keyValueMap.get("userName"));
-      newUser.setPassword(keyValueMap.get("password"));
+    }
+
+    if (keyValueMap.get("version") != null) {
       newUser.setVersion(Integer.valueOf(keyValueMap.get("version")));
+    }
 
+    if (keyValueMap.get("userName") != null) {
+      newUser.setUsername(keyValueMap.get("userName"));
+    }
+    if (keyValueMap.get("password") != null) {
+      newUser.setPassword(keyValueMap.get("password"));
+    }
 
-      Organization parentOrganization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(user.
-          getOrganization().getUniqueShortName());
-      newUser.setOrganization(parentOrganization);
+    if (keyValueMap.get("uniqueShortName") != null) {
 
+      Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.
+          get("uniqueShortName"));
 
-      if (keyValueMap.get("submitbtn").toUpperCase().equals("UPDATE")) {
-        newUser.setParentOrganizationID(parentOrganization.getId());
-        return update(newUser);
-      }
-      else {
-        return delete();
+      if (parentOrg != null) {
+        newUser.setOrganization(parentOrg);
       }
     }
-    return responseBuilder.build();
-  }
-
-  @PUT
-  @Produces(MediaType.APPLICATION_ATOM_XML)
-  @Consumes(MediaType.APPLICATION_JSON)
-  public Response update(User newUser) {
-    ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-    try {
-      if (newUser.getRoleIDs() != null) {
-        Services.getInstance().getRoleService().populateRole(newUser);
-      }
-      if (newUser.getPrivilegeIDs() != null) {
-        Services.getInstance().getPrivilegeService().populatePrivilege(newUser);
-      }
-      if (newUser.getParentOrganizationID() == null) {
-        throw new Exception("No organization found");
-      }
-      Services.getInstance().getOrganizationService().populateOrganization(newUser);
-      Services.getInstance().getUserService().update(newUser);
-      user = Services.getInstance().getUserService().getUserByUsername(newUser.getUsername());
-      responseBuilder = Response.ok(getUserFeed());
-    }
-    catch (Exception ex) {
-      responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
-      ex.printStackTrace();
-    }
-    return responseBuilder.build();
-  }
-
-  private Feed getUserFeed() throws UriBuilderException, IllegalArgumentException {
-    Feed userFeed = getFeed(user.getUsername(), new Date());
-    userFeed.setTitle(user.getUsername());
-
-    // add a self link
-    userFeed.addLink(getSelfLink());
-
-    // add a edit link
-    Link editLink = abderaFactory.newLink();
-    editLink.setHref(uriInfo.getRequestUri().toString());
-    editLink.setRel(Link.REL_EDIT);
-    editLink.setMimeType(MediaType.APPLICATION_JSON);
-
-    // add a alternate link
-    Link altLink = abderaFactory.newLink();
-    altLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(user.getUsername()).toString());
-    altLink.setRel(Link.REL_ALTERNATE);
-    altLink.setMimeType(MediaType.APPLICATION_JSON);
-    userFeed.addLink(altLink);
-
-    return userFeed;
-  }
-
-  @DELETE
-  public Response delete() {
-    Services.getInstance().getUserService().delete(user);
-    ResponseBuilder responseBuilder = Response.ok();
-    return responseBuilder.build();
+    return user;
   }
 }

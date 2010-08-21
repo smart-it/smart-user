@@ -2,11 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.SecuredObject;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -24,107 +28,193 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
  * @author russel
  */
 @Path("/orgs/{organizationUniqueShortName}/securedObjects/{old}")
-public class OrganizationSecuredObjectResource extends AbstractResource{
+public class OrganizationSecuredObjectResource extends AbstractResource {
 
-    private SecuredObject securedObject;
-    private String organizationUniqueName;
+  private SecuredObject securedObject;
+  private String organizationUniqueName;
+  static final UriBuilder ORGANIZATION_SECURED_OBJECT_URI_BUILDER = UriBuilder.fromResource(OrganizationSecuredObjectResource.class);
+  static final UriBuilder ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER;
 
-    static final UriBuilder ORGANIZATION_SECURED_OBJECT_URI_BUILDER = UriBuilder.fromResource(OrganizationSecuredObjectResource.class);
-    static final UriBuilder ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER;
-    static{
-        ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER = ORGANIZATION_SECURED_OBJECT_URI_BUILDER.clone();
-        try{
-            ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.path(OrganizationSecuredObjectResource.class.getMethod("getSecuredObject"));
-        }catch(Exception ex){
-            ex.printStackTrace();
-            throw new InstantiationError();
-        }
+  static {
+    ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER = ORGANIZATION_SECURED_OBJECT_URI_BUILDER.clone();
+    try {
+      ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.path(OrganizationSecuredObjectResource.class.getMethod("getSecuredObject"));
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      throw new InstantiationError();
     }
-    
-    public OrganizationSecuredObjectResource(@PathParam("organizationUniqueShortName") String organizationUniqueShortName, @PathParam("old") String name){
-        this.organizationUniqueName = organizationUniqueShortName;
-        this.securedObject = Services.getInstance().getSecuredObjectService().getByOrganizationAndObjectID(organizationUniqueShortName, name);
-    }
+  }
 
-    @GET
-    @Produces(MediaType.APPLICATION_ATOM_XML)
-    public Response get() {
-        Feed securedObjectFeed = getSecuredObjectFeed();
-        ResponseBuilder responseBuilder = Response.ok(securedObjectFeed);
-        return responseBuilder.build();
-    }
+  public OrganizationSecuredObjectResource(@PathParam("organizationUniqueShortName") String organizationUniqueShortName, @PathParam("old") String name) {
+    this.organizationUniqueName = organizationUniqueShortName;
+    this.securedObject = Services.getInstance().getSecuredObjectService().getByOrganizationAndObjectID(organizationUniqueShortName, name);
+  }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/content")
-    public Response getSecuredObject() {
-        ResponseBuilder responseBuilder = Response.ok(securedObject);
-        return responseBuilder.build();
-    }
+  @GET
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  public Response get() {
+    Feed securedObjectFeed = getSecuredObjectFeed();
+    ResponseBuilder responseBuilder = Response.ok(securedObjectFeed);
+    return responseBuilder.build();
+  }
 
-    @PUT
-    @Produces(MediaType.APPLICATION_ATOM_XML)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(SecuredObject newSecuredObject) {
-        ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-        try {
-            if(securedObject.getParentOrganizationID() == null){
-                throw new Exception("No parent Organization");
-            }
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/content")
+  public Response getSecuredObject() {
+    ResponseBuilder responseBuilder = Response.ok(securedObject);
+    return responseBuilder.build();
+  }
 
-            Services.getInstance().getOrganizationService().populateOrganization(securedObject);
-            Services.getInstance().getSecuredObjectService().save(newSecuredObject);
-            //newSecuredObject = Services.getInstance().getSecuredObjectService().getByObjectID(newSecuredObject.getObjectID());
-            responseBuilder = Response.ok(getSecuredObjectFeed());
-        }
-        catch (Exception ex) {
-            responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
-        }
-        return responseBuilder.build();
-    }
-
-    
-
-
-    @DELETE
-    public Response delete() {
-      ResponseBuilder responseBuilder = Response.ok();
-      try{
-        Services.getInstance().getSecuredObjectService().delete(securedObject);
-      }catch(Exception ex){
-        ex.printStackTrace();
-        responseBuilder = Response.ok(Status.INTERNAL_SERVER_ERROR);
+  @PUT
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response update(SecuredObject newSecuredObject) {
+    ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+    try {
+      if (securedObject.getParentOrganizationID() == null) {
+        throw new Exception("No parent Organization");
       }
-        return responseBuilder.build();
+
+      Services.getInstance().getOrganizationService().populateOrganization(securedObject);
+      Services.getInstance().getSecuredObjectService().save(newSecuredObject);
+      //newSecuredObject = Services.getInstance().getSecuredObjectService().getByObjectID(newSecuredObject.getObjectID());
+      responseBuilder = Response.ok(getSecuredObjectFeed());
+    } catch (Exception ex) {
+      responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+    }
+    return responseBuilder.build();
+  }
+
+  @DELETE
+  public Response delete() {
+    ResponseBuilder responseBuilder = Response.ok();
+    try {
+      Services.getInstance().getSecuredObjectService().delete(securedObject);
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      responseBuilder = Response.ok(Status.INTERNAL_SERVER_ERROR);
+    }
+    return responseBuilder.build();
+  }
+
+  private Feed getSecuredObjectFeed() throws UriBuilderException, IllegalArgumentException {
+
+    Feed securedObjectFeed = getFeed(securedObject.getObjectID(), new Date());
+    securedObjectFeed.setTitle(securedObject.getObjectID());
+
+    // add a self link
+    securedObjectFeed.addLink(getSelfLink());
+
+    // add a edit link
+    Link editLink = abderaFactory.newLink();
+    editLink.setHref(uriInfo.getRequestUri().toString());
+    editLink.setRel(Link.REL_EDIT);
+    editLink.setMimeType(MediaType.APPLICATION_JSON);
+
+    // add a alternate link
+    Link altLink = abderaFactory.newLink();
+    altLink.setHref(ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.clone().build(organizationUniqueName, securedObject.getObjectID()).toString());
+    altLink.setRel(Link.REL_ALTERNATE);
+    altLink.setMimeType(MediaType.APPLICATION_JSON);
+    securedObjectFeed.addLink(altLink);
+
+    return securedObjectFeed;
+  }
+
+  @POST
+  @Path("/delete")
+  public Response deletePost() {
+    ResponseBuilder responseBuilder = Response.ok();
+    try {
+      Services.getInstance().getSecuredObjectService().delete(securedObject);
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      responseBuilder = Response.ok(Status.INTERNAL_SERVER_ERROR);
+    }
+    return responseBuilder.build();
+  }
+
+  @POST
+  @Path("/update")
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  public Response updatePost(@HeaderParam("Content-type") String contentType, String message) {
+    ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+
+    if (StringUtils.isBlank(message)) {
+      responseBuilder = Response.status(Status.BAD_REQUEST);
+      responseBuilder.build();
     }
 
-    private Feed getSecuredObjectFeed() throws UriBuilderException, IllegalArgumentException {
-
-        Feed securedObjectFeed = getFeed(securedObject.getObjectID(), new Date());
-        securedObjectFeed.setTitle(securedObject.getObjectID());
-
-        // add a self link
-        securedObjectFeed.addLink(getSelfLink());
-
-        // add a edit link
-        Link editLink = abderaFactory.newLink();
-        editLink.setHref(uriInfo.getRequestUri().toString());
-        editLink.setRel(Link.REL_EDIT);
-        editLink.setMimeType(MediaType.APPLICATION_JSON);
-
-        // add a alternate link
-        Link altLink = abderaFactory.newLink();
-        altLink.setHref(ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.clone().build(organizationUniqueName,securedObject.getObjectID()).toString());
-        altLink.setRel(Link.REL_ALTERNATE);
-        altLink.setMimeType(MediaType.APPLICATION_JSON);
-        securedObjectFeed.addLink(altLink);
-
-        return securedObjectFeed;
+    final boolean isHtmlPost;
+    if (StringUtils.isBlank(contentType)) {
+      contentType = MediaType.APPLICATION_OCTET_STREAM;
+      isHtmlPost = false;
+    } else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+      contentType = MediaType.APPLICATION_OCTET_STREAM;
+      isHtmlPost = true;
+      try {
+        //Will search for the first '=' if not found will take the whole string
+        final int startIndex = 0;//message.indexOf("=") + 1;
+        //Consider the first '=' as the start of a value point and take rest as value
+        final String realMsg = message.substring(startIndex);
+        //Decode the message to ignore the form encodings and make them human readable
+        message = URLDecoder.decode(realMsg, "UTF-8");
+      } catch (UnsupportedEncodingException ex) {
+        ex.printStackTrace();
+      }
+    } else {
+      contentType = contentType;
+      isHtmlPost = false;
     }
+
+    if (isHtmlPost) {
+      SecuredObject newSecuredObject = getSecuredObjectFromContent(message);
+      try {
+        Services.getInstance().getSecuredObjectService().update(newSecuredObject);
+        responseBuilder = Response.ok(getSecuredObjectFeed());
+      } catch (Exception ex) {
+        responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+      }
+    }
+    return responseBuilder.build();
+  }
+
+  private SecuredObject getSecuredObjectFromContent(String message) {
+    Map<String, String> keyValueMap = new HashMap<String, String>();
+
+    String[] keyValuePairs = message.split("&");
+
+    for (int i = 0; i < keyValuePairs.length; i++) {
+      String[] keyValuePair = keyValuePairs[i].split("=");
+      keyValueMap.put(keyValuePair[0], keyValuePair[1]);
+    }
+
+    SecuredObject newSecuredObject = new SecuredObject();
+    if (keyValueMap.get("id")!=null) {
+      newSecuredObject.setId(Integer.valueOf(keyValueMap.get("id")));
+    }
+    if (keyValueMap.get("name")!=null) {
+      newSecuredObject.setName(keyValueMap.get("name"));
+    }
+    if (keyValueMap.get("objectID")!=null) {
+      newSecuredObject.setObjectID(keyValueMap.get("objectID"));
+    }
+    if (keyValueMap.get("parentObjectID")!=null) {
+      securedObject.setParentObjectID(keyValueMap.get("parentObjectID"));
+    }
+
+    if (keyValueMap.get("orgName")!=null) {
+      Organization parentOrganization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.get("orgName"));
+      newSecuredObject.setOrganization(parentOrganization);
+    }
+    return securedObject;
+  }
 }
