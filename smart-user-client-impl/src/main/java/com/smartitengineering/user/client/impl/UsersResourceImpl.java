@@ -53,7 +53,7 @@ class UsersResourceImpl extends AbstractClientImpl implements UsersResource{
     ClientResponse response = ClientUtil.readClientResponse(uri, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
     //PaginatedFeedEntitiesList<Organization> pgs;
-    if (response.getStatus() != 401) {
+    if (response.getStatus() == 200) {
       Feed feed = ClientUtil.getFeed(response);
 
       entries = feed.getEntries();

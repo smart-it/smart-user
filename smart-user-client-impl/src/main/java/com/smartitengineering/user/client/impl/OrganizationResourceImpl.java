@@ -112,7 +112,7 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
 
     ClientResponse response = ClientUtil.readClientResponse(orgURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
-    if(response.getStatus() != 401){
+    if(response.getStatus() == 200){
 
       Feed feed = ClientUtil.getFeed(response);
 
