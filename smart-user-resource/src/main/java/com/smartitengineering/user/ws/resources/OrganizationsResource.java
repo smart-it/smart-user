@@ -106,6 +106,24 @@ public class OrganizationsResource extends AbstractResource {
   }
 
   @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/before/{beforeShortName}/frags")
+  public Response getBeforeHtmlFrags(@PathParam("beforeShortName") String beforeShortName){
+    ResponseBuilder responseBuilder = Response.ok();
+    if (count == null) {
+      count = 10;
+    }
+    Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
+        null, beforeShortName, true, count);
+    
+    
+    Viewable view = new Viewable("organizationFrags.jsp", organizations);
+    responseBuilder.entity(view);
+    
+    return responseBuilder.build();
+  }
+
+  @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Path("/after/{afterShortName}")
   public Response getAfter(@PathParam("afterShortName") String afterShortName) {
@@ -131,6 +149,25 @@ public class OrganizationsResource extends AbstractResource {
   }
 
   @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/after/{afterShortName}/frags")
+  public Response getAfterHtmlFrags(@PathParam("afterShortName") String afterShortName) {
+
+    ResponseBuilder responseBuilder = Response.ok();
+    if (count == null) {
+      count = 10;
+    }
+    Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
+        null, afterShortName, true, count);    
+
+    
+    Viewable view = new Viewable("organizationFrags.jsp", organizations);
+    responseBuilder.entity(view);
+        
+    return responseBuilder.build();
+  }
+
+  @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
     return get(null, true);
@@ -149,12 +186,32 @@ public class OrganizationsResource extends AbstractResource {
         uniqueShortName, uniqueShortName, true, count);
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
-//        servletRequest.setAttribute("templateContent", "/com/smartitengineering/user/ws/resources/OrganizationPrivilegeResource/OrgPrivilegeList.jsp");
     Viewable view = new Viewable("/template/template.jsp", organizations);
 
     responseBuilder.entity(view);
     return responseBuilder.build();
   }
+
+  @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/frags")
+  public Response getHtmlFrags() {
+    ResponseBuilder responseBuilder = Response.ok();
+
+    if (count == null) {
+      count = 10;
+    }
+
+    Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
+        uniqueShortName, uniqueShortName, true, count);
+    
+    Viewable view = new Viewable("organizationFrags.jsp", organizations);
+
+    responseBuilder.entity(view);
+    return responseBuilder.build();
+  }
+
+
 
 //    @GET
 //    @Produces(MediaType.APPLICATION_ATOM_XML)

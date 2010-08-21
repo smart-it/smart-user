@@ -99,6 +99,19 @@ public class OrganizationUsersResource extends AbstractResource {
   }
 
   @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/frags")
+  public Response getHtmlFrags() {
+    ResponseBuilder responseBuilder = Response.ok();
+    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName);
+
+    Viewable view = new Viewable("userList", users, OrganizationUsersResource.class);
+    responseBuilder.entity(view);
+    return responseBuilder.build();
+
+  }
+
+  @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Path("/before/{beforeUserName}")
   public Response getBefore(@PathParam("beforeUserName") String beforeUserName) {
@@ -119,6 +132,22 @@ public class OrganizationUsersResource extends AbstractResource {
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
     Viewable view = new Viewable("/template/template.jsp", users);
+    responseBuilder.entity(view);
+    return responseBuilder.build();
+  }
+
+  @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/before/{beforeUserName}/frags")
+  public Response getBeforeHtmlFrags(@PathParam("beforeUserName") String beforeUserName) {
+    ResponseBuilder responseBuilder = Response.ok();
+    if (count == null) {
+      count = 10;
+    }
+    Collection<User> users = Services.getInstance().getUserService().getUsers(
+        null, beforeUserName, true, count);
+
+    Viewable view = new Viewable("userFrags.jsp", users);
     responseBuilder.entity(view);
     return responseBuilder.build();
   }
@@ -145,6 +174,22 @@ public class OrganizationUsersResource extends AbstractResource {
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
     Viewable view = new Viewable("/template/template.jsp", users);
+    responseBuilder.entity(view);
+    return responseBuilder.build();
+  }
+
+  @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/after/{afterUserName}/frags")
+  public Response getAfterHtmlFrags(@PathParam("afterUserName") String afterUserName) {
+
+    ResponseBuilder responseBuilder = Response.ok();
+    if (count == null) {
+      count = 10;
+    }
+    Collection<User> users = Services.getInstance().getUserService().getUsers(
+        null, afterUserName, true, count);    
+    Viewable view = new Viewable("userFrags.jsp", users);
     responseBuilder.entity(view);
     return responseBuilder.build();
   }
