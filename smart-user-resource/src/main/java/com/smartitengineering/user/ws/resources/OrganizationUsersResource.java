@@ -93,11 +93,14 @@ public class OrganizationUsersResource extends AbstractResource {
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();    
 
+    if(count == null){
+      count = 10;
+    }
     Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName,
                                                                   organizationUniqueShortName, true, count);
 
     servletRequest.setAttribute("templateContent",
-                                "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
+                                "/com/smartitengineering/user/ws/resources/OrganizationUsersResource/userList.jsp");
     Viewable view = new Viewable("/template/template.jsp", users);
     
     responseBuilder.entity(view);
@@ -112,7 +115,7 @@ public class OrganizationUsersResource extends AbstractResource {
     ResponseBuilder responseBuilder = Response.ok();
     Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName);
 
-    Viewable view = new Viewable("userList", users, OrganizationUsersResource.class);
+    Viewable view = new Viewable("userFrags.jsp", users, OrganizationUsersResource.class);
     responseBuilder.entity(view);
     return responseBuilder.build();
 
@@ -137,7 +140,7 @@ public class OrganizationUsersResource extends AbstractResource {
         null, beforeUserName, true, count);
 
     servletRequest.setAttribute("templateContent",
-                                "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
+                                "/com/smartitengineering/user/ws/resources/OrganizationUsersResource/userList.jsp");
     Viewable view = new Viewable("/template/template.jsp", users);
     responseBuilder.entity(view);
     return responseBuilder.build();
@@ -179,7 +182,7 @@ public class OrganizationUsersResource extends AbstractResource {
     Collection<User> users = Services.getInstance().getUserService().getUsers(
         null, afterUserName, true, count);
     servletRequest.setAttribute("templateContent",
-                                "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
+                                "/com/smartitengineering/user/ws/resources/OrganizationUsersResource/userList.jsp");
     Viewable view = new Viewable("/template/template.jsp", users);
     responseBuilder.entity(view);
     return responseBuilder.build();
@@ -336,15 +339,24 @@ public class OrganizationUsersResource extends AbstractResource {
       newUser.setPassword(keyValueMap.get("password"));
     }
 
-    if (keyValueMap.get("uniqueShortName") != null) {
-      Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.
-          get("uniqueShortName"));
 
-      if (parentOrg != null) {
-        newUser.setOrganization(parentOrg);
+    Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationUniqueShortName);
 
-      }
+    if (parentOrg != null) {
+      newUser.setOrganization(parentOrg);
+      newUser.setParentOrganizationID(parentOrg.getId());
     }
+
+
+//    if (keyValueMap.get("uniqueShortName") != null) {
+//      Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.
+//          get("uniqueShortName"));
+//
+//      if (parentOrg != null) {
+//        newUser.setOrganization(parentOrg);
+//
+//      }
+//    }
 
     Person person = new Person();
     BasicIdentity self = new BasicIdentity();
