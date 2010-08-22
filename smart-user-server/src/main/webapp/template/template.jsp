@@ -26,6 +26,7 @@
   <script type="text/javascript" src="/script/jquery-1.4.2.js"></script>
   <script type="text/javascript" src="/script/jquery.validate.js"></script>
   <script type="text/javascript" src="/script/siteljquerylib.js"></script>
+  <script type="text/javascript" src="/script/script.js"></script>
 
   <script type="text/javascript">
 
@@ -81,7 +82,13 @@
 
 
 
-    url=window.location;
+    var url=window.location.toString();
+
+  var prevUrl = url;
+  url = url.replace("?","/frags?");
+  if(url == prevUrl)
+    url = url+"/frags";
+  alert(url);
     $("#tablecontentid").pagination(url,'#tablecontentid');
     $("#uniqueShortName").keyup(function(){
 
