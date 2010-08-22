@@ -18,6 +18,7 @@
     <c:set var="qParam" value="?count=${param.count}" />
   </c:otherwise>
 </c:choose>
+
 <div id="mainOrgPaginatedList" class="tableList">
   <c:forEach var="organization" items="${it}" varStatus="status">
     <c:if test="${status.first}">
@@ -37,3 +38,4 @@
   <div  class="list_navigation_links"><a href="/orgs/after/${last}${qParam}">next >></a> </div>
   <div class="list_navigation_links"><a href="/orgs/before/${first}${qParam}"><< previous</a></div>
 </div>
+
