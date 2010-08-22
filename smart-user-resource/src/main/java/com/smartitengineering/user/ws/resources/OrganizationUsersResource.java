@@ -89,13 +89,20 @@ public class OrganizationUsersResource extends AbstractResource {
   @GET
   @Produces(MediaType.TEXT_HTML)
   public Response getHtml() {
-    ResponseBuilder responseBuilder = Response.ok();
-    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName);
+    ResponseBuilder responseBuilder = Response.ok();    
+
+    if(count == null){
+      count = 10;
+    }
+    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName,
+                                                                  organizationUniqueShortName, true, count);
 
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/user/ws/resources/OrganizationUsersResource/userList.jsp");
 
-    Viewable view = new Viewable("/template/template.jsp", users, OrganizationUsersResource.class);
+    Viewable view = new Viewable("/template/template.jsp", users);
+    
+
     responseBuilder.entity(view);
     return responseBuilder.build();
 
@@ -330,15 +337,23 @@ public class OrganizationUsersResource extends AbstractResource {
       newUser.setPassword(keyValueMap.get("password"));
     }
 
-    if (keyValueMap.get("uniqueShortName") != null) {
-      Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.
-          get("uniqueShortName"));
+    Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationUniqueShortName);
 
-
-      if (parentOrg != null) {
-        newUser.setOrganization(parentOrg);
-      }
+    if (parentOrg != null) {
+      newUser.setOrganization(parentOrg);
+      newUser.setParentOrganizationID(parentOrg.getId());
     }
+
+
+//    if (keyValueMap.get("uniqueShortName") != null) {
+//      Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.
+//          get("uniqueShortName"));
+//
+//      if (parentOrg != null) {
+//        newUser.setOrganization(parentOrg);
+//
+//      }
+//    }
 
     Person person = new Person();
     BasicIdentity self = new BasicIdentity();
