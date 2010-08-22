@@ -4,7 +4,6 @@ jQuery.fn.pagination = function(url,id) {
   url = url.replace("?","/frags?");
   if(url == prevUrl)
     url = url+"/frags";
-  alert(url);
   $.ajax({
     type: "GET",
     url: url,

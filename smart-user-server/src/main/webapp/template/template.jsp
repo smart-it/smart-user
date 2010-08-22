@@ -19,6 +19,7 @@
   <link rel="Stylesheet" href="/css/style.css">
   <link rel="Stylesheet" href="/css/dashboardstyle.css">
   <link rel="Stylesheet" href="/css/organization-style.css">
+  <link rel="Stylesheet" href="/css/smart-list.css">
   <link rel="Stylesheet" href="/css/user-style.css">
   <link rel="Stylesheet" href="/css/smart-menu.css">
 
@@ -77,10 +78,6 @@
      
 
     $(document).ready(function(){
-       
-
-
-
     url=window.location;
     $("#tablecontentid").pagination(url,'#tablecontentid');
     $("#uniqueShortName").keyup(function(){
