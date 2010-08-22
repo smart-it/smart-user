@@ -15,8 +15,6 @@ root {
     display: block;
 }
 
-/*Showing list of organizations*/
-
 #showList{
   width: auto;
 }
@@ -88,7 +86,10 @@ root {
   font-style: oblique;
   text-decoration: none;
   color: #333399;
+}
 
+.orgName_column a:hover{
+  color: orange;
 }
 
 .orgShortName_column{
@@ -107,6 +108,10 @@ root {
   color: #333399;
 }
 
+.orgShortName_column a:hover{
+  color: orange;
+}
+
 .navigation_container{
   padding: 10px 10px 2px 2px;
 
@@ -117,4 +122,13 @@ root {
   float: right;
   width: 12%;
   /*border: 1px solid;*/
+}
+
+.list_navigation_links a{
+  text-decoration: none;
+}
+
+.list_navigation_links a:hover{
+  color: #FF0000;
+  font-weight:bolder;
 }
