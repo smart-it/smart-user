@@ -39,6 +39,7 @@
   <div id="leftmenu_body">
     <ul>
       <li><a href="javascript: Orgpageselect()"><fmt:message key="org.tablehead4"/></a></li>
+      <li><a href="http://localhost:9090/orgs">OrganizationList</a></li>
     </ul></div>
 </div>
 

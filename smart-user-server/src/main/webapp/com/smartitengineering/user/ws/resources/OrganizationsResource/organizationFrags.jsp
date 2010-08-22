@@ -19,7 +19,7 @@
   </c:otherwise>
 </c:choose>
 
-<div id="mainOrgPaginatedList" class="table">
+<div id="mainOrgPaginatedList" class="tableList">
   <c:forEach var="organization" items="${it}" varStatus="status">
     <c:if test="${status.first}">
       <c:set var="first" value="${organization.uniqueShortName}"></c:set>
@@ -27,14 +27,15 @@
     <c:if test="${status.last}">
       <c:set var="last" value="${organization.uniqueShortName}"></c:set>
     </c:if>
-    <div id="row${status.index}" class="row">
-      <div id="orgShortName${status.index}" class="orgShortName column"><a href="/orgs/shortname/${organization.uniqueShortName}">${organization.uniqueShortName}</a></div>
-      <div id="orgName${status.index}" class="orgName column"><a href="/orgs/shortname/${organization.uniqueShortName}">${organization.name}</a></div>
+    <div id="row${status.index}" class="row_of_list">
+      <div id="orgName${status.index}" class="orgName_column"><a href="/orgs/shortname/${organization.uniqueShortName}">${organization.name}</a></div>
+      <div id="orgShortName${status.index}" class="orgShortName_column"><a href="/orgs/shortname/${organization.uniqueShortName}">${organization.uniqueShortName}</a></div>
     </div>
   </c:forEach>   
 </div>
 
-<div>  
-  <div><a href="/orgs/before/${first}${qParam}"><<</a></div>
-  <div><a href="/orgs/after/${last}${qParam}">>></a> </div>
+<div class="navigation_container">
+  <div><a href="/orgs/before/${first}${qParam}" class="list_navigation_links"><< previous</a></div>
+  <div><a href="/orgs/after/${last}${qParam}" class="list_navigation_links">next >></a> </div>
 </div>
+

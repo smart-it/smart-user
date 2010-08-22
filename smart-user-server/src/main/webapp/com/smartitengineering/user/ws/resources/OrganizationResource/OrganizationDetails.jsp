@@ -18,9 +18,10 @@
   <div id="leftmenu_body">
   <ul>
 
-    <a href="javascript: Orgpageselect()"><li>Edit</li></a>
-    <a href="#"><li>Delete</li></a>
-    <a href="/orgs/${it.uniqueShortName}/users"><li>UserList</li></a>
+    <li><a href="javascript: Orgpageselect()">Edit</a></li>
+    <li><a href="#">Delete</a></li>
+    <li><a href="/orgs/${it.uniqueShortName}/users">UserList</a></li>
+    <li><a href="http://localhost:9090/orgs">OrganizationList</a></li>
 
   </ul>
   </div>
