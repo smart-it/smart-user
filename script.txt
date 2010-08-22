@@ -11,3 +11,4 @@ curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:applica
 curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"username":"saumitra","password":"saumitra123","parentOrganizationID":"2"}'
 
 
+

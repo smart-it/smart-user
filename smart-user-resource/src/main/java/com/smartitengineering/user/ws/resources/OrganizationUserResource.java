@@ -236,6 +236,7 @@ public class OrganizationUserResource extends AbstractResource {
 
     if (keyValueMap.get("version") != null) {
       newUser.setVersion(Integer.valueOf(keyValueMap.get("version")));
+
     }
 
     if (keyValueMap.get("userName") != null) {

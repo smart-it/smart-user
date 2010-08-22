@@ -290,40 +290,50 @@ root {
 
 
 .tablehead_label{
-    font-family: sans-serif;
-    font-size: 7pt;
-    font-weight: bold;
-    color:#333366;
+  font-family: sans-serif;
+  font-size: 7pt;
+  font-weight: bold;
+  color:#333366;
 }
 
 .tablecontent_label{
-    font-family: sans-serif;
-    font-size: 10pt;
-    font-weight: 400;
-    font-style: oblique;
-    text-decoration: none;
-    color: #333399;
+  font-family: sans-serif;
+  font-size: 10pt;
+  font-weight: 400;
+  font-style: oblique;
+  text-decoration: none;
+  color: #333399;
 }
+
 #uniqueShortName2
 {
-    font-family: sans-serif;
-    font-size: 10pt;
-    font-weight: 400;
-    font-style: oblique;
-    text-decoration: none;
-    color: #333399;
+  font-family: sans-serif;
+  font-size: 10pt;
+  font-weight: 400;
+  font-style: oblique;
+  text-decoration: none;
+  color: #333399;
 }
-#alert
+
+#alertbuttoncontainer{
+  float: left;
+  width: 20%;
+  }
+#alertcontainer
 {
-    font-family: sans-serif;
-    font-size: 10pt;
-    font-weight: 400;
-    font-style: oblique;
-    text-decoration: none;
-    color: #333399;
-}
+  float: left;
+  width: 75%;
+  padding-top: 3px;
+  text-align: left;
+  text-decoration: none;
+  }
+
 #alertlabel{
-    color: #333399;
+  font-family: sans-serif;
+  font-size: 10pt;
+  font-weight: 400;
+  font-style: oblique;
+  color: #FF3333;
 }
 .individual_org_label{
   float: left;
@@ -361,64 +371,4 @@ root {
 
 .clear{
   clear: both;
-}
-
-/*MENU*/
-
-#leftmenu{
-  /*background-image: url(/images/top.jpg);*/
-  /*background-repeat:repeat;*/
-  /*background-position: top left;*/
-  margin: 10px 5px 5px 5px;
-  text-align: right;
-  height:auto;
-}
-
-#leftmenu_header{
-  padding:4px 0px 0px 4px;
-  text-align: center;
-  color: #23819C;
-  font-weight: bold;
-  background-image: url(/images/top.jpg);
-  height: 25px;
-  border: 1px solid;
-  border-color: #FFFFFF;
-}
-
-#leftmenu_header label{
-  font-family: sans-serif, tahoma, verdana;
-}
-
-#leftmenu_body{
-  background-color:#736F6E;
-  background-image: url(/images/top.jpg);
-  background-repeat: repeat;
-  background-position:bottom left;
-  border: 1px solid;
-  border-color: #FFFFFF;
-
-}
-
-#leftmenu ul{
-  padding:0px 6px 15px 50px;
-  text-align: left;
-}
-
-#leftmenu ul li{
-  list-style:  url(../images/arrow.gif) outside;
-  color:#E8C6FF;
-
-  border-bottom: #0000CC 1px solid;
-  line-height:25px;
-  width:80px;
-
-
-}
-#leftmenu ul li a{
-  font-family: sans-serif, tahoma, verdana;
-  font-weight: bold;
-  color:#23819C;
-  font-size: 11pt;
-  text-decoration: none;
-
 }

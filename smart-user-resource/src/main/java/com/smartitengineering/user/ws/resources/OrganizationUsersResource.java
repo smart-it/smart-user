@@ -50,6 +50,7 @@ import org.apache.commons.lang.StringUtils;
 @Path("/orgs/{uniqueShortName}/users")
 public class OrganizationUsersResource extends AbstractResource {
 
+
   static final UriBuilder ORGANIZATION_USERS_URI_BUILDER;
   static final UriBuilder ORGANIZATION_USERS_BEFORE_USERNAME_URI_BUILDER;
   static final UriBuilder ORGANIZATION_USERS_AFTER_USERNAME_URI_BUILDER;
@@ -61,6 +62,7 @@ public class OrganizationUsersResource extends AbstractResource {
     try {
       ORGANIZATION_USERS_AFTER_USERNAME_URI_BUILDER.path(OrganizationUsersResource.class.getMethod("getAfter",
                                                                                                    String.class));
+
     }
     catch (Exception ex) {
       ex.printStackTrace();
@@ -335,7 +337,6 @@ public class OrganizationUsersResource extends AbstractResource {
     }
 
     if (keyValueMap.get("uniqueShortName") != null) {
-
       Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.
           get("uniqueShortName"));
 

@@ -140,7 +140,7 @@ public class OrganizationsResource extends AbstractResource {
       count = 10;
     }
     Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
-        null, afterShortName, true, count);
+        null, afterShortName, false, count);
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
     Viewable view = new Viewable("/template/template.jsp", organizations);
@@ -158,7 +158,7 @@ public class OrganizationsResource extends AbstractResource {
       count = 10;
     }
     Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
-        null, afterShortName, true, count);    
+        null, afterShortName, false, count);
 
     
     Viewable view = new Viewable("organizationFrags.jsp", organizations);
