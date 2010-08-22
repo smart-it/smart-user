@@ -34,6 +34,6 @@
 </div>
 
 <div class="navigation_container">
-  <div><a href="/orgs/before/${first}${qParam}" class="list_navigation_links"><< previous</a></div>
-  <div><a href="/orgs/after/${last}${qParam}" class="list_navigation_links">next >></a> </div>
+  <div  class="list_navigation_links"><a href="/orgs/after/${last}${qParam}">next >></a> </div>
+  <div class="list_navigation_links"><a href="/orgs/before/${first}${qParam}"><< previous</a></div>
 </div>

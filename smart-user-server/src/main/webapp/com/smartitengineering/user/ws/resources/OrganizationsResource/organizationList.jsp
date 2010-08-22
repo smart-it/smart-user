@@ -50,14 +50,7 @@
 
     </div>
         
-        <div class="tablecontentname" id="tablecontentid"></div>
-
-    <div class="clear"></div>
-
-    <div id="tablecontentlink_of_next" ></div>
-    <div id="tablecontentlink_of_previous" ></div>
-
-    <div class="clear"></div>
+    <div class="tablecontentname" id="tablecontentid"></div>
 
 </div>
 
