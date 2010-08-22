@@ -1,6 +1,4 @@
 jQuery.fn.pagination = function(url,id) {
-  alert(url);
-  alert(id)
   $.ajax({
     type: "GET",
     url: url,

@@ -14,13 +14,14 @@
 <%@page import="com.smartitengineering.user.domain.Organization"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+  "http://www.w3.org/TR/html4/loose.dtd">
 
 <div id="leftmenu">
   <div id="leftmenu_header">User-Creation</div>
   <div id="leftmenu_body">
     <ul>
       <li><a href="javascript: Orgpageselect()">Create</a></li>
+      <li><a href="http://localhost:9090/orgs">OrganizationList</a></li>
     </ul>
   </div>
 </div>
@@ -32,36 +33,36 @@
 
 <div class="show" id="showList">
 
-        <div id="title_of_organization_users">
-          <label><fmt:message key="org.usrtitle"/></label>
-      </div>
+  <div id="title_of_organization_users">
+    <label><fmt:message key="org.usrtitle"/></label>
+  </div>
 
 
   <div id="top_row">
 
-    <%--<div id="userslist">--%>
+    <div class="tableheadname_user">
+      <label class="tablehead_label"><fmt:message key="org.usrtablehead1"/></label>
+    </div>
 
-      <div class="tableheadname_user">
-        <label class="tablehead_label"><fmt:message key="org.usrtablehead1"/></label>
-      </div>
+    <div class="tableheadname_user">
+      <label class="tablehead_label"><fmt:message key="org.usrtablehead2"/></label>
+    </div>
 
-      <div class="tableheadname_user">
-        <label class="tablehead_label"><fmt:message key="org.usrtablehead2"/></label>
-      </div>
-
-    <%--</div>--%>
   </div>
 
 
   <div id="tablecontentid">
 
 
-    
+
   </div>
 
+  <div class="clear"></div>
 
   <div id="tablecontentlink_of_next_user"></div>
   <div id="tablecontentlink_of_prev_user"></div>
+  
+  <div class="clear"></div>
 
   
 
@@ -75,42 +76,46 @@
     <label>Users Entry</label>
   </div>
 
-<div id="form_organizationentry">
-  <form action="" accept="application/json" enctype="" id="userform" method="post">
-    
-    <div class="inner-left-label"><label><fmt:message key="org.usrinput1"/></label></div>
-    <div class="inner-right-text"><input type="text" name="name" id="fname" class="textfield"></div>
-    <div class="clear"></div>
 
-    <div class="inner-left-label"><label><fmt:message key="org.usrinput2"/></label></div>
-    <div class="inner-right-text"><input type="text" name="midName" id="mname" class="textfield"></div>
-    <div class="clear"></div>
+  <div id="form_organizationentry">
+    <form action="" accept="application/json" enctype="" id="userform" method="post">
 
-    <div class="inner-left-label"><label><fmt:message key="org.usrinput3"/></label></div>
-    <div class="inner-right-text"><input type="text" name="lastName" id="lname" class="textfield"></div>
-    <div class="clear"></div>
-
-    <div class="inner-left-label"><label><fmt:message key="org.usrtablehead2"/></label></div>
-    <div class="inner-right-text"><input type="text" name="userName" id="uname" class="textfield"></div>
-    <div class="clear"></div>
-
-    <div class="inner-left-label"><label><fmt:message key="org.usrinput4"/></label></div>
-    <div class="inner-right-text"><input id="password" type="password" name="password" class="textfield"></div>
-    <div class="clear"></div>
+      <div class="inner-left-label"><label><fmt:message key="org.usrinput1"/></label></div>
+      <div class="inner-right-text"><input type="text" name="name" id="fname" class="textfield"></div>
+      <div class="clear"></div>
 
 
-    <div class="inner-left-label"><label><fmt:message key="org.usrinput7"/></label></div>
-    <div class="inner-right-text"><input id="confirmPassword" type="password" name="confirmPassword" class="textfield"></div>
-    <div class="clear"></div>
+      <div class="inner-left-label"><label><fmt:message key="org.usrinput2"/></label></div>
+      <div class="inner-right-text"><input type="text" name="midName" id="mname" class="textfield"></div>
+      <div class="clear"></div>
 
-    <div class="inner-left-label"><label><fmt:message key="org.usrinput5"/></label></div>
-    <div class="inner-right-text"><input type="text" name="phone" id="phone" class="textfield"></div>
-    <div class="clear"></div>
+      <div class="inner-left-label"><label><fmt:message key="org.usrinput3"/></label></div>
+      <div class="inner-right-text"><input type="text" name="lastName" id="lname" class="textfield"></div>
+      <div class="clear"></div>
 
-    <div id="btnfield"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submitbtn" type="submit" class="submit" value="submit"></div>
-    <div class="clear"></div>
-  </form>
-  
-</div>
+
+      <div class="inner-left-label"><label><fmt:message key="org.usrtablehead2"/></label></div>
+      <div class="inner-right-text"><input type="text" name="userName" id="fname" class="textfield"></div>
+      <div class="clear"></div>
+
+
+      <div class="inner-left-label"><label><fmt:message key="org.usrinput4"/></label></div>
+      <div class="inner-right-text"><input id="password" type="password" name="password" class="textfield"></div>
+      <div class="clear"></div>
+
+
+      <div class="inner-left-label"><label><fmt:message key="org.usrinput7"/></label></div>
+      <div class="inner-right-text"><input id="confirmPassword" type="password" name="confirmPassword" class="textfield"></div>
+      <div class="clear"></div>
+
+      <div class="inner-left-label"><label><fmt:message key="org.usrinput5"/></label></div>
+      <div class="inner-right-text"><input type="text" name="phone" id="phone" class="textfield"></div>
+      <div class="clear"></div>
+
+      <div id="btnfield"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submitbtn" type="submit" class="submit" value="submit"></div>
+      <div class="clear"></div>
+    </form>
+
+  </div>
 
 </div>

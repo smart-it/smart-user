@@ -1,0 +1,120 @@
+/* 
+    Document   : smart-list
+    Created on : Aug 22, 2010, 1:52:11 PM
+    Author     : uzzal
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+/*Showing list of organizations*/
+
+#showList{
+  width: auto;
+}
+
+.header_of_list{
+  background-color: #CCCCFF;
+  height: 30px;
+  text-align: center;
+  }
+
+.header_of_list label{
+  font-family: sans-serif;
+  font-size: 14pt;
+  font-weight: bold;
+  font-variant: normal;
+  text-align: center;
+  text-decoration: none;
+  color: #333366;
+}
+
+
+.tableheadname{
+  text-align: left;
+  float: left;
+  width: 50%;
+}
+
+.tablehead_label{
+  font-family: sans-serif;
+  font-size: 10pt;
+  font-weight: bold;
+  color:#333366;
+  float: left;
+}
+
+.list_column_names{
+  height: 20px;
+  background-color: #cbd0c8;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 20px;
+}
+
+.tablecontentname{
+  text-align:left;
+  float: left;
+  width: 100%;
+}
+
+.row_of_list{
+  padding: 10px 0px 0px 0px;
+  width: 100%;
+  height: 25px;
+  border-color:#009999;
+  border-bottom-style: double;
+}
+
+.orgName_column{
+  padding-left: 20px;
+  text-align: left;
+  float: left;
+  width: 45%;
+}
+
+.orgName_column a{
+  font-family: sans-serif;
+  font-size: 10pt;
+  font-weight: 400;
+  font-style: oblique;
+  text-decoration: none;
+  color: #333399;
+
+}
+
+.orgShortName_column{
+  padding-left: 25px;
+  text-align: left;
+  float: left;
+  width: 45%;
+}
+
+.orgShortName_column a{
+  font-family: sans-serif;
+  font-size: 10pt;
+  font-weight: 400;
+  font-style: oblique;
+  text-decoration: none;
+  color: #333399;
+}
+
+.navigation_container{
+  padding: 10px 10px 2px 2px;
+
+}
+
+.list_navigation_links{
+  text-align: center;
+  float: right;
+  width: 12%;
+  /*border: 1px solid;*/
+}

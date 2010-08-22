@@ -74,6 +74,8 @@ public class RolesResource extends AbstractResource{
         return get(roleName, false);
     }
 
+
+
     @GET
     @Produces(MediaType.APPLICATION_ATOM_XML)
     @Path("/before/{roleName}")
