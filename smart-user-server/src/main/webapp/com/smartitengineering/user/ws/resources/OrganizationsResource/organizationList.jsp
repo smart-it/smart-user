@@ -22,6 +22,7 @@
     <div id="leftmenu_body">
         <ul>
             <li><a href="javascript: Orgpageselect()">Create</a></li>
+            <li><a href="http://localhost:9090/orgs">OrganizationList</a></li>
         </ul>
     </div>
 </div>
@@ -32,7 +33,6 @@
 
 
 <div class="show" id="showList">
-
 
     <div id="title_of_organization">
         <label><fmt:message key="org.title"/></label>
@@ -59,14 +59,12 @@
 
     </div>
 
-
-
+    <div class="clear"></div>
 
     <div id="tablecontentlink_of_next" ></div>
     <div id="tablecontentlink_of_previous" ></div>
 
     <div class="clear"></div>
-
 
 </div>
 

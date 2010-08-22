@@ -38,16 +38,17 @@ body{
 }
 
 #sitel_logo{
+  padding-left:0px;
 
 }
 
 #sitel_slogan{
-  padding-left: 23px;
+  padding-left: 0px;
 }
 
 #sitel_slogan label{
   font-family: verdana, tahoma;
-  font-size: 15pt;
+  font-size: 12pt;
   font-weight:  bolder;
   font-style: oblique;
   letter-spacing: 1px;
@@ -55,7 +56,7 @@ body{
 }
 
 #img-sitel-logo{
-  width: 300px;
+  width: 200px;
   height: 50px;
 }
 
