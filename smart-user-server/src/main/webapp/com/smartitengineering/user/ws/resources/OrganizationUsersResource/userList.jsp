@@ -55,12 +55,13 @@
 
   <div id="userlist">
 
-     
+
     
   </div>
 
 
-  <div id="teblecontentlink"></div>
+  <div id="tablecontentlink_of_next_user"></div>
+  <div id="tablecontentlink_of_prev_user"></div>
 
   
 

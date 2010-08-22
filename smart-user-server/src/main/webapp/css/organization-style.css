@@ -290,41 +290,50 @@ root {
 
 
 .tablehead_label{
-    font-family: sans-serif;
-    font-size: 7pt;
-    font-weight: bold;
-    color:#333366;
+  font-family: sans-serif;
+  font-size: 7pt;
+  font-weight: bold;
+  color:#333366;
 }
 
 .tablecontent_label{
-    font-family: sans-serif;
-    font-size: 10pt;
-    font-weight: 400;
-    font-style: oblique;
-    text-decoration: none;
-    color: #333399;
+  font-family: sans-serif;
+  font-size: 10pt;
+  font-weight: 400;
+  font-style: oblique;
+  text-decoration: none;
+  color: #333399;
 }
 
 #uniqueShortName2
 {
-    font-family: sans-serif;
-    font-size: 10pt;
-    font-weight: 400;
-    font-style: oblique;
-    text-decoration: none;
-    color: #333399;
+  font-family: sans-serif;
+  font-size: 10pt;
+  font-weight: 400;
+  font-style: oblique;
+  text-decoration: none;
+  color: #333399;
 }
-#alert
+
+#alertbuttoncontainer{
+  float: left;
+  width: 20%;
+  }
+#alertcontainer
 {
-    font-family: sans-serif;
-    font-size: 10pt;
-    font-weight: 400;
-    font-style: oblique;
-    text-decoration: none;
-    color: #333399;
-}
+  float: left;
+  width: 75%;
+  padding-top: 3px;
+  text-align: left;
+  text-decoration: none;
+  }
+
 #alertlabel{
-    color: #333399;
+  font-family: sans-serif;
+  font-size: 10pt;
+  font-weight: 400;
+  font-style: oblique;
+  color: #FF3333;
 }
 .individual_org_label{
   float: left;

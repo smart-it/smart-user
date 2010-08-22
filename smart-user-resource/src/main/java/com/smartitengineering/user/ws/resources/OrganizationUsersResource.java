@@ -107,7 +107,7 @@ public class OrganizationUsersResource extends AbstractResource {
   public Response getHtmlFrags() {
     ResponseBuilder responseBuilder = Response.ok();
     Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName);
-    
+
     Viewable view = new Viewable("userFrags.jsp", users, OrganizationUsersResource.class);
     responseBuilder.entity(view);
     return responseBuilder.build();
@@ -330,13 +330,15 @@ public class OrganizationUsersResource extends AbstractResource {
       newUser.setPassword(keyValueMap.get("password"));
     }
 
+    if (keyValueMap.get("uniqueShortName") != null) {
+      Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.
+          get("uniqueShortName"));
 
-    Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(
-        organizationUniqueShortName);
-    if (parentOrg != null) {
-      newUser.setOrganization(parentOrg);
+
+      if (parentOrg != null) {
+        newUser.setOrganization(parentOrg);
+      }
     }
-
 
     Person person = new Person();
     BasicIdentity self = new BasicIdentity();
@@ -482,7 +484,8 @@ public class OrganizationUsersResource extends AbstractResource {
   }
 
   @POST
-  public Response post(@HeaderParam("Content-type") String contentType, String message) {
+  public Response post(
+      @HeaderParam("Content-type") String contentType, String message) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
 
     if (StringUtils.isBlank(message)) {
@@ -491,6 +494,7 @@ public class OrganizationUsersResource extends AbstractResource {
     }
 
     final boolean isHtmlPost;
+
     if (StringUtils.isBlank(contentType)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
       isHtmlPost = false;
@@ -498,6 +502,7 @@ public class OrganizationUsersResource extends AbstractResource {
     else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
       isHtmlPost = true;
+
       try {
         //Will search for the first '=' if not found will take the whole string
         final int startIndex = 0;//message.indexOf("=") + 1;
@@ -505,6 +510,7 @@ public class OrganizationUsersResource extends AbstractResource {
         final String realMsg = message.substring(startIndex);
         //Decode the message to ignore the form encodings and make them human readable
         message = URLDecoder.decode(realMsg, "UTF-8");
+
       }
       catch (UnsupportedEncodingException ex) {
         ex.printStackTrace();
@@ -517,8 +523,10 @@ public class OrganizationUsersResource extends AbstractResource {
 
     if (isHtmlPost) {
       UserPerson userPerson = getObjectFromContent(message);
+
       if (userPerson.getPerson().isValid()) {
         Services.getInstance().getUserPersonService().create(userPerson);
+
       }
       else {
         Services.getInstance().getUserService().save(userPerson.getUser());
