@@ -92,7 +92,10 @@ public class OrganizationUsersResource extends AbstractResource {
     ResponseBuilder responseBuilder = Response.ok();
     Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName);
 
-    Viewable view = new Viewable("userList", users, OrganizationUsersResource.class);
+    servletRequest.setAttribute("templateContent",
+                                "/com/smartitengineering/user/ws/resources/OrganizationUsersResource/userList.jsp");
+
+    Viewable view = new Viewable("/template/template.jsp", users, OrganizationUsersResource.class);
     responseBuilder.entity(view);
     return responseBuilder.build();
 
@@ -104,8 +107,8 @@ public class OrganizationUsersResource extends AbstractResource {
   public Response getHtmlFrags() {
     ResponseBuilder responseBuilder = Response.ok();
     Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName);
-
-    Viewable view = new Viewable("userList", users, OrganizationUsersResource.class);
+    
+    Viewable view = new Viewable("userFrags.jsp", users, OrganizationUsersResource.class);
     responseBuilder.entity(view);
     return responseBuilder.build();
 
@@ -130,7 +133,7 @@ public class OrganizationUsersResource extends AbstractResource {
         null, beforeUserName, true, count);
 
     servletRequest.setAttribute("templateContent",
-                                "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
+                                "/com/smartitengineering/user/ws/resources/OrganizationUsersResource/userList.jsp");
     Viewable view = new Viewable("/template/template.jsp", users);
     responseBuilder.entity(view);
     return responseBuilder.build();
@@ -171,7 +174,7 @@ public class OrganizationUsersResource extends AbstractResource {
     Collection<User> users = Services.getInstance().getUserService().getUsers(
         null, afterUserName, true, count);
     servletRequest.setAttribute("templateContent",
-                                "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
+                                "/com/smartitengineering/user/ws/resources/OrganizationUsersResource/userList.jsp");
     Viewable view = new Viewable("/template/template.jsp", users);
     responseBuilder.entity(view);
     return responseBuilder.build();

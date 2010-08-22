@@ -138,7 +138,7 @@
 
 
 
-                $("#uniqueShortName2").click(function(){
+$("#uniqueShortName").blur(function(){
 
                     var usn =$("#uniqueShortName").val();
 
@@ -155,6 +155,12 @@
                         }
 
                     });
+
+                    $(organizationform).validate({
+                      rules: {
+                       uniqueShortName: "required"
+                      }
+                    })
 
 
                 });
@@ -176,23 +182,31 @@
         <!-- ROCKY -->
          <script type="text/javascript">
             $(document).ready(function(){
+              
 
                     $.ajax({
 
 
                         type: "GET",
-                        url: window.location+"/frags",
+                        url: window.location+ "/frags",
                         datatype: "text/html",
 
                         success: function(html){
                            alert(html);
                            $("#userlist").html(html);
 
-                        }
+                        },
+                        error: function(xhr){
+                        alert(window.location);
+                        alert(xhr.status);
+
+                       }
+
 
 
                     });
 
+                    
                      $("#userform").validate({
                                rules: {
                                    name: "required",

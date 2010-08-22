@@ -86,6 +86,8 @@ public class OrganizationResource extends AbstractResource {
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
 
+
+
     Viewable view = new Viewable("OrganizationDetails", organization, OrganizationResource.class);
     responseBuilder.entity(view);
     return responseBuilder.build();

@@ -13,6 +13,6 @@
 <div class="" id="">
   <c:forEach var="user" items="${it}">
     <div id=""><c:out value="${user.id}" /></div>
-    <div id=""><c:out value="${user.usernsme}" /></div>
+    <div id=""><c:out value="${user.username}" /></div>
   </c:forEach>
 </div>
