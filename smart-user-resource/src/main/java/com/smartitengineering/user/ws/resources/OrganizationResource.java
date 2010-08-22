@@ -44,6 +44,9 @@ public class OrganizationResource extends AbstractResource {
   static final UriBuilder ORGANIZATION_URI_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
   static final UriBuilder ORGANIZATION_CONTENT_URI_BUILDER;
 
+  @Context
+  private HttpServletRequest servletRequest;
+
   static {
     ORGANIZATION_CONTENT_URI_BUILDER = ORGANIZATION_URI_BUILDER.clone();
     try {
@@ -86,7 +89,11 @@ public class OrganizationResource extends AbstractResource {
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
 
-    Viewable view = new Viewable("OrganizationDetails", organization, OrganizationResource.class);
+    servletRequest.setAttribute("templateContent",
+                                "/com/smartitengineering/user/ws/resources/OrganizationResource/OrganizationDetails.jsp");
+    Viewable view = new Viewable("/template/template.jsp", organization);
+
+    //Viewable view = new Viewable("OrganizationDetails", organization, OrganizationResource.class);
     responseBuilder.entity(view);
     return responseBuilder.build();
   }
@@ -200,6 +207,10 @@ public class OrganizationResource extends AbstractResource {
 
     if (keyValueMap.get("city") != null) {
       address.setCity(keyValueMap.get("city"));
+    }
+
+    if (keyValueMap.get("streetAddress") != null) {
+      address.setCity(keyValueMap.get("streetAddress"));
     }
 
     if (keyValueMap.get("country") != null) {
