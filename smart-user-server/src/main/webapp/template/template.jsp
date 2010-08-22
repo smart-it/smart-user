@@ -181,51 +181,12 @@
 
 
                         type: "GET",
-                        url: window.location,
-                        datatype: "xml",
+                        url: window.location+"/frags",
+                        datatype: "text/html",
 
-                        success: function(xml){
-                            var contenttitle="";
-                            var contentid = "";
-                            $(xml).find('entry').each(function(){
-                                var title = $(this).find('title').text();
-
-                                var id = $(this).find('id').text();
-                                var link = $(this).find('link').attr('href');
-
-                                contenttitle += "<div class=\"title\"><a href="+ link +">" + title + "</a>";
-                                //alert(contenttitle)
-
-                                contentid += "<div class=\"id\">" + id + "</div>";
-
-                            });
-                            $("#tablecontentname-user").html(contenttitle);
-                            $("#tablecontentid-user").html(contentid);
-
-                            var linkvalue="";
-                             $(xml).find('link').each(function(){
-
-                                    var nextlink = $(this).attr("rel");
-
-                                    if(nextlink=='next')
-                                    {
-
-                                        var href = $(this).attr("href");
-                                        linkvalue += "<a href=\"" +href+ "\">"+nextlink+"\t</a>";
-                                        $("#teblecontentlink").html(linkvalue);
-
-                                        
-                                        
-
-                                    }
-                                    if(nextlink=='previous')
-                                    {
-                                        var href = $(this).attr("href");
-
-                                        linkvalue += "<a href=\""+href+"\">\t"+nextlink+"</a>";
-                                        $("#teblecontentlink").html(linkvalue);
-                                    }
-                                });
+                        success: function(html){
+                           alert(html);
+                           $("#userlist").html(html);
 
                         }
 

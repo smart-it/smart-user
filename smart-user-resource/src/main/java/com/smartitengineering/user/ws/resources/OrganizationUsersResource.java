@@ -152,7 +152,6 @@ public class OrganizationUsersResource extends AbstractResource {
     return responseBuilder.build();
   }
 
-
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Path("/after/{afterUserName}")
@@ -188,7 +187,7 @@ public class OrganizationUsersResource extends AbstractResource {
       count = 10;
     }
     Collection<User> users = Services.getInstance().getUserService().getUsers(
-        null, afterUserName, true, count);    
+        null, afterUserName, true, count);
     Viewable view = new Viewable("userFrags.jsp", users);
     responseBuilder.entity(view);
     return responseBuilder.build();
@@ -302,7 +301,6 @@ public class OrganizationUsersResource extends AbstractResource {
     return responseBuilder.build();
   }
 
-
   private UserPerson getObjectFromContent(String message) {
 
 
@@ -329,15 +327,13 @@ public class OrganizationUsersResource extends AbstractResource {
       newUser.setPassword(keyValueMap.get("password"));
     }
 
-    if (keyValueMap.get("uniqueShortName") != null) {
-      Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(
-          organizationUniqueShortName);
 
-      if (parentOrg != null) {
-        newUser.setOrganization(parentOrg);
-
-      }
+    Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(
+        organizationUniqueShortName);
+    if (parentOrg != null) {
+      newUser.setOrganization(parentOrg);
     }
+
 
     Person person = new Person();
     BasicIdentity self = new BasicIdentity();
@@ -528,5 +524,4 @@ public class OrganizationUsersResource extends AbstractResource {
     }
     return responseBuilder.build();
   }
-
 }
