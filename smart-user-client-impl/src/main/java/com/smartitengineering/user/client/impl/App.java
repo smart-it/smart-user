@@ -23,11 +23,14 @@ public class App
         LoginCenter.setUsername("smartadmin@smart-user");
         LoginCenter.setPassword("02040250204039");
 
+
         RootResource rootResource = RootResourceImpl.getInstance();
 
         
 
         LoginResource loginResource = rootResource.performAuthentication("smartadmin@smart-user", "russel");
+
+        loginResource.getAclAuthorizationResource("smartadmin", "smart-user", "/orgs", 4);
 
         OrganizationsResource organizationsResource = loginResource.getOrganizationsResource();
         
