@@ -89,10 +89,15 @@ public class OrganizationUsersResource extends AbstractResource {
   @GET
   @Produces(MediaType.TEXT_HTML)
   public Response getHtml() {
-    ResponseBuilder responseBuilder = Response.ok();
-    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName);
+    ResponseBuilder responseBuilder = Response.ok();    
 
-    Viewable view = new Viewable("userList", users, OrganizationUsersResource.class);
+    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName,
+                                                                  organizationUniqueShortName, true, count);
+
+    servletRequest.setAttribute("templateContent",
+                                "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
+    Viewable view = new Viewable("/template/template.jsp", users);
+    
     responseBuilder.entity(view);
     return responseBuilder.build();
 
