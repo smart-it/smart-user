@@ -18,7 +18,7 @@
     <c:set var="qParam" value="?count=${param.count}" />
   </c:otherwise>
 </c:choose>
-<div>
+<div id="mainOrgPaginatedList" class="table">
   <c:forEach var="organization" items="${it}" varStatus="status">
     <c:if test="${status.first}">
       <c:set var="first" value="${organization.uniqueShortName}"></c:set>
@@ -26,9 +26,9 @@
     <c:if test="${status.last}">
       <c:set var="last" value="${organization.uniqueShortName}"></c:set>
     </c:if>
-    <div>
-      <div><c:out value="${organization.name}"/></div>
-      <div><c:out value="${organization.uniqueShortName}"/></div>
+    <div id="row${status.index}" class="row">
+      <div id="orgShortName${status.index}" class="orgShortName column"><a href="/orgs/shortname/${organization.uniqueShortName}">${organization.uniqueShortName}</a></div>
+      <div id="orgName${status.index}" class="orgName column"><a href="/orgs/shortname/${organization.uniqueShortName}">${organization.name}</a></div>
     </div>
   </c:forEach>   
 </div>
