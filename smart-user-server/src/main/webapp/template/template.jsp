@@ -155,7 +155,16 @@
            $(document).ready(function(){
 
             url: window.location;
-            $("#userlist").pagination(url,"#userlist");
+            
+             var prevUrl = url;             
+             url = url.replace("?","/frags?");
+             if(url == prevUrl)
+               url = url+"/frags";
+             alert(url);
+
+            
+            $("#tablecontentid").pagination(url,'#tablecontentid');
+           
 
 
 
