@@ -33,7 +33,7 @@ body{
 #header{
     /*background: url(../images/hdr.jpg) repeat;*/
     background-color: #FFFFFF;
-    width: auto;
+    width: 100%;
     height: 75px;
 }
 
