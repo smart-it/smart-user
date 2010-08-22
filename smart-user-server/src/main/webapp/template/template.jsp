@@ -10,7 +10,7 @@
 
   <%--Uzzal--%>
 
-  <html>
+<html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -19,6 +19,7 @@
   <link rel="Stylesheet" href="/css/style.css">
   <link rel="Stylesheet" href="/css/dashboardstyle.css">
   <link rel="Stylesheet" href="/css/organization-style.css">
+  <link rel="Stylesheet" href="/css/smart-list.css">
   <link rel="Stylesheet" href="/css/user-style.css">
   <link rel="Stylesheet" href="/css/smart-menu.css">
 
@@ -78,9 +79,6 @@
      
 
     $(document).ready(function(){
-       
-
-
 
     var url=window.location.toString();
 
@@ -88,7 +86,8 @@
   url = url.replace("?","/frags?");
   if(url == prevUrl)
     url = url+"/frags";
-  alert(url);
+
+
     $("#tablecontentid").pagination(url,'#tablecontentid');
     $("#uniqueShortName").keyup(function(){
 
@@ -248,14 +247,14 @@
       url: window.location,
       data: datastring,
       success: function(){
-    <%--alert ("oooo")
+    alert ("oooo")
     $('#create').html("<div id='message'></div>");
     $('#message').html("<h2>Form submitted successfully</h2")
     alert("kkk")
     .hide()
     .fade(1500, function(){
         $('#message');
-    });--%>
+    });
           }
         });
         return false;
@@ -281,14 +280,14 @@
       url: window.location,
       data: datastring,
       success: function(){
-    <%--alert ("oooo")
+    alert ("oooo")
     $('#form_organizationentry').html("<div id='message'></div>");
     $('#message').html("<h2>Form submitted successfully</h2")
     alert("kkk")
     .hide()
     .fade(1500, function(){
         $('#message');
-    });--%>
+    });
           }
         });
         return false;
@@ -299,34 +298,17 @@
 
 <body>
   <div id="main" >
-    <div id="header"><div id="sitel_logo"><img src="/images/site ultimate build 1.0.0.5.jpg" alt="sitel" id="img-sitel-logo"></div><div id="sitel_slogan"><label>IT for smarter living</label></div></div>
 
-    <div id="options">
-
-      <%--            <form action="#" method="post">
-                      <table>
-                          <tr>
-                              <td>
-                                   <input type="text" id="searchbox" name="search" size="75">
-                              </td>
-                              <td>
-                             <input type="submit" id="btnSearch" value="search">
-                             <input type="image" src="../images/butup.gif" id="btnSearch" value="Search" alt="[Submit]" name="submit">
-                        </td>
-                    </tr>
-                </table>
-                </form>--%>
-
+    <div id="header">
+      <div id="sitel_logo"><img src="/images/site ultimate build 1.0.0.5.jpg" alt="sitel" id="img-sitel-logo"></div>
+      <div id="sitel_slogan"><label>IT for smarter living</label></div>
     </div>
+
+    <div id="options"></div>
 
     <div class="clear"></div>
 
-    <%--<div id="right">Right</div>--%>
-
     <div id="content">
-      <%--<jsp:include page="superadminaccess.jsp"></jsp:include>--%>
-      <%--<jsp:include page="orgsadminaccess.jsp"></jsp:include>--%>
-      <%--<jsp:include page="enduseraccess.jsp"></jsp:include>--%>
       <jsp:include page="${templateContent}"></jsp:include>
     </div>
 

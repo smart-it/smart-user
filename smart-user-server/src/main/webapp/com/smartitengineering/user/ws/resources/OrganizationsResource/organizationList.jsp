@@ -15,13 +15,14 @@
     "http://www.w3.org/TR/html4/loose.dtd">
 
 
-<%--Uzzalllllll--%>
+<%--Uzzal--%>
 
 <div id="leftmenu">
     <div id="leftmenu_header">Organization-Creation</div>
     <div id="leftmenu_body">
         <ul>
             <li><a href="javascript: Orgpageselect()">Create</a></li>
+            <li><a href="http://localhost:9090/orgs">OrganizationList</a></li>
         </ul>
     </div>
 </div>
@@ -33,12 +34,11 @@
 
 <div class="show" id="showList">
 
-
-    <div id="title_of_organization">
+    <div id="title_of_organization" class="header_of_list">
         <label><fmt:message key="org.title"/></label>
     </div>
 
-    <div id="top_row">
+    <div id="top_row" class="list_column_names">
 
         <div class="tableheadname">
             <label class="tablehead_label"><fmt:message key="org.tablehead2"/></label>
@@ -49,24 +49,15 @@
         </div>
 
     </div>
-
-
-    <div>
-
-        <div class="tablecontentname" id="tablecontentname"></div>
-
+        
         <div class="tablecontentname" id="tablecontentid"></div>
 
-    </div>
-
-
-
+    <div class="clear"></div>
 
     <div id="tablecontentlink_of_next" ></div>
     <div id="tablecontentlink_of_previous" ></div>
 
     <div class="clear"></div>
-
 
 </div>
 
@@ -94,15 +85,9 @@
             <div class="inner-right" align="left"><input type="text" name="uniqueShortName" Id="uniqueShortName" value="" class="textField"></div>
             <div class="clear"></div>
 
-
             <div class="inner-left"></div>
             <div class="inner-right" id="uniqueShortName2" align="left"><div id="alertbuttoncontainer"><input type="button" value="check"></div><div id="alertcontainer"><label id ="alertlabel"></label></div></div>
             <div class="clear"></div>
-<%--
-            <div class="inner-left"></div>
-            <div class="inner-right" align="left" id="alert"><label id ="alertlabel"></label>  </div>
-            <div class="clear"></div>--%>
-
 
             <div class="inner-left"><label><fmt:message key="org.inputlabel3"/></label></div>
             <div class="inner-right"><input type="text" name="streetAddress" value="" class="textField"></div>
@@ -132,3 +117,4 @@
 
     </div>
 </div>
+<%--Uzzal--%>
