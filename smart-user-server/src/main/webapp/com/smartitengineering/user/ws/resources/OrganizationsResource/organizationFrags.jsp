@@ -18,6 +18,7 @@
     <c:set var="qParam" value="?count=${param.count}" />
   </c:otherwise>
 </c:choose>
+
 <div id="mainOrgPaginatedList" class="table">
   <c:forEach var="organization" items="${it}" varStatus="status">
     <c:if test="${status.first}">

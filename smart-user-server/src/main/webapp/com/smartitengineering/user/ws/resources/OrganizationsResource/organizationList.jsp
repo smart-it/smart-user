@@ -87,42 +87,39 @@
         <form action="http://localhost:9090/orgs" method="post" accept="application/json" enctype="" id="organizationform">
 
             <div class="inner-left" ><label><fmt:message key="org.tablehead2"/></label></div>
-            <div class="inner-right"><input type="text" name="name" value="" class="textField"></div>
+            <div class="inner-right"><input type="text" name="name"  class="textField"></div>
             <div class="clear"></div>
 
             <div class="inner-left"><label><fmt:message key="org.inputlabel2"/></label></div>
-            <div class="inner-right" align="left"><input type="text" name="uniqueShortName" Id="uniqueShortName" value="" class="textField"></div>
+            <div class="inner-right" align="left"><input type="text" name="uniqueShortName" Id="uniqueShortName"  class="textField"></div>
             <div class="clear"></div>
 
 
             <div class="inner-left"></div>
-            <div class="inner-right" id="uniqueShortName2" align="left"><div id="alertbuttoncontainer"><input type="button" value="check"></div><div id="alertcontainer"><label id ="alertlabel"></label></div></div>
+            <div class="inner-right" id="uniqueShortName2" align="left"><div id="alertbuttoncontainer"></div><div id="alertcontainer"><label id ="alertlabel"></label></div></div>
             <div class="clear"></div>
-<%--
-            <div class="inner-left"></div>
-            <div class="inner-right" align="left" id="alert"><label id ="alertlabel"></label>  </div>
-            <div class="clear"></div>--%>
+
 
 
             <div class="inner-left"><label><fmt:message key="org.inputlabel3"/></label></div>
-            <div class="inner-right"><input type="text" name="streetAddress" value="" class="textField"></div>
+            <div class="inner-right"><input type="text" name="streetAddress" class="textField"></div>
             <div class="clear"></div>
 
 
             <div class="inner-left"><label><fmt:message key="org.inputlabel4"/></label></div>
-            <div class="inner-right"><input type="text" name="city" value="" class="textField"></div>
+            <div class="inner-right"><input type="text" name="city" class="textField"></div>
             <div class="clear"></div>
 
             <div class="inner-left"><label><fmt:message key="org.inputlabel5"/></label></div>
-            <div class="inner-right"><input type="text" name="state" value="" class="textField"></div>
+            <div class="inner-right"><input type="text" name="state" class="textField"></div>
             <div class="clear"></div>
 
             <div class="inner-left"><label><fmt:message key="org.inputlabel6"/></label></div>
-            <div class="inner-right"><input type="text" name="country" value="" class="textField"></div>
+            <div class="inner-right"><input type="text" name="country" class="textField"></div>
             <div class="clear"></div>
 
             <div class="inner-left"><label><fmt:message key="org.inputlabel7"/></label></div>
-            <div class="inner-right"><input type="text" name="zip" value="" class="textField"></div>
+            <div class="inner-right"><input type="text" name="zip" class="textField"></div>
             <div class="clear"></div>
 
             <div id="btnfield"><input type="submit" value="submit" name="submitbtn" onclick="isEmpty()" onmouseover="onmouse_over()" id="submit"></div>
