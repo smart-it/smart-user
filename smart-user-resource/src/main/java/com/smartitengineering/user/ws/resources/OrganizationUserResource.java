@@ -60,6 +60,9 @@ public class OrganizationUserResource extends AbstractResource {
   static final UriBuilder USER_URI_BUILDER = UriBuilder.fromResource(OrganizationUserResource.class);
   static final UriBuilder USER_CONTENT_URI_BUILDER;
 
+  @Context
+  private HttpServletRequest servletRequest;
+
   static {
     USER_CONTENT_URI_BUILDER = USER_URI_BUILDER.clone();
     try {
@@ -97,7 +100,10 @@ public class OrganizationUserResource extends AbstractResource {
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
 
-    Viewable view = new Viewable("OrganizationUserDetails", user, OrganizationUserResource.class);
+    servletRequest.setAttribute("templateContent",
+                                "/com/smartitengineering/user/ws/resources/OrganizationUserResource/OrganizationUserDetails.jsp");
+    Viewable view = new Viewable("/template/template.jsp", user);
+    
     responseBuilder.entity(view);
     return responseBuilder.build();
   }
