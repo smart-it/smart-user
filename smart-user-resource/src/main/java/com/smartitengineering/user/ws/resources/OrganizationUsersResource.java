@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -79,6 +80,7 @@ public class OrganizationUsersResource extends AbstractResource {
       ex.printStackTrace();
     }
   }
+  @DefaultValue("10")
   @QueryParam("count")
   private Integer count;
   @PathParam("uniqueShortName")
@@ -89,19 +91,20 @@ public class OrganizationUsersResource extends AbstractResource {
   @GET
   @Produces(MediaType.TEXT_HTML)
   public Response getHtml() {
-    ResponseBuilder responseBuilder = Response.ok();    
+    ResponseBuilder responseBuilder = Response.ok();
 
-    if(count == null){
-      count = 10;
-    }
     Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName,
-                                                                  organizationUniqueShortName, true, count);
+                                                                                           null,
+                                                                                           true, count);
 
+    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
+    servletRequest.setAttribute("templateHeadContent",
+                                "/com/smartitengineering/user/ws/resources/OrganizationUsersResource/userListHeader.jsp");
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/user/ws/resources/OrganizationUsersResource/userList.jsp");
 
     Viewable view = new Viewable("/template/template.jsp", users);
-    
+
 
     responseBuilder.entity(view);
     return responseBuilder.build();
@@ -113,8 +116,8 @@ public class OrganizationUsersResource extends AbstractResource {
   @Path("/frags")
   public Response getHtmlFrags() {
     ResponseBuilder responseBuilder = Response.ok();
-    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName);
-
+    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName,
+                                                                                           null, true, count);
     Viewable view = new Viewable("userFrags.jsp", users, OrganizationUsersResource.class);
     responseBuilder.entity(view);
     return responseBuilder.build();
@@ -133,11 +136,8 @@ public class OrganizationUsersResource extends AbstractResource {
   @Path("/before/{beforeUserName}")
   public Response getBeforeHtml(@PathParam("beforeUserName") String beforeUserName) {
     ResponseBuilder responseBuilder = Response.ok();
-    if (count == null) {
-      count = 10;
-    }
-    Collection<User> users = Services.getInstance().getUserService().getUsers(
-        null, beforeUserName, true, count);
+    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
+        organizationUniqueShortName, beforeUserName, true, count);
 
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/user/ws/resources/OrganizationUsersResource/userList.jsp");
@@ -151,11 +151,8 @@ public class OrganizationUsersResource extends AbstractResource {
   @Path("/before/{beforeUserName}/frags")
   public Response getBeforeHtmlFrags(@PathParam("beforeUserName") String beforeUserName) {
     ResponseBuilder responseBuilder = Response.ok();
-    if (count == null) {
-      count = 10;
-    }
-    Collection<User> users = Services.getInstance().getUserService().getUsers(
-        null, beforeUserName, true, count);
+    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
+        organizationUniqueShortName, beforeUserName, true, count);
 
     Viewable view = new Viewable("userFrags.jsp", users);
     responseBuilder.entity(view);
@@ -175,11 +172,8 @@ public class OrganizationUsersResource extends AbstractResource {
   public Response getAfterHtml(@PathParam("afterUserName") String afterUserName) {
 
     ResponseBuilder responseBuilder = Response.ok();
-    if (count == null) {
-      count = 10;
-    }
-    Collection<User> users = Services.getInstance().getUserService().getUsers(
-        null, afterUserName, false, count);
+    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
+        organizationUniqueShortName, afterUserName, false, count);
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/user/ws/resources/OrganizationUsersResource/userList.jsp");
     Viewable view = new Viewable("/template/template.jsp", users);
@@ -193,11 +187,8 @@ public class OrganizationUsersResource extends AbstractResource {
   public Response getAfterHtmlFrags(@PathParam("afterUserName") String afterUserName) {
 
     ResponseBuilder responseBuilder = Response.ok();
-    if (count == null) {
-      count = 10;
-    }
-    Collection<User> users = Services.getInstance().getUserService().getUsers(
-        null, afterUserName, false, count);
+    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
+        organizationUniqueShortName, afterUserName, false, count);
 
     Viewable view = new Viewable("userFrags.jsp", users);
     responseBuilder.entity(view);
@@ -211,10 +202,6 @@ public class OrganizationUsersResource extends AbstractResource {
   }
 
   private Response get(String uniqueOrganizationName, String userName, boolean isBefore) {
-
-    if (count == null) {
-      count = 10;
-    }
     ResponseBuilder responseBuilder = Response.ok();
     Feed atomFeed = getFeed(userName, new Date());
 
@@ -338,7 +325,8 @@ public class OrganizationUsersResource extends AbstractResource {
       newUser.setPassword(keyValueMap.get("password"));
     }
 
-    Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationUniqueShortName);
+    Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(
+        organizationUniqueShortName);
 
     if (parentOrg != null) {
       newUser.setOrganization(parentOrg);
