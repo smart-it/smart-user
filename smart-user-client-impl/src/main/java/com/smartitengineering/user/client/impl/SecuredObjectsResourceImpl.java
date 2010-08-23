@@ -50,7 +50,7 @@ public class SecuredObjectsResourceImpl extends AbstractClientImpl implements Se
 
     ClientResponse response = ClientUtil.readClientResponse(uri, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
-    if (response.getStatus() != 401) {
+    if (response.getStatus() == 200) {
       Feed feed = ClientUtil.getFeed(response);
 
       entries = feed.getEntries();
