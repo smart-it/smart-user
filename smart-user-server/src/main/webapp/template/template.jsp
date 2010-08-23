@@ -29,6 +29,10 @@
   <script type="text/javascript" src="/script/siteljquerylib.js"></script>
   <script type="text/javascript" src="/script/scriptFile.js"></script>
 
+  <c:if test="${not empty templateHeadContent}">
+    <jsp:include page="${templateHeadContent}"></jsp:include>
+  </c:if>
+
 </head>
 
 <body>
