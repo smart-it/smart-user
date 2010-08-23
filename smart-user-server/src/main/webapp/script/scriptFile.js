@@ -63,8 +63,8 @@ $(document).ready(function(){
   url = url.replace("?","/frags?");
   if(url == prevUrl)
     url = url+"/frags";
-  alert(url);
-  $("#tablecontentid").pagination(url,'#tablecontentid');
+//  alert(url);
+  $("#tablecontentid").pagination(url, "paginationLinks");
 
   
   $("#uniqueShortName").keyup(function(){
