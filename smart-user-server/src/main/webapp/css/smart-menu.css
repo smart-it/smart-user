@@ -17,7 +17,7 @@ root {
 
 /*MENU*/
 
-#leftmenu{
+.leftmenu{
   /*background-image: url(/images/top.jpg);*/
   /*background-repeat:repeat;*/
   /*background-position: top left;*/
@@ -26,7 +26,7 @@ root {
   height:auto;
 }
 
-#leftmenu_header{
+.leftmenu_header{
   padding:4px 0px 0px 4px;
   text-align: center;
   color: #23819C;
@@ -37,11 +37,12 @@ root {
   border-color: #FFFFFF;
 }
 
-#leftmenu_header label{
+.leftmenu_header label{
   font-family: sans-serif, tahoma, verdana;
+  font-size: 11pt;
 }
 
-#leftmenu_body{
+.leftmenu_body{
   background-color:#736F6E;
   background-image: url(/images/top.jpg);
   background-repeat: repeat;
@@ -51,22 +52,22 @@ root {
 
 }
 
-#leftmenu ul{
+.leftmenu ul{
   padding:0px 6px 15px 40px;
   text-align: left;
 }
 
 
-#leftmenu ul li{
+.leftmenu ul li{
   list-style:  url(../images/arrow.gif) inside;
   color:#E8C6FF;
 
   border-bottom: #F3F8F4 1px solid;
   line-height:20px;
-  width:150px;
+  width:190px;
 
 }
-#leftmenu ul li a{
+.leftmenu ul li a{
   font-family: sans-serif, tahoma, verdana;
   font-weight: 600;
   font-weight: bold;

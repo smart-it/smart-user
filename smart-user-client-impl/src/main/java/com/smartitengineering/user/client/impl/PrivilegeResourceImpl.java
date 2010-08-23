@@ -50,7 +50,7 @@ public class PrivilegeResourceImpl extends AbstractClientImpl implements Privile
 
     ClientResponse response = ClientUtil.readClientResponse(privilegeURI, getHttpClient(), MediaType.APPLICATION_JSON);
 
-    if(response.getStatus() != 401){
+    if(response.getStatus() == 200){
       Feed feed = ClientUtil.getFeed(response);
 
       Link privilegeContentLink = feed.getLink(REL_ALT);

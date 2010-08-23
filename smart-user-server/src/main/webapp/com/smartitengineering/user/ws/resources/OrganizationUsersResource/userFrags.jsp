@@ -23,23 +23,23 @@
 </c:choose>
 
 <div id="userListRootDiv">
-  <div class="" id="userListContainer">
+  <div class="tableList" id="userListContainer">
     <c:forEach var="user" items="${it}" varStatus="status">
-      <div id="userRow${status.index}">
+      <div id="userRow${status.index}" class="row_of_list">
         <c:if test="${status.first}">
           <c:set var="first" value="${user.username}"></c:set>
         </c:if>
         <c:if test="${status.last}">
           <c:set var="last" value="${user.username}"></c:set>
         </c:if>
-        <div id="userId${status.index}"><a href="users/username/${user.username}">${user.id}</a></div>
-        <div id="username${status.index}"><a href="users/username/${user.username}">${user.username}</a></div>
+        <div id="userId${status.index}" class="orgName_column"><a href="users/username/${user.username}">${user.id}</a></div>
+        <div id="username${status.index}" class="orgShortName_column"><a href="users/username/${user.username}">${user.username}</a></div>
       </div>
     </c:forEach>
   </div>
 
   <div class="navigation_container" id="linkcontainer">
-    <div id="previousUsersLinkCont"><a href="users/before/${first}/frags${qParam}" class="list_navigation_links"><< previous</a></div>
-    <div id="nextUsersLinkCont"><a href="users/after/${last}/frags${qParam}" class="list_navigation_links">next >></a> </div>
+    <div id="nextUsersLinkCont" class="list_navigation_links"><a href="users/after/${last}/frags${qParam}">next >></a> </div>
+    <div id="previousUsersLinkCont" class="list_navigation_links"><a href="users/before/${first}/frags${qParam}"><< previous</a></div>
   </div>
 </div>

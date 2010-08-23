@@ -45,7 +45,7 @@ public class SecuredObjectResourceImpl extends AbstractClientImpl implements Sec
 
     ClientResponse response = ClientUtil.readClientResponse(securedObjectURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
-    if(response.getStatus() != 401){
+    if(response.getStatus() == 200){
 
       Feed feed = ClientUtil.getFeed(response);
 
@@ -56,7 +56,7 @@ public class SecuredObjectResourceImpl extends AbstractClientImpl implements Sec
       URI orgContentURI = UriBuilder.fromUri(BASE_URI.toString() + securedObjectLink.getHref().toString()).build();
       ClientResponse contentResponse = ClientUtil.readClientResponse(orgContentURI, getHttpClient(), MediaType.APPLICATION_JSON);
 
-      if(contentResponse.getStatus() != 401){
+      if(contentResponse.getStatus() == 200){
         //com.smartitengineering.user.domain.Organization organization = ClientUtil.getResponseEntity(contentResponse, com.smartitengineering.user.domain.Organization.class);
         String str = ClientUtil.getResponseEntity(contentResponse, String.class);
 
