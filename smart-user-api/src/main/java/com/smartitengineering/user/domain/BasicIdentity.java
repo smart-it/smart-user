@@ -45,7 +45,7 @@ public class BasicIdentity extends AbstractPersistentDTO<BasicIdentity> {
     }
 
     public boolean isValid() {
-        if (!StringUtils.isEmpty(nationalID) && name != null) {
+        if (name != null) {
             if (name.isValid()) {
                 return true;
             }
