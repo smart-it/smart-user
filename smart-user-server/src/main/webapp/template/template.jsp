@@ -79,66 +79,41 @@
   <script type="text/javascript">
      
 
-    $(document).ready(function(){
-       
-
-
-
-    var url=window.location.toString();
-
-  var prevUrl = url;
-  url = url.replace("?","/frags?");
-  if(url == prevUrl)
-    url = url+"/frags";
-  alert(url);
-    $("#tablecontentid").pagination(url,'#tablecontentid');
-    $("#uniqueShortName").blur(function(){
-
-      var usn =$("#uniqueShortName").val();
-
-      $.ajax({
-        type: "GET",
-        url: "http://localhost:9090/orgs/shortname/"+usn,
-        dataType: "xml",
-        success: function(xhr){
-          //                            alert('Short Name is not unique')
-          $("#alertlabel").html('Short Name is not unique: try another');
-        },
-        error: function(xhr){
-          $("#alertlabel").html('Perfect: Carry On');
-                        
-        }
-
-      });
-    });
-    //            $("#submit").click(function(){
-    //
-    //                alert(window.location);
-    //                var usn =$("#uniqueShortName").val()
-    //                window.location.replace = "http://localhost:9090/orgs/shortname/"+usn;
-    //
-    //            });
-
-
-
-
-    $("#organizationform").validate({
-      rules: {
-        name: "required",
-        streetAddress: "required",
-        city: "required",
-        state: "required",
-        country:"required",
-        zip:"required",         
-        uniqueShortName: "required"
-
-      }
-                        
-
-
-    });
-
-  });
+           $(document).ready(function(){
+             var url=window.location.toString();
+             var prevUrl = url;
+             url = url.replace("?","/frags?");
+             if(url == prevUrl)
+               url = url+"/frags";
+             alert(url);
+             $("#tablecontentid").pagination(url,'#tablecontentid');
+             $("#uniqueShortName").blur(function(){
+               var usn =$('#uniqueShortName').val();
+               $.ajax({
+                 type: "GET",
+                 url: "http://localhost:9090/orgs/shortname/"+usn,
+                 dataType: "xml",
+                 success: function(){
+                   //                            alert('Short Name is not unique')
+                   $('#alertlabel').html('Short Name is not unique: try another');
+                 },
+                 error: function(){
+                   $('#alertlabel').html('Perfect: Carry On');
+                 }
+               });
+             });
+             $("#organizationform").validate({
+               rules: {
+                 name: "required",
+                 streetAddress: "required",
+                 city: "required",
+                 state: "required",
+                 country:"required",
+                 zip:"required",
+                 uniqueShortName: "required"
+               }
+             });
+           });
 
 
   </script>
@@ -156,13 +131,9 @@
          <script type="text/javascript">
            $(document).ready(function(){
 
-            url: window.location;
+              url: window.location;
             
-             var prevUrl = url;             
-             url = url.replace("?","/frags?");
-             if(url == prevUrl)
-               url = url+"/frags";
-             alert(url);
+             
 
             
             $("#tablecontentid").pagination(url,'#tablecontentid');
