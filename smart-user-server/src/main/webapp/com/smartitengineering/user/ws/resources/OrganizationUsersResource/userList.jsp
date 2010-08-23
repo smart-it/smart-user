@@ -31,24 +31,19 @@
 </c:if>
 
 <div class="show" id="showList">
-  <div id="title_of_organization_users">
+  <div id="title_of_organization_users" class="header_of_list">
     <label><fmt:message key="org.usrtitle"/></label>
   </div>
-  <div id="top_row">
-    <div class="tableheadname_user">
+  <div id="top_row" class="list_column_names">
+    <div class="tableheadname">
       <label class="tablehead_label"><fmt:message key="org.usrtablehead1"/></label>
     </div>
-    <div class="tableheadname_user">
+    <div class="tableheadname">
       <label class="tablehead_label"><fmt:message key="org.usrtablehead2"/></label>
     </div>
   </div>
-  <div id="tablecontentid">
-  </div>
-  <div class="clear"></div>
-  <div class="clear"></div>
+  <div class="tablecontentname" id="tablecontentid"></div>
 </div>
-
-
 
 <div class="hide"  id="create">
   <div id="header_organization_users">
@@ -77,7 +72,7 @@
       <div class="inner-left-label"><label><fmt:message key="org.usrinput5"/></label></div>
       <div class="inner-right-text"><input type="text" name="phone" id="phone" class="textfield"></div>
       <div class="clear"></div>
-      <div id="btnfield"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submitbtn" type="submit" class="submit" value="submit"></div>
+      <div id="btnfield"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submitbtn" type="submit" class="submitbtn" value="SUBMIT"></div>
       <div class="clear"></div>
     </form>
 
