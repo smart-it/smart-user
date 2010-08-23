@@ -81,7 +81,7 @@
 
   <div id="form_organizationentry" class="entry_form">
 
-    <form method="POST" action ="http://localhost:9090/orgs/shortname/${it.uniqueShortName}" accept="application/json" id="organizationform">
+    <form method="POST" action ="http://localhost:9090/orgs/shortname/${it.uniqueShortName}/update" accept="application/json" id="organizationform">
 
       <div class="form_label"><label><fmt:message key="org.tablehead2"/></label></div>
       <div class="form_textField"><input type="text" name="name" value="${it.name}" class="textField"></div>
