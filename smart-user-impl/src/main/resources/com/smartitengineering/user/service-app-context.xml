@@ -3,13 +3,15 @@
 
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "spring-beans.dtd"  >
 <beans>
-  <bean id="personServiceTarget" class="com.smartitengineering.user.impl.PersonServiceImpl">
-    <property name="basicIdentityReadDao">
-      <ref local="abstractDao" />
+  <bean id="basicIdentityService" class="com.smartitengineering.user.service.impl.BasicIdentityServiceImpl" parent="abstractDao"/>
+
+  <bean id="personServiceTarget" class="com.smartitengineering.user.service.impl.PersonServiceImpl" parent="abstractDao">
+    <property name="basicIdentityService">
+      <ref local="basicIdentityService" />
     </property>
   </bean>
     
-  <bean id="userPersonService" class="com.smartitengineering.user.impl.UserPersonServiceImpl" parent="abstractDao">
+  <bean id="userPersonService" class="com.smartitengineering.user.service.impl.UserPersonServiceImpl" parent="abstractDao">
     <property name="personService">
       <ref local="personService" />
     </property>
