@@ -25,7 +25,6 @@
   </div>
 </div>
 
-
 <c:if test="${param['lang']!=null}">
   <fmt:setLocale scope="session" value="${param['lang']}"/>
 </c:if>
@@ -75,7 +74,5 @@
       <div class="btnfield"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submitbtn" type="submit" class="submitbtn" value="SUBMIT"></div>
       <div class="clear"></div>
     </form>
-
   </div>
-
 </div>
