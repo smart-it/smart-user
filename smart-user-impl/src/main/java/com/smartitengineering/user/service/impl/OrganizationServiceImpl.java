@@ -106,34 +106,8 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
       }
     }
 
-//    params.add(QueryParameterFactory.getMaxResultsParam(count));
-//    params.add(QueryParameterFactory.getOrderByParam("id", Order.DESC));
-//    params.add(QueryParameterFactory.getDistinctPropProjectionParam("id"));
-//
-//    List<Integer> organizationIDs = getOtherList(params);
-//
-//    if (organizationIDs != null && !organizationIDs.isEmpty()) {
-//      List<Organization> organizations = new ArrayList<Organization>(super.getByIds(organizationIDs));
-//      Collections.sort(organizations, new Comparator<Organization>() {
-//
-//        @Override
-//        public int compare(Organization o1, Organization o2) {
-//          //return o1.getId().compareTo(o2.getId()) * -1;
-//          return o1.getUniqueShortName().compareTo(o2.getUniqueShortName()) * -1;
-//          //return o2.getUniqueShortName().compareTo(o1.getUniqueShortName()) * -1;
-//        }
-//      });
-//      if (isSmallerThan) {
-//        Collections.reverse(organizations);
-//      }
-//      return organizations;
-//    }
-//    else {
-//      return Collections.emptySet();
-//    }
-
     params.add(QueryParameterFactory.getMaxResultsParam(count));
-    params.add(QueryParameterFactory.getOrderByParam("uniqueShortName", Order.ASC));
+    params.add(QueryParameterFactory.getOrderByParam("uniqueShortName", isSmallerThan?Order.DESC: Order.ASC));
     params.add(QueryParameterFactory.getDistinctPropProjectionParam("uniqueShortName"));
 
     List<String> organizationShortNames = getOtherList(params);
@@ -143,15 +117,11 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
       Collections.sort(organizations, new Comparator<Organization>() {
 
         @Override
-        public int compare(Organization o1, Organization o2) {
-          //return o1.getId().compareTo(o2.getId()) * -1;
-          return o1.getUniqueShortName().compareTo(o2.getUniqueShortName());
-          //return o2.getUniqueShortName().compareTo(o1.getUniqueShortName()) * -1;
+        public int compare(Organization o1, Organization o2) {          
+          return o1.getUniqueShortName().compareTo(o2.getUniqueShortName());          
         }
       });
-      if (isSmallerThan) {
-        Collections.reverse(organizations);
-      }
+
       return organizations;
     }
     else {

@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -77,6 +78,7 @@ public class OrganizationsResource extends AbstractResource {
 //    private String nameLike;
   @QueryParam("shortname")
   private String uniqueShortName;
+  @DefaultValue("10")
   @QueryParam("count")
   private Integer count;
 
