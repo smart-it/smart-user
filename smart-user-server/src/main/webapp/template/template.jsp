@@ -11,64 +11,54 @@
 
 <%--Uzzal--%>
 <html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-  <title>aponn for you</title>
+    <title>aponn for you</title>
 
-  <link rel="Stylesheet" href="/css/style.css">
-  <link rel="Stylesheet" href="/css/dashboardstyle.css">
-  <link rel="Stylesheet" href="/css/organization-style.css">
-  <link rel="Stylesheet" href="/css/smart-list.css">
-  <link rel="Stylesheet" href="/css/user-style.css">
-  <link rel="Stylesheet" href="/css/smart-menu.css">
+    <link rel="Stylesheet" href="/css/style.css">
+    <link rel="Stylesheet" href="/css/dashboardstyle.css">
+    <link rel="Stylesheet" href="/css/smart-list.css">
+    <link rel="Stylesheet" href="/css/smart-forms-style.css">
+    <link rel="Stylesheet" href="/css/smart-menu.css">
 
-  <script type="text/javascript" src="/script/javascript_1.js"></script>
-  <script type="text/javascript" src="/script/jquery-1.4.2.js"></script>
-  <script type="text/javascript" src="/script/jquery.validate.js"></script>
-  <script type="text/javascript" src="/script/siteljquerylib.js"></script>
-  <script type="text/javascript" src="/script/scriptFile.js"></script>
+    <script type="text/javascript" src="/script/javascript_1.js"></script>
+    <script type="text/javascript" src="/script/jquery-1.4.2.js"></script>
+    <script type="text/javascript" src="/script/jquery.validate.js"></script>
+    <script type="text/javascript" src="/script/siteljquerylib.js"></script>
+    <script type="text/javascript" src="/script/scriptFile.js"></script>
 
-  <c:if test="${not empty templateHeadContent}">
-    <jsp:include page="${templateHeadContent}"></jsp:include>
-  </c:if>
+    <c:if test="${not empty templateHeadContent}">
+      <jsp:include page="${templateHeadContent}"></jsp:include>
+    </c:if>
 
-</head>
+  </head>
+  <body>
 
-<body>
-
-  <div id="menu_common" class="leftmenu">
-    <div id="menu_common_header_1" class="leftmenu_header"><label>Common Navigator</label></div>
-    <div id="menu_common_body_1" class="leftmenu_body">
-      <ul>
-        <li><a href="/orgs">OrganizationList</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <div id="main" >
-
-    <div id="header">
-      <div id="sitel_logo"><img src="/images/site ultimate build 1.0.0.5.jpg" alt="sitel" id="img-sitel-logo"></div>
-      <div id="sitel_slogan"><label>IT for smarter living</label></div>
+    <div id="menu_common" class="leftmenu">
+      <div id="menu_common_header_1" class="leftmenu_header"><label>Common Navigator</label></div>
+      <div id="menu_common_body_1" class="leftmenu_body">
+        <ul>
+          <li><a href="/orgs">OrganizationList</a></li>
+        </ul>
+      </div>
     </div>
 
-    <div id="options"></div>
-
-    <div class="clear"></div>
-
-    <div id="content">
-      <jsp:include page="${templateContent}"></jsp:include>
+    <div id="main" class="main_template">
+      <div id="header" class="main_template_header">
+        <div id="sitel_logo" class="sitel_logo_container"><img src="/images/site ultimate build 1.0.0.5.jpg" alt="sitel" id="img-sitel-logo"></div>
+        <div id="sitel_slogan" class="sitel_slogan_container"><label>IT for smarter living</label></div>
+      </div>
+      <div id="options" class="main_template_options"></div>
+      <div class="clear"></div>
+      <div id="content" class="template_content">
+        <jsp:include page="${templateContent}"></jsp:include>
+      </div>
+      <div id="left" class="left_menu"></div>
+      <div class="clear"></div>
+      <div id="footer" class="main_template_footer">Footer</div>
     </div>
 
-    <div id="right"></div>
-
-    <div class="clear"></div>
-
-    <div id="footer">Footer</div>
-
-  </div>
-
-</body>
+  </body>
 </html>
 <%--Uzzal--%>
