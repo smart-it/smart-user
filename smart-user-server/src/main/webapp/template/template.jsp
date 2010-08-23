@@ -11,7 +11,7 @@
 
   <%--Uzzal--%>
 
-<html>
+  <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -30,223 +30,19 @@
   <script type="text/javascript" src="/script/siteljquerylib.js"></script>
   <script type="text/javascript" src="/script/scriptFile.js"></script>
 
-
-  <script type="text/javascript">
-
-    $( init );
-
-    function init() {
-
-      $('#right').append( $('#leftmenu') );
-    }
-
-  </script>
-
-  <script type="text/javascript">
-
-    $(document).ready(function () {
-      $("#leftmenu_body ul li").hover(function () {
-        $(this).css({'background-color' : '#F7F5FE','color' : 'Black'});
-      }, function () {
-        var cssObj = {
-          'background-color' : '',
-          'color' : '#23819C'
-        }
-        $(this).css(cssObj);
-      });
-
-    });
-
-    $(document).ready(function () {
-      $("#leftmenu_body ul li a").hover(function () {
-        $(this).css({'color' : 'Black', 'font-weight' : 'bolder', 'font-size':'11pt'});
-      }, function () {
-        var cssObj = {
-          'background-color' : '',
-          'font-weight' : '',
-          'font-size':'10pt',
-          'color' : '#23819C'
-        }
-        $(this).css(cssObj);
-      });
-
-    });
-
-  </script>
-
-
-  <!--saumitra-->
-
-  <script type="text/javascript">
-     
-
-    $(document).ready(function(){
-       
-
-
-
-    var url=window.location.toString();
-
-  var prevUrl = url;
-  url = url.replace("?","/frags?");
-  if(url == prevUrl)
-    url = url+"/frags";
-  alert(url);
-    $("#tablecontentid").pagination(url,'#tablecontentid');
-    $("#uniqueShortName").blur(function(){
-
-      var usn =$("#uniqueShortName").val();
-
-      $.ajax({
-        type: "GET",
-        url: "http://localhost:9090/orgs/shortname/"+usn,
-        dataType: "xml",
-        success: function(xhr){
-          //                            alert('Short Name is not unique')
-          $("#alertlabel").html('Short Name is not unique: try another');
-        },
-        error: function(xhr){
-          $("#alertlabel").html('Perfect: Carry On');
-                        
-        }
-
-      });
-    });
-    //            $("#submit").click(function(){
-    //
-    //                alert(window.location);
-    //                var usn =$("#uniqueShortName").val()
-    //                window.location.replace = "http://localhost:9090/orgs/shortname/"+usn;
-    //
-    //            });
-
-
-
-
-    $("#organizationform").validate({
-      rules: {
-        name: "required",
-        streetAddress: "required",
-        city: "required",
-        state: "required",
-        country:"required",
-        zip:"required",         
-        uniqueShortName: "required"
-
-      }
-                        
-
-
-    });
-
-  });
-
-
-  </script>
-  <!--saumitra-->
-
-  <!-- ROCKY -->
-<!--  <script type="text/javascript">
-  $(document).ready(function(){
-
-    $.ajax({
-
-
-
-        <!-- ROCKY -->
-         <script type="text/javascript">
-           $(document).ready(function(){
-
-            url: window.location;
-            
-             var prevUrl = url;             
-             url = url.replace("?","/frags?");
-             if(url == prevUrl)
-               url = url+"/frags";
-             alert(url);
-
-            
-            $("#tablecontentid").pagination(url,'#tablecontentid');
-           
-
-
-
-             $("#userform").validate({
-               rules: {
-                 name: "required",
-                 midName: "required",
-                 lastName: "required",
-                 userName: "required",
-                 confirmPassword: {
-                   equalTo: "#password"
-                 },
-                 uniqueShortName: "required"
-
-               },
-               messages: {
-
-                 password: "Password must be atleast of 6 characters"
-               }
-
-             });
-
-
-             $(".submit").click(function(){
-
-               var fname = $("input#fname");
-               var mname = $("input#mname");
-               var lname = $("input#lname");
-               var password = $("input#password");
-               var phone = $("input#phone")
-               var datastring = 'name='+ fname + '&midName='+ mname + '&lastName='+ lname + '&password='+ password + '&phone='+ phone;
-
-
-             });
-
-
-
-
-
-
-           });
-  </script>
-
-  <script type="text/javascript">
-  $(document).ready(function(){
-    $(".submit").click(function(){
-      var id = $("input#id");
-      var name = $("input#name");
-      var password = $("input#password");
-      var version = $("input#version");
-
-      var datastring = 'id='+ id +'version='+ version + 'name='+ name + '&password='+ password;
-
-
-    });
-
-    $.ajax({
-      type: "POST",
-      url: window.location,
-      data: datastring,
-      success: function(){
-    <%--alert ("oooo")
-    $('#form_organizationentry').html("<div id='message'></div>");
-    $('#message').html("<h2>Form submitted successfully</h2")
-    alert("kkk")
-    .hide()
-    .fade(1500, function(){
-        $('#message');
-    });--%>
-          }
-        });
-        return false;
-      })
-  </script>-->
-  <!-- ROCKY -->
-
 </head>
 
 <body>
+
+  <div id="leftmenu_orglist_1" class="leftmenu">
+    <div id="leftmenu_header_orglist_1" class="leftmenu_header"><label>Organization-Creation</label></div>
+    <div id="leftmenu_body_orglist_1" class="leftmenu_body">
+      <ul>
+        <li><a href="/orgs">OrganizationList</a></li>
+      </ul>
+    </div>
+  </div>
+
   <div id="main" >
 
     <div id="header">

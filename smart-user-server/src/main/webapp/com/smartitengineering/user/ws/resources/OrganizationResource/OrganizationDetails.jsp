@@ -12,16 +12,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
   "http://www.w3.org/TR/html4/loose.dtd">
 
-<div id="leftmenu">
-  <div id="leftmenu_header"><label>Organization</label></div>
+<div id="leftmenu_orgdetails_1" class="leftmenu">
+  <div id="leftmenu_header_orgdetails_1" class="leftmenu_header"><label>Organization</label></div>
 
-  <div id="leftmenu_body">
+  <div id="leftmenu_body_orgdetails_1" class="leftmenu_body">
   <ul>
 
     <li><a href="javascript: Orgpageselect()">Edit</a></li>
     <li><a href="#">Delete</a></li>
     <li><a href="/orgs/${it.uniqueShortName}/users">UserList</a></li>
-    <li><a href="http://localhost:9090/orgs">OrganizationList</a></li>
 
   </ul>
   </div>
@@ -121,11 +120,8 @@
       <div><input type="hidden" name="version" value="${it.version}"></div>
 
       <div class="clear"></div>
-      <div id="btnfield"><input type="submit" value="UPDATE" name="submitbtn"></div>
-      <div class="clear"></div>
-
-      <div class="clear"></div>
-      <div><input type="submit" value="DELETE" name="submitbtn"></div>
+      <div class="btnfield"><input type="submit" value="DELETE" name="submitbtn"></div>
+      <div class="btnfield"><input type="submit" value="UPDATE" name="submitbtn"></div>
       <div class="clear"></div>
 
     </form>

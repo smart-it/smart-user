@@ -16,12 +16,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
   "http://www.w3.org/TR/html4/loose.dtd">
 
-<div id="leftmenu">
-  <div id="leftmenu_header">User-Creation</div>
-  <div id="leftmenu_body">
+<div id="leftmenu_userlist_1" class="leftmenu">
+  <div id="leftmenu_header_userlist_1" class="leftmenu_header">User-Creation</div>
+  <div id="leftmenu_body_userlist_1" class="leftmenu_body">
     <ul>
       <li><a href="javascript: Orgpageselect()">Create</a></li>
-      <li><a href="http://localhost:9090/orgs">OrganizationList</a></li>
     </ul>
   </div>
 </div>

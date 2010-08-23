@@ -122,10 +122,11 @@ root {
 
 }
 
-#btnfield{
+.btnfield{
+  margin-right: 70px;
+  float:right;
   width: auto;
   text-align: center;
-
 }
 
 #alertfield{

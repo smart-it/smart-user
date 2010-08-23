@@ -17,12 +17,11 @@
 
 <%--Uzzal--%>
 
-<div id="leftmenu">
-    <div id="leftmenu_header">Organization-Creation</div>
-    <div id="leftmenu_body">
+<div id="leftmenu_orglist_1" class="leftmenu">
+  <div id="leftmenu_header_orglist_1" class="leftmenu_header"><label>Organization-Creation</label></div>
+  <div id="leftmenu_body_orglist_1" class="leftmenu_body">
         <ul>
             <li><a href="javascript: Orgpageselect()">Create</a></li>
-            <li><a href="http://localhost:9090/orgs">OrganizationList</a></li>
         </ul>
     </div>
 </div>
