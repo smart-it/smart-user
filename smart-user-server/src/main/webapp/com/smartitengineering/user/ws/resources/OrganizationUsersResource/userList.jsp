@@ -41,6 +41,9 @@
     <div class="tableheadname">
       <label class="tablehead_label"><fmt:message key="org.usrtablehead2"/></label>
     </div>
+    <div class="tableheadname">
+      <label class="tablehead_label">Full Name</label>
+    </div>
   </div>
   <div class="tablecontentname" id="tablecontentid"></div>
 </div>
@@ -61,7 +64,13 @@
       <div class="inner-right"><input type="text" name="lastName" id="lname" class="textfield"></div>
       <div class="clear"></div>
       <div class="inner-left"><label><fmt:message key="org.usrtablehead2"/></label></div>
-      <div class="inner-right"><input type="text" name="userName" id="fname" class="textfield"></div>
+      <div class="inner-right"><input type="text" name="userName" id="uname" class="textfield"></div>
+      <div class="clear"></div>
+      <div class="inner-left"><label>National Id:</label></div>
+      <div class="inner-right"><input type="text" name="nationalID" id="nationalID" class="textfield"></div>
+      <div class="clear"></div>
+      <div class="inner-left"><label>E-mail:</label></div>
+      <div class="inner-right"><input type="text" name="email" id="email" class="textfield"></div>
       <div class="clear"></div>
       <div class="inner-left"><label><fmt:message key="org.usrinput4"/></label></div>
       <div class="inner-right"><input id="password" type="password" name="password" class="textfield"></div>

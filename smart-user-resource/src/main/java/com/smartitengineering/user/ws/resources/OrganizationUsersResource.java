@@ -20,8 +20,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -118,7 +120,13 @@ public class OrganizationUsersResource extends AbstractResource {
     ResponseBuilder responseBuilder = Response.ok();
     Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName,
                                                                                            null, false, count);
-    Viewable view = new Viewable("userFrags.jsp", users, OrganizationUsersResource.class);
+    Set<UserPerson> userPersons = new HashSet<UserPerson>();
+    for (User user: users){
+      UserPerson userPerson = Services.getInstance().getUserPersonService().getUserPersonByUsernameAndOrgName(
+          user.getUsername(), user.getOrganization().getUniqueShortName());
+      userPersons.add(userPerson);
+    }
+    Viewable view = new Viewable("userFrags.jsp", userPersons, OrganizationUsersResource.class);
     responseBuilder.entity(view);
     return responseBuilder.build();
 
