@@ -3,150 +3,84 @@
 
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "spring-beans.dtd"  >
 <beans>
+  <bean id="basicIdentityService" class="com.smartitengineering.user.service.impl.BasicIdentityServiceImpl" parent="abstractDao"/>
+
+  <bean id="personServiceTarget" class="com.smartitengineering.user.service.impl.PersonServiceImpl" parent="abstractDao">
+    <property name="basicIdentityService">
+      <ref local="basicIdentityService" />
+    </property>
+  </bean>
     
-<!--    <bean id="abstractDao" class="com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl" abstract="true">
-        <property name="sessionFactory">
-            <ref bean="sessionFactory" />
-        </property>
-    </bean>
-    <bean id="personDao" class="com.smartitengineering.user.dao.PersonDaoImpl" parent="abstractDao"/>
-    <bean id="basicIdentityReadDao" class="com.smartitengineering.user.dao.BasicIdentityDaoImpl" parent="abstractDao"/>
-    <bean id="userDao" class="com.smartitengineering.user.dao.UserDaoImpl" parent="abstractDao"/>
-    <bean id="userPersonDao" class="com.smartitengineering.user.dao.UserPersonDaoImpl" parent="abstractDao"/>
-    <bean id="roleDao" class="com.smartitengineering.user.dao.RoleDaoImpl" parent="abstractDao"/>
-    <bean id="privilegeDao" class="com.smartitengineering.user.dao.PrivilegeDaoImpl" parent="abstractDao"/>
-    <bean id="smartAceDao" class="com.smartitengineering.user.dao.SmartAceDaoImpl" parent="abstractDao"/>
-    <bean id="smartAclDao" class="com.smartitengineering.user.dao.SmartAclDaoImpl" parent="abstractDao"/>
-    <bean id="personServiceTarget" class="com.smartitengineering.user.impl.PersonServiceImpl">
-        <property name="personReadDao">
-            <ref local="personDao" />
-        </property>
-        <property name="personWriteDao">
-            <ref local="personDao" />
-        </property>
-        <property name="basicIdentityReadDao">
-            <ref local="basicIdentityReadDao" />
-        </property>
-    </bean>
-    <bean id="userServiceTarget" class="com.smartitengineering.user.impl.UserServiceImpl">
-        <property name="userReadDao">
-            <ref local="userDao" />
-        </property>
-        <property name="userWriteDao">
-            <ref local="userDao" />
-        </property>
-        <property name="roleReadDao">
-            <ref local="roleDao" />
-        </property>
-        <property name="roleWriteDao">
-            <ref local="roleDao" />
-        </property>
-        <property name="privilegeReadDao">
-            <ref local="privilegeDao" />
-        </property>
-        <property name="privilegeWriteDao">
-            <ref local="privilegeDao" />
-        </property>
-        <property name="personService">
-            <ref local="personService" />
-        </property>
-    </bean>
-    <bean id="userPersonService" class="com.smartitengineering.user.impl.UserPersonServiceImpl">
-        <property name="personService">
-            <ref local="personService" />
-        </property>
-        <property name="userService">
-            <ref local="userService" />
-        </property>
-        <property name="userPersonReadDao">
-            <ref local="userPersonDao" />
-        </property>
-        <property name="userPersonWriteDao">
-            <ref local="userPersonDao" />
-        </property>
-    </bean>
+  <bean id="userPersonService" class="com.smartitengineering.user.service.impl.UserPersonServiceImpl" parent="abstractDao">
+    <property name="personService">
+      <ref local="personService" />
+    </property>
+    <property name="userService">
+      <ref local="userService" />
+    </property>
+  </bean>
     
-    <bean id="personDeleteAdvice" class="com.smartitengineering.user.advice.PersonDeleteAdvice">
-        <property name="userPersonService">
-            <ref local="userPersonService"/>
-        </property>
-    </bean>
-    <bean id="personDeleteAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
-        <property name="advice" ref="personDeleteAdvice"/>
-        <property name="pattern" value=".*PersonServiceImpl.delete" />
-    </bean>
-    <bean id="personService" class="org.springframework.aop.framework.ProxyFactoryBean">
-        <property name="target" ref="personServiceTarget" />
-        <property name="interceptorNames" value="personDeleteAdvisor" />
-    </bean>
+  <bean id="personDeleteAdvice" class="com.smartitengineering.user.advice.PersonDeleteAdvice">
+    <property name="userPersonService">
+      <ref local="userPersonService"/>
+    </property>
+  </bean>
+  <bean id="personDeleteAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="advice" ref="personDeleteAdvice"/>
+    <property name="pattern" value=".*PersonServiceImpl.delete" />
+  </bean>
+  <bean id="personService" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="target" ref="personServiceTarget" />
+    <property name="interceptorNames" value="personDeleteAdvisor" />
+  </bean>
     
-    <bean id="userDeleteAdvice" class="com.smartitengineering.user.advice.UserDeleteAdvice">
-        <property name="userPersonService">
-            <ref local="userPersonService"/>
-        </property>
-    </bean>
-    <bean id="userDeleteAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
-        <property name="advice" ref="userDeleteAdvice"/>
-        <property name="pattern" value=".*UserServiceImpl.delete" />
-    </bean>
-    <bean id="userService" class="org.springframework.aop.framework.ProxyFactoryBean">
-        <property name="target" ref="userServiceTarget" />
-        <property name="interceptorNames" value="userDeleteAdvisor" />
-    </bean>
-    <bean id="smartAceService" class="com.smartitengineering.user.security.impl.SmartAceServiceImpl">
-        <property name="smartAceReadDao">
-            <ref local="smartAceDao"/>
-        </property>
-        <property name="smartAceWriteDao">
-            <ref local="smartAceDao"/>
-        </property>
-        <property name="smartAclService">
-            <ref local="smartAclService"/>
-        </property>
-    </bean>
-    <bean id="smartAclService" class="com.smartitengineering.user.security.impl.SmartAclServiceImpl">
-        <property name="smartAclReadDao">
-            <ref local="smartAclDao"/>
-        </property>
-        <property name="smartAclWriteDao">
-            <ref local="smartAclDao"/>
-        </property>
-        <property name="smartAceService">
-            <ref local="smartAceService"/>
-        </property>
-    </bean>-->
-    <bean id="abstractDao" class="com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl" abstract="true">
-        <property name="sessionFactory">
-            <ref bean="sessionFactory" />
-        </property>
-    </bean>
-    <bean id="organizationService" class="com.smartitengineering.user.service.impl.OrganizationServiceImpl" parent="abstractDao"/>
+  <bean id="userServiceTarget" class="com.smartitengineering.user.service.impl.UserServiceImpl" parent="abstractDao"/>
 
-    <bean id="securedObjectService" class="com.smartitengineering.user.service.impl.SecuredObjectServiceImpl" parent="abstractDao"/>
+  <bean id="userDeleteAdvice" class="com.smartitengineering.user.advice.UserDeleteAdvice">
+    <property name="userPersonService">
+      <ref local="userPersonService"/>
+    </property>
+  </bean>
+  <bean id="userDeleteAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="advice" ref="userDeleteAdvice"/>
+    <property name="pattern" value=".*UserServiceImpl.delete" />
+  </bean>
+  <bean id="userService" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="target" ref="userServiceTarget" />
+    <property name="interceptorNames" value="userDeleteAdvisor" />
+  </bean>
 
-    <bean id="privilegeService" class="com.smartitengineering.user.service.impl.PrivilegeServiceImpl" parent="abstractDao"/>
+  <bean id="abstractDao" class="com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl" abstract="true">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  <bean id="organizationService" class="com.smartitengineering.user.service.impl.OrganizationServiceImpl" parent="abstractDao"/>
 
-    <bean id="userService" class="com.smartitengineering.user.service.impl.UserServiceImpl" parent="abstractDao"/>
+  <bean id="securedObjectService" class="com.smartitengineering.user.service.impl.SecuredObjectServiceImpl" parent="abstractDao"/>
 
-    <bean id="roleService" class="com.smartitengineering.user.service.impl.RoleServiceImpl" parent="abstractDao"/>
+  <bean id="privilegeService" class="com.smartitengineering.user.service.impl.PrivilegeServiceImpl" parent="abstractDao"/>
+    
 
-    <bean id="authorizationService" class="com.smartitengineering.user.service.impl.AuthorizationServiceImpl">
-        <property name="securedObjectService">
-            <ref bean="securedObjectService"/>
-        </property>
-        <property name="userService">
-            <ref bean="userService"/>
-        </property>
-    </bean>
+  <bean id="roleService" class="com.smartitengineering.user.service.impl.RoleServiceImpl" parent="abstractDao"/>
+
+  <bean id="authorizationService" class="com.smartitengineering.user.service.impl.AuthorizationServiceImpl">
+    <property name="securedObjectService">
+      <ref bean="securedObjectService"/>
+    </property>
+    <property name="userService">
+      <ref bean="userService"/>
+    </property>
+  </bean>
 
     
     <!-- **************************************************************** -->
     <!-- ********************* Smart Util Reg *************************** -->
     <!-- **************************************************************** -->
-    <bean id="beanRegistrar" class="com.smartitengineering.util.bean.spring.SpringBeanRegistrar">
-        <property name="beanFactoryContextName">
-            <value>com.smartitengineering.user.service</value>
-        </property>
-    </bean>
+  <bean id="beanRegistrar" class="com.smartitengineering.util.bean.spring.SpringBeanRegistrar">
+    <property name="beanFactoryContextName">
+      <value>com.smartitengineering.user.service</value>
+    </property>
+  </bean>
     
 </beans>

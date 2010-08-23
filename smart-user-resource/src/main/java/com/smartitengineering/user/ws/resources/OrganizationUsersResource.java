@@ -95,7 +95,7 @@ public class OrganizationUsersResource extends AbstractResource {
 
     Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName,
                                                                                            null,
-                                                                                           true, count);
+                                                                                           false, count);
 
     servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
     servletRequest.setAttribute("templateHeadContent",
@@ -117,7 +117,7 @@ public class OrganizationUsersResource extends AbstractResource {
   public Response getHtmlFrags() {
     ResponseBuilder responseBuilder = Response.ok();
     Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName,
-                                                                                           null, true, count);
+                                                                                           null, false, count);
     Viewable view = new Viewable("userFrags.jsp", users, OrganizationUsersResource.class);
     responseBuilder.entity(view);
     return responseBuilder.build();

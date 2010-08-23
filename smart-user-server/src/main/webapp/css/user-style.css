@@ -31,13 +31,6 @@ root {
   font-family: Arial,Helvetica,sans-serif;
 }
 
-/*#userslist{
-  margin: 2px 1px 1px 1px;
-  width: 99%;
-  border: 1px outset;
-  border-color:#FDFEFF;
-}
-*/
 #header_organization_users{
   text-align: center;
   padding-top: 3px;
@@ -67,120 +60,12 @@ root {
   font-family: Arial,Helvetica,sans-serif;
 }
 
-.inner-left-label{
-  /*padding: 14px 0px 10px 10px;*/
-  padding: 13px 10px 17px 0px;
-  width:35%;
-  float:left;
-  text-align: left;
-  /*border: 1px solid;*/
-}
-
-.inner-left-label label{
-  font-family: vardana, sans-serif;
-  font-size: 12pt;
-  font-weight: 500;
-  font-style: normal;
-  color:#330066;
-}
-
-.inner-right-text{
-
-  padding: 10px 10px 10px 0px;
-  width:60%;
-  float:left;
-  /*border: 1px solid;*/
-}
-
 label.error
 { width: 250px;
   display: block;
   float: left;
   color: red;
   padding-left: 10px;
-}
-
-/*List of users*/
-
-#showList{
-  width: auto;
-}
-
-#title_of_organization_users{
-  background-color: #CCCCFF;
-  height: 30px;
-  text-align: center;
-  /*border-bottom: 2px solid;*/
-}
-
-#title_of_organization_users label{
-  font-family: sans-serif;
-  font-size: 14pt;
-  font-weight: bold;
-  font-variant: normal;
-  text-align: center;
-  text-decoration: none;
-  color: #333366;
-}
-
-#top_row{
-
-  height: 20px;
-  background-color: #cbd0c8;
-  padding-top: 6px;
-  padding-bottom: 6px;
-}
-
-.tablecontentname_user
-{
-  text-align: left;
-  float: left;
-  width: 50%;
-  /*border:1px solid;*/
-}
-
-.tableheadname_user{
-  text-align: center;
-  float: left;
-  width: 50%;
-}
-
-.tablehead_label{
-  font-family: sans-serif;
-  font-size: 10pt;
-  font-weight: bold;
-  color:#333366;
-}
-
-.userlist_title{
-  padding:5px 5px 5px 20px;
-  width: 98%;
-  /*border-bottom-style: double;*/
-  border-color:#009999;
-
-}
-
-.userlist_id{
-  padding:5px 5px 5px 10px;
-  width: 98%;
-  /*border-bottom-style: double;*/
-  border-color:#009999;
-}
-
-#tablecontentlink_of_next_user{
-  padding-top: 7px;
-  text-align: center;
-  float: right;
-  width: 15%;
-
-}
-
-#tablecontentlink_of_prev_user{
-  padding-top: 7px;
-  text-align: center;
-  float: right;
-  width: 15%;
-
 }
 
 /*Individual user details*/

@@ -105,7 +105,7 @@ public class UserResourceImpl extends AbstractClientImpl implements UserResource
 
     ClientResponse response = ClientUtil.readClientResponse(userURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
-    if(response.getStatus() != 401){
+    if(response.getStatus() == 200){
 
       Feed feed = ClientUtil.getFeed(response);
 

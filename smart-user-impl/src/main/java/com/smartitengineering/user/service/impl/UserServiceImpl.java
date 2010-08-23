@@ -176,15 +176,7 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
     public Collection<User> getUserByOrganization(String organizationName, String userName, boolean isSmallerThan, int count){
       List<QueryParameter> params = new ArrayList<QueryParameter>();
 
-//      if(StringUtils.isNotBlank(userNameLike)){
-//        final QueryParameter orgNameLikeParam =   QueryParameterFactory.getNestedParametersParam("username",
-//                                                                                               FetchMode.EAGER,
-//                                                                                               QueryParameterFactory.getStringLikePropertyParam("username", userNameLike));
-//        params.add(orgNameLikeParam);
-//      }
-//      else{
-//        params.add(QueryParameterFactory.getNestedParametersParam("username", FetchMode.EAGER));
-//      }
+
       if(StringUtils.isNotBlank(organizationName)){
         final QueryParameter orgNameParam = QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT,
                                                                                            QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationName));
@@ -202,15 +194,14 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
         }
       }
 
-      params.add(QueryParameterFactory.getMaxResultsParam(count));
-      //params.add(QueryParameterFactory.getOrderByParam("id", Order.DESC));
-      params.add(QueryParameterFactory.getOrderByParam("id", Order.ASC));
-      params.add(QueryParameterFactory.getDistinctPropProjectionParam("id"));
+      params.add(QueryParameterFactory.getMaxResultsParam(count));      
+      params.add(QueryParameterFactory.getOrderByParam("username", isSmallerThan? Order.DESC : Order.ASC));
+      params.add(QueryParameterFactory.getDistinctPropProjectionParam("username"));
 
-      List<Integer> userIDs = getOtherList(params);
+      List<String> userNames = getOtherList(params);
 
-      if (userIDs != null && !userIDs.isEmpty()) {
-      List<User> users = new ArrayList<User>(super.getByIds(userIDs));
+      if (userNames != null && !userNames.isEmpty()) {
+      List<User> users = new ArrayList<User>(getByUserNames(userNames));
       Collections.sort(users, new Comparator<User>(){
 
         @Override
@@ -218,17 +209,29 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
           //return o1.getId().compareTo(o2.getId()) * -1;
           return o1.getUsername().compareTo(o2.getUsername());
         }
-      });
-      if (isSmallerThan) {
-                Collections.reverse(users);
-            }
-
+      });      
       return users;
     }
     else {
       return Collections.emptySet();
     }
     }
+
+    public List<User> getByUserNames(List<String> userNames) {
+
+    QueryParameter<String> param = QueryParameterFactory.<String>getIsInPropertyParam("username", userNames.toArray(new String[0]));
+
+    Collection<User> result;
+    try {
+      result = getList(param);
+    }
+    catch (Exception ex) {
+      ex.printStackTrace();
+      result = Collections.<User>emptyList();
+    }
+    return new ArrayList<User>(result);
+
+  }
 
     @Override
     public User getUserByUsername(String usernameWithOrganizationName) {

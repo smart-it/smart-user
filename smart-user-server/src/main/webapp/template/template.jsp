@@ -7,10 +7,9 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
-  <%--Uzzal--%>
-
+<%--Uzzal--%>
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -37,6 +36,16 @@
 </head>
 
 <body>
+
+  <div id="menu_common" class="leftmenu">
+    <div id="menu_common_header_1" class="leftmenu_header"><label>Common Navigator</label></div>
+    <div id="menu_common_body_1" class="leftmenu_body">
+      <ul>
+        <li><a href="/orgs">OrganizationList</a></li>
+      </ul>
+    </div>
+  </div>
+
   <div id="main" >
 
     <div id="header">

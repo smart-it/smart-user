@@ -10,6 +10,9 @@ import com.smartitengineering.dao.common.queryparam.FetchMode;
 import com.smartitengineering.dao.common.queryparam.MatchMode;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
+import com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl;
+import com.smartitengineering.dao.impl.hibernate.AbstractDAO;
+import com.smartitengineering.domain.PersistentDTO;
 import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.domain.User;
@@ -31,10 +34,8 @@ import org.hibernate.exception.ConstraintViolationException;
  *
  * @author modhu7
  */
-public class UserPersonServiceImpl implements UserPersonService {
+public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> implements UserPersonService {
 
-  private CommonReadDao<UserPerson> userPersonReadDao;
-  private CommonWriteDao<UserPerson> userPersonWriteDao;
   private PersonService personService;
   private UserService userService;
 
@@ -49,7 +50,7 @@ public class UserPersonServiceImpl implements UserPersonService {
   public void create(UserPerson userPerson) {
     getUserService().validateUser(userPerson.getUser());
     if (userPerson.getPerson().getId() != null) {
-      Integer count = (Integer) getUserPersonReadDao().getOther(
+      Integer count = (Integer) super.getOther(
           QueryParameterFactory.getElementCountParam("person.id"),
           QueryParameterFactory.getEqualPropertyParam(
           "person.id", userPerson.getPerson().getId()));
@@ -60,7 +61,7 @@ public class UserPersonServiceImpl implements UserPersonService {
     }
     personService.validatePerson(userPerson.getPerson());
     try {
-      getUserPersonWriteDao().save(userPerson);
+      super.save(userPerson);
     }
     catch (ConstraintViolationException e) {
       String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
@@ -78,7 +79,7 @@ public class UserPersonServiceImpl implements UserPersonService {
     getUserService().validateUser(userPerson.getUser());
     personService.validatePerson(userPerson.getPerson());
     try {
-      getUserPersonWriteDao().update(userPerson);
+      super.update(userPerson);
     }
     catch (ConstraintViolationException e) {
       String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
@@ -94,7 +95,7 @@ public class UserPersonServiceImpl implements UserPersonService {
 
   public void delete(UserPerson userPerson) {
     try {
-      getUserPersonWriteDao().delete(userPerson);
+      super.delete(userPerson);
     }
     catch (Exception e) {
     }
@@ -114,14 +115,14 @@ public class UserPersonServiceImpl implements UserPersonService {
     Collection<UserPerson> userPersons = new HashSet<UserPerson>();
     if (queryParameters.size() == 0) {
       try {
-        userPersons = getUserPersonReadDao().getAll();
+        userPersons = super.getAll();
       }
       catch (Exception e) {
       }
     }
     else {
       try {
-        userPersons = getUserPersonReadDao().getList(queryParameters);
+        userPersons = super.getList(queryParameters);
       }
       catch (Exception e) {
       }
@@ -132,7 +133,7 @@ public class UserPersonServiceImpl implements UserPersonService {
   public Collection<UserPerson> getAllUserPerson() {
     Collection<UserPerson> userPersons = new HashSet<UserPerson>();
     try {
-      userPersons = getUserPersonReadDao().getAll();
+      userPersons = super.getAll();
     }
     catch (Exception e) {
     }
@@ -145,7 +146,7 @@ public class UserPersonServiceImpl implements UserPersonService {
     }
     QueryParameter qp = QueryParameterFactory.getEqualPropertyParam(
         "person.id", person.getId());
-    UserPerson userPerson = getUserPersonReadDao().getSingle(qp);
+    UserPerson userPerson = super.getSingle(qp);
     if (userPerson != null) {
       delete(userPerson);
     }
@@ -157,29 +158,11 @@ public class UserPersonServiceImpl implements UserPersonService {
     }
     QueryParameter qp = QueryParameterFactory.getEqualPropertyParam(
         "user.id", user.getId());
-    UserPerson userPerson = getUserPersonReadDao().getSingle(qp);
+    UserPerson userPerson = super.getSingle(qp);
     if (userPerson != null) {
       delete(userPerson);
     }
   }
-
-  public CommonReadDao<UserPerson> getUserPersonReadDao() {
-    return userPersonReadDao;
-  }
-
-  public void setUserPersonReadDao(CommonReadDao<UserPerson> userPersonReadDao) {
-    this.userPersonReadDao = userPersonReadDao;
-  }
-
-  public CommonWriteDao<UserPerson> getUserPersonWriteDao() {
-    return userPersonWriteDao;
-  }
-
-  public void setUserPersonWriteDao(
-      CommonWriteDao<UserPerson> userPersonWriteDao) {
-    this.userPersonWriteDao = userPersonWriteDao;
-  }
-
   public UserService getUserService() {
     return userService;
   }
@@ -196,7 +179,7 @@ public class UserPersonServiceImpl implements UserPersonService {
         getNestedParametersParam("orgnanization", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam(
         "uniqueShortName", orgName))));
 
-    UserPerson userPerson = getUserPersonReadDao().getSingle(qp);
+    UserPerson userPerson = super.getSingle(qp);
     return userPerson;
   }
 }

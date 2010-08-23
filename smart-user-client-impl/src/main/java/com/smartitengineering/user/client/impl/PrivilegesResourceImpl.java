@@ -52,7 +52,7 @@ public class PrivilegesResourceImpl extends AbstractClientImpl implements Privil
     URI uri = UriBuilder.fromUri(BASE_URI.toString() + privilegesLink.getHref().toString()).build();
 
     ClientResponse response = ClientUtil.readClientResponse(privilegesURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
-    if (response.getStatus() != 401) {
+    if (response.getStatus() == 200) {
       Feed feed = ClientUtil.getFeed(response);
 
       entries = feed.getEntries();

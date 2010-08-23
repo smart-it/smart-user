@@ -8,11 +8,11 @@ $( init );
 
 function init() {
 
-  $('#right').append( $('#leftmenu') );
+  $('#right').append( $('.leftmenu') );
 }
 
 $(document).ready(function () {
-  $("#leftmenu_body ul li").hover(function () {
+  $(".leftmenu_body ul li").hover(function () {
     $(this).css({
       'background-color' : '#F7F5FE',
       'color' : 'Black'
@@ -28,9 +28,9 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-  $("#leftmenu_body ul li a").hover(function () {
+  $(".leftmenu_body ul li a").hover(function () {
     $(this).css({
-      'color' : 'Black',
+      'color' : 'orange',
       'font-weight' : 'bolder',
       'font-size':'11pt'
     });
