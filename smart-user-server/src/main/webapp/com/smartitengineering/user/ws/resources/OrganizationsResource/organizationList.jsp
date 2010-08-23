@@ -46,34 +46,32 @@
 <fmt:message key="org.inputlabel1" var="update"/>
 
 <div class="hide" id="create">
-  <div id="header_organization">
+  <div id="header_organization" class="header_entry_form">
     <label>Organization Entry Form</label>
   </div>
-  <div id="form_organizationentry">
+  <div id="form_organizationentry" class="entry_form">
     <form action="http://localhost:9090/orgs" method="post" accept="application/json" enctype="" id="organizationform">
-      <div class="inner-left" ><label><fmt:message key="org.tablehead2"/></label></div>
-      <div class="inner-right"><input type="text" name="name"  class="textField"></div>
+      <div class="form_label" ><label><fmt:message key="org.tablehead2"/></label></div>
+      <div class="form_textField"><input type="text" name="name"  class="textField"></div>
       <div class="clear"></div>
-      <div class="inner-left"><label><fmt:message key="org.inputlabel2"/></label></div>
-      <div class="inner-right" align="left"><input type="text" name="uniqueShortName" Id="uniqueShortName"  class="textField"></div>
+      <div class="form_label"><label><fmt:message key="org.inputlabel2"/></label></div>
+      <div class="form_textField" align="left"><input type="text" name="uniqueShortName" Id="uniqueShortName"  class="textField"></div>
       <div class="clear"></div>
-      <div class="inner-left"></div>
-      <div class="inner-right" id="uniqueShortName2" align="left"><div id="alertbuttoncontainer"></div><div id="alertcontainer"><label id ="alertlabel"></label></div></div>
+      <label id ="alertlabel" class="alertlabel"></label>
+      <div class="form_label"><label><fmt:message key="org.inputlabel3"/></label></div>
+      <div class="form_textField"><input type="text" name="streetAddress" class="textField"></div>
       <div class="clear"></div>
-      <div class="inner-left"><label><fmt:message key="org.inputlabel3"/></label></div>
-      <div class="inner-right"><input type="text" name="streetAddress" class="textField"></div>
+      <div class="form_label"><label><fmt:message key="org.inputlabel4"/></label></div>
+      <div class="form_textField"><input type="text" name="city" class="textField"></div>
       <div class="clear"></div>
-      <div class="inner-left"><label><fmt:message key="org.inputlabel4"/></label></div>
-      <div class="inner-right"><input type="text" name="city" class="textField"></div>
+      <div class="form_label"><label><fmt:message key="org.inputlabel5"/></label></div>
+      <div class="form_textField"><input type="text" name="state" class="textField"></div>
       <div class="clear"></div>
-      <div class="inner-left"><label><fmt:message key="org.inputlabel5"/></label></div>
-      <div class="inner-right"><input type="text" name="state" class="textField"></div>
+      <div class="form_label"><label><fmt:message key="org.inputlabel6"/></label></div>
+      <div class="form_textField"><input type="text" name="country" class="textField"></div>
       <div class="clear"></div>
-      <div class="inner-left"><label><fmt:message key="org.inputlabel6"/></label></div>
-      <div class="inner-right"><input type="text" name="country" class="textField"></div>
-      <div class="clear"></div>
-      <div class="inner-left"><label><fmt:message key="org.inputlabel7"/></label></div>
-      <div class="inner-right"><input type="text" name="zip" class="textField"></div>
+      <div class="form_label"><label><fmt:message key="org.inputlabel7"/></label></div>
+      <div class="form_textField"><input type="text" name="zip" class="textField"></div>
       <div class="clear"></div>
       <div class="btnfield"><input type="submit" value="SUBMIT" name="submitbtn" onclick="isEmpty()" onmouseover="onmouse_over()" id="submit" class="submitbtn"></div>
       <div class="clear"></div>
