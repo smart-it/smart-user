@@ -51,28 +51,28 @@
   </div>
   <div id="form_organizationentry">
     <form action="" accept="application/json" enctype="" id="userform" method="post">
-      <div class="inner-left-label"><label><fmt:message key="org.usrinput1"/></label></div>
-      <div class="inner-right-text"><input type="text" name="name" id="fname" class="textfield"></div>
+      <div class="inner-left"><label><fmt:message key="org.usrinput1"/></label></div>
+      <div class="inner-right"><input type="text" name="name" id="fname" class="textfield"></div>
       <div class="clear"></div>
-      <div class="inner-left-label"><label><fmt:message key="org.usrinput2"/></label></div>
-      <div class="inner-right-text"><input type="text" name="midName" id="mname" class="textfield"></div>
+      <div class="inner-left"><label><fmt:message key="org.usrinput2"/></label></div>
+      <div class="inner-right"><input type="text" name="midName" id="mname" class="textfield"></div>
       <div class="clear"></div>
-      <div class="inner-left-label"><label><fmt:message key="org.usrinput3"/></label></div>
-      <div class="inner-right-text"><input type="text" name="lastName" id="lname" class="textfield"></div>
+      <div class="inner-left"><label><fmt:message key="org.usrinput3"/></label></div>
+      <div class="inner-right"><input type="text" name="lastName" id="lname" class="textfield"></div>
       <div class="clear"></div>
-      <div class="inner-left-label"><label><fmt:message key="org.usrtablehead2"/></label></div>
-      <div class="inner-right-text"><input type="text" name="userName" id="fname" class="textfield"></div>
+      <div class="inner-left"><label><fmt:message key="org.usrtablehead2"/></label></div>
+      <div class="inner-right"><input type="text" name="userName" id="fname" class="textfield"></div>
       <div class="clear"></div>
-      <div class="inner-left-label"><label><fmt:message key="org.usrinput4"/></label></div>
-      <div class="inner-right-text"><input id="password" type="password" name="password" class="textfield"></div>
+      <div class="inner-left"><label><fmt:message key="org.usrinput4"/></label></div>
+      <div class="inner-right"><input id="password" type="password" name="password" class="textfield"></div>
       <div class="clear"></div>
-      <div class="inner-left-label"><label><fmt:message key="org.usrinput7"/></label></div>
-      <div class="inner-right-text"><input id="confirmPassword" type="password" name="confirmPassword" class="textfield"></div>
+      <div class="inner-left"><label><fmt:message key="org.usrinput7"/></label></div>
+      <div class="inner-right"><input id="confirmPassword" type="password" name="confirmPassword" class="textfield"></div>
       <div class="clear"></div>
-      <div class="inner-left-label"><label><fmt:message key="org.usrinput5"/></label></div>
-      <div class="inner-right-text"><input type="text" name="phone" id="phone" class="textfield"></div>
+      <div class="inner-left"><label><fmt:message key="org.usrinput5"/></label></div>
+      <div class="inner-right"><input type="text" name="phone" id="phone" class="textfield"></div>
       <div class="clear"></div>
-      <div id="btnfield"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submitbtn" type="submit" class="submitbtn" value="SUBMIT"></div>
+      <div class="btnfield"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submitbtn" type="submit" class="submitbtn" value="SUBMIT"></div>
       <div class="clear"></div>
     </form>
 
