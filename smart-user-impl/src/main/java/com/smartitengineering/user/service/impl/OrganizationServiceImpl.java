@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleStateException;
 import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.sql.Template;
 
 /**
  *
@@ -96,13 +97,6 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
       params.add(orgNameLikeParam);
     }
 
-
-//      else{
-//        params.add(QueryParameterFactory.getStringLikePropertyParam("name", ""));
-//      }
-
-
-
     if (StringUtils.isNotBlank(shortName)) {
       if (isSmallerThan) {
         params.add(QueryParameterFactory.getLesserThanPropertyParam("uniqueShortName", shortName));
@@ -112,37 +106,57 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
       }
     }
 
+//    params.add(QueryParameterFactory.getMaxResultsParam(count));
+//    params.add(QueryParameterFactory.getOrderByParam("id", Order.DESC));
+//    params.add(QueryParameterFactory.getDistinctPropProjectionParam("id"));
+//
+//    List<Integer> organizationIDs = getOtherList(params);
+//
+//    if (organizationIDs != null && !organizationIDs.isEmpty()) {
+//      List<Organization> organizations = new ArrayList<Organization>(super.getByIds(organizationIDs));
+//      Collections.sort(organizations, new Comparator<Organization>() {
+//
+//        @Override
+//        public int compare(Organization o1, Organization o2) {
+//          //return o1.getId().compareTo(o2.getId()) * -1;
+//          return o1.getUniqueShortName().compareTo(o2.getUniqueShortName()) * -1;
+//          //return o2.getUniqueShortName().compareTo(o1.getUniqueShortName()) * -1;
+//        }
+//      });
+//      if (isSmallerThan) {
+//        Collections.reverse(organizations);
+//      }
+//      return organizations;
+//    }
+//    else {
+//      return Collections.emptySet();
+//    }
+
     params.add(QueryParameterFactory.getMaxResultsParam(count));
-    params.add(QueryParameterFactory.getOrderByParam("id", Order.DESC));
-    params.add(QueryParameterFactory.getDistinctPropProjectionParam("id"));
+    params.add(QueryParameterFactory.getOrderByParam("uniqueShortName", Order.ASC));
+    params.add(QueryParameterFactory.getDistinctPropProjectionParam("uniqueShortName"));
 
-    List<Integer> organizationIDs = getOtherList(params);
+    List<String> organizationShortNames = getOtherList(params);
 
-    if (organizationIDs != null && !organizationIDs.isEmpty()) {
-      List<Organization> organizations = new ArrayList<Organization>(super.getByIds(organizationIDs));
+    if (organizationShortNames != null && !organizationShortNames.isEmpty()) {
+      List<Organization> organizations = new ArrayList<Organization>(getByUniqueShortNames(organizationShortNames));
       Collections.sort(organizations, new Comparator<Organization>() {
 
         @Override
         public int compare(Organization o1, Organization o2) {
           //return o1.getId().compareTo(o2.getId()) * -1;
-          return o1.getUniqueShortName().compareTo(o2.getUniqueShortName()) * -1;
+          return o1.getUniqueShortName().compareTo(o2.getUniqueShortName());
           //return o2.getUniqueShortName().compareTo(o1.getUniqueShortName()) * -1;
         }
       });
       if (isSmallerThan) {
         Collections.reverse(organizations);
       }
-
-
-
-
       return organizations;
     }
     else {
       return Collections.emptySet();
     }
-
-
   }
 
   @Override
@@ -157,6 +171,22 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
       e.printStackTrace();
     }
     return organization;
+  }
+
+  public List<Organization> getByUniqueShortNames(List<String> shortNames) {
+
+    QueryParameter<String> param = QueryParameterFactory.<String>getIsInPropertyParam("uniqueShortName", shortNames.toArray(new String[0]));
+
+    Collection<Organization> result;
+    try {
+      result = getList(param);
+    }
+    catch (Exception ex) {
+      ex.printStackTrace();
+      result = Collections.<Organization>emptyList();
+    }
+    return new ArrayList<Organization>(result);
+
   }
 
   @Override
@@ -193,8 +223,8 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
       super.delete(organization);
     }
     catch (RuntimeException e) {
-      String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-"
-          + UniqueConstrainedField.ORGANIZATION;
+      String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
+          UniqueConstrainedField.ORGANIZATION;
       throw new RuntimeException(message, e);
     }
   }
