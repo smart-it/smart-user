@@ -56,7 +56,6 @@ $(document).ready(function(){
 
 
 
-
   var url=window.location.toString();
 
   var prevUrl = url;

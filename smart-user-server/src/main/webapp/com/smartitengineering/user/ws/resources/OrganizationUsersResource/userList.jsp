@@ -52,7 +52,7 @@
   <div id="header_organization_users">
     <label>Users Entry</label>
   </div>
-  <div id="form_organizationentry">
+  <div id="form_entry">
     <form action="" accept="application/json" enctype="" id="userform" method="post">
       <div class="inner-left-label"><label><fmt:message key="org.usrinput1"/></label></div>
       <div class="inner-right-text"><input type="text" name="name" id="fname" class="textfield"></div>
