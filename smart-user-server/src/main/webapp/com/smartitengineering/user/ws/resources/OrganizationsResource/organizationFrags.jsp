@@ -35,7 +35,7 @@
     </c:forEach>
   </div>
   <div class="navigation_container" id="paginationLinks">
-    <div id="previousLinkContainer"><a id="previous" href="/orgs/before/${first}/frags${qParam}" class="list_navigation_links"><< previous</a></div>
-    <div id="nextLinkContainer"><a id="next" href="/orgs/after/${last}/frags${qParam}" class="list_navigation_links">next >></a> </div>
+    <div id="previousLinkContainer"  class="list_navigation_links"><a id="previous" href="/orgs/before/${first}/frags${qParam}"><< previous</a></div>
+    <div id="nextLinkContainer"  class="list_navigation_links"><a id="next" href="/orgs/after/${last}/frags${qParam}">next >></a> </div>
   </div>
 </div>

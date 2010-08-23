@@ -32,8 +32,6 @@
 
   <div id="individual_user_details_content">
 
-
-
     <div class="individual_user_label"><label><fmt:message key="org.usrtablehead2"/></label></div>
     <div class="individual_user_data"><label>${it.username}</label></div>
     <div class="clear"></div>
@@ -42,12 +40,9 @@
     <div class="individual_user_data"><label>${it.password}</label></div>
     <div class="clear"></div>
 
-
   </div>
 
 </div>
-
-
 
 <div id="create" class="hide">
 
@@ -59,7 +54,6 @@
   <div id="form_organizationentry">
 
     <form method="POST" action ="" accept="application/json" id="organizationform">
-
 
       <div class="inner-left"><label><fmt:message key="org.usrtablehead1"/></label></div>
       <div class="inner-right" align="left"><input type="hidden" name="id" value="${it.id}" class="textField" id="id"></div>

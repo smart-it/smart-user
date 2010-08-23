@@ -120,8 +120,8 @@
       <div><input type="hidden" name="version" value="${it.version}"></div>
 
       <div class="clear"></div>
-      <div class="btnfield"><input type="submit" value="DELETE" name="submitbtn"></div>
-      <div class="btnfield"><input type="submit" value="UPDATE" name="submitbtn"></div>
+      <div class="btnfield"><input type="submit" value="DELETE" name="submitbtn" class="submitbtn"></div>
+      <div class="btnfield"><input type="submit" value="UPDATE" name="submitbtn" class="submitbtn"></div>
       <div class="clear"></div>
 
     </form>

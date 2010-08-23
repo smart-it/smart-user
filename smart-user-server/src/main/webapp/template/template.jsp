@@ -7,11 +7,10 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
-  <%--Uzzal--%>
-
-  <html>
+<%--Uzzal--%>
+<html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -34,9 +33,9 @@
 
 <body>
 
-  <div id="leftmenu_orglist_1" class="leftmenu">
-    <div id="leftmenu_header_orglist_1" class="leftmenu_header"><label>Organization-Creation</label></div>
-    <div id="leftmenu_body_orglist_1" class="leftmenu_body">
+  <div id="menu_common" class="leftmenu">
+    <div id="menu_common_header_1" class="leftmenu_header"><label>Common Navigator</label></div>
+    <div id="menu_common_body_1" class="leftmenu_body">
       <ul>
         <li><a href="/orgs">OrganizationList</a></li>
       </ul>

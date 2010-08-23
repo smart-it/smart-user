@@ -102,7 +102,7 @@
             <div class="inner-right"><input type="text" name="zip" class="textField"></div>
             <div class="clear"></div>
 
-            <div id="btnfield"><input type="submit" value="submit" name="submitbtn" onclick="isEmpty()" onmouseover="onmouse_over()" id="submit"></div>
+            <div class="btnfield"><input type="submit" value="SUBMIT" name="submitbtn" onclick="isEmpty()" onmouseover="onmouse_over()" id="submit" class="submitbtn"></div>
             <div class="clear"></div>
 
         </form>
