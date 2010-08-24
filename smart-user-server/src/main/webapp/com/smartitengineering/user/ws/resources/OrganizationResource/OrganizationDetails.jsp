@@ -9,8 +9,6 @@
 <%@page import="com.smartitengineering.user.domain.Organization" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page import="java.util.Collection"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-  "http://www.w3.org/TR/html4/loose.dtd">
 
 <div id="leftmenu_orgdetails_1" class="leftmenu">
   <div id="leftmenu_header_orgdetails_1" class="leftmenu_header"><label>Organization</label></div>
@@ -18,9 +16,9 @@
   <div id="leftmenu_body_orgdetails_1" class="leftmenu_body">
     <ul>
 
-      <li><a href="javascript: Orgpageselect()">Edit</a></li>
-      <li><a href="#">Delete</a></li>
-      <li><a href="/orgs/${it.uniqueShortName}/users">UserList</a></li>
+      <li><a href="javascript: Orgpageselect()"><fmt:message key="org.editlink"/></a></li>
+      <li><a href="#"><fmt:message key="org.deletelink"/></a></li>
+      <li><a href="/orgs/${it.uniqueShortName}/users"><fmt:message key="org.userlistlink"/></a></li>
 
     </ul>
   </div>
@@ -133,46 +131,27 @@
 
         <form method="POST" action ="http://localhost:9090/orgs/shortname/${it.uniqueShortName}/delete" accept="application/json" id="organizationform">
 
-
       <div class="form_textField"><input type="hidden" name="name" value="${it.name}" class="textField"></div>
       <div class="clear"></div>
-
-
       <div class="form_textField"><input type="hidden" name="uniqueShortName" value="${it.uniqueShortName}" class="textField"></div>
       <div class="clear"></div>
-
-
       <div class="form_textField"><input type="hidden" name="streetAddress" value="${it.address.streetAddress}" class="textField"></div>
       <div class="clear"></div>
-
-
       <div class="form_textField"><input type="hidden" name="city" value="${it.address.city}" class="textField"></div>
       <div class="clear"></div>
-
-
       <div class="form_textField"><input type="hidden" name="state" value="${it.address.state}" class="textField"></div>
       <div class="clear"></div>
-
-
       <div class="form_textField"><input type="hidden" name="country" value="${it.address.country}" class="textField"></div>
       <div class="clear"></div>
-
-
       <div class="form_textField"><input type="hidden" name="zip"  class="textField" value="${it.address.zip}"></div>
       <div class="clear"></div>
-
-
       <div></div>
       <div><input type="hidden" name="id" value="${it.id}"></div>
       <div class="clear"></div>
-
       <div></div>
       <div><input type="hidden" name="version" value="${it.version}"></div>
-
       <div class="clear"></div>
       <div class="btnfield"><input type="submit" value="DELETE" name="submitbtn" class="submitbtn"></div>
-
       <div class="clear"></div>
-
     </form>
       </div>

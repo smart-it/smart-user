@@ -28,7 +28,6 @@
         url: "http://localhost:9090/orgs/shortname/"+usn,
         dataType: "xml",
         success: function(xhr){
-          //                            alert('Short Name is not unique')
           $("#alertlabel").html('Short Name is not unique: try another');
         },
         error: function(xhr){
