@@ -36,7 +36,7 @@
   </div>
   <div id="top_row" class="list_column_names">
     <div class="tableheadname">
-      <label class="tablehead_label"><fmt:message key="org.usrtablehead1"/></label>
+      <label class="tablehead_label">Serial No.</label>
     </div>
     <div class="tableheadname">
       <label class="tablehead_label"><fmt:message key="org.usrtablehead2"/></label>
@@ -55,10 +55,10 @@
   <div id="form_entry">
     <form action="" accept="application/json" enctype="" id="userform" method="post">
       <div class="inner-left"><label><fmt:message key="org.usrinput1"/></label></div>
-      <div class="inner-right"><input type="text" name="name" id="fname" class="textfield"></div>
+      <div class="inner-right"><input type="text" name="firstName" id="fname" class="textfield"></div>
       <div class="clear"></div>
       <div class="inner-left"><label><fmt:message key="org.usrinput2"/></label></div>
-      <div class="inner-right"><input type="text" name="midName" id="mname" class="textfield"></div>
+      <div class="inner-right"><input type="text" name="middleInitial" id="mname" class="textfield"></div>
       <div class="clear"></div>
       <div class="inner-left"><label><fmt:message key="org.usrinput3"/></label></div>
       <div class="inner-right"><input type="text" name="lastName" id="lname" class="textfield"></div>
@@ -70,7 +70,7 @@
       <div class="inner-right"><input type="text" name="nationalID" id="nationalID" class="textfield"></div>
       <div class="clear"></div>
       <div class="inner-left"><label>E-mail:</label></div>
-      <div class="inner-right"><input type="text" name="email" id="email" class="textfield"></div>
+      <div class="inner-right"><input type="text" name="primaryEmail" id="email" class="textfield"></div>
       <div class="clear"></div>
       <div class="inner-left"><label><fmt:message key="org.usrinput4"/></label></div>
       <div class="inner-right"><input id="password" type="password" name="password" class="textfield"></div>

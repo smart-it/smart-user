@@ -32,9 +32,12 @@
         <c:if test="${status.last}">
           <c:set var="last" value="${userPerson.user.username}"></c:set>
         </c:if>
-        <div id="userId${status.index}" class="orgName_column"><a href="users/username/${userPerson.user.username}">${userPerson.id}</a></div>
+        <c:set var="firstName" value="${userPerson.person.self.name.firstName}"></c:set>
+        <c:set var="middleInitial" value="${userPerson.person.self.name.middleInitial}"></c:set>
+        <c:set var="lastName" value="${userPerson.person.self.name.lastName}"></c:set>
+        <div id="userId${status.index}" class="orgName_column"><a href="users/username/${userPerson.user.username}">${userPerson.user.id}</a></div>
         <div id="username${status.index}" class="orgShortName_column"><a href="users/username/${userPerson.user.username}">${userPerson.user.username}</a></div>
-        <div id="username${status.index}" class="orgShortName_column"><a href="users/username/${userPerson.user.username}">${userPerson.user.password}</a></div>
+        <div id="userFullName${status.index}" class="orgShortName_column"><a href="users/username/${userPerson.user.username}">${firstName} ${middleInitial} ${lastName}</a></div>
       </div>
     </c:forEach>
   </div>
