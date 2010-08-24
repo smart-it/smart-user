@@ -25,7 +25,6 @@
   </div>
 </div>
 
-
 <c:if test="${param['lang']!=null}">
   <fmt:setLocale scope="session" value="${param['lang']}"/>
 </c:if>
@@ -46,36 +45,35 @@
 </div>
 
 <div class="hide"  id="create">
-  <div id="header_organization_users">
+  <div id="header_organization_users" class="header_entry_form">
     <label>Users Entry</label>
   </div>
-  <div id="form_organizationentry">
+  <div id="form_organizationentry" class="entry_form">
     <form action="" accept="application/json" enctype="" id="userform" method="post">
-      <div class="inner-left"><label><fmt:message key="org.usrinput1"/></label></div>
-      <div class="inner-right"><input type="text" name="name" id="fname" class="textfield"></div>
+      <div class="form_label"><label><fmt:message key="org.usrinput1"/></label></div>
+      <div class="form_textField"><input type="text" name="name" id="fname" class="textfield"></div>
       <div class="clear"></div>
-      <div class="inner-left"><label><fmt:message key="org.usrinput2"/></label></div>
-      <div class="inner-right"><input type="text" name="midName" id="mname" class="textfield"></div>
+      <div class="form_label"><label><fmt:message key="org.usrinput2"/></label></div>
+      <div class="form_textField"><input type="text" name="midName" id="mname" class="textfield"></div>
       <div class="clear"></div>
-      <div class="inner-left"><label><fmt:message key="org.usrinput3"/></label></div>
-      <div class="inner-right"><input type="text" name="lastName" id="lname" class="textfield"></div>
+      <div class="form_label"><label><fmt:message key="org.usrinput3"/></label></div>
+      <div class="form_textField"><input type="text" name="lastName" id="lname" class="textfield"></div>
       <div class="clear"></div>
-      <div class="inner-left"><label><fmt:message key="org.usrtablehead2"/></label></div>
-      <div class="inner-right"><input type="text" name="userName" id="fname" class="textfield"></div>
+      <div class="form_label"><label><fmt:message key="org.usrtablehead2"/></label></div>
+      <div class="form_textField"><input type="text" name="userName" id="fname" class="textfield"></div>
       <div class="clear"></div>
-      <div class="inner-left"><label><fmt:message key="org.usrinput4"/></label></div>
-      <div class="inner-right"><input id="password" type="password" name="password" class="textfield"></div>
+      <div class="form_label"><label><fmt:message key="org.usrinput4"/></label></div>
+      <div class="form_textField"><input id="password" type="password" name="password" class="textfield"></div>
       <div class="clear"></div>
-      <div class="inner-left"><label><fmt:message key="org.usrinput7"/></label></div>
-      <div class="inner-right"><input id="confirmPassword" type="password" name="confirmPassword" class="textfield"></div>
+      <div class="form_label"><label><fmt:message key="org.usrinput7"/></label></div>
+      <div class="form_textField"><input id="confirmPassword" type="password" name="confirmPassword" class="textfield"></div>
       <div class="clear"></div>
-      <div class="inner-left"><label><fmt:message key="org.usrinput5"/></label></div>
-      <div class="inner-right"><input type="text" name="phone" id="phone" class="textfield"></div>
+      <div class="form_label"><label><fmt:message key="org.usrinput5"/></label></div>
+      <div class="form_textField"><input type="text" name="phone" id="phone" class="textfield"></div>
+
       <div class="clear"></div>
       <div class="btnfield"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submitbtn" type="submit" class="submitbtn" value="SUBMIT"></div>
       <div class="clear"></div>
     </form>
-
   </div>
-
 </div>

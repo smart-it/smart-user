@@ -1,0 +1,238 @@
+/* 
+    Document   : ${name}
+    Created on : ${date}, ${time}
+    Author     : ${user}
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+  display: block;
+}
+
+#content {
+  font-size: 12px;
+  padding-top: 10px;
+  /*display: display;*/
+}
+
+.show{
+  display: block;
+}
+.hide{
+  display: none;
+}
+
+#create{
+  text-align: left;
+  /*margin: 50px 0px 0px 150px;*/
+  margin: 5px 1px 1px 5px;
+  border: 2px solid;
+  border-color:#24E0FB;
+  width:98%;
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+.header_entry_form{
+
+  /*    background-image: url(../images/menul.jpg),
+                                                  url(../images/menur.jpg);
+      background-repeat: no-repeat,
+                                                  no-repeat;
+      background-position: top left,
+                                                  top right;*/
+  /*
+      -moz-border-radius: 1em;
+      -webkit-border-radius: 1em;
+      border-radius: 1em;
+  */
+  width: auto;
+  text-align: center;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  height: 20px;
+  background-color:#8ED6EA;
+}
+
+.header_entry_form label{
+  font-family: vardana, sans-serif;
+  text-decoration: none;
+  font-size: 12pt;
+  font-weight: bolder;
+  font-style: normal;
+  color:#333366;
+}
+
+.entry_form{
+  width:auto;
+  background-color: #F5EEFD;
+  padding: 10px 10px 10px 10px;
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+.form_label{
+  /*padding: 14px 0px 10px 10px;*/
+  padding: 13px 10px 17px 0px;
+  width:35%;
+  float:left;
+  text-align: left;
+  /*border: 1px solid;*/
+}
+
+.form_label label{
+  font-family: vardana, sans-serif;
+  font-size: 12pt;
+  font-weight: 500;
+  font-style: normal;
+  color:#330066;
+}
+
+.form_textField{
+
+  padding: 10px 10px 10px 0px;
+  width:60%;
+  float:left;
+  /*border: 1px solid;*/
+}
+
+.textField{
+  height: 30px;
+  border: 1px outset;
+  /*border-style: ridge*/
+  border-color:#9A03FE;
+  width: 100%  ;
+  font-family: sans-serif;
+  font-weight: normal;
+  font-size: 9pt;
+
+}
+
+.btnfield{
+  margin-right: 70px;
+  float:right;
+  width: auto;
+  text-align: center;
+}
+
+.submitbtn{
+  background-color:#00CCFF;
+  font-family: sans-serif;
+  font-size:10pt;
+  color:white;
+  border: 2px inset;
+  border-color:#00CCFF;
+  height: 30px;
+  width: 80px;
+}
+
+.submitbtn:hover{
+  border-color:#CC00FF;
+  border: 2px outset;
+  font-weight: bold;
+}
+
+.alertlabel{
+  font-family: sans-serif;
+  font-size: 10pt;
+  font-weight: 400;
+  font-style: oblique;
+  color: #FF3333;
+}
+
+#alertfield{
+  text-align: right;
+  padding-right: 120px;
+  width:auto;
+}
+
+/*Individual Organization/User Details*/
+
+.header_details_info{
+  /*margin-left: 110px;*/
+  margin-top: 2px;
+  margin-left: 3px;
+  /*margin: 0 auto;*/
+  padding-top: 5px;
+  width: 99%;
+  height: 25px;
+  background-color:#CCCFFF;
+}
+
+.header_details_info label{
+  padding-left: 10px;
+  font-family:cursive;
+  font-weight:600;
+  font-size: 10pt;
+  color: #23819C;
+}
+
+.content_details_info{
+  /*margin-left: 110px;*/
+  /*margin: 0 auto;*/
+  margin-left: 3px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-image: url(../images/l.gif);
+  background-repeat:repeat;
+  background-position: right;
+  width:99%;
+}
+
+.individual_details_label{
+  float: left;
+  width: 27%;
+  padding: 2px 2px 5px 10px;
+  text-align: left;
+  /*border: 1px solid;*/
+}
+
+.individual_details_data{
+  float: left;
+  width: 60%;
+  padding: 2px 2px 5px 0px;
+  /*border: 1px solid;*/
+}
+
+.individual_details_label label{
+
+  font-family:sans-serif;
+  font-style: normal;
+  font-size: 12pt;
+  font-weight: 500;
+  text-decoration: none;
+  /*text-transform: uppercase;*/
+  color: 	#0000FF;
+}
+
+.individual_details_data label{
+  font-family:sans-serif;
+  font-style: oblique;
+  font-size: 12pt;
+  font-weight: 600;
+  color: #FF9966;
+}
+
+.tablehead_label{
+  font-family: sans-serif;
+  font-size: 7pt;
+  font-weight: bold;
+  color:#333366;
+}
+
+.tablecontent_label{
+  font-family: sans-serif;
+  font-size: 10pt;
+  font-weight: 400;
+  font-style: oblique;
+  text-decoration: none;
+  color: #333399;
+}
+
+.clear{
+  clear: both;
+}

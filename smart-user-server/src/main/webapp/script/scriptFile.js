@@ -8,7 +8,7 @@ $( init );
 
 function init() {
 
-  $('#right').append( $('.leftmenu') );
+  $('#left').append( $('.leftmenu') );
 }
 
 $(document).ready(function () {
