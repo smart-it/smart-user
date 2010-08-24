@@ -34,11 +34,13 @@
           midName: "required",
           lastName: "required",
           userName: "required",
+          password: {
+            password: "required",
+            minLength: 6
+          },
           confirmPassword: {
             equalTo: "#password"
-          },
-          uniqueShortName: "required"
-
+          }
         },
         messages: {
           password: "Password must be atleast of 6 characters"
