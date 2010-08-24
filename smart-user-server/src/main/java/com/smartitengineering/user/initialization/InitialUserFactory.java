@@ -21,6 +21,24 @@ import java.util.Set;
 
 public class InitialUserFactory {
 
+  final static String ORG_NAME = "Smart User";
+  final static String ORG_SHORTNAME = "smart-user";
+  final static String ORG_SECURED_OBJECT_NAME = "Smart User Organization";
+  final static String SUPER_ADMIN_USERNAME = "smartadmin";
+  final static String SUPER_ADMIN_PASSWORD = "02040250204039";
+  final static String ORGS_OID = "/orgs";
+  final static String ORGS_OID_NAME = "Smart User Organizations";
+  final static String USERS_OID = "Smart User Users";
+  final static String USERS_OID_NAME = "/orgs/smart-user/users";
+  final static String SECURED_OBJECTS_OID = "/orgs/smart-user/securedObjects";
+  final static String SECURED_OBJECTS_OID_NAME = "Smart User Secured Objects";
+  final static String PRIVILEGES_OID = "/orgs/smart-user/privileges";
+  final static String PRIVILEGES_OID_NAME = "Smart User Privileges";
+  final static Integer PRIVILEGE_PERMISSION_MASK = 13;
+  final static String USER_OID_NAME = "Super Admin User Secured Object";
+  final static String USER_OID = "/users";
+  final static String USER_UNIQUE_FRAG = "/username";
+  final static String ORG_UNIQUE_FRAG = "/shortName";
   private UserService userService;
   private SecuredObjectService securedObjectService;
   private PrivilegeService privilegeService;
@@ -82,9 +100,9 @@ public class InitialUserFactory {
 
     intializeRoles();
 
-    Organization organization = new Organization("Smart User", "smart-user");
+    Organization organization = new Organization(ORG_NAME, ORG_SHORTNAME);
     organizationService.save(organization);
-    organization = organizationService.getOrganizationByUniqueShortName("smart-user");
+    organization = organizationService.getOrganizationByUniqueShortName(ORG_SHORTNAME);
 
     Role role = new Role();
     role = roleService.getRoleByName(GlobalRole.ROLE_ADMIN.name());
@@ -92,79 +110,74 @@ public class InitialUserFactory {
     Set<Role> roles = new HashSet<Role>();
     roles.add(role);
 
-//    SecuredObject securedObject = new SecuredObject();
-//    securedObject.setName("Smart User System");
-//    securedObject.setObjectID(organization.getUniqueShortName());
-//    securedObject.setOrganization(organization);
-//    securedObject.setParentObjectID(null);
-//    securedObjectService.save(securedObject);
-//
-//    securedObject = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObject.
-//        getObjectID());
-//
-//    SecuredObject securedObjectOrganizations = new SecuredObject();
-//    securedObjectOrganizations.setName("Smart User Organizations");
-//    securedObjectOrganizations.setObjectID("/orgs"); //This objectId is actually the http url of organizations list
-//    securedObjectOrganizations.setOrganization(organization);
-//    securedObjectOrganizations.setParentObjectID(securedObject.getObjectID());
-//    securedObjectService.save(securedObjectOrganizations);
-//
-//    securedObjectOrganizations = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectOrganizations.
-//        getObjectID());
-//
-//    SecuredObject securedObjectUsers = new SecuredObject();
-//    securedObjectUsers.setName("Smart User Users");
-//    securedObjectUsers.setObjectID("/orgs/smart-user/users"); //This objectId is actually the http url of users list of smart-user organizations
-//    securedObjectUsers.setOrganization(organization);
-//    securedObjectUsers.setParentObjectID(securedObject.getObjectID());
-//    securedObjectService.save(securedObjectUsers);
-//
-//    securedObjectUsers = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectUsers.
-//        getObjectID());
-//
-//    SecuredObject securedObjectSecuredObjects = new SecuredObject();
-//    securedObjectSecuredObjects.setName("Smart User Secured Objects");
-//    securedObjectSecuredObjects.setObjectID("/orgs/smart-user/securedObjects"); //This objectId is actually the http url of secured objcets list of smart-user organizations
-//    securedObjectSecuredObjects.setOrganization(organization);
-//    securedObjectSecuredObjects.setParentObjectID(securedObject.getObjectID());
-//    securedObjectService.save(securedObjectSecuredObjects);
-//
-//    securedObjectSecuredObjects = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectSecuredObjects.
-//        getObjectID());
-//
-//    SecuredObject securedObjectPrivileges = new SecuredObject();
-//    securedObjectPrivileges.setName("Smart User Secured Objects");
-//    securedObjectPrivileges.setObjectID("/orgs/smart-user/privileges"); //This objectId is actually the http url of secured objcets list of smart-user organizations
-//    securedObjectPrivileges.setOrganization(organization);
-//    securedObjectPrivileges.setParentObjectID(securedObject.getObjectID());
-//    securedObjectService.save(securedObjectPrivileges);
-//
-//    securedObjectPrivileges = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectPrivileges.
-//        getObjectID());
-//
-//
-//
-//    Privilege privilege = new Privilege();
-//    privilege.setDisplayName("Smart User Adminstration");
-//    privilege.setName("smart-user-admin");
-//    privilege.setParentOrganization(organization);
-//    privilege.setPermissionMask(31); //permission mask 31 means all privileges are there 11111
-//    privilege.setSecuredObject(securedObject);
-//    privilege.setShortDescription("This admin privilege contains the authority to do any of the CRUD options");
-//    privilegeService.create(privilege);
-//
-//    privilege = privilegeService.getPrivilegeByOrganizationAndPrivilegeName(organization.getUniqueShortName(), privilege.
-//        getName());
-//    Set<Privilege> privileges = new HashSet();
-//    privileges.add(privilege);
 
 
+    SecuredObject securedObjectOrganizations = new SecuredObject();
+    securedObjectOrganizations.setName(ORGS_OID_NAME);
+    securedObjectOrganizations.setObjectID(ORGS_OID); //This objectId is actually the http url of organizations list
+    securedObjectOrganizations.setOrganization(organization);
+    securedObjectOrganizations.setParentObjectID(null);
+    securedObjectService.save(securedObjectOrganizations);
+    securedObjectOrganizations = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectOrganizations.
+        getObjectID());
+
+    String orgUri = ORGS_OID + ORG_UNIQUE_FRAG + "/" + organization.getUniqueShortName();
+    SecuredObject securedObject = new SecuredObject();
+    securedObject.setName(ORG_SECURED_OBJECT_NAME);
+    securedObject.setObjectID(orgUri);
+    securedObject.setOrganization(organization);
+    securedObject.setParentObjectID(securedObjectOrganizations.getObjectID());
+    securedObjectService.save(securedObject);
+
+    securedObject = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObject.
+        getObjectID());
+
+    SecuredObject securedObjectUsers = new SecuredObject();
+    securedObjectUsers.setName(USERS_OID);
+    securedObjectUsers.setObjectID(ORGS_OID + USERS_OID_NAME);
+    securedObjectUsers.setOrganization(organization);
+    securedObjectUsers.setParentObjectID(securedObject.getObjectID());
+    securedObjectService.save(securedObjectUsers);
+    securedObjectUsers = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectUsers.
+        getObjectID());
+
+    SecuredObject securedObjectSecuredObjects = new SecuredObject();
+    securedObjectSecuredObjects.setName(SECURED_OBJECTS_OID_NAME);
+    securedObjectSecuredObjects.setObjectID(ORGS_OID + SECURED_OBJECTS_OID);
+    securedObjectSecuredObjects.setOrganization(organization);
+    securedObjectSecuredObjects.setParentObjectID(securedObject.getObjectID());
+    securedObjectService.save(securedObjectSecuredObjects);
+    securedObjectSecuredObjects = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectSecuredObjects.
+        getObjectID());
+
+    SecuredObject securedObjectPrivileges = new SecuredObject();
+    securedObjectPrivileges.setName(PRIVILEGES_OID_NAME);
+    securedObjectPrivileges.setObjectID(ORGS_OID + PRIVILEGES_OID);
+    securedObjectPrivileges.setOrganization(organization);
+    securedObjectPrivileges.setParentObjectID(securedObject.getObjectID());
+    securedObjectService.save(securedObjectPrivileges);
+    securedObjectPrivileges = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectPrivileges.
+        getObjectID());
+
+    Privilege privilege = new Privilege();
+    privilege.setDisplayName("Smart User Adminstration");
+    privilege.setName("smart-user-admin");
+    privilege.setParentOrganization(organization);
+    privilege.setPermissionMask(PRIVILEGE_PERMISSION_MASK); //permission mask 31 means all privileges are there 11111
+    privilege.setSecuredObject(securedObjectOrganizations);
+    privilege.setShortDescription("This admin privilege contains the authority to do any of the CRUD options");
+    privilegeService.create(privilege);
+
+    privilege = privilegeService.getPrivilegeByOrganizationAndPrivilegeName(organization.getUniqueShortName(), privilege.
+        getName());
+    Set<Privilege> privileges = new HashSet();
+    privileges.add(privilege);
 
     User user = new User();
     user.setOrganization(organization);
-    user.setUsername("smartadmin");
-    user.setPassword("02040250204039");
-//    user.setPrivileges(privileges);
+    user.setUsername(SUPER_ADMIN_USERNAME);
+    user.setPassword(SUPER_ADMIN_PASSWORD);
+    user.setPrivileges(privileges);
     user.setRoles(roles);
     
     Person person = new Person();
@@ -186,33 +199,66 @@ public class InitialUserFactory {
 
     //userService.save(user);
 
+    user = userService.getUserByOrganizationAndUserName(user.getUsername(), user.getOrganization().getUniqueShortName());
+
+    SecuredObject securedObjectUser = new SecuredObject();
+    securedObjectUser.setName(USER_OID_NAME);
+    securedObjectUser.setObjectID(orgUri + USER_UNIQUE_FRAG + USER_OID_NAME); //This objectId is actually the http url of super admin user of smart-user organizations
+    securedObjectUser.setOrganization(organization);
+    securedObjectUser.setParentObjectID(securedObjectUsers.getObjectID());
+    securedObjectService.save(securedObjectSecuredObjects);
+    securedObjectUser = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectUser.
+        getObjectID());
+
+    Privilege privilegeUser = new Privilege();
+    privilege.setDisplayName("Admin User Profile Privilege");
+    privilege.setName("super-admin-user-privilege");
+    privilege.setParentOrganization(organization);
+    privilege.setPermissionMask(PRIVILEGE_PERMISSION_MASK); //permission mask 31 means all privileges are there 11111
+    privilege.setSecuredObject(securedObjectUser);
+    privilege.setShortDescription(
+        "This privilege contains the authority to change the password and profile of the super admin.");
+    privilegeService.create(privilege);
+
+    privilegeUser = privilegeService.getPrivilegeByOrganizationAndPrivilegeName(organization.getUniqueShortName(), privilegeUser.
+        getName());
+    privileges.add(privilegeUser);
+
+    user.setPrivileges(privileges);
+    userService.update(user);
+
   }
 
   private void intializeRoles() {
     Role role = new Role();
     role.setName(GlobalRole.ROLE_ADMIN.name());
     role.setDisplayName("Global Role for Adminstration");
-    role.setShortDescription("This is the global role with all the privileges. The user with this role can do anything to the system");
+    role.setShortDescription(
+        "This is the global role with all the privileges. The user with this role can do anything to the system");
     roleService.create(role);
 
     role.setName(GlobalRole.ROLE_READ.name());
     role.setDisplayName("Global Role to Read");
-    role.setShortDescription("This is the global role with all reading privileges. The user with this role can read anything from the system");
+    role.setShortDescription(
+        "This is the global role with all reading privileges. The user with this role can read anything from the system");
     roleService.create(role);
 
     role.setName(GlobalRole.ROLE_CREATE.name());
     role.setDisplayName("Global Role to Create");
-    role.setShortDescription("This is the global role with all creation privileges. The user with this role can create any object in the system");
+    role.setShortDescription(
+        "This is the global role with all creation privileges. The user with this role can create any object in the system");
     roleService.create(role);
 
     role.setName(GlobalRole.ROLE_UPDATE.name());
     role.setDisplayName("Global Role for editing");
-    role.setShortDescription("This is the global role with all editing privileges. The user with this role can edit any object in the system");
+    role.setShortDescription(
+        "This is the global role with all editing privileges. The user with this role can edit any object in the system");
     roleService.create(role);
 
     role.setName(GlobalRole.ROLE_DELETE.name());
     role.setDisplayName("Global Role for Deletion");
-    role.setShortDescription("This is the global role with all deletion privileges. The user with this role can delete anything from the system");
+    role.setShortDescription(
+        "This is the global role with all deletion privileges. The user with this role can delete anything from the system");
     roleService.create(role);
   }
 }
