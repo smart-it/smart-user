@@ -18,7 +18,6 @@
 
 <div id="leftmenu_userdeatils_1" class="leftmenu">
   <div id="leftmenu_header_userdeatils_1" class="leftmenu_header"><label>Individual-User</label></div>
-
   <div id="leftmenu_body_userdeatils_1" class="leftmenu_body">
     <ul>
       <li><a href="javascript: Orgpageselect()"><fmt:message key="org.tablehead4"/></a></li>

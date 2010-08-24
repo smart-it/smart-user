@@ -40,6 +40,7 @@ root {
   text-align: left;
   float: left;
   width: 50%;
+  height: auto;
 }
 
 .tablehead_label{
@@ -47,7 +48,6 @@ root {
   font-size: 10pt;
   font-weight: bold;
   color:#333366;
-  float: left;
 }
 
 .list_column_names{

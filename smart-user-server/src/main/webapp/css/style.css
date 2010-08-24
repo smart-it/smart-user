@@ -70,32 +70,16 @@ body{
     padding: 3px 2px 2px 10px;
 }
 
-#searchbox{
-    padding-left: 2px;
-    height: 25px;
-    border: 1px inset;
-    border-color:#9A03FE;
-    width:inherit;
-
-    font-family: sans-serif;
-    font-weight: 500;
-    font-size: 12pt;
-}
-
-#btnSearch{
-    height: 27px;
-}
-
 .template_content{
     background: url(../images/bg_shadow_bot.gif) repeat;
-    height: 672px;
+    height:680px;
     float: right;
     width: 73.6%;
 }
 
 .left_menu{
     background: url(../images/)  no-repeat;
-    height:672px;
+    height:680px;;
     float: left;
     width: 26%;
     border: 1px solid;
