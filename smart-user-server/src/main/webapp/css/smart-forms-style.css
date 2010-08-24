@@ -17,7 +17,7 @@ root {
 
 #content {
   font-size: 12px;
-  padding-top: 10px;
+  /*padding-top: 10px;*/
   /*display: display;*/
 }
 
@@ -126,7 +126,7 @@ root {
   color:white;
   border: 2px inset;
   border-color:#00CCFF;
-  height: 30px;
+  height: 25px;
   width: 80px;
 }
 
