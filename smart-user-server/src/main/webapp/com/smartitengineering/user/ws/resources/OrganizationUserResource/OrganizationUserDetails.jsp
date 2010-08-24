@@ -9,8 +9,6 @@
 <%@page import="com.smartitengineering.user.domain.User" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page import="java.util.Collection"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-  "http://www.w3.org/TR/html4/loose.dtd">
 
 <c:if test="${param['lang']!=null}">
   <fmt:setLocale scope="session" value="${param['lang']}"/>
