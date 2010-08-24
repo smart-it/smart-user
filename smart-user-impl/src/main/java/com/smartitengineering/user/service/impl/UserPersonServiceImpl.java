@@ -39,6 +39,10 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
   private PersonService personService;
   private UserService userService;
 
+  public UserPersonServiceImpl() {
+    setEntityClass(UserPerson.class);
+  }
+
   public PersonService getPersonService() {
     return personService;
   }
@@ -174,12 +178,15 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
   @Override
   public UserPerson getUserPersonByUsernameAndOrgName(String username, String orgName) {
     QueryParameter qp;
-    qp = QueryParameterFactory.getNestedParametersParam("user", FetchMode.DEFAULT, QueryParameterFactory.
-        getConjunctionParam(QueryParameterFactory.getEqualPropertyParam("username", username), QueryParameterFactory.
-        getNestedParametersParam("orgnanization", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam(
-        "uniqueShortName", orgName))));
-
-    UserPerson userPerson = super.getSingle(qp);
-    return userPerson;
+    qp = QueryParameterFactory.getNestedParametersParam("user", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam("username", username));        
+    Collection<UserPerson> userPersons = super.getList(qp);    
+    if (userPersons!=null) {
+      for (UserPerson userPerson : userPersons) {
+        if (userPerson.getUser().getOrganization().getUniqueShortName().equals(orgName)) {
+          return userPerson;
+        }
+      }
+    }    
+    return null;
   }
 }
