@@ -247,7 +247,8 @@ public class OrganizationResource extends AbstractResource {
   }
 
   @POST
-  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Path("/delete")
+  //@Produces(MediaType.APPLICATION_ATOM_XML)
   public Response deletePost() {
     Services.getInstance().getOrganizationService().delete(organization);
     ResponseBuilder responseBuilder = Response.ok();
