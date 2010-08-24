@@ -41,6 +41,9 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
         <property name="roleService">
             <ref bean="roleService"/>
         </property>
+        <property name="userPersonService">
+            <ref bean="userPersonService"/>
+        </property>
     </bean>
     <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="initialUserFactory"/>

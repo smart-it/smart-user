@@ -1,15 +1,20 @@
 package com.smartitengineering.user.initialization;
 
+import com.smartitengineering.user.domain.BasicIdentity;
 import com.smartitengineering.user.domain.GlobalRole;
+import com.smartitengineering.user.domain.Name;
 import com.smartitengineering.user.domain.Organization;
+import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.SecuredObject;
 import com.smartitengineering.user.domain.User;
+import com.smartitengineering.user.domain.UserPerson;
 import com.smartitengineering.user.service.OrganizationService;
 import com.smartitengineering.user.service.PrivilegeService;
 import com.smartitengineering.user.service.RoleService;
 import com.smartitengineering.user.service.SecuredObjectService;
+import com.smartitengineering.user.service.UserPersonService;
 import com.smartitengineering.user.service.UserService;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +26,17 @@ public class InitialUserFactory {
   private PrivilegeService privilegeService;
   private OrganizationService organizationService;
   private RoleService roleService;
+  private UserPersonService userPersonService;
+
+  public UserPersonService getUserPersonService() {
+    return userPersonService;
+  }
+
+  public void setUserPersonService(UserPersonService userPersonService) {
+    this.userPersonService = userPersonService;
+  }
+
+
 
   public RoleService getRoleService() {
     return roleService;
@@ -150,7 +166,25 @@ public class InitialUserFactory {
     user.setPassword("02040250204039");
 //    user.setPrivileges(privileges);
     user.setRoles(roles);
-    userService.save(user);
+    
+    Person person = new Person();
+    Name name = new Name();
+    name.setFirstName("Super");
+    name.setLastName("Admin");
+    BasicIdentity self= new BasicIdentity();
+    self.setName(name);
+    self.setNationalID("1234567890");
+
+    person.setSelf(self);
+    person.setPrimaryEmail("info@smart-user.com");
+
+    UserPerson userPerson = new UserPerson();
+    userPerson.setPerson(person);
+    userPerson.setUser(user);
+
+    userPersonService.create(userPerson);
+
+    //userService.save(user);
 
   }
 
