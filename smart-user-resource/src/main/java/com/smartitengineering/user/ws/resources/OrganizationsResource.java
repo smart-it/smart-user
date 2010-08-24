@@ -186,6 +186,8 @@ public class OrganizationsResource extends AbstractResource {
 
     Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
         uniqueShortName, uniqueShortName, false, count);
+    servletRequest.setAttribute("templateHeadContent",
+                                "/com/smartitengineering/user/ws/resources/OrganizationsResource/OrganizationHeader.jsp");
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
     Viewable view = new Viewable("/template/template.jsp", organizations);

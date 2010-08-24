@@ -136,7 +136,7 @@ public class OrganizationResource extends AbstractResource {
 
   @POST
   @Path("/update")
-  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  //@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   public Response updatePost(@HeaderParam("Content-type") String contentType, String message) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
 
@@ -190,6 +190,13 @@ public class OrganizationResource extends AbstractResource {
 
     Map<String, String> keyValueMap = new HashMap<String, String>();
 
+    String[] keyValuePairs = message.split("&");
+
+    for (int i = 0; i < keyValuePairs.length; i++) {
+
+      String[] keyValuePair = keyValuePairs[i].split("=");
+      keyValueMap.put(keyValuePair[0], keyValuePair[1]);
+    }
 
     Organization newOrganization = new Organization();
 
@@ -198,6 +205,10 @@ public class OrganizationResource extends AbstractResource {
 
     if (keyValueMap.get("id") != null) {
       newOrganization.setId(Integer.valueOf(keyValueMap.get("id")));
+    }
+
+    if (keyValueMap.get("version") != null) {
+      newOrganization.setVersion(Integer.valueOf(keyValueMap.get("version")));
     }
 
 
@@ -216,7 +227,7 @@ public class OrganizationResource extends AbstractResource {
     }
 
     if (keyValueMap.get("streetAddress") != null) {
-      address.setCity(keyValueMap.get("streetAddress"));
+      address.setStreetAddress(keyValueMap.get("streetAddress"));
     }
 
     if (keyValueMap.get("country") != null) {
@@ -230,11 +241,14 @@ public class OrganizationResource extends AbstractResource {
       address.setZip(keyValueMap.get("zip"));
     }
 
+    newOrganization.setAddress(address);
+
     return newOrganization;
   }
 
   @POST
-  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Path("/delete")
+  //@Produces(MediaType.APPLICATION_ATOM_XML)
   public Response deletePost() {
     Services.getInstance().getOrganizationService().delete(organization);
     ResponseBuilder responseBuilder = Response.ok();

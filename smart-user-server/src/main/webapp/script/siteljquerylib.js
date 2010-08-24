@@ -14,7 +14,6 @@ function fetchContent(mainDivId, url, fragsLinkDivId) {
       //      putting html data in id div
       $(mainDivId).html(html);
       cacheContent(mainDivId, fragsLinkDivId);
-
     },
     error: function(xhr){
       alert(window.location);
