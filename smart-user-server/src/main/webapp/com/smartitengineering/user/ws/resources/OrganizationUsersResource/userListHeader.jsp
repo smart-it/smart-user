@@ -18,24 +18,18 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
-    var url = "/orgs/${orgInitial}/users/frags${qParam}";
-    $("#tablecontentid").pagination(url,"linkcontainer");
-    
-    $(".submit").click(function(){
-      alert(1);
-      var fname = $("input#fname");
-      var mname = $("input#mname");
-      var lname = $("input#lname");
-      var password = $("input#password");
-      var phone = $("input#phone");
-      $("#userform").validate({
+    $("#userform").validate({
         rules: {
-          name: "required",
-          midName: "required",
+          firstName: "required",
+          middleInitial: "required",
           lastName: "required",
           userName: "required",
+          primaryEmail: {
+            required: true,
+            email:true
+          },
           password: {
-            password: "required",
+            required: true,
             minLength: 6
           },
           confirmPassword: {
@@ -46,7 +40,20 @@
           password: "Password must be atleast of 6 characters"
         }
       });
-      var datastring = 'name='+ fname + '&midName='+ mname + '&lastName='+ lname + '&password='+ password + '&phone='+ phone;
+
+    var url = "/orgs/${orgInitial}/users/frags${qParam}";
+    $("#tablecontentid").pagination(url,"linkcontainer");
+
+    
+
+    $(".submitbtn").click(function(){
+      alert(1);
+      var fname = $("input#fname");
+      var mname = $("input#mname");
+      var lname = $("input#lname");
+      var password = $("input#password");
+      var phone = $("input#phone");      
+      var datastring = 'firstName='+ fname + '&middleInitial='+ mname + '&lastName='+ lname + '&password='+ password + '&phone='+ phone;
       $.ajax({
         type: "POST",
         url: window.location,

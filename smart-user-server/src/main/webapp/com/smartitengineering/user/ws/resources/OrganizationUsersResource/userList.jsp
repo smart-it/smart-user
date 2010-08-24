@@ -65,12 +65,12 @@
       <div class="form_textField"><input type="text" name="lastName" id="lname" class="textfield"></div>
       <div class="clear"></div>
       <div class="form_label"><label><fmt:message key="org.usrtablehead2"/></label></div>
-      <div class="form_textField"><input type="text" name="userName" id="fname" class="textfield"></div>
+      <div class="form_textField"><input type="text" name="userName" id="uname" class="textfield"></div>
       <div class="clear"></div>
       <div class="form_label"><label><fmt:message key="org.usrinput8"/></label></div>
-      <div class="form_textField"><input type="text" name="nationalID" id="fname" class="textfield"></div>
+      <div class="form_textField"><input type="text" name="nationalID" id="nationalId" class="textfield"></div>
       <div class="form_label"><label><fmt:message key="org.usrinput9"/></label></div>
-      <div class="form_textField"><input type="text" name="primaryEmail" id="fname" class="textfield"></div>
+      <div class="form_textField"><input type="text" name="primaryEmail" id="email" class="textfield"></div>
       <div class="clear"></div>
 
       <div class="form_label"><label><fmt:message key="org.usrinput4"/></label></div>

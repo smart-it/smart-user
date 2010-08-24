@@ -41,15 +41,16 @@
     <input type="hidden" name="version" value="${it.version}" class="textField" id="version">
     <div style="clear: both"></div>
 
-    <div class="inner-right"><input type="hidden" name="userName" value="${it.username}" class="textField" id="name"></div>
+    <div class="form_label"><input type="hidden" name="userName" value="${it.username}" class="textField" id="name"></div>
     <div style="clear: both"></div>
 
-    <div class="inner-right"><input type="hidden" name="password" value="${it.password}" class="textField" id="password"></div>
+    <div class="form_label"><input type="hidden" name="password" value="${it.password}" class="textField" id="password"></div>
     <div style="clear: both"></div>
 
     <div class="btnfield"><input type="submit" value="DELETE" name="submitbtn" class="submitbtn"></div>
     <div style="clear: both"></div>
   </form>
+</div>
 </div>
 </div>
 

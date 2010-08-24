@@ -24,7 +24,7 @@
 
 <div id="userListRootDiv">
   <div class="tableList" id="userListContainer">
-    <c:forEach var="userPerson" items="${it}" varStatus="status">
+    <c:forEach var="userPerson" items="${it}" varStatus="status" begin="1">
       <div id="userRow${status.index}" class="row_of_list">
         <c:if test="${status.first}">
           <c:set var="first" value="${userPerson.user.username}"></c:set>
