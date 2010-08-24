@@ -27,7 +27,7 @@
 <div id="showList" class="show">
   <div id="individual_user_details_header"  class="header_details_info"><label><c:out value="${it.username}"></c:out></label></div>
   <div id="individual_user_details_content" class="content_details_info">
-    <div class="individual_details_label"><label><fmt:message key="org.usrtablehead2"/></label></div>
+    <div class="individual_details_label"><label><fmt:message key="org.usrtablehead2"/></label>
     <div class="individual_details_data"><label>${it.username}</label></div>
     <div class="clear"></div>
     <div class="individual_details_label"><label><fmt:message key="org.usrinput4"/></label></div>
