@@ -79,7 +79,7 @@ root {
   width: 45%;
 }
 
-.orgName_column a{
+a{
   font-family: sans-serif;
   font-size: 10pt;
   font-weight: 400;
@@ -88,7 +88,7 @@ root {
   color: #333399;
 }
 
-.orgName_column a:hover{
+a:hover{
   color: orange;
 }
 
@@ -99,28 +99,14 @@ root {
   width: 45%;
 }
 
-.orgShortName_column a{
-  font-family: sans-serif;
-  font-size: 10pt;
-  font-weight: 400;
-  font-style: oblique;
-  text-decoration: none;
-  color: #333399;
-}
-
-.orgShortName_column a:hover{
-  color: orange;
-}
-
 .navigation_container{
   padding: 10px 10px 2px 2px;
-
 }
 
 .list_navigation_links{
   text-align: center;
   float: right;
-  width: 12%;
+  width: 15%;
   /*border: 1px solid;*/
 }
 
@@ -131,4 +117,34 @@ root {
 .list_navigation_links a:hover{
   color: #FF0000;
   font-weight:bolder;
+}
+
+/*userlist data*/
+
+.tableheadname_user{
+  text-align: left;
+  float: left;
+  width: 33%;
+  height: auto;
+}
+
+.userId_column{
+  padding-left: 20px;
+  text-align: left;
+  float: left;
+  width: 30%;
+}
+
+.userName_column{
+  padding-left: 15px;
+  text-align: left;
+  float: left;
+  width: 30%;
+}
+
+.userFullName_column{
+  padding-left: 13px;
+  text-align: left;
+  float: left;
+  width: 30%;
 }

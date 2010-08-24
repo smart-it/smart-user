@@ -71,14 +71,14 @@ body{
 
 .template_content{
   background: url(../images/bg_shadow_bot.gif) repeat;
-  height:480px;
+  height:550px;
   float: right;
   width: 73.6%;
 }
 
 .left_menu{
   background: url(../images) repeat;
-  height:480px;;
+  height:550px;;
   float: left;
   width: 26%;
   border: 1px solid;

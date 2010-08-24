@@ -34,13 +34,13 @@
     <label><fmt:message key="org.usrtitle"/></label>
   </div>
   <div id="top_row" class="list_column_names">
-    <div class="tableheadname">
+    <div class="tableheadname_user">
       <label class="tablehead_label"><fmt:message key="org.usrtablehead1"/></label>
     </div>
-    <div class="tableheadname">
+    <div class="tableheadname_user">
       <label class="tablehead_label"><fmt:message key="org.usrtablehead2"/></label>
     </div>
-    <div class="tableheadname">
+    <div class="tableheadname_user">
       <label class="tablehead_label"><fmt:message key="org.usrtablehead3"/></label>
     </div>
   </div>
@@ -59,7 +59,6 @@
       <div class="clear"></div>
       <div class="form_label"><label><fmt:message key="org.usrinput2"/></label></div>
       <div class="form_textField"><input type="text" name="middleInitial" id="mname" class="textfield"></div>
-
       <div class="clear"></div>
       <div class="form_label"><label><fmt:message key="org.usrinput3"/></label></div>
       <div class="form_textField"><input type="text" name="lastName" id="lname" class="textfield"></div>
@@ -72,7 +71,6 @@
       <div class="form_label"><label><fmt:message key="org.usrinput9"/></label></div>
       <div class="form_textField"><input type="text" name="primaryEmail" id="fname" class="textfield"></div>
       <div class="clear"></div>
-
       <div class="form_label"><label><fmt:message key="org.usrinput4"/></label></div>
       <div class="form_textField"><input id="password" type="password" name="password" class="textfield"></div>
       <div class="clear"></div>
