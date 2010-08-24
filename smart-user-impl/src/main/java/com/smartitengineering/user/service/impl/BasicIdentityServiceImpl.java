@@ -16,6 +16,11 @@ import com.smartitengineering.user.service.BasicIdentityService;
  */
 public class BasicIdentityServiceImpl extends AbstractCommonDaoImpl<BasicIdentity> implements BasicIdentityService{
 
+  public BasicIdentityServiceImpl() {
+    setEntityClass(BasicIdentity.class);
+  }
+
+
   @Override
   public Integer count(String nationalID) {
     return (Integer) super.getOther(QueryParameterFactory.getElementCountParam(

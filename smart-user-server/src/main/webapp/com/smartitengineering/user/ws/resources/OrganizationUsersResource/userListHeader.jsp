@@ -20,29 +20,48 @@
   $(document).ready(function(){
     var url = "/orgs/${orgInitial}/users/frags${qParam}";
     $("#tablecontentid").pagination(url,"linkcontainer");
-    $("#userform").validate({
-      rules: {
-        name: "required",
-        midName: "required",
-        lastName: "required",
-        userName: "required",
-        confirmPassword: {
-          equalTo: "#password"
-        },
-        uniqueShortName: "required"
-
-      },
-      messages: {
-        password: "Password must be atleast of 6 characters"
-      }
-    });
+    
     $(".submit").click(function(){
+      alert(1);
       var fname = $("input#fname");
       var mname = $("input#mname");
       var lname = $("input#lname");
       var password = $("input#password");
-      var phone = $("input#phone")
+      var phone = $("input#phone");
+      $("#userform").validate({
+        rules: {
+          name: "required",
+          midName: "required",
+          lastName: "required",
+          userName: "required",
+          password: {
+            password: "required",
+            minLength: 6
+          },
+          confirmPassword: {
+            equalTo: "#password"
+          }
+        },
+        messages: {
+          password: "Password must be atleast of 6 characters"
+        }
+      });
       var datastring = 'name='+ fname + '&midName='+ mname + '&lastName='+ lname + '&password='+ password + '&phone='+ phone;
+      $.ajax({
+        type: "POST",
+        url: window.location,
+        data: datastring,
+        success: function(){
+          alert("bom");
+          $('#form_userentry').html("<div id='message'></div>");
+          $('#message').html("<h2>Contact Form Submitted!</h2>")
+          .append("<p>We will be in touch soon.</p>")
+          .hide()
+          .fadeIn(1500, function() {            
+            $('#message').append("<img id='checkmark' src='images/check.png' />");
+          });
+        }
+      });
 
     });
   });

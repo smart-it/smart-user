@@ -20,8 +20,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -118,7 +120,22 @@ public class OrganizationUsersResource extends AbstractResource {
     ResponseBuilder responseBuilder = Response.ok();
     Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName,
                                                                                            null, false, count);
-    Viewable view = new Viewable("userFrags.jsp", users, OrganizationUsersResource.class);
+    Set<UserPerson> userPersons = new HashSet<UserPerson>();
+    for (User user : users) {
+      UserPerson userPerson = Services.getInstance().getUserPersonService().getUserPersonByUsernameAndOrgName(
+          user.getUsername(), user.getOrganization().getUniqueShortName());
+      if (userPerson != null) {
+        userPersons.add(userPerson);
+      }
+      else {
+        UserPerson newUserPerson = new UserPerson();
+        newUserPerson.setUser(user);
+        newUserPerson.setPerson(new Person());
+        userPersons.add(newUserPerson);
+      }
+
+    }
+    Viewable view = new Viewable("userFrags.jsp", userPersons, OrganizationUsersResource.class);
     responseBuilder.entity(view);
     return responseBuilder.build();
 
@@ -347,80 +364,110 @@ public class OrganizationUsersResource extends AbstractResource {
     Person person = new Person();
     BasicIdentity self = new BasicIdentity();
     Name selfName = new Name();
+    boolean isValid = false;
 
     if (keyValueMap.get("firstName") != null) {
+      isValid = true;
       selfName.setFirstName(keyValueMap.get("firstName"));
     }
     if (keyValueMap.get("lastName") != null) {
-      selfName.setFirstName(keyValueMap.get("lastName"));
+      isValid = true;
+      selfName.setLastName(keyValueMap.get("lastName"));
     }
     if (keyValueMap.get("middleInitial") != null) {
+      isValid = true;
       selfName.setMiddleInitial(keyValueMap.get("middleInitial"));
     }
     self.setName(selfName);
 
     if (keyValueMap.get("nationalID") != null) {
+      isValid = true;
       self.setNationalID(keyValueMap.get("nationalID"));
     }
-    person.setSelf(self);
+    if (isValid == true) {
+      person.setSelf(self);
+    }
 
 
     BasicIdentity spouse = new BasicIdentity();
     Name spouseName = new Name();
+    isValid = false;
 
     if (keyValueMap.get("spouseFirstName") != null) {
+      isValid = true;
       spouseName.setFirstName(keyValueMap.get("spouseFirstName"));
     }
     if (keyValueMap.get("spouseLastName") != null) {
-      spouseName.setFirstName(keyValueMap.get("spouseLastName"));
+      isValid = true;
+      spouseName.setLastName(keyValueMap.get("spouseLastName"));
     }
     if (keyValueMap.get("spouseMiddleInitial") != null) {
+      isValid = true;
       spouseName.setMiddleInitial(keyValueMap.get("spouseMiddleInitial"));
     }
     spouse.setName(spouseName);
 
     if (keyValueMap.get("spouseNationalID") != null) {
+      isValid = true;
       spouse.setNationalID(keyValueMap.get("spouseNationalID"));
     }
-    person.setSpouse(spouse);
+
+    if (isValid == true) {
+      person.setSpouse(spouse);
+    }
+
 
     BasicIdentity mother = new BasicIdentity();
     Name motherName = new Name();
+    isValid = false;
 
     if (keyValueMap.get("motherFirstName") != null) {
+      isValid = true;
       motherName.setFirstName(keyValueMap.get("motherFirstName"));
     }
     if (keyValueMap.get("motherLastName") != null) {
-      motherName.setFirstName(keyValueMap.get("motherLastName"));
+      isValid = true;
+      motherName.setLastName(keyValueMap.get("motherLastName"));
     }
     if (keyValueMap.get("motherMiddleInitial") != null) {
+      isValid = true;
       motherName.setMiddleInitial(keyValueMap.get("motherMiddleInitial"));
     }
     mother.setName(motherName);
 
     if (keyValueMap.get("motherNationalID") != null) {
+      isValid = true;
       mother.setNationalID(keyValueMap.get("motherNationalID"));
     }
-    person.setMother(mother);
+    if (isValid == true) {
+      person.setMother(mother);
+    }
 
     BasicIdentity father = new BasicIdentity();
     Name fatherName = new Name();
+    isValid = false;
 
     if (keyValueMap.get("fatherFirstName") != null) {
+      isValid = true;
       fatherName.setFirstName(keyValueMap.get("fatherFirstName"));
     }
     if (keyValueMap.get("fatherLastName") != null) {
-      fatherName.setFirstName(keyValueMap.get("fatherLastName"));
+      isValid = true;
+      fatherName.setLastName(keyValueMap.get("fatherLastName"));
     }
     if (keyValueMap.get("fatherMiddleInitial") != null) {
+      isValid = true;
       fatherName.setMiddleInitial(keyValueMap.get("fatherMiddleInitial"));
     }
     father.setName(fatherName);
 
     if (keyValueMap.get("fatherNationalID") != null) {
+      isValid = true;
       father.setNationalID(keyValueMap.get("fatherNationalID"));
     }
-    person.setFather(father);
+    if (isValid == true) {
+      person.setFather(father);
+    }
 
     Address address = new Address();
     GeoLocation geoLocation = new GeoLocation();

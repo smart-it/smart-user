@@ -43,6 +43,12 @@ public class PersonServiceImpl extends AbstractCommonDaoImpl<Person> implements 
     this.basicIdentityService = basicIdentityService;
   }
 
+  public PersonServiceImpl() {
+    setEntityClass(Person.class);
+  }
+
+
+
 
   @Override
   public void save(Person person) {

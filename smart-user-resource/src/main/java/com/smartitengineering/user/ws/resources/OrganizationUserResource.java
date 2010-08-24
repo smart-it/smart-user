@@ -256,15 +256,7 @@ public class OrganizationUserResource extends AbstractResource {
       newUser.setPassword(keyValueMap.get("password"));
     }
 
-    if (keyValueMap.get("uniqueShortName") != null) {
-
-      Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.
-          get("uniqueShortName"));
-
-      if (parentOrg != null) {
-        newUser.setOrganization(parentOrg);
-      }
-    }
-    return user;
+    newUser.setOrganization(user.getOrganization());
+    return newUser;
   }
 }

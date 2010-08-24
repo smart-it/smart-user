@@ -35,10 +35,13 @@
   </div>
   <div id="top_row" class="list_column_names">
     <div class="tableheadname">
-      <label class="tablehead_label"><fmt:message key="org.usrtablehead1"/></label>
+      <label class="tablehead_label">Serial No.</label>
     </div>
     <div class="tableheadname">
       <label class="tablehead_label"><fmt:message key="org.usrtablehead2"/></label>
+    </div>
+    <div class="tableheadname">
+      <label class="tablehead_label">Full Name</label>
     </div>
   </div>
   <div class="tablecontentname" id="tablecontentid"></div>
@@ -48,13 +51,15 @@
   <div id="header_organization_users" class="header_entry_form">
     <label>Users Entry</label>
   </div>
+
   <div id="form_organizationentry" class="entry_form">
     <form action="" accept="application/json" enctype="" id="userform" method="post">
       <div class="form_label"><label><fmt:message key="org.usrinput1"/></label></div>
-      <div class="form_textField"><input type="text" name="name" id="fname" class="textfield"></div>
+      <div class="form_textField"><input type="text" name="firstName" id="fname" class="textfield"></div>
       <div class="clear"></div>
       <div class="form_label"><label><fmt:message key="org.usrinput2"/></label></div>
-      <div class="form_textField"><input type="text" name="midName" id="mname" class="textfield"></div>
+      <div class="form_textField"><input type="text" name="middleInitial" id="mname" class="textfield"></div>
+
       <div class="clear"></div>
       <div class="form_label"><label><fmt:message key="org.usrinput3"/></label></div>
       <div class="form_textField"><input type="text" name="lastName" id="lname" class="textfield"></div>
@@ -62,6 +67,12 @@
       <div class="form_label"><label><fmt:message key="org.usrtablehead2"/></label></div>
       <div class="form_textField"><input type="text" name="userName" id="fname" class="textfield"></div>
       <div class="clear"></div>
+      <div class="form_label"><label><fmt:message key="org.usrtablehead4"/></label></div>
+      <div class="form_textField"><input type="text" name="nationalID" id="fname" class="textfield"></div>
+      <div class="form_label"><label><fmt:message key="org.usrtablehead5"/></label></div>
+      <div class="form_textField"><input type="text" name="primaryEmail" id="fname" class="textfield"></div>
+      <div class="clear"></div>
+
       <div class="form_label"><label><fmt:message key="org.usrinput4"/></label></div>
       <div class="form_textField"><input id="password" type="password" name="password" class="textfield"></div>
       <div class="clear"></div>

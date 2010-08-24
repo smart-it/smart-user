@@ -7,8 +7,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@page import="com.smartitengineering.user.domain.User"%>
-<%@page import="com.smartitengineering.user.domain.Organization"%>
+<%@page import="com.smartitengineering.user.domain.UserPerson"%>
+
 
 <c:set var="first" value="0"></c:set>
 <c:set var="last" value="0"></c:set>
@@ -24,16 +24,20 @@
 
 <div id="userListRootDiv">
   <div class="tableList" id="userListContainer">
-    <c:forEach var="user" items="${it}" varStatus="status">
+    <c:forEach var="userPerson" items="${it}" varStatus="status">
       <div id="userRow${status.index}" class="row_of_list">
         <c:if test="${status.first}">
-          <c:set var="first" value="${user.username}"></c:set>
+          <c:set var="first" value="${userPerson.user.username}"></c:set>
         </c:if>
         <c:if test="${status.last}">
-          <c:set var="last" value="${user.username}"></c:set>
+          <c:set var="last" value="${userPerson.user.username}"></c:set>
         </c:if>
-        <div id="userId${status.index}" class="orgName_column"><a href="users/username/${user.username}">${user.id}</a></div>
-        <div id="username${status.index}" class="orgShortName_column"><a href="users/username/${user.username}">${user.username}</a></div>
+        <c:set var="firstName" value="${userPerson.person.self.name.firstName}"></c:set>
+        <c:set var="middleInitial" value="${userPerson.person.self.name.middleInitial}"></c:set>
+        <c:set var="lastName" value="${userPerson.person.self.name.lastName}"></c:set>
+        <div id="userId${status.index}" class="orgName_column"><a href="users/username/${userPerson.user.username}">${userPerson.user.id}</a></div>
+        <div id="username${status.index}" class="orgShortName_column"><a href="users/username/${userPerson.user.username}">${userPerson.user.username}</a></div>
+        <div id="userFullName${status.index}" class="orgShortName_column"><a href="users/username/${userPerson.user.username}">${firstName} ${middleInitial} ${lastName}</a></div>
       </div>
     </c:forEach>
   </div>
