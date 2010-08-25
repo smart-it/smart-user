@@ -10,11 +10,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--<%@taglib prefix="pg" uri="/WEB-INF/taglib139.tld" %>--%>
-<%@page import="com.smartitengineering.user.domain.User"%>
-<%@page import="com.smartitengineering.user.domain.Organization"%>
+<%@page import="com.smartitengineering.user.domain.UserPerson"%>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-  "http://www.w3.org/TR/html4/loose.dtd">
 
 <div id="leftmenu_userlist_1" class="leftmenu">
   <div id="leftmenu_header_userlist_1" class="leftmenu_header">User-Creation</div>
@@ -66,6 +63,7 @@
       <div class="form_label"><label><fmt:message key="org.usrtablehead2"/></label></div>
       <div class="form_textField"><input type="text" name="userName" id="uname" class="textfield"></div>
       <div class="clear"></div>
+      <label id ="alertlabel" class="alertlabel"></label>
       <div class="form_label"><label><fmt:message key="org.usrinput8"/></label></div>
       <div class="form_textField"><input type="text" name="nationalID" id="nationalId" class="textfield"></div>
       <div class="form_label"><label><fmt:message key="org.usrinput9"/></label></div>
