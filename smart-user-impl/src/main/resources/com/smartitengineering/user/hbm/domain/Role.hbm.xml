@@ -7,10 +7,9 @@
             </generator>
     </id>
     <version column="version" name="version"/>
-    <property column="name" length="255" name="name" type="java.lang.String" unique="true" not-null="true"/>
+    <property column="name" length="255" name="name" not-null="true" type="java.lang.String" unique="true"/>
     <property column="display_name" length="255" name="displayName" type="java.lang.String"/>
     <property column="short_description" length="255" name="shortDescription" type="java.lang.String"/>
-    
     <property column="last_modified_date" name="lastModifiedDate" type="java.util.Date"/>
   </class>
 </hibernate-mapping>

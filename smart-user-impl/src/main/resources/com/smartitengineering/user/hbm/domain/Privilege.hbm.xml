@@ -7,12 +7,12 @@
             </generator>
     </id>
     <version column="version" name="version"/>
-    <property column="name" length="255" name="name" type="java.lang.String" unique-key="UK_PRIVILEGE_ORGANIZATION" not-null="true"/>
+    <property column="name" length="255" name="name" not-null="true" type="java.lang.String" unique-key="UK_PRIVILEGE_ORGANIZATION"/>
     <property column="display_name" length="255" name="displayName" type="java.lang.String"/>
     <property column="short_description" length="255" name="shortDescription" type="java.lang.String"/>
-    <many-to-one cascade="none" column="object_id" name="securedObject" lazy="false"/>
+    <many-to-one cascade="none" column="object_id" lazy="false" name="securedObject"/>
     <property column="permission_mask" name="permissionMask" type="java.lang.Integer"/>
     <property column="last_modified_date" name="lastModifiedDate" type="java.util.Date"/>
-    <many-to-one cascade="none" column="organization_id" lazy="false" name="parentOrganization" unique-key="UK_PRIVILEGE_ORGANIZATION" not-null="true"/>
+    <many-to-one cascade="none" column="organization_id" lazy="false" name="parentOrganization" not-null="true" unique-key="UK_PRIVILEGE_ORGANIZATION"/>
   </class>
 </hibernate-mapping>
