@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "spring-beans.dtd"  >
+<beans>
+  <bean id="dummyObservable" class="com.smartitengineering.user.service.impl.DummyObserverImpl"/>
+  <bean id="abstractDaoObserver" class="com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl" abstract="true">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  <bean id="basicIdentityServiceObserver" class="com.smartitengineering.user.service.impl.BasicIdentityServiceImpl" parent="abstractDaoObserver"/>
+  <bean id="personServiceObserver" class="com.smartitengineering.user.service.impl.PersonServiceImpl" parent="abstractDaoObserver">
+    <property name="basicIdentityService">
+      <ref local="basicIdentityServiceObserver" />
+    </property>
+  </bean>
+  <bean id="userPersonServiceObserver" class="com.smartitengineering.user.service.impl.UserPersonServiceImpl" parent="abstractDaoObserver">
+    <property name="personService">
+      <ref local="personServiceObserver" />
+    </property>
+    <property name="userService">
+      <ref local="userServiceObserver" />
+    </property>
+  </bean>
+  <bean id="organizationServiceObserver" class="com.smartitengineering.user.service.impl.OrganizationServiceImpl" parent="abstractDaoObserver">
+    <property name="observable">
+      <ref local="dummyObservable" />
+    </property>
+  </bean>
+  <bean id="securedObjectServiceObserver" class="com.smartitengineering.user.service.impl.SecuredObjectServiceImpl" parent="abstractDaoObserver"/>
+  <bean id="privilegeServiceObserver" class="com.smartitengineering.user.service.impl.PrivilegeServiceImpl" parent="abstractDaoObserver"/>
+  <bean id="roleServiceObserver" class="com.smartitengineering.user.service.impl.RoleServiceImpl" parent="abstractDaoObserver"/>
+
+  <bean id="observer" class="com.smartitengineering.user.service.impl.ObserverImpl">
+    <property name="personService">
+      <ref local="personServiceObserver" />
+    </property>
+    <property name="userService">
+      <ref local="userServiceObserver" />
+    </property>
+    <property name="userPersonService">
+      <ref local="personServiceObserver" />
+    </property>
+    <property name="securedObjectService">
+      <ref local="securedObjectServiceObserver" />
+    </property>
+    <property name="privilegeService">
+      <ref local="privilegeServiceObserver" />
+    </property>
+    <property name="roleService">
+      <ref local="roleServiceObserver" />
+    </property>
+  </bean>
+  <bean id="observable" class="com.smartitengineering.user.service.impl.DummyObserverImpl">
+    <property name="observers">
+      <set>
+        <ref local="observer"/>
+      </set>
+    </property>
+  </bean>
+  
+</beans>
