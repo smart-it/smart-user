@@ -74,8 +74,7 @@ public class OrganizationUserResource extends AbstractResource {
 
     }
   }
-
-  @PathParam("uniqueShortName")
+  @PathParam("organizationShortName")
   private String organizationUniqueShortName;
   @PathParam("userName")
   private String userName;
@@ -248,14 +247,13 @@ public class OrganizationUserResource extends AbstractResource {
     for (int i = 0; i < keyValuePairs.length; i++) {
 
       String[] keyValuePair = keyValuePairs[i].split("=");
-      keyValueMap.put(keyValuePair[0], keyValuePair[1]);
+      if (keyValuePair.length>1) {
+        keyValueMap.put(keyValuePair[0], keyValuePair[1]);
+      }
     }
 
     User newUser = new User();
 
-    if (keyValueMap.get("id") != null) {
-      newUser.setId(Integer.valueOf(keyValueMap.get("id")));
-    }
 
     if (keyValueMap.get("userName") != null) {
       newUser.setUsername(keyValueMap.get("userName"));
@@ -439,6 +437,56 @@ public class OrganizationUserResource extends AbstractResource {
     }
 
     UserPerson userPerson = new UserPerson();
+
+    if (keyValueMap.get("id") != null) {
+      userPerson.setId(Integer.valueOf(keyValueMap.get("id")));
+    }
+    if (keyValueMap.get("version") != null) {
+      userPerson.setVersion(Integer.valueOf(keyValueMap.get("version")));
+    }
+
+    if (keyValueMap.get("userId") != null) {
+      newUser.setId(Integer.valueOf(keyValueMap.get("userId")));
+    }
+    if (keyValueMap.get("userVersion") != null) {
+      newUser.setVersion(Integer.valueOf(keyValueMap.get("userVersion")));
+    }
+
+    if (keyValueMap.get("personId") != null) {
+      person.setId(Integer.valueOf(keyValueMap.get("personId")));
+    }
+    if (keyValueMap.get("personVersion") != null) {
+      person.setVersion(Integer.valueOf(keyValueMap.get("personVersion")));
+    }
+
+    if (keyValueMap.get("selfId") != null) {
+      person.getSelf().setId(Integer.valueOf(keyValueMap.get("selfId")));
+    }
+    if (keyValueMap.get("selfVersion") != null) {
+      person.getSelf().setVersion(Integer.valueOf(keyValueMap.get("selfVersion")));
+    }
+
+    if (keyValueMap.get("spouseId") != null) {
+      person.getSpouse().setId(Integer.valueOf(keyValueMap.get("spouseId")));
+    }
+    if (keyValueMap.get("spouseVersion") != null) {
+      person.getSpouse().setVersion(Integer.valueOf(keyValueMap.get("spouseVersion")));
+    }
+
+    if (keyValueMap.get("motherId") != null) {
+      person.getMother().setId(Integer.valueOf(keyValueMap.get("motherId")));
+    }
+    if (keyValueMap.get("motherVersion") != null) {
+      person.getMother().setVersion(Integer.valueOf(keyValueMap.get("motherVersion")));
+    }
+
+    if (keyValueMap.get("fatherId") != null) {
+      person.getFather().setId(Integer.valueOf(keyValueMap.get("fatherId")));
+    }
+    if (keyValueMap.get("fatherVersion") != null) {
+      person.getFather().setVersion(Integer.valueOf(keyValueMap.get("fatherVersion")));
+    }
+
     userPerson.setUser(newUser);
     userPerson.setPerson(person);
 
