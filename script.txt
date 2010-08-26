@@ -23,6 +23,12 @@ curl -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SI
 curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"username":"russel","password":"russel39","parentOrganizationID":"2"}'
 curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"username":"modhu","password":"modhu25","parentOrganizationID":"2"}'
 curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"username":"uzzal","password":"uzzal123","parentOrganizationID":"2"}'
+
+curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"username":"saumitra","password":"saumitra123","parentOrganizationID":"2"}'
+curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"username":"russel","password":"russel123","parentOrganizationID":"2"}'
+curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"username":"23","password":"saumitra123","parentOrganizationID":"2"}'
+curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"username":"saumitra","password":"saumitra123","parentOrganizationID":"2"}'
+curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"username":"saumitra","password":"saumitra123","parentOrganizationID":"2"}'
 curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"username":"saumitra","password":"saumitra123","parentOrganizationID":"2"}'
 
 
