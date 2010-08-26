@@ -17,8 +17,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
     <import resource="classpath:com/smartitengineering/user/service-app-context.xml" />
     <import resource="classpath:com/smartitengineering/user/app-context-datasource.xml" />
-    <import resource="classpath:com/smartitengineering/user/app-context-hibernate-definition.xml" />   
+    <import resource="classpath:com/smartitengineering/user/app-context-hibernate-definition.xml" />    
     <import resource="classpath:com/smartitengineering/user/security/app-context-security.xml" />
+    <import resource="classpath:com/smartitengineering/user/app-context-observer.xml" />
 
 <!--    <context:component-scan base-package="com.smartitengineering.user.ws.resources"/>-->
 
@@ -27,22 +28,22 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
      **************************************************************** -->
     <bean id="initialUserFactory" class="com.smartitengineering.user.initialization.InitialUserFactory">
         <property name="privilegeService">
-            <ref bean="privilegeService"/>
+            <ref bean="privilegeServiceObserver"/>
         </property>
         <property name="organizationService">
-            <ref bean="organizationService"/>
+            <ref bean="organizationServiceObserver"/>
         </property>
         <property name="userService">
-            <ref bean="userService"/>
+            <ref bean="userServiceObserver"/>
         </property>
         <property name="securedObjectService">
-            <ref bean="securedObjectService"/>
+            <ref bean="securedObjectServiceObserver"/>
         </property>
         <property name="roleService">
-            <ref bean="roleService"/>
+            <ref bean="roleServiceObserver"/>
         </property>
         <property name="userPersonService">
-            <ref bean="userPersonService"/>
+            <ref bean="userPersonServiceObserver"/>
         </property>
     </bean>
     <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
