@@ -151,8 +151,8 @@ public class ObserverImpl implements CRUDObserver {
     securedObjectService.save(securedObjectPrivileges);
 
     Privilege privilege = new Privilege();
-    privilege.setDisplayName("Smart User Adminstration");
-    privilege.setName("smart-user-admin");
+    privilege.setDisplayName(organization.getName() + " " + "admin user profile privilege");
+    privilege.setName(organization.getName() + " " + "admin");
     privilege.setParentOrganization(organization);
     privilege.setPermissionMask(PRIVILEGE_PERMISSION_MASK); //permission mask 31 means all privileges are there 11111
     privilege.setSecuredObject(securedObjectOrganization);
@@ -164,7 +164,7 @@ public class ObserverImpl implements CRUDObserver {
     Set<Privilege> privileges = new HashSet();
     privileges.add(privilege);
 
-    user = userService.getUserByOrganizationAndUserName(ADMIN_USERNAME, organization.getUniqueShortName());
+    user = userService.getUserByOrganizationAndUserName(organization.getUniqueShortName(), ADMIN_USERNAME);
     user.setPrivileges(privileges);
     userService.update(user);
 
