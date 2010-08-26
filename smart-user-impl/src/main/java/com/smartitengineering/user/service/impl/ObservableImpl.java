@@ -18,7 +18,15 @@ import java.util.Set;
  */
 public class ObservableImpl implements CRUDObservable{
 
-   Set<CRUDObserver> observers = new HashSet<CRUDObserver>();
+   private Set<CRUDObserver> observers = new HashSet<CRUDObserver>();
+
+  public Set<CRUDObserver> getObservers() {
+    return observers;
+  }
+
+  public void setObservers(Set<CRUDObserver> observers) {
+    this.observers = observers;
+  }
 
   @Override
   public void addObserver(CRUDObserver observer) {
