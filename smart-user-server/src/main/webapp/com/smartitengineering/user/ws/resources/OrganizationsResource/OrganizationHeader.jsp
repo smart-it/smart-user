@@ -21,7 +21,7 @@
     var url = "http://localhost:9090/orgs/frags${qParam}";
     $("#tablecontentid").pagination(url, "paginationLinks");
 
-    $("#uniqueShortName").keyup(function(){
+  $("#uniqueShortName").blur(function(){
       var usn =$("#uniqueShortName").val();
       $.ajax({
         type: "GET",
@@ -47,5 +47,6 @@
         uniqueShortName: "required"
       }
     });
+    
   });
 </script>
