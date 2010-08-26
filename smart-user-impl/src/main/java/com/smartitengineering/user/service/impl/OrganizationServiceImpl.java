@@ -132,7 +132,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
 
         @Override
         public int compare(Organization o1, Organization o2) {          
-          return o1.getUniqueShortName().compareTo(o2.getUniqueShortName());          
+          return o1.getUniqueShortName().toUpperCase().compareTo(o2.getUniqueShortName().toUpperCase());
         }
       });
 

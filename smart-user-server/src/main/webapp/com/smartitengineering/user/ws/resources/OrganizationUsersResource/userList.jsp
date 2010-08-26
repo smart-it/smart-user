@@ -12,12 +12,11 @@
 <%--<%@taglib prefix="pg" uri="/WEB-INF/taglib139.tld" %>--%>
 <%@page import="com.smartitengineering.user.domain.UserPerson"%>
 
-
 <div id="leftmenu_userlist_1" class="leftmenu">
-  <div id="leftmenu_header_userlist_1" class="leftmenu_header">User-Creation</div>
+  <div id="leftmenu_header_userlist_1" class="leftmenu_header"><fmt:message key="org.usercreatetitle"/></div>
   <div id="leftmenu_body_userlist_1" class="leftmenu_body">
     <ul>
-      <li><a href="javascript: Orgpageselect()">Create</a></li>
+      <li><a href="javascript: Orgpageselect()"><fmt:message key="org.usercreatelink"/></a></li>
     </ul>
   </div>
 </div>
@@ -46,7 +45,7 @@
 
 <div class="hide"  id="create">
   <div id="header_organization_users" class="header_entry_form">
-    <label>Users Entry</label>
+    <label><fmt:message key="org.userentrytitle"/></label>
   </div>
 
   <div id="form_organizationentry" class="entry_form">

@@ -9,8 +9,6 @@
 <%@page import="com.smartitengineering.user.domain.Organization" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page import="java.util.Collection"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-  "http://www.w3.org/TR/html4/loose.dtd">
 
 <div id="leftmenu_orgdetails_1" class="leftmenu">
   <div id="leftmenu_header_orgdetails_1" class="leftmenu_header"><label>Organization</label></div>
@@ -18,9 +16,9 @@
   <div id="leftmenu_body_orgdetails_1" class="leftmenu_body">
     <ul>
 
-      <li><a href="javascript: Orgpageselect()">Edit</a></li>
-      <li><a href="#">Delete</a></li>
-      <li><a href="/orgs/${it.uniqueShortName}/users">UserList</a></li>
+      <li><a href="javascript: Orgpageselect()"><fmt:message key="org.editlink"/></a></li>
+      <li><a href="#"><fmt:message key="org.deletelink"/></a></li>
+      <li><a href="/orgs/${it.uniqueShortName}/users"><fmt:message key="org.userlistlink"/></a></li>
 
     </ul>
   </div>
@@ -140,7 +138,5 @@
       <div class="clear"></div>
 
     </form>
-
   </div>
-
 </div>
