@@ -125,6 +125,7 @@ public class ObserverImpl implements CRUDObserver {
     securedObjectOrganization.setObjectID(orgUri);
     securedObjectOrganization.setOrganization(organization);
     securedObjectOrganization.setParentObjectID(ORGS_OID);
+    securedObjectService.save(securedObjectOrganization);
     securedObjectOrganization = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectOrganization.
         getObjectID());
 
@@ -133,6 +134,7 @@ public class ObserverImpl implements CRUDObserver {
     securedObjectUsers.setObjectID(orgUri + USERS_OID);
     securedObjectUsers.setOrganization(organization);
     securedObjectUsers.setParentObjectID(securedObjectOrganization.getObjectID());
+    securedObjectService.save(securedObjectUsers);
 
     SecuredObject securedObjectSOs = new SecuredObject();
     securedObjectSOs.setName(organization.getName() + SECURED_OBJECTS_NAME);
