@@ -3,7 +3,7 @@
 
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "spring-beans.dtd"  >
 <beans>
-  <bean id="dummyObservable" class="com.smartitengineering.user.service.impl.DummyObserverImpl"/>
+  <bean id="dummyObservable" class="com.smartitengineering.user.service.impl.DummyObservableImpl"/>
   <bean id="abstractDaoObserver" class="com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl" abstract="true">
     <property name="sessionFactory">
       <ref bean="sessionFactory" />
@@ -23,6 +23,7 @@
       <ref local="userServiceObserver" />
     </property>
   </bean>
+  <bean id="userServiceObserver" class="com.smartitengineering.user.service.impl.UserServiceImpl" parent="abstractDaoObserver"/>
   <bean id="organizationServiceObserver" class="com.smartitengineering.user.service.impl.OrganizationServiceImpl" parent="abstractDaoObserver">
     <property name="observable">
       <ref local="dummyObservable" />
@@ -40,7 +41,7 @@
       <ref local="userServiceObserver" />
     </property>
     <property name="userPersonService">
-      <ref local="personServiceObserver" />
+      <ref local="userPersonServiceObserver" />
     </property>
     <property name="securedObjectService">
       <ref local="securedObjectServiceObserver" />
@@ -48,11 +49,11 @@
     <property name="privilegeService">
       <ref local="privilegeServiceObserver" />
     </property>
-    <property name="roleService">
-      <ref local="roleServiceObserver" />
+    <property name="organizationService">
+      <ref local="organizationServiceObserver" />
     </property>
   </bean>
-  <bean id="observable" class="com.smartitengineering.user.service.impl.DummyObserverImpl">
+  <bean id="observable" class="com.smartitengineering.user.service.impl.ObservableImpl">
     <property name="observers">
       <set>
         <ref local="observer"/>
