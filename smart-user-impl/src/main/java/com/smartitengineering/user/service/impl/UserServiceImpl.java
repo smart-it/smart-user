@@ -197,7 +197,7 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
         @Override
         public int compare(User o1, User o2) {
           //return o1.getId().compareTo(o2.getId()) * -1;
-          return o1.getUsername().compareTo(o2.getUsername());
+          return o1.getUsername().toUpperCase().compareTo(o2.getUsername().toUpperCase());
         }
       });      
       return users;
