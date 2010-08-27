@@ -4,6 +4,8 @@ jQuery.fn.pagination = function(url, fragsLinkDivId, divno) {
   var mainDiv = $(this)
   var mainDivId = mainDiv.attr('id');
   fetchContent("#"+mainDivId, url, fragsLinkDivId, divno);
+  var mainDivId = mainDiv.attr('id');  
+  fetchContent("#"+mainDivId, url, fragsLinkDivId);
 };
 
 function fetchContent(mainDivId, url, fragsLinkDivId, divno) {
@@ -12,7 +14,7 @@ function fetchContent(mainDivId, url, fragsLinkDivId, divno) {
     url: url,
     dataType: "html",
     success: function(html) {
-      //      putting html data in id div
+      //      putting html data in id div      
       $(mainDivId).html(html);
       cacheContent(mainDivId, fragsLinkDivId, divno);
     },
@@ -24,7 +26,7 @@ function fetchContent(mainDivId, url, fragsLinkDivId, divno) {
 
 function cacheContent(mainDivId, fragsLinkDivId, divno) {
   //      making next and previos link inactive
-  $("div#"+fragsLinkDivId).find('a').each(function(){
+  $("div#"+fragsLinkDivId).find('a').each(function(){   
     var thisLink = $(this);
     $.ajax({
       type: "GET",
@@ -35,17 +37,23 @@ function cacheContent(mainDivId, fragsLinkDivId, divno) {
         if(divCount <= divno) {
           $(thisLink).hide()
         }
-        else {
+      success: function(html){        
+        var divCount = $(html).find('div').length;        
+        if(divCount <= 4) {
+          $(thisLink).hide();          
+        }
+        else {          
           var href = $(thisLink).attr('href');
           $(thisLink).click(function(){
             fetchContent(mainDivId, href, fragsLinkDivId,divno);
             return false;
           });
         }
-      },
+      }
       error: function(xhr){
       }
-    });
+    }
   //    end of  making next and previos link inactive
   });
+ });
 }
