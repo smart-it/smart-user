@@ -151,11 +151,12 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
                                                   boolean isSmallerThan, int count) {
 
     List<QueryParameter> params = new ArrayList<QueryParameter>();
+    List<QueryParameter> nestedParams = new ArrayList<QueryParameter>();
 
 
     if (StringUtils.isNotBlank(organizationUniqueShortName)) {
       final QueryParameter orgNameParam = QueryParameterFactory.getNestedParametersParam("organization",
-                                                                                         FetchMode.DEFAULT,
+                                                                                         FetchMode.LAZY,
                                                                                          QueryParameterFactory.
           getEqualPropertyParam("uniqueShortName", organizationUniqueShortName));
       params.add(orgNameParam);
@@ -164,37 +165,29 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
       return Collections.emptyList();
     }
 
-    List<QueryParameter> nestedParams = new ArrayList<QueryParameter>();
+    //params.add(QueryParameterFactory.getMaxResultsParam(count));
+    //params.add(QueryParameterFactory.getOrderByParam("username", isSmallerThan ? Order.DESC : Order.ASC));
+    //params.add(QueryParameterFactory.getDistinctPropProjectionParam("id"));
 
-    nestedParams.add(QueryParameterFactory.getLesserThanPropertyParam("username", userName));
-    nestedParams.add(QueryParameterFactory.getMaxResultsParam(count));
-    nestedParams.add(QueryParameterFactory.getOrderByParam("username", isSmallerThan ? Order.DESC : Order.ASC));
-    nestedParams.add(QueryParameterFactory.getDistinctPropProjectionParam("username"));
+
 
 
     if (StringUtils.isNotBlank(userName)) {
       if (isSmallerThan) {
-        params.add(QueryParameterFactory.getNestedParametersParam("user", FetchMode.DEFAULT, (QueryParameter[]) nestedParams.
-            toArray()));
+        params.add(QueryParameterFactory.getLesserThanPropertyParam("username", userName));
       }
       else {
-        params.add(QueryParameterFactory.getNestedParametersParam("user", FetchMode.DEFAULT, (QueryParameter[]) nestedParams.toArray()));
+        params.add(QueryParameterFactory.getGreaterThanPropertyParam("username", userName));
       }
     }
 
-//      params.add(QueryParameterFactory.getMaxResultsParam(count));
-//      params.add(QueryParameterFactory.getNestedParametersParam("user", FetchMode.DEFAULT, QueryParameterFactory.getOrderByParam("username", isSmallerThan? Order.DESC : Order.ASC)));
-//      params.add(QueryParameterFactory.getNestedParametersParam("user", FetchMode.DEFAULT, QueryParameterFactory.getDistinctPropProjectionParam("username")));
 
-    List<String> userNames = getOtherList(params);
-
-    if (userNames != null && !userNames.isEmpty()) {
-      List<UserPerson> userPersons = new ArrayList<UserPerson>(getByUserNames(userNames));
-
-
-
+    params.add(QueryParameterFactory.getMaxResultsParam(count));
+    params.add(QueryParameterFactory.getOrderByParam("username", isSmallerThan ? Order.DESC : Order.ASC));
+    //params.add(QueryParameterFactory.getDistinctPropProjectionParam("username"));
+    List<UserPerson> userPersons = getList(QueryParameterFactory.getNestedParametersParam("user", FetchMode.DEFAULT, params.toArray(new QueryParameter[0])));
+    if (userPersons != null && !userPersons.isEmpty()) {
       Collections.sort(userPersons, new Comparator<UserPerson>() {
-
         @Override
         public int compare(UserPerson o1, UserPerson o2) {
           //return o1.getId().compareTo(o2.getId()) * -1;
