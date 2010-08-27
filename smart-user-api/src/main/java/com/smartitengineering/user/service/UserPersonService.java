@@ -33,4 +33,6 @@ public interface UserPersonService {
     Collection<UserPerson> search(UserPersonFilter filter);
 
     void update(UserPerson userPerson);
+
+    public Collection<UserPerson> getAllByOrganization(String organizationUniqueShortName);
 }

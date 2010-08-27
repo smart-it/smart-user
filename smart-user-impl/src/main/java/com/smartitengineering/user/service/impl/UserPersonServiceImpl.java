@@ -265,4 +265,9 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
     }
     return null;
   }
+
+  @Override
+  public Collection<UserPerson> getAllByOrganization(String organizationUniqueShortName) {
+    return super.getList(QueryParameterFactory.getNestedParametersParam("user", FetchMode.DEFAULT, QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationUniqueShortName))));
+  }
 }
