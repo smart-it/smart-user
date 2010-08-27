@@ -103,7 +103,7 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
 
     @Override
     public Privilege getPrivilegeByOrganizationAndPrivilegeName(String organizationName, String privilegename){
-        return super.getSingle(QueryParameterFactory.getStringLikePropertyParam("name", privilegename),
+        return super.getSingle(QueryParameterFactory.getEqualPropertyParam("name", privilegename),
                QueryParameterFactory.getNestedParametersParam("parentOrganization", FetchMode.DEFAULT,
                QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationName)));
     }

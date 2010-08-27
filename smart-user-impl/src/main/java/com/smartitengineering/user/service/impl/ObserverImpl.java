@@ -125,6 +125,7 @@ public class ObserverImpl implements CRUDObserver {
     securedObjectOrganization.setObjectID(orgUri);
     securedObjectOrganization.setOrganization(organization);
     securedObjectOrganization.setParentObjectID(ORGS_OID);
+    securedObjectService.save(securedObjectOrganization);
     securedObjectOrganization = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectOrganization.
         getObjectID());
 
@@ -133,6 +134,7 @@ public class ObserverImpl implements CRUDObserver {
     securedObjectUsers.setObjectID(orgUri + USERS_OID);
     securedObjectUsers.setOrganization(organization);
     securedObjectUsers.setParentObjectID(securedObjectOrganization.getObjectID());
+    securedObjectService.save(securedObjectUsers);
 
     SecuredObject securedObjectSOs = new SecuredObject();
     securedObjectSOs.setName(organization.getName() + SECURED_OBJECTS_NAME);
@@ -149,8 +151,8 @@ public class ObserverImpl implements CRUDObserver {
     securedObjectService.save(securedObjectPrivileges);
 
     Privilege privilege = new Privilege();
-    privilege.setDisplayName("Smart User Adminstration");
-    privilege.setName("smart-user-admin");
+    privilege.setDisplayName(organization.getName() + " " + "admin user profile privilege");
+    privilege.setName(organization.getName() + " " + "admin");
     privilege.setParentOrganization(organization);
     privilege.setPermissionMask(PRIVILEGE_PERMISSION_MASK); //permission mask 31 means all privileges are there 11111
     privilege.setSecuredObject(securedObjectOrganization);
@@ -162,7 +164,7 @@ public class ObserverImpl implements CRUDObserver {
     Set<Privilege> privileges = new HashSet();
     privileges.add(privilege);
 
-    user = userService.getUserByOrganizationAndUserName(ADMIN_USERNAME, organization.getUniqueShortName());
+    user = userService.getUserByOrganizationAndUserName(organization.getUniqueShortName(), ADMIN_USERNAME);
     user.setPrivileges(privileges);
     userService.update(user);
 

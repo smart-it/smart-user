@@ -95,9 +95,12 @@ public class OrganizationUsersResource extends AbstractResource {
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName,
-                                                                                           null,
-                                                                                           false, count);
+//    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName,
+//                                                                                           null,
+//                                                                                           false, count);
+
+    Collection<UserPerson> users = Services.getInstance().getUserPersonService().getByOrganization(
+        organizationUniqueShortName, null, false, count);
 
     servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
     servletRequest.setAttribute("templateHeadContent",
@@ -118,23 +121,26 @@ public class OrganizationUsersResource extends AbstractResource {
   @Path("/frags")
   public Response getHtmlFrags() {
     ResponseBuilder responseBuilder = Response.ok();
-    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName,
-                                                                                           null, false, count);
-    Set<UserPerson> userPersons = new HashSet<UserPerson>();
-    for (User user : users) {
-      UserPerson userPerson = Services.getInstance().getUserPersonService().getUserPersonByUsernameAndOrgName(
-          user.getUsername(), user.getOrganization().getUniqueShortName());
-      if (userPerson != null) {
-        userPersons.add(userPerson);
-      }
-      else {
-        UserPerson newUserPerson = new UserPerson();
-        newUserPerson.setUser(user);
-        newUserPerson.setPerson(new Person());
-        userPersons.add(newUserPerson);
-      }
-
-    }
+//    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName,
+//                                                                                           null, false, count);
+    Collection<UserPerson> userPersons = Services.getInstance().getUserPersonService().getByOrganization(
+        organizationUniqueShortName, null, false, count);
+    
+//    Set<UserPerson> userPersons = new HashSet<UserPerson>();
+//    for (UserPerson user : users) {
+//      UserPerson userPerson = Services.getInstance().getUserPersonService().getUserPersonByUsernameAndOrgName(
+//          user.getUsername(), user.getOrganization().getUniqueShortName());
+//      if (userPerson != null) {
+//        userPersons.add(userPerson);
+//      }
+//      else {
+//        UserPerson newUserPerson = new UserPerson();
+//        newUserPerson.setUser(user);
+//        newUserPerson.setPerson(new Person());
+//        userPersons.add(newUserPerson);
+//      }
+//
+//    }
     Viewable view = new Viewable("userFrags.jsp", userPersons, OrganizationUsersResource.class);
     responseBuilder.entity(view);
     return responseBuilder.build();
@@ -153,12 +159,14 @@ public class OrganizationUsersResource extends AbstractResource {
   @Path("/before/{beforeUserName}")
   public Response getBeforeHtml(@PathParam("beforeUserName") String beforeUserName) {
     ResponseBuilder responseBuilder = Response.ok();
-    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
+//    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
+//        organizationUniqueShortName, beforeUserName, true, count);
+    Collection<UserPerson> userPersons = Services.getInstance().getUserPersonService().getByOrganization(
         organizationUniqueShortName, beforeUserName, true, count);
 
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/user/ws/resources/OrganizationUsersResource/userList.jsp");
-    Viewable view = new Viewable("/template/template.jsp", users);
+    Viewable view = new Viewable("/template/template.jsp", userPersons);
     responseBuilder.entity(view);
     return responseBuilder.build();
   }
@@ -168,10 +176,13 @@ public class OrganizationUsersResource extends AbstractResource {
   @Path("/before/{beforeUserName}/frags")
   public Response getBeforeHtmlFrags(@PathParam("beforeUserName") String beforeUserName) {
     ResponseBuilder responseBuilder = Response.ok();
-    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
+//    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
+//        organizationUniqueShortName, beforeUserName, true, count);
+
+    Collection<UserPerson> userPersons = Services.getInstance().getUserPersonService().getByOrganization(
         organizationUniqueShortName, beforeUserName, true, count);
 
-    Viewable view = new Viewable("userFrags.jsp", users);
+    Viewable view = new Viewable("userFrags.jsp", userPersons);
     responseBuilder.entity(view);
     return responseBuilder.build();
   }
@@ -189,11 +200,13 @@ public class OrganizationUsersResource extends AbstractResource {
   public Response getAfterHtml(@PathParam("afterUserName") String afterUserName) {
 
     ResponseBuilder responseBuilder = Response.ok();
-    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
+//    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
+//        organizationUniqueShortName, afterUserName, false, count);
+    Collection<UserPerson> userPersons = Services.getInstance().getUserPersonService().getByOrganization(
         organizationUniqueShortName, afterUserName, false, count);
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/user/ws/resources/OrganizationUsersResource/userList.jsp");
-    Viewable view = new Viewable("/template/template.jsp", users);
+    Viewable view = new Viewable("/template/template.jsp", userPersons);
     responseBuilder.entity(view);
     return responseBuilder.build();
   }
@@ -204,10 +217,12 @@ public class OrganizationUsersResource extends AbstractResource {
   public Response getAfterHtmlFrags(@PathParam("afterUserName") String afterUserName) {
 
     ResponseBuilder responseBuilder = Response.ok();
-    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
+//    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
+//        organizationUniqueShortName, afterUserName, false, count);
+    Collection<UserPerson> userPersons = Services.getInstance().getUserPersonService().getByOrganization(
         organizationUniqueShortName, afterUserName, false, count);
 
-    Viewable view = new Viewable("userFrags.jsp", users);
+    Viewable view = new Viewable("userFrags.jsp", userPersons);
     responseBuilder.entity(view);
     return responseBuilder.build();
   }
@@ -227,13 +242,15 @@ public class OrganizationUsersResource extends AbstractResource {
     parentLink.setRel("parent");
     atomFeed.addLink(parentLink);
 
-    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(uniqueOrganizationName,
-                                                                                           userName, isBefore, count);
+//    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(uniqueOrganizationName,
+//                                                                                           userName, isBefore, count);
+    Collection<UserPerson> userPersons = Services.getInstance().getUserPersonService().getByOrganization(
+        organizationUniqueShortName, userName, isBefore, count);
 
-    if (users != null && !users.isEmpty()) {
+    if (userPersons != null && !userPersons.isEmpty()) {
 
       MultivaluedMap<String, String> queryParam = uriInfo.getQueryParameters();
-      List<User> userList = new ArrayList<User>(users);
+      List<UserPerson> userPersonList = new ArrayList<UserPerson>(userPersons);
 
       // uri builder for next and previous organizations according to count
       final UriBuilder nextUri = ORGANIZATION_USERS_AFTER_USERNAME_URI_BUILDER.clone();
@@ -242,7 +259,8 @@ public class OrganizationUsersResource extends AbstractResource {
       // link to the next organizations based on count
       Link nextLink = abderaFactory.newLink();
       nextLink.setRel(Link.REL_NEXT);
-      User lastUser = userList.get(userList.size() - 1);
+      //User lastUser = userList.get(userList.size() - 1);
+      UserPerson lastUserPerson = userPersonList.get(userPersonList.size() - 1);
 
 
       for (String key : queryParam.keySet()) {
@@ -250,7 +268,7 @@ public class OrganizationUsersResource extends AbstractResource {
         nextUri.queryParam(key, values);
         previousUri.queryParam(key, values);
       }
-      nextLink.setHref(nextUri.build(organizationUniqueShortName, lastUser.getUsername()).toString());
+      nextLink.setHref(nextUri.build(organizationUniqueShortName, lastUserPerson.getUser().getUsername()).toString());
 
 
       atomFeed.addLink(nextLink);
@@ -258,23 +276,25 @@ public class OrganizationUsersResource extends AbstractResource {
       /* link to the previous organizations based on count */
       Link prevLink = abderaFactory.newLink();
       prevLink.setRel(Link.REL_PREVIOUS);
-      User firstUser = userList.get(0);
+      //User firstUser = userList.get(0);
+      UserPerson firstUserPerson = userPersonList.get(0);
 
-      prevLink.setHref(previousUri.build(organizationUniqueShortName, firstUser.getUsername()).toString());
+      prevLink.setHref(previousUri.build(organizationUniqueShortName, firstUserPerson.getUser().getUsername()).toString());
       atomFeed.addLink(prevLink);
 
-      for (User user : users) {
+      //for (User user : users) {
+      for (UserPerson userPerson : userPersons) {
 
         Entry userEntry = abderaFactory.newEntry();
 
-        userEntry.setId(user.getUsername());
-        userEntry.setTitle(user.getUsername());
-        userEntry.setSummary(user.getUsername());
-        userEntry.setUpdated(user.getLastModifiedDate());
+        userEntry.setId(userPerson.getUser().getUsername());
+        userEntry.setTitle(userPerson.getUser().getUsername());
+        userEntry.setSummary(userPerson.getUser().getUsername());
+        userEntry.setUpdated(userPerson.getUser().getLastModifiedDate());
 
         // setting link to the each individual user
         Link userLink = abderaFactory.newLink();
-        userLink.setHref(OrganizationUserResource.USER_URI_BUILDER.clone().build(organizationUniqueShortName, user.
+        userLink.setHref(OrganizationUserResource.USER_URI_BUILDER.clone().build(organizationUniqueShortName, userPerson.getUser().
             getUsername()).toString());
         userLink.setRel(Link.REL_ALTERNATE);
         userLink.setMimeType(MediaType.APPLICATION_ATOM_XML);

@@ -31,7 +31,11 @@ import org.hibernate.exception.ConstraintViolationException;
  *
  * @author modhu7
  */
-public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements UserService {    
+public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements UserService {
+
+  public UserServiceImpl() {
+    setEntityClass(User.class);
+  }
 
     @Override
     public void save(User user) {
@@ -193,7 +197,7 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
         @Override
         public int compare(User o1, User o2) {
           //return o1.getId().compareTo(o2.getId()) * -1;
-          return o1.getUsername().compareTo(o2.getUsername());
+          return o1.getUsername().toUpperCase().compareTo(o2.getUsername().toUpperCase());
         }
       });      
       return users;

@@ -8,6 +8,7 @@ import com.smartitengineering.dao.common.CommonReadDao;
 import com.smartitengineering.dao.common.CommonWriteDao;
 import com.smartitengineering.dao.common.queryparam.FetchMode;
 import com.smartitengineering.dao.common.queryparam.MatchMode;
+import com.smartitengineering.dao.common.queryparam.Order;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl;
@@ -24,6 +25,8 @@ import com.smartitengineering.user.service.UserPersonService;
 import com.smartitengineering.user.service.UserService;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
@@ -144,6 +147,77 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
     return userPersons;
   }
 
+  public Collection<UserPerson> getByOrganization(String organizationUniqueShortName, String userName,
+                                                  boolean isSmallerThan, int count) {
+
+    List<QueryParameter> params = new ArrayList<QueryParameter>();
+    List<QueryParameter> nestedParams = new ArrayList<QueryParameter>();
+
+
+    if (StringUtils.isNotBlank(organizationUniqueShortName)) {
+      final QueryParameter orgNameParam = QueryParameterFactory.getNestedParametersParam("organization",
+                                                                                         FetchMode.LAZY,
+                                                                                         QueryParameterFactory.
+          getEqualPropertyParam("uniqueShortName", organizationUniqueShortName));
+      params.add(orgNameParam);
+    }
+    else {
+      return Collections.emptyList();
+    }
+
+    //params.add(QueryParameterFactory.getMaxResultsParam(count));
+    //params.add(QueryParameterFactory.getOrderByParam("username", isSmallerThan ? Order.DESC : Order.ASC));
+    //params.add(QueryParameterFactory.getDistinctPropProjectionParam("id"));
+
+
+
+
+    if (StringUtils.isNotBlank(userName)) {
+      if (isSmallerThan) {
+        params.add(QueryParameterFactory.getLesserThanPropertyParam("username", userName));
+      }
+      else {
+        params.add(QueryParameterFactory.getGreaterThanPropertyParam("username", userName));
+      }
+    }
+
+
+    params.add(QueryParameterFactory.getMaxResultsParam(count));
+    params.add(QueryParameterFactory.getOrderByParam("username", isSmallerThan ? Order.DESC : Order.ASC));
+    //params.add(QueryParameterFactory.getDistinctPropProjectionParam("username"));
+    List<UserPerson> userPersons = getList(QueryParameterFactory.getNestedParametersParam("user", FetchMode.DEFAULT, params.toArray(new QueryParameter[0])));
+    if (userPersons != null && !userPersons.isEmpty()) {
+      Collections.sort(userPersons, new Comparator<UserPerson>() {
+        @Override
+        public int compare(UserPerson o1, UserPerson o2) {
+          //return o1.getId().compareTo(o2.getId()) * -1;
+          return o1.getUser().getUsername().toUpperCase().compareTo(o2.getUser().getUsername().toUpperCase());
+        }
+      });
+      return userPersons;
+    }
+    else {
+      return Collections.emptySet();
+    }
+  }
+
+  public List<UserPerson> getByUserNames(List<String> userNames) {
+
+    QueryParameter<String> param = QueryParameterFactory.<String>getIsInPropertyParam("username", userNames.toArray(
+        new String[0]));
+
+    Collection<UserPerson> result;
+    try {
+      result = getList(param);
+    }
+    catch (Exception ex) {
+      ex.printStackTrace();
+      result = Collections.<UserPerson>emptyList();
+    }
+    return new ArrayList<UserPerson>(result);
+
+  }
+
   public void deleteByPerson(Person person) {
     if (person == null) {
       return;
@@ -167,6 +241,7 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
       delete(userPerson);
     }
   }
+
   public UserService getUserService() {
     return userService;
   }
@@ -178,15 +253,16 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
   @Override
   public UserPerson getUserPersonByUsernameAndOrgName(String username, String orgName) {
     QueryParameter qp;
-    qp = QueryParameterFactory.getNestedParametersParam("user", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam("username", username));        
-    Collection<UserPerson> userPersons = super.getList(qp);    
-    if (userPersons!=null) {
+    qp = QueryParameterFactory.getNestedParametersParam("user", FetchMode.DEFAULT, QueryParameterFactory.
+        getEqualPropertyParam("username", username));
+    Collection<UserPerson> userPersons = super.getList(qp);
+    if (userPersons != null) {
       for (UserPerson userPerson : userPersons) {
         if (userPerson.getUser().getOrganization().getUniqueShortName().equals(orgName)) {
           return userPerson;
         }
       }
-    }    
+    }
     return null;
   }
 }

@@ -2,10 +2,8 @@
 
 
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "spring-beans.dtd"  >
-<beans>
-  
+<beans>  
   <bean id="basicIdentityService" class="com.smartitengineering.user.service.impl.BasicIdentityServiceImpl" parent="abstractDao"/>
-
   <bean id="personService" class="com.smartitengineering.user.service.impl.PersonServiceImpl" parent="abstractDao">
     <property name="basicIdentityService">
       <ref local="basicIdentityService" />
@@ -28,7 +26,7 @@
   </bean>
   <bean id="organizationService" class="com.smartitengineering.user.service.impl.OrganizationServiceImpl" parent="abstractDao">
     <property name="observable">
-      <ref local="observable"/>
+      <ref bean="observable"/>
     </property>
   </bean>
   <bean id="securedObjectService" class="com.smartitengineering.user.service.impl.SecuredObjectServiceImpl" parent="abstractDao"/>
