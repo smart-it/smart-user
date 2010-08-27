@@ -43,6 +43,7 @@ public class ObserverImpl implements CRUDObserver {
   final static String URI_FRAG_UPDATE = "/update";
   final static String URIFRAG_DELETE = "/delete";
   final static Integer PRIVILEGE_PERMISSION_MASK = 31;
+  final static String EMAIL_DOMAIN = "smartitengineering.com";
 
   private UserPersonService userPersonService;
   private PersonService personService;
@@ -167,6 +168,13 @@ public class ObserverImpl implements CRUDObserver {
     user = userService.getUserByOrganizationAndUserName(organization.getUniqueShortName(), ADMIN_USERNAME);
     user.setPrivileges(privileges);
     userService.update(user);
+
+    UserPerson userPerson = new UserPerson();
+    userPerson.setUser(user);
+    Person person = new Person();
+    person.setPrimaryEmail(ADMIN_USERNAME + "_" + organization.getUniqueShortName() + "@" +EMAIL_DOMAIN);
+    userPerson.setPerson(person);
+    userPersonService.create(userPerson);
 
   }
 }
