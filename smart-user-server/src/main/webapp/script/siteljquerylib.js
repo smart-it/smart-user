@@ -31,12 +31,7 @@ function cacheContent(mainDivId, fragsLinkDivId, divno) {
     $.ajax({
       type: "GET",
       url: this.toString(),
-      dataType: "html",
-      success: function(html){
-        var divCount = $(html).find('div').length;
-        if(divCount <= divno) {
-          $(thisLink).hide()
-        }
+      dataType: "html",     
       success: function(html){        
         var divCount = $(html).find('div').length;        
         if(divCount <= 4) {
@@ -49,10 +44,9 @@ function cacheContent(mainDivId, fragsLinkDivId, divno) {
             return false;
           });
         }
-      }
-      error: function(xhr){
-      }
-    }
+      },
+      error: function(xhr){      }
+    
   //    end of  making next and previos link inactive
   });
  });
