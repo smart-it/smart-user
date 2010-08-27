@@ -3,9 +3,10 @@
 
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "spring-beans.dtd"  >
 <beans>
+  
   <bean id="basicIdentityService" class="com.smartitengineering.user.service.impl.BasicIdentityServiceImpl" parent="abstractDao"/>
 
-  <bean id="personServiceTarget" class="com.smartitengineering.user.service.impl.PersonServiceImpl" parent="abstractDao">
+  <bean id="personService" class="com.smartitengineering.user.service.impl.PersonServiceImpl" parent="abstractDao">
     <property name="basicIdentityService">
       <ref local="basicIdentityService" />
     </property>
@@ -19,51 +20,20 @@
       <ref local="userService" />
     </property>
   </bean>
-    
-  <bean id="personDeleteAdvice" class="com.smartitengineering.user.advice.PersonDeleteAdvice">
-    <property name="userPersonService">
-      <ref local="userPersonService"/>
-    </property>
-  </bean>
-  <bean id="personDeleteAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
-    <property name="advice" ref="personDeleteAdvice"/>
-    <property name="pattern" value=".*PersonServiceImpl.delete" />
-  </bean>
-  <bean id="personService" class="org.springframework.aop.framework.ProxyFactoryBean">
-    <property name="target" ref="personServiceTarget" />
-    <property name="interceptorNames" value="personDeleteAdvisor" />
-  </bean>
-    
-  <bean id="userServiceTarget" class="com.smartitengineering.user.service.impl.UserServiceImpl" parent="abstractDao"/>
-
-  <bean id="userDeleteAdvice" class="com.smartitengineering.user.advice.UserDeleteAdvice">
-    <property name="userPersonService">
-      <ref local="userPersonService"/>
-    </property>
-  </bean>
-  <bean id="userDeleteAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
-    <property name="advice" ref="userDeleteAdvice"/>
-    <property name="pattern" value=".*UserServiceImpl.delete" />
-  </bean>
-  <bean id="userService" class="org.springframework.aop.framework.ProxyFactoryBean">
-    <property name="target" ref="userServiceTarget" />
-    <property name="interceptorNames" value="userDeleteAdvisor" />
-  </bean>
-
+  <bean id="userService" class="com.smartitengineering.user.service.impl.UserServiceImpl" parent="abstractDao"/>
   <bean id="abstractDao" class="com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl" abstract="true">
     <property name="sessionFactory">
       <ref bean="sessionFactory" />
     </property>
   </bean>
-  <bean id="organizationService" class="com.smartitengineering.user.service.impl.OrganizationServiceImpl" parent="abstractDao"/>
-
+  <bean id="organizationService" class="com.smartitengineering.user.service.impl.OrganizationServiceImpl" parent="abstractDao">
+    <property name="observable">
+      <ref local="observable"/>
+    </property>
+  </bean>
   <bean id="securedObjectService" class="com.smartitengineering.user.service.impl.SecuredObjectServiceImpl" parent="abstractDao"/>
-
   <bean id="privilegeService" class="com.smartitengineering.user.service.impl.PrivilegeServiceImpl" parent="abstractDao"/>
-    
-
   <bean id="roleService" class="com.smartitengineering.user.service.impl.RoleServiceImpl" parent="abstractDao"/>
-
   <bean id="authorizationService" class="com.smartitengineering.user.service.impl.AuthorizationServiceImpl">
     <property name="securedObjectService">
       <ref bean="securedObjectService"/>
@@ -72,7 +42,6 @@
       <ref bean="userService"/>
     </property>
   </bean>
-
     
     <!-- **************************************************************** -->
     <!-- ********************* Smart Util Reg *************************** -->

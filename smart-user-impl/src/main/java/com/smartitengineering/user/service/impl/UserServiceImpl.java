@@ -31,21 +31,7 @@ import org.hibernate.exception.ConstraintViolationException;
  *
  * @author modhu7
  */
-public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements UserService {
-
-    private OrganizationService OrganizationService;
-
-    public UserServiceImpl() {
-        setEntityClass(User.class);
-    }
-
-    public OrganizationService getOrganizationService() {
-        return OrganizationService;
-    }
-
-    public void setOrganizationService(OrganizationService OrganizationService) {
-        this.OrganizationService = OrganizationService;
-    }
+public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements UserService {    
 
     @Override
     public void save(User user) {
