@@ -19,7 +19,9 @@ import com.smartitengineering.user.service.PrivilegeService;
 import com.smartitengineering.user.service.SecuredObjectService;
 import com.smartitengineering.user.service.UserPersonService;
 import com.smartitengineering.user.service.UserService;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -107,6 +109,10 @@ public class ObserverImpl implements CRUDObserver {
       Organization organization = (Organization) object;
       initializeOrganization(organization);
     }
+    if(notification.equals(ObserverNotification.DELETE_ORGNIZATION) && object instanceof Organization){
+      Organization organization = (Organization) object;
+      removeOrganization(organization);
+    }
   }
 
   private void initializeOrganization(Organization organization) {
@@ -176,5 +182,20 @@ public class ObserverImpl implements CRUDObserver {
     userPerson.setPerson(person);
     userPersonService.create(userPerson);
 
+  }
+
+  private void removeOrganization(Organization organization) {
+    List<UserPerson> userPersons = new ArrayList<UserPerson>(userPersonService.getAllByOrganization(organization.getUniqueShortName()));
+    for(UserPerson userPerson : userPersons){
+      userPersonService.delete(userPerson);
+    }
+    List<Privilege> privileges = new ArrayList<Privilege>(privilegeService.getPrivilegesByOrganization(organization.getUniqueShortName()));
+    for(Privilege privilege : privileges){
+      privilegeService.delete(privilege);
+    }
+    List<SecuredObject> securedObjects = new ArrayList<SecuredObject>(securedObjectService.getByOrganization(organization.getUniqueShortName()));
+    for(SecuredObject securedObject : securedObjects){
+      securedObjectService.delete(securedObject);
+    }
   }
 }
