@@ -116,6 +116,7 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
   public void delete(UserPerson userPerson) {
     try {
       super.delete(userPerson);
+      observable.notifyObserver(ObserverNotification.DELETE_USER_PERSON, userPerson);
     }
     catch (Exception e) {
     }

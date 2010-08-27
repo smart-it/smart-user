@@ -210,4 +210,9 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
     public void populatePrivilege(Role role)throws Exception {
        throw new UnsupportedOperationException("Not supported yet.");
     }
+
+  @Override
+  public Collection<Privilege> getPrivilegesByOrganizationNameAndObjectID(String organizationName, String objectID) {
+    return super.getList(QueryParameterFactory.getConjunctionParam(QueryParameterFactory.getNestedParametersParam("securedObject", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam("objectID", objectID)), QueryParameterFactory.getNestedParametersParam("parentOrganization", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationName))));
+  }
 }

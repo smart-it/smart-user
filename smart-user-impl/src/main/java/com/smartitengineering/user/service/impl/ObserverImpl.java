@@ -109,14 +109,15 @@ public class ObserverImpl implements CRUDObserver {
     if (notification.equals(ObserverNotification.CREATE_ORGANIZATION) && object instanceof Organization) {
       Organization organization = (Organization) object;
       initializeOrganization(organization);
-    }
-    if(notification.equals(ObserverNotification.DELETE_ORGNIZATION) && object instanceof Organization){
+    }else if(notification.equals(ObserverNotification.DELETE_ORGNIZATION) && object instanceof Organization){
       Organization organization = (Organization) object;
       removeOrganization(organization);
-    }
-    if(notification.equals(ObserverNotification.CREATE_USER_PERSON) && object instanceof UserPerson){
+    }else if(notification.equals(ObserverNotification.CREATE_USER_PERSON) && object instanceof UserPerson){
       UserPerson userPerson = (UserPerson) object;
       initializeUserPerson(userPerson);
+    }else if(notification.equals(ObserverNotification.DELETE_USER_PERSON) && object instanceof UserPerson){
+      UserPerson userPerson = (UserPerson) object;
+      removeUserPerson(userPerson);
     }
   }
 
@@ -236,4 +237,18 @@ public class ObserverImpl implements CRUDObserver {
     user.setPrivileges(privileges);
     userService.update(user);
   }
+
+  private void removeUserPerson(UserPerson userPerson) {
+    String organizationShortName = userPerson.getUser().getOrganization().getUniqueShortName();
+    String username = userPerson.getUser().getUsername();
+    String orgUri = ORGS_OID + ORG_UNIQUE_FRAG + "/" + organizationShortName;
+    String privilegeName = username + "-" + organizationShortName + "-user-privilege";
+    SecuredObject securedObject = securedObjectService.getByOrganizationAndObjectID(organizationShortName, orgUri + USER_UNIQUE_FRAG + "/" + username);
+    List<Privilege> privileges = new ArrayList<Privilege>(privilegeService.getPrivilegesByOrganizationNameAndObjectID(organizationShortName, securedObject.getObjectID()));
+    for(Privilege privilege : privileges){
+      privilegeService.delete(privilege);
+    }
+    securedObjectService.delete(securedObject);
+  }
+
 }
