@@ -204,35 +204,7 @@ public class PersonServiceImpl extends AbstractCommonDaoImpl<Person> implements 
       if (count.intValue() > 0) {
         throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
             UniqueConstrainedField.PERSON_EMAIL.name());
-      }
-      count = basicIdentityService.count(person.getSelf().getId(), person.getSelf().getNationalID());
-      if (count.intValue() > 0) {
-        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
-            UniqueConstrainedField.PERSON_NATIONAL_ID.name());
-      }
-      if (person.getSpouse() != null) {
-        count = basicIdentityService.count(person.getSpouse().getId(), person.getSpouse().getNationalID());
-        if (count.intValue() > 0) {
-          throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
-              UniqueConstrainedField.PERSON_SPOUSE_NATIONAL_ID.name());
-        }
-      }
-      if (person.getFather() != null) {
-        count = basicIdentityService.count(person.getFather().getId(), person.getFather().getNationalID());
-        if (count.intValue() > 0) {
-          throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
-              UniqueConstrainedField.PERSON_FATHER_NATIONAL_ID.name());
-        }
-      }
-      else {
-      }
-      if (person.getMother() != null) {
-        count = basicIdentityService.count(person.getMother().getId(), person.getMother().getNationalID());
-        if (count.intValue() > 0) {
-          throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
-              UniqueConstrainedField.PERSON_MOTHER_NATIONAL_ID.name());
-        }
-      }
+      }      
     }
     else {
       Integer count = (Integer) super.getOther(QueryParameterFactory.getElementCountParam(
@@ -241,33 +213,7 @@ public class PersonServiceImpl extends AbstractCommonDaoImpl<Person> implements 
       if (count.intValue() > 0) {
         throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
             UniqueConstrainedField.PERSON_EMAIL.name());
-      }
-      count = basicIdentityService.count(person.getSelf().getNationalID());
-      if (count.intValue() > 0) {
-        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
-            UniqueConstrainedField.PERSON_NATIONAL_ID.name());
-      }
-      if (person.getSpouse() != null) {
-        count = basicIdentityService.count(person.getSpouse().getNationalID());
-        if (count.intValue() > 0) {
-          throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
-              UniqueConstrainedField.PERSON_SPOUSE_NATIONAL_ID.name());
-        }
-      }
-      if (person.getFather() != null) {
-        count = basicIdentityService.count(person.getFather().getNationalID());
-        if (count.intValue() > 0) {
-          throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
-              UniqueConstrainedField.PERSON_FATHER_NATIONAL_ID.name());
-        }
-      }
-      if (person.getMother() != null) {
-        count = basicIdentityService.count(person.getMother().getNationalID());
-        if (count.intValue() > 0) {
-          throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
-              UniqueConstrainedField.PERSON_MOTHER_NATIONAL_ID.name());
-        }
-      }
+      }     
     }
   }
 }
