@@ -11,5 +11,7 @@ package com.smartitengineering.user.observer;
  */
 public enum ObserverNotification {
   CREATE_ORGANIZATION,
-  DELETE_ORGNIZATION;
+  DELETE_ORGNIZATION,
+  CREATE_USER_PERSON,
+  DELETE_USER_PERSON;
 }

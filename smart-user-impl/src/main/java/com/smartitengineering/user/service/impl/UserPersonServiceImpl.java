@@ -19,6 +19,8 @@ import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.domain.UserPerson;
 import com.smartitengineering.user.filter.UserPersonFilter;
+import com.smartitengineering.user.observer.CRUDObservable;
+import com.smartitengineering.user.observer.ObserverNotification;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.PersonService;
 import com.smartitengineering.user.service.UserPersonService;
@@ -41,6 +43,16 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
 
   private PersonService personService;
   private UserService userService;
+  private CRUDObservable observable;
+
+  public CRUDObservable getObservable() {
+    return observable;
+  }
+
+  public void setObservable(CRUDObservable observable) {
+    this.observable = observable;
+  }
+
 
   public UserPersonServiceImpl() {
     setEntityClass(UserPerson.class);
@@ -69,6 +81,7 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
     personService.validatePerson(userPerson.getPerson());
     try {
       super.save(userPerson);
+      observable.notifyObserver(ObserverNotification.CREATE_USER_PERSON, userPerson);
     }
     catch (ConstraintViolationException e) {
       String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
