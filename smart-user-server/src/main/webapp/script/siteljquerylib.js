@@ -1,7 +1,7 @@
 
 jQuery.fn.pagination = function(url, fragsLinkDivId) {
   var mainDiv = $(this)
-  var mainDivId = mainDiv.attr('id');
+  var mainDivId = mainDiv.attr('id');  
   fetchContent("#"+mainDivId, url, fragsLinkDivId);
 };
 
@@ -11,7 +11,7 @@ function fetchContent(mainDivId, url, fragsLinkDivId) {
     url: url,
     dataType: "html",
     success: function(html) {
-      //      putting html data in id div
+      //      putting html data in id div      
       $(mainDivId).html(html);
       cacheContent(mainDivId, fragsLinkDivId);
     },
@@ -25,18 +25,19 @@ function fetchContent(mainDivId, url, fragsLinkDivId) {
 
 function cacheContent(mainDivId, fragsLinkDivId) {
   //      making next and previos link inactive
-  $("div#"+fragsLinkDivId).find('a').each(function(){
+  $("div#"+fragsLinkDivId).find('a').each(function(){   
     var thisLink = $(this);
     $.ajax({
       type: "GET",
       url: this.toString(),
       dataType: "html",
-      success: function(html){
-        var divCount = $(html).find('div').length
+      success: function(html){        
+        var divCount = $(html).find('div').length;
+        alert(divCount);
         if(divCount <= 4) {
-          $(thisLink).hide()
+          $(thisLink).hide();          
         }
-        else {
+        else {          
           var href = $(thisLink).attr('href');
           $(thisLink).click(function(){
             fetchContent(mainDivId, href, fragsLinkDivId);
