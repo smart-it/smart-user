@@ -21,7 +21,7 @@ public interface PrivilegeService {
 
     Privilege getPrivilegeByName(String name);
 
-    //Collection<Privilege> getPrivilegesByObjectID(String objectID);
+    Collection<Privilege> getPrivilegesByOrganizationNameAndObjectID(String organizationName,String objectID);
     //Privilege getPrivilegesByObjectID(String objectID);
 
     Privilege getPrivilegeByOrganizationAndPrivilegeName(String organizationName, String privilegename);

@@ -15,6 +15,9 @@ import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.domain.UserGroup;
 import com.smartitengineering.user.filter.OrganizationFilter;
+import com.smartitengineering.user.observer.CRUDObservable;
+import com.smartitengineering.user.observer.CRUDObserver;
+import com.smartitengineering.user.observer.ObserverNotification;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.OrganizationService;
 import java.util.ArrayList;
@@ -23,16 +26,26 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleStateException;
 import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.sql.Template;
 
 /**
  *
  * @author modhu7
  */
-public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization> implements OrganizationService {
+public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization> implements OrganizationService{
+
+  private CRUDObservable observable;
+
+  public CRUDObservable getObservable() {
+    return observable;
+  }
+
+  public void setObservable(CRUDObservable observable) {
+    this.observable = observable;
+  }
 
   public OrganizationServiceImpl() {
     setEntityClass(Organization.class);
@@ -43,6 +56,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
     validateOrganization(organization);
     try {
       super.save(organization);
+      observable.notifyObserver(ObserverNotification.CREATE_ORGANIZATION, organization);
     }
     catch (ConstraintViolationException e) {
       String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
@@ -118,7 +132,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
 
         @Override
         public int compare(Organization o1, Organization o2) {          
-          return o1.getUniqueShortName().compareTo(o2.getUniqueShortName());          
+          return o1.getUniqueShortName().toUpperCase().compareTo(o2.getUniqueShortName().toUpperCase());
         }
       });
 
@@ -191,6 +205,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
   public void delete(Organization organization) {
     try {
       super.delete(organization);
+      observable.notifyObserver(ObserverNotification.DELETE_ORGNIZATION, organization);
     }
     catch (RuntimeException e) {
       String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
@@ -277,4 +292,6 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
     }
 
   }
+
+  
 }

@@ -18,24 +18,22 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
+   
     var url = "/orgs/${orgInitial}/users/frags${qParam}";
     $("#tablecontentid").pagination(url,"linkcontainer");
-    
-    $(".submit").click(function(){
-      alert(1);
-      var fname = $("input#fname");
-      var mname = $("input#mname");
-      var lname = $("input#lname");
-      var password = $("input#password");
-      var phone = $("input#phone");
-      $("#userform").validate({
+
+     $("#userform").validate({
         rules: {
-          name: "required",
-          midName: "required",
+          firstName: "required",
+          middleInitial: "required",
           lastName: "required",
           userName: "required",
+          primaryEmail: {
+            required: true,
+            email:true
+          },
           password: {
-            password: "required",
+            required: true,
             minLength: 6
           },
           confirmPassword: {
@@ -45,8 +43,30 @@
         messages: {
           password: "Password must be atleast of 6 characters"
         }
+      });      
+      $("#uname").blur(function(){
+      var usn =$("#uname").val();
+      $.ajax({
+        type: "GET",
+        url: "http://localhost:9090/orgs/${orgInitial}/users/username/"+usn,
+        dataType: "xml",
+        success: function(xhr){       
+          $("#alertlabel").html('User Name is not unique: try another');
+        },
+        error: function(xhr){
+          $("#alertlabel").html('');
+        }
       });
-      var datastring = 'name='+ fname + '&midName='+ mname + '&lastName='+ lname + '&password='+ password + '&phone='+ phone;
+    });
+
+    $(".submitbtn").click(function(){
+      alert(1);
+      var fname = $("input#fname");
+      var mname = $("input#mname");
+      var lname = $("input#lname");
+      var password = $("input#password");
+      var phone = $("input#phone");      
+      var datastring = 'firstName='+ fname + '&middleInitial='+ mname + '&lastName='+ lname + '&password='+ password + '&phone='+ phone;
       $.ajax({
         type: "POST",
         url: window.location,

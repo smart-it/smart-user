@@ -103,7 +103,7 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
 
     @Override
     public Privilege getPrivilegeByOrganizationAndPrivilegeName(String organizationName, String privilegename){
-        return super.getSingle(QueryParameterFactory.getStringLikePropertyParam("name", privilegename),
+        return super.getSingle(QueryParameterFactory.getEqualPropertyParam("name", privilegename),
                QueryParameterFactory.getNestedParametersParam("parentOrganization", FetchMode.DEFAULT,
                QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationName)));
     }
@@ -210,4 +210,9 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
     public void populatePrivilege(Role role)throws Exception {
        throw new UnsupportedOperationException("Not supported yet.");
     }
+
+  @Override
+  public Collection<Privilege> getPrivilegesByOrganizationNameAndObjectID(String organizationName, String objectID) {
+    return super.getList(QueryParameterFactory.getConjunctionParam(QueryParameterFactory.getNestedParametersParam("securedObject", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam("objectID", objectID)), QueryParameterFactory.getNestedParametersParam("parentOrganization", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationName))));
+  }
 }

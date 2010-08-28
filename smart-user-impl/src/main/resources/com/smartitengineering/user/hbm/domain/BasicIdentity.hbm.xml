@@ -7,7 +7,8 @@
             </generator>
     </id>
     <version column="version" name="version"/>
-    <property column="national_id" length="255" name="nationalID" type="java.lang.String"/> <!-- uniqueness of nationalID is made false for now-->
+    <property column="national_id" length="255" name="nationalID" type="java.lang.String"/>
+    <!-- uniqueness of nationalID is made false for now-->
     <component name="name">
       <property column="first_name" length="255" name="firstName" type="java.lang.String"/>
       <property column="last_name" length="255" name="lastName" type="java.lang.String"/>

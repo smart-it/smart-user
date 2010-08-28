@@ -33,19 +33,9 @@ import org.hibernate.exception.ConstraintViolationException;
  */
 public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements UserService {
 
-    private OrganizationService OrganizationService;
-
-    public UserServiceImpl() {
-        setEntityClass(User.class);
-    }
-
-    public OrganizationService getOrganizationService() {
-        return OrganizationService;
-    }
-
-    public void setOrganizationService(OrganizationService OrganizationService) {
-        this.OrganizationService = OrganizationService;
-    }
+  public UserServiceImpl() {
+    setEntityClass(User.class);
+  }
 
     @Override
     public void save(User user) {
@@ -207,7 +197,7 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
         @Override
         public int compare(User o1, User o2) {
           //return o1.getId().compareTo(o2.getId()) * -1;
-          return o1.getUsername().compareTo(o2.getUsername());
+          return o1.getUsername().toUpperCase().compareTo(o2.getUsername().toUpperCase());
         }
       });      
       return users;

@@ -28,11 +28,11 @@ public class InitialUserFactory {
   final static String SUPER_ADMIN_PASSWORD = "02040250204039";
   final static String ORGS_OID = "/orgs";
   final static String ORGS_OID_NAME = "Smart User Organizations";
-  final static String USERS_OID = "Smart User Users";
-  final static String USERS_OID_NAME = "/orgs/smart-user/users";
-  final static String SECURED_OBJECTS_OID = "/orgs/smart-user/securedObjects";
+  final static String USERS_OID_NAME = "Smart User Users";
+  final static String USERS_OID = "/users";
+  final static String SECURED_OBJECTS_OID = "/securedObjects";
   final static String SECURED_OBJECTS_OID_NAME = "Smart User Secured Objects";
-  final static String PRIVILEGES_OID = "/orgs/smart-user/privileges";
+  final static String PRIVILEGES_OID = "/privileges";
   final static String PRIVILEGES_OID_NAME = "Smart User Privileges";
   final static Integer PRIVILEGE_PERMISSION_MASK = 13;
   final static String USER_OID_NAME = "Super Admin User Secured Object";
@@ -133,8 +133,8 @@ public class InitialUserFactory {
         getObjectID());
 
     SecuredObject securedObjectUsers = new SecuredObject();
-    securedObjectUsers.setName(USERS_OID);
-    securedObjectUsers.setObjectID(ORGS_OID + USERS_OID_NAME);
+    securedObjectUsers.setName(USERS_OID_NAME);
+    securedObjectUsers.setObjectID(orgUri + USERS_OID);
     securedObjectUsers.setOrganization(organization);
     securedObjectUsers.setParentObjectID(securedObject.getObjectID());
     securedObjectService.save(securedObjectUsers);
@@ -143,7 +143,7 @@ public class InitialUserFactory {
 
     SecuredObject securedObjectSecuredObjects = new SecuredObject();
     securedObjectSecuredObjects.setName(SECURED_OBJECTS_OID_NAME);
-    securedObjectSecuredObjects.setObjectID(ORGS_OID + SECURED_OBJECTS_OID);
+    securedObjectSecuredObjects.setObjectID(orgUri + SECURED_OBJECTS_OID);
     securedObjectSecuredObjects.setOrganization(organization);
     securedObjectSecuredObjects.setParentObjectID(securedObject.getObjectID());
     securedObjectService.save(securedObjectSecuredObjects);
@@ -152,7 +152,7 @@ public class InitialUserFactory {
 
     SecuredObject securedObjectPrivileges = new SecuredObject();
     securedObjectPrivileges.setName(PRIVILEGES_OID_NAME);
-    securedObjectPrivileges.setObjectID(ORGS_OID + PRIVILEGES_OID);
+    securedObjectPrivileges.setObjectID(orgUri + PRIVILEGES_OID);
     securedObjectPrivileges.setOrganization(organization);
     securedObjectPrivileges.setParentObjectID(securedObject.getObjectID());
     securedObjectService.save(securedObjectPrivileges);
@@ -186,7 +186,7 @@ public class InitialUserFactory {
     name.setLastName("Admin");
     BasicIdentity self= new BasicIdentity();
     self.setName(name);
-    self.setNationalID("1234567890");
+    self.setNationalID("");
 
     person.setSelf(self);
     person.setPrimaryEmail("info@smart-user.com");
@@ -199,26 +199,26 @@ public class InitialUserFactory {
 
     //userService.save(user);
 
-    user = userService.getUserByOrganizationAndUserName(user.getUsername(), user.getOrganization().getUniqueShortName());
+    user = userService.getUserByOrganizationAndUserName(user.getOrganization().getUniqueShortName(), user.getUsername());
 
     SecuredObject securedObjectUser = new SecuredObject();
     securedObjectUser.setName(USER_OID_NAME);
-    securedObjectUser.setObjectID(orgUri + USER_UNIQUE_FRAG + USER_OID_NAME); //This objectId is actually the http url of super admin user of smart-user organizations
+    securedObjectUser.setObjectID(orgUri + USER_UNIQUE_FRAG + "/" + user.getUsername()); //This objectId is actually the http url of super admin user of smart-user organizations
     securedObjectUser.setOrganization(organization);
     securedObjectUser.setParentObjectID(securedObjectUsers.getObjectID());
-    securedObjectService.save(securedObjectSecuredObjects);
+    securedObjectService.save(securedObjectUser);
     securedObjectUser = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectUser.
         getObjectID());
 
     Privilege privilegeUser = new Privilege();
-    privilege.setDisplayName("Admin User Profile Privilege");
-    privilege.setName("super-admin-user-privilege");
-    privilege.setParentOrganization(organization);
-    privilege.setPermissionMask(PRIVILEGE_PERMISSION_MASK); //permission mask 31 means all privileges are there 11111
-    privilege.setSecuredObject(securedObjectUser);
-    privilege.setShortDescription(
+    privilegeUser.setDisplayName("Admin User Profile Privilege");
+    privilegeUser.setName("super-admin-user-privilege");
+    privilegeUser.setParentOrganization(organization);
+    privilegeUser.setPermissionMask(PRIVILEGE_PERMISSION_MASK); //permission mask 31 means all privileges are there 11111
+    privilegeUser.setSecuredObject(securedObjectUser);
+    privilegeUser.setShortDescription(
         "This privilege contains the authority to change the password and profile of the super admin.");
-    privilegeService.create(privilege);
+    privilegeService.create(privilegeUser);
 
     privilegeUser = privilegeService.getPrivilegeByOrganizationAndPrivilegeName(organization.getUniqueShortName(), privilegeUser.
         getName());

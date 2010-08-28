@@ -26,9 +26,13 @@ public interface UserPersonService {
 
     Collection<UserPerson> getAllUserPerson();
 
+    Collection<UserPerson> getByOrganization(String organizationUniqueShortName, String userName, boolean isSmallerThan, int count);
+
     UserPerson getUserPersonByUsernameAndOrgName(String username, String orgName);
 
     Collection<UserPerson> search(UserPersonFilter filter);
 
     void update(UserPerson userPerson);
+
+    public Collection<UserPerson> getAllByOrganization(String organizationUniqueShortName);
 }

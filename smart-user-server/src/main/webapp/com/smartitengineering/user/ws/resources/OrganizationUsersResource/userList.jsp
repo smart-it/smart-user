@@ -10,17 +10,13 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--<%@taglib prefix="pg" uri="/WEB-INF/taglib139.tld" %>--%>
-<%@page import="com.smartitengineering.user.domain.User"%>
-<%@page import="com.smartitengineering.user.domain.Organization"%>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-  "http://www.w3.org/TR/html4/loose.dtd">
+<%@page import="com.smartitengineering.user.domain.UserPerson"%>
 
 <div id="leftmenu_userlist_1" class="leftmenu">
-  <div id="leftmenu_header_userlist_1" class="leftmenu_header">User-Creation</div>
+  <div id="leftmenu_header_userlist_1" class="leftmenu_header"><fmt:message key="org.usercreatetitle"/></div>
   <div id="leftmenu_body_userlist_1" class="leftmenu_body">
     <ul>
-      <li><a href="javascript: Orgpageselect()">Create</a></li>
+      <li><a href="javascript: Orgpageselect()"><fmt:message key="org.usercreatelink"/></a></li>
     </ul>
   </div>
 </div>
@@ -49,7 +45,7 @@
 
 <div class="hide"  id="create">
   <div id="header_organization_users" class="header_entry_form">
-    <label>Users Entry</label>
+    <label><fmt:message key="org.userentrytitle"/></label>
   </div>
 
   <div id="form_organizationentry" class="entry_form">
@@ -64,13 +60,14 @@
       <div class="form_textField"><input type="text" name="lastName" id="lname" class="textfield"></div>
       <div class="clear"></div>
       <div class="form_label"><label><fmt:message key="org.usrtablehead2"/></label></div>
-      <div class="form_textField"><input type="text" name="userName" id="fname" class="textfield"></div>
+      <div class="form_textField"><input type="text" name="userName" id="uname" class="textfield"></div>
       <div class="clear"></div>
+      <label id ="alertlabel" class="alertlabel"></label>
       <div class="form_label"><label><fmt:message key="org.usrinput8"/></label></div>
       <div class="form_textField"><input type="text" name="nationalID" id="fname" class="textfield"></div>
       <div class="clear"></div>
       <div class="form_label"><label><fmt:message key="org.usrinput9"/></label></div>
-      <div class="form_textField"><input type="text" name="primaryEmail" id="fname" class="textfield"></div>
+      <div class="form_textField"><input type="text" name="primaryEmail" id="email" class="textfield"></div>
       <div class="clear"></div>
       <div class="form_label"><label><fmt:message key="org.usrinput4"/></label></div>
       <div class="form_textField"><input id="password" type="password" name="password" class="textfield"></div>
