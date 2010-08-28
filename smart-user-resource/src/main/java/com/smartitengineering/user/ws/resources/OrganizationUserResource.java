@@ -53,7 +53,7 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author russel
  */
-@Path("/orgs/{organizationShortName}/users/un/{userName}")
+@Path("/orgs/sn/{organizationShortName}/users/un/{userName}")
 public class OrganizationUserResource extends AbstractResource {
 
   //private User user;
