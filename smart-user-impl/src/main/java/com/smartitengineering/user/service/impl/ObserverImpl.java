@@ -33,11 +33,11 @@ public class ObserverImpl implements CRUDObserver {
   final static String ORGS_OID = "/orgs";
   final static String USERS_OID = "/users";
   final static String USERS_OID_NAME = "Users";
-  final static String SECURED_OBJECTS_OID = "/securedObjects";
+  final static String SECURED_OBJECTS_OID = "/so";
   final static String SECURED_OBJECTS_NAME = "Secured Objects";
-  final static String PRIVILEGES_OID = "/privileges";
+  final static String PRIVILEGES_OID = "/privs";
   final static String PRIVILEGES_OID_NAME = "Privileges";
-  final static String ORG_UNIQUE_FRAG = "/shortName";
+  final static String ORG_UNIQUE_FRAG = "/sn";
   final static String ADAM_ORG_SHORT_NAME = "smart-user";
   final static String ADMIN_USERNAME = "admin";
   final static String ADMIN_PASSWORD = "adminadmin";
@@ -46,7 +46,7 @@ public class ObserverImpl implements CRUDObserver {
   final static String URIFRAG_DELETE = "/delete";
   final static Integer PRIVILEGE_PERMISSION_MASK = 31;
   final static String EMAIL_DOMAIN = "smartitengineering.com";
-  final static String USER_UNIQUE_FRAG = "/username";
+  final static String USER_UNIQUE_FRAG = "/un";
 
   private UserPersonService userPersonService;
   private PersonService personService;
@@ -212,7 +212,7 @@ public class ObserverImpl implements CRUDObserver {
     SecuredObject securedObjectUser = new SecuredObject();
     securedObjectUser.setName(username + "'s Profile");
     String orgUri = ORGS_OID + ORG_UNIQUE_FRAG + "/" + organizationShortName;
-    securedObjectUser.setObjectID(orgUri + USER_UNIQUE_FRAG + "/" + username);
+    securedObjectUser.setObjectID(orgUri + USERS_OID + USER_UNIQUE_FRAG + "/" + username);
     securedObjectUser.setOrganization(userPerson.getUser().getOrganization());
     securedObjectUser.setParentObjectID(orgUri+USERS_OID);
     securedObjectService.save(securedObjectUser);
