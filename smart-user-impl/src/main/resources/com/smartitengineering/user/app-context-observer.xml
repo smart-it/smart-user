@@ -16,6 +16,9 @@
     </property>
   </bean>
   <bean id="userPersonServiceObserver" class="com.smartitengineering.user.service.impl.UserPersonServiceImpl" parent="abstractDaoObserver">
+    <property name="observable">
+      <ref local="dummyObservable" />
+    </property>
     <property name="personService">
       <ref local="personServiceObserver" />
     </property>

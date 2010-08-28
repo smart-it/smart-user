@@ -19,7 +19,9 @@ import com.smartitengineering.user.service.PrivilegeService;
 import com.smartitengineering.user.service.SecuredObjectService;
 import com.smartitengineering.user.service.UserPersonService;
 import com.smartitengineering.user.service.UserService;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -44,6 +46,7 @@ public class ObserverImpl implements CRUDObserver {
   final static String URIFRAG_DELETE = "/delete";
   final static Integer PRIVILEGE_PERMISSION_MASK = 31;
   final static String EMAIL_DOMAIN = "smartitengineering.com";
+  final static String USER_UNIQUE_FRAG = "/username";
 
   private UserPersonService userPersonService;
   private PersonService personService;
@@ -106,6 +109,15 @@ public class ObserverImpl implements CRUDObserver {
     if (notification.equals(ObserverNotification.CREATE_ORGANIZATION) && object instanceof Organization) {
       Organization organization = (Organization) object;
       initializeOrganization(organization);
+    }else if(notification.equals(ObserverNotification.DELETE_ORGNIZATION) && object instanceof Organization){
+      Organization organization = (Organization) object;
+      removeOrganization(organization);
+    }else if(notification.equals(ObserverNotification.CREATE_USER_PERSON) && object instanceof UserPerson){
+      UserPerson userPerson = (UserPerson) object;
+      initializeUserPerson(userPerson);
+    }else if(notification.equals(ObserverNotification.DELETE_USER_PERSON) && object instanceof UserPerson){
+      UserPerson userPerson = (UserPerson) object;
+      removeUserPerson(userPerson);
     }
   }
 
@@ -177,4 +189,66 @@ public class ObserverImpl implements CRUDObserver {
     userPersonService.create(userPerson);
 
   }
+
+  private void removeOrganization(Organization organization) {
+    List<UserPerson> userPersons = new ArrayList<UserPerson>(userPersonService.getAllByOrganization(organization.getUniqueShortName()));
+    for(UserPerson userPerson : userPersons){
+      userPersonService.delete(userPerson);
+    }
+    List<Privilege> privileges = new ArrayList<Privilege>(privilegeService.getPrivilegesByOrganization(organization.getUniqueShortName()));
+    for(Privilege privilege : privileges){
+      privilegeService.delete(privilege);
+    }
+    List<SecuredObject> securedObjects = new ArrayList<SecuredObject>(securedObjectService.getByOrganization(organization.getUniqueShortName()));
+    for(SecuredObject securedObject : securedObjects){
+      securedObjectService.delete(securedObject);
+    }
+  }
+
+  private void initializeUserPerson(UserPerson userPerson) {
+    String username = userPerson.getUser().getUsername();
+    String organizationShortName = userPerson.getUser().getOrganization().getUniqueShortName();
+    UserPerson persistentUserPerson = userPersonService.getUserPersonByUsernameAndOrgName(username, organizationShortName);
+    SecuredObject securedObjectUser = new SecuredObject();
+    securedObjectUser.setName(username + "'s Profile");
+    String orgUri = ORGS_OID + ORG_UNIQUE_FRAG + "/" + organizationShortName;
+    securedObjectUser.setObjectID(orgUri + USER_UNIQUE_FRAG + "/" + username);
+    securedObjectUser.setOrganization(userPerson.getUser().getOrganization());
+    securedObjectUser.setParentObjectID(orgUri+USERS_OID);
+    securedObjectService.save(securedObjectUser);
+    securedObjectUser = securedObjectService.getByOrganizationAndObjectID(userPerson.getUser().getOrganization().getUniqueShortName(), securedObjectUser.
+        getObjectID());
+
+    Privilege privilegeUser = new Privilege();
+    privilegeUser.setDisplayName(username + "'s Profile Privilege");
+    privilegeUser.setName(username + "-" + organizationShortName + "-user-privilege");
+    privilegeUser.setParentOrganization(userPerson.getUser().getOrganization());
+    privilegeUser.setPermissionMask(PRIVILEGE_PERMISSION_MASK); //permission mask 31 means all privileges are there 11111
+    privilegeUser.setSecuredObject(securedObjectUser);
+    privilegeUser.setShortDescription(
+        "This privilege contains the authority to change the password and profile of the user with username " + userPerson.getUser().getUsername());
+    privilegeService.create(privilegeUser);
+
+    privilegeUser = privilegeService.getPrivilegeByOrganizationAndPrivilegeName(userPerson.getUser().getOrganization().getUniqueShortName(), privilegeUser.
+        getName());
+    Set<Privilege> privileges = userPerson.getUser().getPrivileges();
+    privileges.add(privilegeUser);
+    User user = userPerson.getUser();
+    user.setPrivileges(privileges);
+    userService.update(user);
+  }
+
+  private void removeUserPerson(UserPerson userPerson) {
+    String organizationShortName = userPerson.getUser().getOrganization().getUniqueShortName();
+    String username = userPerson.getUser().getUsername();
+    String orgUri = ORGS_OID + ORG_UNIQUE_FRAG + "/" + organizationShortName;
+    String privilegeName = username + "-" + organizationShortName + "-user-privilege";
+    SecuredObject securedObject = securedObjectService.getByOrganizationAndObjectID(organizationShortName, orgUri + USER_UNIQUE_FRAG + "/" + username);
+    List<Privilege> privileges = new ArrayList<Privilege>(privilegeService.getPrivilegesByOrganizationNameAndObjectID(organizationShortName, securedObject.getObjectID()));
+    for(Privilege privilege : privileges){
+      privilegeService.delete(privilege);
+    }
+    securedObjectService.delete(securedObject);
+  }
+
 }

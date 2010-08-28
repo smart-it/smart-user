@@ -203,7 +203,7 @@ public class InitialUserFactory {
 
     SecuredObject securedObjectUser = new SecuredObject();
     securedObjectUser.setName(USER_OID_NAME);
-    securedObjectUser.setObjectID(orgUri + USER_UNIQUE_FRAG + user.getUsername()); //This objectId is actually the http url of super admin user of smart-user organizations
+    securedObjectUser.setObjectID(orgUri + USER_UNIQUE_FRAG + "/" + user.getUsername()); //This objectId is actually the http url of super admin user of smart-user organizations
     securedObjectUser.setOrganization(organization);
     securedObjectUser.setParentObjectID(securedObjectUsers.getObjectID());
     securedObjectService.save(securedObjectUser);
