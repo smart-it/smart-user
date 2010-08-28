@@ -47,6 +47,11 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     if(user!=null && oid==null){
       return AccessDecisionVoter.ACCESS_ABSTAIN;
     }
+    for (Privilege privilege : user.getPrivileges()) {
+      if (oid.startsWith(privilege.getSecuredObject().getObjectID()) && (permission.intValue() & privilege.getPermissionMask().intValue()) == permission.intValue()) {
+        return AccessDecisionVoter.ACCESS_GRANTED;
+      }
+    }
     SecuredObject securedObject = securedObjectService.getByOrganizationAndObjectID(organizationName, oid);
     if(user!=null && securedObject==null){
       return AccessDecisionVoter.ACCESS_ABSTAIN;
