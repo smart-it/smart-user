@@ -54,7 +54,7 @@
           $("#alertlabel").html('User Name is not unique: try another');
         },
         error: function(xhr){
-          $("#alertlabel").html('Perfect: Carry On');
+          $("#alertlabel").html('');
         }
       });
     });

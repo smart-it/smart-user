@@ -17,6 +17,7 @@ curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:applica
 
 
 curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/securedObjects -d '{"name":"journal","objectID":"journal-1","parentOrganizationID":"1"}'
+<<<<<<< HEAD
 curl -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/privs -d'{"name":"privilegeName","displayName":"displayName","parentOrganizationID":"1"}'
 curl -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/roles -d '{"name":"roleName1","displayName":"roleDisplayName1","privilegeIDs":["1"],"parentOrganizationID":"1"}'
 curl -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/roles -d '{"name":"roleName2","displayName":"roleDisplayName2","privilegeIDs":["1"],"roleIDs":["1"],"parentOrganizationID":"1"}'
@@ -30,6 +31,26 @@ curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:applica
 curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"username":"saumitra","password":"saumitra123","parentOrganizationID":"2"}'
 curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"username":"saumitra","password":"saumitra123","parentOrganizationID":"2"}'
 curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"username":"saumitra","password":"saumitra123","parentOrganizationID":"2"}'
+=======
+curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/privs -d'{"name":"privilegeName","displayName":"displayName","parentOrganizationID":"1"}'
+curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/roles -d '{"name":"roleName1","displayName":"roleDisplayName1","privilegeIDs":["1"],"parentOrganizationID":"1"}'
+curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/roles -d '{"name":"roleName2","displayName":"roleDisplayName2","privilegeIDs":["1"],"roleIDs":["1"],"parentOrganizationID":"1"}'
+curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"firstName":"Mohiuddin","middleInitial":"Khoshnur","lastName":"Russel","userName":"russel","password":"russel39","confirmPassword":"russel39","nationalID":"123",
+"primaryEmail":"russel@yahoo.com","phone":"253648","parentOrganizationID":"2"}'
+curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"firstName":"Atiqul","middleInitial":"Alam","lastName":"Rocky","userName":"rocky","password":"russel39","confirmPassword":"russel39","nationalID":"1234",
+"primaryEmail":"rocky@yahoo.com","phone":"253648","parentOrganizationID":"2"}'
+curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"firstName":"Subrata","middleInitial":"S","lastName":"Gupta","userName":"modhu7","password":"russel39","confirmPassword":"russel39","nationalID":"1235",
+"primaryEmail":"modhu7@yahoo.com","phone":"253648","parentOrganizationID":"2"}'
+curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"firstName":"Imran","middleInitial":"M","lastName":"Yousuf","userName":"IMYousuf","password":"russel39","confirmPassword":"russel39","nationalID":"1236",
+"primaryEmail":"imyousuf@yahoo.com","phone":"253648","parentOrganizationID":"2"}'
+curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"firstName":"Saumitra","middleInitial":"Chowdhury","lastName":"Avi","userName":"beka","password":"russel39","confirmPassword":"russel39","nationalID":"1237",
+"primaryEmail":"avi@yahoo.com","phone":"253648","parentOrganizationID":"2"}'
+curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"firstName":"Md.","middleInitial":"Kaisar","lastName":"Ali","userName":"ali","password":"russel39","confirmPassword":"russel39","nationalID":"1238",
+"primaryEmail":"ali@yahoo.com","phone":"253648","parentOrganizationID":"2"}'
+curl -u smartadmin@smart-user:02040250204039 -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/SITEL/users -d '{"firstName":"A.H.M","middleInitial":"Robiul","lastName":"Uzzal","userName":"uzzal","password":"russel39","confirmPassword":"russel39","nationalID":"1239",
+"primaryEmail":"uzzal@yahoo.com","phone":"253648","parentOrganizationID":"2"}'
+
+>>>>>>> atiqul/userlink
 
 
 

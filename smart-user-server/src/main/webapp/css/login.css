@@ -12,96 +12,116 @@
 */
 
 root { 
-    display: block;
+  display: block;
 }
 
-#inloginform{
-    background-color:#99C7FF;
-    width: 100%;
-    height: 100%;
+.loginSection{
+  margin-top: 20px;
+  /*background-color:#99C7FF;*/
+  width: 100%;
+  height:210px;
+  border-left: 2px solid silver;
+  /*border: 1px solid;*/
 }
 
-#loginnametextbox, #loginpasstextbox{
-    width: inherit;
-    border:1px solid #C5C2C2;
-    border-spacing: inherit;
-    border-style: solid;
-    color:#000000;
+.loginHeader{
+  text-align:center;
+  padding: 5px 0px 20px 0px;
 }
 
-#loginlbl{
-    font-family:Arial, Helvetica, sans-serif;
-    text-decoration: none;
-    font-size: small;
-    text-align: right;
-    color:#000000;
-
+.loginHeader label{
+  font-size: 12pt;
+  font-family: sans-serif;
+  font-weight: bold;
+  color: #9999CC;
+  /*letter-spacing: 1px;*/
 }
 
-#loginBtn{
-    width:80px;
-    height:30px;
-    border-style: solid;
-    background-color: #E3E4FA;
+.loginEntrySection{
+  padding-left: 10px;
 }
 
-
-#loginlabeldiv{
-    margin: 1px 1px 1px 0px;
-    /*padding: 8px 2px 2px 2px;*/
-    width: 30%;
-    float: left;
-    /*border: 1px solid;*/
-
+.loginLabelDiv{
+  padding-top: 3px;
+  padding-right: 4px;
+  padding-bottom:13px;
+  text-align:right;
+  width: 28%;
+  float: left;
 }
 
-#loginboxdiv{
-    margin: 1px 1px 1px 1px;
-    /*padding: 5px 2px 2px 0px;*/
-    width: 67%;
-    float: left;
-    /*border: 1px solid;*/
+.loginLabelDiv label{
+  font-family:sans-serif;
+  color:#5E5A80;
+  text-decoration: none;
+  font-size:9pt;
+  /*color:#000000;*/
+}
+
+.loginTextBoxDiv{
+  width: 70%;
+  float: left;
+}
+
+.loginTextBox{
+  width: 140px;
+  height: 20px;
+  border:1px solid #C5C2C2;
+  border-style:outset;
+  color:#000000;
+}
+
+.btnLinkCheckDiv{
+  text-align: center;
+  color: #5E5A80;
+  padding-top: 4px;
 }
 
 .btnlinkcheck{
-    padding: 10px 5px 15px 5px;
-    font-size: 10pt;
+  padding-bottom: 8px;
+  font-size: 10pt;
 }
 
-#loginheader{
-    padding: 3px 5px 30px 5px;
+.btnDiv{
+  padding-bottom: 15px;
 }
-#loginheader label{
-    font-size: 10pt;
+
+.btnDiv input{
+  background: transparent url(images/more_btn.jpg) no-repeat;
+  width: 90px;
+  height:27px;
+  font-family: sans-serif;
+  font-weight: bold;
+  /*border: 1px solid;*/
 }
 
 /*sign up starts here*/
 
 #insignup{
-    background-color:#99C7FF;
-    width: 100%;
-    height: 100%;
+  background-color:#99C7FF;
+  width: 100%;
+  height: 100%;
 }
 
 
 #signupBtn{
-    width:125px;
-    height:50px;
-    font-size: 15pt;
-    border: 1px outset;
-    border-color:#43C6DB ;
-    background-color:#6D7B8D;
+  width:125px;
+  height:50px;
+  font-size: 15pt;
+  border: 1px outset;
+  border-color:#43C6DB ;
+  background-color:#6D7B8D;
 }
 .innersignup{
-    padding: 5px 2px 15px 2px;
+  padding: 5px 2px 15px 2px;
 
 }
 
 .innersignup label{
-    font-size: 10pt;
+  font-size: 10pt;
 }
 .innersignup a{
-    font-size: 10pt;
+  font-size: 10pt;
 }
 
 /*Sign up ends here*/

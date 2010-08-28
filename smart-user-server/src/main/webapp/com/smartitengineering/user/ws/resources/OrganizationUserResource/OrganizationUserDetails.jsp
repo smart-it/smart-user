@@ -58,9 +58,7 @@
 </div>
 
 <div id="create" class="hide">
-
-  <div id="header_organization_users" class="header_entry_form"><marquee><label id="header_user_label"><c:out value="${it.user.username}"></c:out>-Edit Information</label></marquee></div>
-
+  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.username}"></c:out>-Edit Information</label></div>
   <fmt:message key="org.usrinput6" var="submitbtn"/>
 
   <div id="form_organizationentry" class="entry_form">
@@ -91,5 +89,4 @@
       <div style="clear: both"></div>
     </form>
   </div>
-
 </div>

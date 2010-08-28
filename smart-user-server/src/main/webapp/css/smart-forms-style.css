@@ -38,6 +38,17 @@ root {
   font-family: Arial,Helvetica,sans-serif;
 }
 
+#newboxes1{
+    text-align: left;
+  /*margin: 50px 0px 0px 150px;*/
+  margin: 5px 1px 1px 5px;
+  border: 2px solid;
+  border-color:#24E0FB;
+  width:98%;
+  font-family: Arial,Helvetica,sans-serif;
+
+}
+
 .header_entry_form{
 
   /*    background-image: url(../images/menul.jpg),
