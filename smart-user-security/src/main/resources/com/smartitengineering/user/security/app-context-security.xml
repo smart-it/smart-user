@@ -23,7 +23,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   </sec:http>
     
   <bean id="accessDecisionManager" class="com.smartitengineering.user.security.SmartAccessDecisionManager">
-    <property name="allowIfAllAbstainDecisions" value="true"/>
+    <property name="allowIfAllAbstainDecisions" value="false"/>
     <property name="decisionVoters">
       <list>
         <bean id="roleVoter" class="org.springframework.security.vote.RoleVoter"/>

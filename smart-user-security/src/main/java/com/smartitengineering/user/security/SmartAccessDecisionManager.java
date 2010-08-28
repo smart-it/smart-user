@@ -43,31 +43,30 @@ public class SmartAccessDecisionManager extends AbstractAccessDecisionManager {
 
         if (voter instanceof RoleVoter) {
           int result = voter.vote(authentication, object, singleAttrDef);
-          if(result==AccessDecisionVoter.ACCESS_GRANTED)
+          if (result == AccessDecisionVoter.ACCESS_GRANTED) {
             return;
+          }
         }
-      }
+        else if (voter instanceof SmartUserAdminVoter) {
+          int result = voter.vote(authentication, object, singleAttrDef);
 
-      while (voters.hasNext()) {
-        AccessDecisionVoter voter = (AccessDecisionVoter) voters.next();
-        int result = voter.vote(authentication, object, singleAttrDef);
+          switch (result) {
+            case AccessDecisionVoter.ACCESS_GRANTED:
+              grant++;
 
-        switch (result) {
-          case AccessDecisionVoter.ACCESS_GRANTED:
-            grant++;
+              break;
 
-            break;
+            case AccessDecisionVoter.ACCESS_DENIED:
+              throw new AccessDeniedException(messages.getMessage("AbstractAccessDecisionManager.accessDenied",
+                                                                  "Access is denied"));
 
-          case AccessDecisionVoter.ACCESS_DENIED:
-            throw new AccessDeniedException(messages.getMessage("AbstractAccessDecisionManager.accessDenied",
-                                                                "Access is denied"));
+            default:
+              abstain++;
 
-          default:
-            abstain++;
-
-            break;
+              break;
+          }
         }
-      }
+      }     
     }
 
     // To get this far, there were no deny votes
