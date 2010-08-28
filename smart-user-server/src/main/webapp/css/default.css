@@ -12,112 +12,132 @@
 */
 
 root { 
-    display: block;
+  display: block;
 }
 
 body{
-/*    width: 100%;*/
-    padding-top: 10px;
-    font:normal;
-    font-family:Arial, Helvetica, sans-serif;
-    margin:0; border:0; 
-    text-align:left;
-
+  /*    width: 100%;*/
+  font:normal;
+  font-family:Arial, Helvetica, sans-serif;
+  margin:0; border:0;
+  text-align:left;
 }
 
-#maindivision{
-	position:relative; clear:left;
-        width:60%;
-	margin:0 auto;
-	background:#fff;
-	/*border:4px solid #666;*/
+.homepageMainDivision{
+  padding-top:6px;
+  clear:left;
+  width:890px;
+  margin:0 auto;
+  padding-bottom: 6px;
+  /*border: 1px solid;*/
+}
+
+.homepageContainer{
+  background-color: gray;
+  background: url(images/img07.jpg);
+  background-repeat:repeat;
+  background-position:bottom right;
+  float: right;
+  width: 700px;
+  height: 275px;
+  border: 1px solid;
+  /*border-color:#408080;*/
+  border-color: silver;
 }
 
 
 /*start of header*/
 
-#header{
-    /*background-image: url(../images/header.gif);*/
-    background: url(../images/bgg.png) repeat;
-    width: auto;
-    height: 75px;
-    /*border: 1px solid;*/
+.homepageHeader{
+  /*background-image:url(bgg.png);*/
+  background-image:url(images/footer2.jpg);
+  background-repeat: repeat;
+  background-position: top left;
+  width: auto;
+  height:120px;
 }
 
-#header h1{
-    position:relative; clear:left;
-    /*margin-left:200px;*/
-    font-family: serif;
-    font-size:35pt;
-    text-align: center;
-    letter-spacing: 4px;
-    color: #99BB99;
+.logoContainer{
+  position: absolute;
+  margin: 2px 0px 0px 180px;;
+  height:52px;
+  width: 205px;
+  /*border:1px solid;*/
 }
 
+#sitelLogo{
+  width: 180px;
+  height: 90px;
+}
+
+.sitel_slogan_container{
+  position: absolute;
+  margin: 92px 0px 0px 176px;;
+
+}
+.sitel_slogan_container label{
+  font-family: verdana, tahoma;
+  font-size: 11pt;
+  font-weight:  bolder;
+  font-style: oblique;
+  letter-spacing: 1px;
+  color: #75ECFD;
+}
 /*End of header*/
 
 /*Start of body/content*/
 
-#content{
-/*    background: url(../image/bodybg.jpg);*/
-    background-color: 	#FFFFFE;
-    width: 80%;
-    height:480px;
-    float: left;
+.leftContent{
+  width: 65%;
+  height:240px;
+  float: left;
+  /*border: 1px solid;*/
+}
+
+.rightContent{
+  width: 35%;
+  height:275px;
+  float: left;
+  /*border: 1px solid;*/
 }
 
 /*End of body/content*/
 
-/*Right-side-bar(Login/signup) starts here*/
-#right{
-    padding-top: 20px;
-    width: 20%;
-    height: auto;
-    float: left;
-    /*border: 1px solid;*/
-}
-
-#login{
-    padding: 2px 2px 2px 2px;
-    width: auto;
-    height: 50%;
-    border:1px solid;
-    border-color: #99C7FF;
-}
-
 #signup{
-    margin-top: 30px;
-    margin-bottom: 30px;
-    padding: 2px 2px 2px 2px;
-    width: auto;
-    height: 30%;
-    border:1px solid;
-    border-color: #99C7FF;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 2px 2px 2px 2px;
+  width: 40%;
+  height: 50%;
+  border:1px solid;
+  border-color: #99C7FF;
 
 }
 /*End of right-side-bar*/
 
 /*Start of footer*/
 
-#footer{
-    position:relative; clear:left;
-    background: url(../images/bgg.png);
-    width: auto;
-    height: 75px;
-    border: 1px solid;
-    border-color: white;
-
-
+.homepageFooter{
+  padding-top: 25px;
+  background: url(images/hdr.jpg);
+  width: auto;
+  height:100px;
+  border: 1px solid;
+  border-color: white;
+  text-align: center;
 }
 
-#footer h3{
-    position:relative; clear:left;
-    font-family: serif;
-    font-size:10pt;
-    text-align: center;
-    letter-spacing: 1px;
-    color: #000000;
-
+.homepageFooter label{
+  font-family: serif;
+  font-weight: bold;
+  font-size:9pt;
+  letter-spacing: 1px;
+  color: teal;
+  /*color: #75ECFD;*/
 }
 
 /*end of footer*/
+
+.clear{
+  clear:both;
+}
