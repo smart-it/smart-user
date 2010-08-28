@@ -68,6 +68,7 @@
       <div class="clear"></div>
       <div class="form_label"><label><fmt:message key="org.usrinput8"/></label></div>
       <div class="form_textField"><input type="text" name="nationalID" id="fname" class="textfield"></div>
+      <div class="clear"></div>
       <div class="form_label"><label><fmt:message key="org.usrinput9"/></label></div>
       <div class="form_textField"><input type="text" name="primaryEmail" id="fname" class="textfield"></div>
       <div class="clear"></div>
@@ -79,7 +80,6 @@
       <div class="clear"></div>
       <div class="form_label"><label><fmt:message key="org.usrinput5"/></label></div>
       <div class="form_textField"><input type="text" name="phone" id="phone" class="textfield"></div>
-
       <div class="clear"></div>
       <div class="btnfield"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submitbtn" type="submit" class="submitbtn" value="SUBMIT"></div>
       <div class="clear"></div>

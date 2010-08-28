@@ -23,6 +23,7 @@
     <link rel="Stylesheet" href="/css/smart-menu.css">
 
     <script type="text/javascript" src="/script/javascript_1.js"></script>
+    <%--<script type="text/javascript" src="/script/showhideContents.js"></script>--%>
     <script type="text/javascript" src="/script/jquery-1.4.2.js"></script>
     <script type="text/javascript" src="/script/jquery.validate.js"></script>
     <script type="text/javascript" src="/script/siteljquerylib.js"></script>
@@ -46,7 +47,7 @@
 
     <div id="main" class="main_template">
       <div id="header" class="main_template_header">
-        <div id="sitel_logo" class="sitel_logo_container"><img src="/images/site ultimate build 1.0.0.5.jpg" alt="sitel" id="img-sitel-logo"></div>
+        <div id="sitel_logo" class="sitel_logo_container"><img src="/images/site ultimate build 1.0.0.5.png" alt="Smart IT Engineering Limited" id="img-sitel-logo"></div>
         <div id="sitel_slogan" class="sitel_slogan_container"><label>IT for smarter living</label></div>
       </div>
       <div id="options" class="main_template_options"></div>
@@ -56,7 +57,7 @@
       </div>
       <div id="left" class="left_menu"></div>
       <div class="clear"></div>
-      <div id="footer" class="main_template_footer"><div class="footer_label_container"><label>copyright@smartitengineering limited 2010</label></div></div>
+      <div id="footer" class="main_template_footer"><div class="footer_label_container"><label>copyright@smart it engineering limited 2010</label></div></div>
     </div>
 
   </body>

@@ -12,7 +12,7 @@
 */
 
 root { 
-    display: block;
+  display: block;
 }
 
 #showList{
@@ -23,7 +23,7 @@ root {
   background-color: #CCCCFF;
   height: 30px;
   text-align: center;
-  }
+}
 
 .header_of_list label{
   font-family: sans-serif;
@@ -107,8 +107,24 @@ a:hover{
   text-align: center;
   float: right;
   width: 15%;
+  /*height: 40px;*/
   /*border: 1px solid;*/
 }
+
+/*#next{
+ 	  background-image:url(/images/31_32x32.png);
+    display:block;
+	  height:32px;
+    width:32px;
+}
+
+#prev{
+   	  background-image:url(/images/23.png);
+    display:block;
+	  height:55px;
+    width:65px;
+
+}*/
 
 .list_navigation_links a{
   text-decoration: none;
@@ -118,6 +134,16 @@ a:hover{
   color: #FF0000;
   font-weight:bolder;
 }
+
+/*.list_nav{
+  border: none;
+  height: 25px;
+  width: 35px;
+}
+
+.list_nav:hover{
+  background-color: green;
+}*/
 
 /*userlist data*/
 
