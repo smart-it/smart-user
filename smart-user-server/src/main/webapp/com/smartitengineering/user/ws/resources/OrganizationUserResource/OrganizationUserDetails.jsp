@@ -33,7 +33,7 @@
     <div class="individual_details_data"><label>${it.user.password}</label></div>
     <div class="clear"></div>
 
-    <form method="POST" action ="http://localhost:9090/orgs/${it.user.organization.uniqueShortName}/users/username/${it.user.username}/delete" accept="application/json" id="organizationform">
+    <form method="POST" action ="http://localhost:9090/orgs/sn/${it.user.organization.uniqueShortName}/users/un/${it.user.username}/delete" accept="application/json" id="organizationform">
       <input type="hidden" name="id" value="${it.id}" class="textField" id="id">
       <input type="hidden" name="version" value="${it.version}" class="textField" id="version">
       <input type="hidden" name="userId" value="${it.user.id}" class="textField" id="id">
@@ -62,7 +62,7 @@
   <fmt:message key="org.usrinput6" var="submitbtn"/>
 
   <div id="form_organizationentry" class="entry_form">
-    <form method="POST" action ="http://localhost:9090/orgs/${it.user.organization.uniqueShortName}/users/username/${it.user.username}/update" accept="application/json" id="organizationform">
+    <form method="POST" action ="http://localhost:9090/orgs/sn/${it.user.organization.uniqueShortName}/users/un/${it.user.username}/update" accept="application/json" id="organizationform">
 
       <input type="hidden" name="id" value="${it.id}" class="textField" id="id">
       <input type="hidden" name="version" value="${it.version}" class="textField" id="version">
