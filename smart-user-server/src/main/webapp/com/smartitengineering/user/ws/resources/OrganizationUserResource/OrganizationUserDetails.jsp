@@ -59,11 +59,11 @@
 </div>
 
 <div id="create" class="hide">
-  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.username}"></c:out>-Edit Information</label></div>
+  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out>-Edit Information</label></div>
   <fmt:message key="org.usrinput6" var="submitbtn"/>
 
   <div id="form_organizationentry" class="entry_form">
-    <form method="POST" action ="http://localhost:9090/orgs/${it.user.organization.uniqueShortName}/users/username/${it.user.username}/update" accept="application/json" id="userEditForm">
+    <form method="POST" action ="http://localhost:9090/orgs/sn/${it.user.organization.uniqueShortName}/users/un/${it.user.username}/update" accept="application/json" id="userEditForm">
 
       <input type="hidden" name="id" value="${it.id}" class="textField" id="id">
       <input type="hidden" name="version" value="${it.version}" class="textField" id="version">
