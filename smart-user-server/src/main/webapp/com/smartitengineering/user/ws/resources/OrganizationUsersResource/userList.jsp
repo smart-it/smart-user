@@ -75,7 +75,7 @@
       <div class="form_textField"><input id="confirmPassword" type="password" name="confirmPassword" class="textfield"></div>
       <div class="clear"></div>
       <div class="form_label"><label><fmt:message key="org.usrinput5"/></label></div>
-      <div class="form_textField"><input type="text" name="phone" id="phone" class="textfield"></div>
+      <div class="form_textField"><input type="text" name="cellPhoneNumber" id="phone" class="textfield"></div>
 
       <div class="clear"></div>
       <div class="btnfield"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submitbtn" type="submit" class="submitbtn" value="SUBMIT"></div>

@@ -108,6 +108,9 @@ public class OrganizationUserResource extends AbstractResource {
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
 
+    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
+    servletRequest.setAttribute("templateHeadContent",
+                                "/com/smartitengineering/user/ws/resources/OrganizationUserResource/userDetailsHeader.jsp");
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/user/ws/resources/OrganizationUserResource/OrganizationUserDetails.jsp");
     Viewable view = new Viewable("/template/template.jsp", userPerson);
