@@ -17,17 +17,14 @@
     <title>aponn for you</title>
 
     <link rel="Stylesheet" href="/css/style.css">
-    <link rel="Stylesheet" href="/css/dashboardstyle.css">
     <link rel="Stylesheet" href="/css/smart-list.css">
     <link rel="Stylesheet" href="/css/smart-forms-style.css">
     <link rel="Stylesheet" href="/css/smart-menu.css">
 
-    <script type="text/javascript" src="/script/javascript_1.js"></script>
-    <%--<script type="text/javascript" src="/script/showhideContents.js"></script>--%>
     <script type="text/javascript" src="/script/jquery-1.4.2.js"></script>
     <script type="text/javascript" src="/script/jquery.validate.js"></script>
     <script type="text/javascript" src="/script/siteljquerylib.js"></script>
-    <script type="text/javascript" src="/script/scriptFile.js"></script>
+    <script type="text/javascript" src="/script/commonScripts.js"></script>
 
     <c:if test="${not empty templateHeadContent}">
       <jsp:include page="${templateHeadContent}"></jsp:include>

@@ -18,15 +18,15 @@
 <script type="text/javascript" src="/script/user-validation.js"></script>
 <script type="text/javascript">
   $(document).ready(function(){
-
-    var url = "/orgs/${orgInitial}/users/frags${qParam}";
+    
+    var url = "/orgs/sn/${orgInitial}/users/frags${qParam}";
     $("#tablecontentid").pagination(url,"linkcontainer");
 
     $("#uname").blur(function(){
       var usn =$("#uname").val();
       $.ajax({
         type: "GET",
-        url: "http://localhost:9090/orgs/${orgInitial}/users/username/"+usn,
+        url: "http://localhost:9090/orgs/sn/${orgInitial}/users/un/"+usn,
         dataType: "xml",
         success: function(xhr){
           $("#alertlabel").html('User Name is not unique: try another');

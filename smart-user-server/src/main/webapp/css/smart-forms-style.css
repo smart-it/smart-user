@@ -17,8 +17,6 @@ root {
 
 #content {
   font-size: 12px;
-  /*padding-top: 10px;*/
-  /*display: display;*/
 }
 
 .show{
@@ -28,40 +26,18 @@ root {
   display: none;
 }
 
-#create{
+/*#create{
   text-align: left;
-  /*margin: 50px 0px 0px 150px;*/
+  margin: 50px 0px 0px 150px;
   margin: 5px 1px 1px 5px;
   border: 2px solid;
   border-color:#24E0FB;
   width:98%;
   font-family: Arial,Helvetica,sans-serif;
 }
-
-#newboxes1{
-    text-align: left;
-  /*margin: 50px 0px 0px 150px;*/
-  margin: 5px 1px 1px 5px;
-  border: 2px solid;
-  border-color:#24E0FB;
-  width:98%;
-  font-family: Arial,Helvetica,sans-serif;
-
-}
+*/
 
 .header_entry_form{
-
-  /*    background-image: url(../images/menul.jpg),
-                                                  url(../images/menur.jpg);
-      background-repeat: no-repeat,
-                                                  no-repeat;
-      background-position: top left,
-                                                  top right;*/
-  /*
-      -moz-border-radius: 1em;
-      -webkit-border-radius: 1em;
-      border-radius: 1em;
-  */
   width: auto;
   text-align: center;
   padding-top: 3px;
@@ -87,12 +63,10 @@ root {
 }
 
 .form_label{
-  /*padding: 14px 0px 10px 10px;*/
   padding: 13px 10px 17px 0px;
   width:35%;
   float:left;
   text-align: left;
-  /*border: 1px solid;*/
 }
 
 .form_label label{
@@ -114,9 +88,8 @@ root {
 .textField{
   height: 30px;
   border: 1px outset;
-  /*border-style: ridge*/
   border-color:#9A03FE;
-  width: 100%  ;
+  width: 75%  ;
   font-family: sans-serif;
   font-weight: normal;
   font-size: 9pt;
@@ -124,7 +97,8 @@ root {
 }
 
 .btnfield{
-  margin-right: 70px;
+  margin-right: 125px;
+  margin-top: 10px;
   float:right;
   width: auto;
   text-align: center;
@@ -134,6 +108,7 @@ root {
   background-color:#00CCFF;
   font-family: sans-serif;
   font-size:10pt;
+  font-weight: bold;
   color:white;
   border: 2px inset;
   border-color:#00CCFF;
@@ -167,7 +142,6 @@ root {
   /*margin-left: 110px;*/
   margin-top: 2px;
   margin-left: 3px;
-  /*margin: 0 auto;*/
   padding-top: 5px;
   width: 99%;
   height: 25px;
@@ -183,8 +157,6 @@ root {
 }
 
 .content_details_info{
-  /*margin-left: 110px;*/
-  /*margin: 0 auto;*/
   margin-left: 3px;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -199,14 +171,12 @@ root {
   width: 27%;
   padding: 2px 2px 5px 10px;
   text-align: left;
-  /*border: 1px solid;*/
 }
 
 .individual_details_data{
   float: left;
   width: 60%;
   padding: 2px 2px 5px 0px;
-  /*border: 1px solid;*/
 }
 
 .individual_details_label label{
@@ -216,7 +186,6 @@ root {
   font-size: 12pt;
   font-weight: 500;
   text-decoration: none;
-  /*text-transform: uppercase;*/
   color: 	#0000FF;
 }
 
