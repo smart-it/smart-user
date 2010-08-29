@@ -58,7 +58,10 @@ public class OrganizationUsersResource extends AbstractResource {
   static final UriBuilder ORGANIZATION_USERS_AFTER_USERNAME_URI_BUILDER;
 
   public OrganizationUsersResource(@PathParam("uniqueShortName") String organizationUniqueShortName) {
+
     this.organizationUniqueShortName = organizationUniqueShortName;
+
+
   }
 
   static {
@@ -98,6 +101,13 @@ public class OrganizationUsersResource extends AbstractResource {
 //    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName,
 //                                                                                           null,
 //                                                                                           false, count);
+
+    Organization org = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationUniqueShortName);
+    if(org == null){
+      responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
+
 
     Collection<UserPerson> users = Services.getInstance().getUserPersonService().getByOrganization(
         organizationUniqueShortName, null, false, count);
