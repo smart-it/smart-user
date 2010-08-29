@@ -20,7 +20,7 @@
   $(document).ready(function(){
     var url = "/orgs/${orgInitial}/users/frags${qParam}";
     $("#tablecontentid").pagination(url,"linkcontainer");
-
+    $("#wrong").hide();
     $("#uname").blur(function(){
     var usn =$("#uname").val();
     $.ajax({
@@ -28,9 +28,11 @@
       url: "http://localhost:9090/orgs/${orgInitial}/users/username/"+usn,
       dataType: "xml",
       success: function(xhr){
+        $("#wrong").show();
         $("#alertlabel").html('User Name is not unique: try another');
       },
       error: function(xhr){
+        $("#wrong").hide();        
         $("#alertlabel").html('');
       }
     });

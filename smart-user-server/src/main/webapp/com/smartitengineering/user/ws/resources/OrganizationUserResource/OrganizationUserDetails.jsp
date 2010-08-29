@@ -86,7 +86,7 @@
       <div class="form_textField"><label><c:out value="${it.user.username}"/></label></div>
       <div style="clear: both"></div>
       <div class="form_label"><label>Old Password</label></div>      
-      <div class="form_textField"><input type="password" name="oldPassword" class="textField" id="oldPassword"><label id="error"><img id="wrong" src="/css/images/icontexto-webdev-remove-032x032.png" />Wrong Password</label></div>
+      <div class="form_textField"><input type="password" name="oldPassword" class="textField" id="oldPassword"><label id="error"><img id="wrong" src="/css/images/wrong.png" />Wrong Password</label></div>
       <div style="clear: both"></div>
       <div class="form_textField"><input type="hidden" name="originalPassword" value="${it.user.password}" class="textField" id="originalPassword"></div>
       <div style="clear: both"></div>

@@ -21,11 +21,11 @@ $(document).ready(function(){
     }    
   });  
 
-  $(".submitbtn").click(function(){
-    alert(1);
+  $(".submitbtn").click(function(){    
     var fname = $("input#fname");
     var mname = $("input#mname");
     var lname = $("input#lname");
+    var uname = $("input#uname");
     var password = $("input#password");
     var phone = $("input#phone");
     var datastring = 'firstName='+ fname + '&middleInitial='+ mname + '&lastName='+ lname + '&password='+ password + '&phone='+ phone;
