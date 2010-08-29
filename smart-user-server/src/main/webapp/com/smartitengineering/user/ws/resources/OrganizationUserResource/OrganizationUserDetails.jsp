@@ -18,6 +18,7 @@
   <div id="leftmenu_header_userdeatils_1" class="leftmenu_header"><label>Individual-User</label></div>
   <div id="leftmenu_body_userdeatils_1" class="leftmenu_body">
     <ul>
+      <li><a href="http://localhost:9090/orgs/sn/SITEL/users"><fmt:message key="org.userlistlink"/></a></li>
       <li><a href="javascript: showonlyone('newboxes1')"><fmt:message key="org.tablehead7"/></a></li>
       <li><a href="javascript: showonlyone('newboxes2')"><fmt:message key="org.tablehead4"/></a></li>
       <li><a href="javascript: showonlyone('newboxes3')"><fmt:message key="org.tablehead6"/></a></li>
