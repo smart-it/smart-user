@@ -50,7 +50,7 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author russel
  */
-@Path("/orgs/{uniqueShortName}/users")
+@Path("/orgs/sn/{uniqueShortName}/users")
 public class OrganizationUsersResource extends AbstractResource {
 
   static final UriBuilder ORGANIZATION_USERS_URI_BUILDER;

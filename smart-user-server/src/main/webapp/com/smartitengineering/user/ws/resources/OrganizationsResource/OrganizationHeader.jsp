@@ -27,7 +27,7 @@
       var usn =$("#uniqueShortName").val();
       $.ajax({
         type: "GET",
-        url: "http://localhost:9090/orgs/shortname/"+usn,
+        url: "http://localhost:9090/orgs/sn/"+usn,
         dataType: "xml",
         success: function(xhr){
           $("#alertlabel").html('Short Name is not unique: try another');

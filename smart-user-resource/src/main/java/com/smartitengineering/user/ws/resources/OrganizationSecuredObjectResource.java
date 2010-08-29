@@ -34,7 +34,7 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author russel
  */
-@Path("/orgs/{organizationUniqueShortName}/so/{old}")
+@Path("/orgs/sn/{organizationUniqueShortName}/so/{old}")
 public class OrganizationSecuredObjectResource extends AbstractResource {
 
   private SecuredObject securedObject;

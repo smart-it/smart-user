@@ -29,8 +29,8 @@
         <c:set var="last" value="${organization.uniqueShortName}"></c:set>
       </c:if>
       <div id="row${status.index}" class="row_of_list">
-        <div id="orgName${status.index}" class="orgName_column"><a href="/orgs/shortname/${organization.uniqueShortName}">${organization.name}</a></div>
-        <div id="orgShortName${status.index}" class="orgShortName_column"><a href="/orgs/shortname/${organization.uniqueShortName}">${organization.uniqueShortName}</a></div>
+        <div id="orgName${status.index}" class="orgName_column"><a href="/orgs/sn/${organization.uniqueShortName}">${organization.name}</a></div>
+        <div id="orgShortName${status.index}" class="orgShortName_column"><a href="/orgs/sn/${organization.uniqueShortName}">${organization.uniqueShortName}</a></div>
       </div>
     </c:forEach>
   </div>

@@ -34,7 +34,7 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author russel
  */
-@Path("/orgs/{organizationUniqueShortName}/privs/{privilegeName}")
+@Path("/orgs/sn/{organizationUniqueShortName}/privs/{privilegeName}")
 public class OrganizationPrivilegeResource extends AbstractResource {
 
   private Privilege privilege;

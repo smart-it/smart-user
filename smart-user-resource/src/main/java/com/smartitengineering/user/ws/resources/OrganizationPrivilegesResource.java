@@ -34,7 +34,7 @@ import org.apache.abdera.model.Link;
  * @author russel
  */
 //@Path("/orgs")
-@Path("/orgs/{organizationUniqueShortName}/privs")
+@Path("/orgs/sn/{organizationUniqueShortName}/privs")
 public class OrganizationPrivilegesResource extends AbstractResource{
 
     private String organizationUniqueShortName;
