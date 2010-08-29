@@ -101,22 +101,22 @@
 function Orgpageselect()
 {
 
-    var className=document.getElementById("showList").className;
-//    alert(className);
-//    var className1=document.getElementById("create").className;
-//    alert(className1);
-    if(className=="show")
-        {
-            document.getElementById("showList").className="hide";
-            document.getElementById("create").className="show";
+  var className=document.getElementById("showList").className;
+  //    alert(className);
+  //    var className1=document.getElementById("create").className;
+  //    alert(className1);
+  if(className=="show")
+  {
+    document.getElementById("showList").className="hide";
+    document.getElementById("create").className="show";
 
-        }
-    else
-        {
-            document.getElementById("showList").className="show";
-            document.getElementById("create").className="hide";
+  }
+  else
+  {
+    document.getElementById("showList").className="show";
+    document.getElementById("create").className="hide";
 
-        }
+  }
 
 }
 
@@ -128,12 +128,12 @@ function postwith (to) {
   var myForm = document.createElement("form");
   myForm.method="post" ;
   myForm.action = to ;
-//  for (var k in p) {
-//    var myInput = document.createElement("input") ;
-//    myInput.setAttribute("name", k) ;
-//    myInput.setAttribute("value", p[k]);
-//    myForm.appendChild(myInput) ;
-//  }
+  //  for (var k in p) {
+  //    var myInput = document.createElement("input") ;
+  //    myInput.setAttribute("name", k) ;
+  //    myInput.setAttribute("value", p[k]);
+  //    myForm.appendChild(myInput) ;
+  //  }
   document.body.appendChild(myForm) ;
   myForm.submit() ;
   document.body.removeChild(myForm) ;
@@ -141,15 +141,15 @@ function postwith (to) {
 
 function PostAsJson()
 {
-    $(document).ready(function(){
+  $(document).ready(function(){
     alert('Potakkkkkkkkkkkkkkkk');
     $('form').submit(function(e) {
-    e.preventDefault();
-    $.post($(this).attr("action"), $(this).serialize(), function(json) {
+      e.preventDefault();
+      $.post($(this).attr("action"), $(this).serialize(), function(json) {
         // handle response
-    }, "json");
+        }, "json");
     });
-   });
+  });
 }
 
 //$(document).ready(function(){
@@ -288,3 +288,20 @@ function PostAsJson()
 //	document.getElementById("content").innerHTML = "<strong>Titles: </strong><br\>" + title + "<br\>" + "<strong>IDs: </strong><br\>" + id + "<strong>Summaries: </strong><br\>" + summary;
 //}
 
+//function validate_required(field,alerttxt)
+//{
+//  with (field)
+//  {
+//    if (value==null||value=="")
+//    {
+//      alert(alerttext);
+//      return false;
+//    }
+//    else
+//    {
+//      return true;
+//    }
+//    }
+//}
+//
+//function validate_form(thisform)
