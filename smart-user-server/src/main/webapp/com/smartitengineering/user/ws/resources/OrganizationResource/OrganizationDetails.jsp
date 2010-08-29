@@ -18,7 +18,7 @@
 
       <li><a href="javascript: Orgpageselect()"><fmt:message key="org.editlink"/></a></li>
       <li><a href="#"><fmt:message key="org.deletelink"/></a></li>
-      <li><a href="/orgs/${it.uniqueShortName}/users"><fmt:message key="org.userlistlink"/></a></li>
+      <li><a href="/orgs/sn/${it.uniqueShortName}/users"><fmt:message key="org.userlistlink"/></a></li>
 
     </ul>
   </div>
@@ -64,7 +64,7 @@
     <div class="individual_details_data"><label>${it.address.zip}</label></div>
     <div class="clear"></div>
 
-      <form method="POST" action ="http://localhost:9090/orgs/shortname/${it.uniqueShortName}/delete" accept="application/json" id="organizationform">
+      <form method="POST" action ="http://localhost:9090/orgs/sn/${it.uniqueShortName}/delete" accept="application/json" id="organizationform">
         <input type="hidden" name="name" value="${it.name}" class="textField">
         <input type="hidden" name="uniqueShortName" value="${it.uniqueShortName}" class="textField">
         <input type="hidden" name="streetAddress" value="${it.address.streetAddress}" class="textField">
@@ -94,7 +94,7 @@
 
   <div id="form_organizationentry" class="entry_form">
 
-    <form method="POST" action ="http://localhost:9090/orgs/shortname/${it.uniqueShortName}/update" accept="application/json" id="organizationform">
+    <form method="POST" action ="http://localhost:9090/orgs/sn/${it.uniqueShortName}/update" accept="application/json" id="organizationform">
 
       <div class="form_label"><label><fmt:message key="org.tablehead2"/></label></div>
       <div class="form_textField"><input type="text" name="name" value="${it.name}" class="textField"></div>

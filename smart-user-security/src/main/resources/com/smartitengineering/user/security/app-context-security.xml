@@ -14,6 +14,10 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 <!--    <sec:intercept-url pattern="/" filters="none"/>
     <sec:intercept-url pattern="/login*" filters="none"/>-->
     <sec:intercept-url pattern="/" filters="none"/>
+    <sec:intercept-url pattern="/css/*" filters="none"/>
+    <sec:intercept-url pattern="/script/*" filters="none"/>
+    <sec:intercept-url pattern="/images/*" filters="none"/>
+    <sec:intercept-url pattern="/image/*" filters="none"/>
     <sec:intercept-url pattern="/login/" filters="none"/>
     <sec:intercept-url method="GET" pattern='/**/*' access="ACL_READ, ROLE_ADMIN" />
     <sec:intercept-url method="POST" pattern='/**/*' access="ACL_CREATE, ROLE_ADMIN"/>
@@ -23,7 +27,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   </sec:http>
     
   <bean id="accessDecisionManager" class="com.smartitengineering.user.security.SmartAccessDecisionManager">
-    <property name="allowIfAllAbstainDecisions" value="true"/>
+    <property name="allowIfAllAbstainDecisions" value="false"/>
     <property name="decisionVoters">
       <list>
         <bean id="roleVoter" class="org.springframework.security.vote.RoleVoter"/>

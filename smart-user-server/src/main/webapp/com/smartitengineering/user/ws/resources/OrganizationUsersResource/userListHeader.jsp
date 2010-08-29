@@ -18,6 +18,7 @@
 <script type="text/javascript" src="/script/user-validation.js"></script>
 <script type="text/javascript">
   $(document).ready(function(){
+
     var url = "/orgs/${orgInitial}/users/frags${qParam}";
     $("#tablecontentid").pagination(url,"linkcontainer");
     $("#wrong").hide();
@@ -36,6 +37,5 @@
         $("#alertlabel").html('');
       }
     });
-  });
   });
 </script>

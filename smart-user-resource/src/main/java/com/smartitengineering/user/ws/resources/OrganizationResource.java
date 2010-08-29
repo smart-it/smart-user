@@ -38,7 +38,7 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author russel
  */
-@Path("/orgs/shortname/{uniqueShortName}")
+@Path("/orgs/sn/{uniqueShortName}")
 public class OrganizationResource extends AbstractResource {
 
   static final UriBuilder ORGANIZATION_URI_BUILDER = UriBuilder.fromResource(OrganizationResource.class);

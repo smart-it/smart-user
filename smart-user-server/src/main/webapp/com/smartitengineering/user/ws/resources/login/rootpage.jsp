@@ -12,8 +12,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>home page</title>
-        <link rel="Stylesheet" href="../css/default.css">
-        <link rel="Stylesheet" href="../css/login.css">
+        <link rel="Stylesheet" href="/css/default.css">
+        <link rel="Stylesheet" href="/css/login.css">
     </head>
     <body>
 

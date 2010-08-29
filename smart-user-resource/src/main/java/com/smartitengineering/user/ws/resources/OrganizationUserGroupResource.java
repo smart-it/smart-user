@@ -35,7 +35,7 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author russel
  */
-@Path("/orgs/{uniqueShortName}/usergroups/name/{name}")
+@Path("/orgs/sn/{uniqueShortName}/usergroups/name/{name}")
 public class OrganizationUserGroupResource extends AbstractResource {
 
   private UserGroup userGroup;
