@@ -9,7 +9,7 @@ package com.smartitengineering.user.client.impl.domain;
  *
  * @author russel
  */
-public class GeoLocation implements com.smartitengineering.user.client.api.GeoLocation{
+public class GeoLocation implements com.smartitengineering.smartuser.client.api.GeoLocation{
 
    private Double longitude;
    private Double latitude;

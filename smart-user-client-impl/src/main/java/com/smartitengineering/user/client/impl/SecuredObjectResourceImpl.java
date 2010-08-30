@@ -5,9 +5,9 @@
 
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.user.client.api.OrganizationResource;
-import com.smartitengineering.user.client.api.SecuredObject;
-import com.smartitengineering.user.client.api.SecuredObjectResource;
+import com.smartitengineering.smartuser.client.api.OrganizationResource;
+import com.smartitengineering.smartuser.client.api.SecuredObject;
+import com.smartitengineering.smartuser.client.api.SecuredObjectResource;
 import com.smartitengineering.util.rest.atom.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;

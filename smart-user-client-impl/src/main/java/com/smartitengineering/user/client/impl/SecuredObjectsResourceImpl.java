@@ -5,17 +5,15 @@
 
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.user.client.api.SecuredObject;
-import com.smartitengineering.user.client.api.SecuredObjectFilter;
-import com.smartitengineering.user.client.api.SecuredObjectResource;
-import com.smartitengineering.user.client.api.SecuredObjectsResource;
-import com.smartitengineering.user.resource.api.LinkedResource;
+import com.smartitengineering.smartuser.client.api.SecuredObject;
+import com.smartitengineering.smartuser.client.api.SecuredObjectFilter;
+import com.smartitengineering.smartuser.client.api.SecuredObjectResource;
+import com.smartitengineering.smartuser.client.api.SecuredObjectsResource;
 import com.smartitengineering.util.rest.atom.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.ws.rs.core.MediaType;
