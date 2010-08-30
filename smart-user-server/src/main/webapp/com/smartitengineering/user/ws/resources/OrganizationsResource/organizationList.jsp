@@ -55,9 +55,8 @@
       <div class="form_textField"><input type="text" name="name"  class="textField"></div>
       <div class="clear"></div>
       <div class="form_label"><label><fmt:message key="org.inputlabel2"/></label></div>
-      <div class="form_textField" align="left"><input type="text" name="uniqueShortName" Id="uniqueShortName"  class="textField"></div>
-      <div class="clear"></div>
-      <label id ="alertlabel" class="alertlabel"></label>
+      <div class="form_textField" align="left"><input type="text" name="uniqueShortName" Id="uniqueShortName"  class="textField"><img id="wrong" src="/css/images/wrong.png" /><label id ="alertlabel" class="alertlabel"></label></div>
+      <div class="clear"></div>      
       <div class="form_label"><label><fmt:message key="org.inputlabel3"/></label></div>
       <div class="form_textField"><input type="text" name="streetAddress" class="textField"></div>
       <div class="clear"></div>

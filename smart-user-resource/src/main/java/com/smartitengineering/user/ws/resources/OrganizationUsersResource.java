@@ -102,8 +102,9 @@ public class OrganizationUsersResource extends AbstractResource {
 //                                                                                           null,
 //                                                                                           false, count);
 
-    Organization org = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationUniqueShortName);
-    if(org == null){
+    Organization org = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(
+        organizationUniqueShortName);
+    if (org == null) {
       responseBuilder = Response.status(Status.NOT_FOUND);
       return responseBuilder.build();
     }
@@ -135,7 +136,7 @@ public class OrganizationUsersResource extends AbstractResource {
 //                                                                                           null, false, count);
     Collection<UserPerson> userPersons = Services.getInstance().getUserPersonService().getByOrganization(
         organizationUniqueShortName, null, false, count);
-    
+
 //    Set<UserPerson> userPersons = new HashSet<UserPerson>();
 //    for (UserPerson user : users) {
 //      UserPerson userPerson = Services.getInstance().getUserPersonService().getUserPersonByUsernameAndOrgName(
@@ -289,7 +290,8 @@ public class OrganizationUsersResource extends AbstractResource {
       //User firstUser = userList.get(0);
       UserPerson firstUserPerson = userPersonList.get(0);
 
-      prevLink.setHref(previousUri.build(organizationUniqueShortName, firstUserPerson.getUser().getUsername()).toString());
+      prevLink.setHref(
+          previousUri.build(organizationUniqueShortName, firstUserPerson.getUser().getUsername()).toString());
       atomFeed.addLink(prevLink);
 
       //for (User user : users) {
@@ -304,7 +306,8 @@ public class OrganizationUsersResource extends AbstractResource {
 
         // setting link to the each individual user
         Link userLink = abderaFactory.newLink();
-        userLink.setHref(OrganizationUserResource.USER_URI_BUILDER.clone().build(organizationUniqueShortName, userPerson.getUser().
+        userLink.setHref(OrganizationUserResource.USER_URI_BUILDER.clone().build(organizationUniqueShortName, userPerson.
+            getUser().
             getUsername()).toString());
         userLink.setRel(Link.REL_ALTERNATE);
         userLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
@@ -356,7 +359,15 @@ public class OrganizationUsersResource extends AbstractResource {
     for (int i = 0; i < keyValuePairs.length; i++) {
 
       String[] keyValuePair = keyValuePairs[i].split("=");
-      keyValueMap.put(keyValuePair[0], keyValuePair[1]);
+      int l = keyValuePair.length;
+      if (l == 1) {
+        keyValueMap.put(keyValuePair[0], "");
+        //keyValuePair[1] = new String("");
+      }
+      else {
+        keyValueMap.put(keyValuePair[0], keyValuePair[1]);
+      }
+
     }
 
     User newUser = new User();
