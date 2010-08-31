@@ -55,11 +55,13 @@ body{
   color:#75ECFD;
 }
 
-#img-sitel-logo{
+#img_sitel_logo{
   position: absolute;
   margin-top:-19px;
   width: 180px;
   height: 90px;
+  filter:light;
+  speed: 50;
 }
 
 .main_template_options{
