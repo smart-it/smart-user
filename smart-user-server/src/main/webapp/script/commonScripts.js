@@ -14,7 +14,8 @@ function init() {
 $(document).ready(function () {
   $(".leftmenu_body ul li").hover(function () {
     $(this).css({
-      'background-color' : '#F7F5FE',
+//      'background-color' : '#F7F5FE',
+'background-color' : '#EEEEFF',
       'color' : 'Black'
     });
   }, function () {

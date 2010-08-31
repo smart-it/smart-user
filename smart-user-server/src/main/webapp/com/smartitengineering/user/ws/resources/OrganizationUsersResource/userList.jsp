@@ -13,7 +13,7 @@
 <%@page import="com.smartitengineering.user.domain.UserPerson"%>
 
 <div id="leftmenu_userlist_1" class="leftmenu">
-  <div id="leftmenu_header_userlist_1" class="leftmenu_header"><fmt:message key="org.usercreatetitle"/></div>
+  <div id="leftmenu_header_userlist_1" class="leftmenu_header"><label><fmt:message key="org.usercreatetitle"/></label></div>
   <div id="leftmenu_body_userlist_1" class="leftmenu_body">
     <ul>
       <li><a href="javascript: Orgpageselect()"><fmt:message key="org.usercreatelink"/></a></li>

@@ -47,7 +47,7 @@ body{
 
 .sitel_slogan_container label{
   font-family: verdana, tahoma;
-  font-size: 12pt;
+  font-size: 10pt;
   font-weight:  bolder;
   font-style: oblique;
   letter-spacing: 1px;
@@ -57,8 +57,9 @@ body{
 
 #img-sitel-logo{
   position: absolute;
-  width: 140px;
-  height: 70px;
+  margin-top:-19px;
+  width: 180px;
+  height: 90px;
 }
 
 .main_template_options{
@@ -68,6 +69,25 @@ body{
   background-repeat:repeat;
   width: auto;
   height:60px;
+}
+
+.optionsSignout{
+  float: right;
+  margin-top: 20px;
+  margin-right: 10px;
+  /*border-left:1px solid;*/
+  padding-left: 3px;
+  /*border-left-color:black;*/
+}
+
+.optionsSignout a{
+  font-family: sans-serif;
+  font-size: 11pt;
+  color: black;
+}
+
+.optionsSignout a:hover{
+  color:white;
 }
 
 .main_template_options form{
@@ -85,13 +105,11 @@ body{
   height:570px;;
   float: left;
   width: 26%;
-  /*border: 1px solid;*/
   border-color: #24E0FB;
   background-color:#B4CFEC;
 }
 
 .main_template_footer{
-  /*background: url(../images/bgg.png) repeat;*/
   background: url(../images/hdrftr.jpg) repeat;
   width: auto;
   height: 70px;
@@ -101,8 +119,6 @@ body{
   padding-top: 28px;
   text-align: center;
   height:auto;
- /*  width: 475px;
-  margin: 0 auto;*/
 }
 
 .footer_label_container label{

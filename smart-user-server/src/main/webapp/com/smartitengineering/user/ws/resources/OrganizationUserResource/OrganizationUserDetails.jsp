@@ -18,7 +18,7 @@
   <div id="leftmenu_header_userdeatils_1" class="leftmenu_header"><label>Individual-User</label></div>
   <div id="leftmenu_body_userdeatils_1" class="leftmenu_body">
     <ul>
-      <li><a href="http://localhost:9090/orgs/sn/SITEL/users"><fmt:message key="org.userlistlink"/></a></li>
+      <li><a href="/orgs/sn/${it.user.organization.uniqueShortName}/users"><fmt:message key="org.userlistlink"/></a></li>
       <li><a href="javascript: showonlyone('newboxes1')"><fmt:message key="org.tablehead7"/></a></li>
       <li><a href="javascript: showonlyone('newboxes2')"><fmt:message key="org.tablehead4"/></a></li>
       <li><a href="javascript: showonlyone('newboxes3')"><fmt:message key="org.tablehead6"/></a></li>
@@ -61,7 +61,7 @@
 </div>
 
 <div name="newboxes" id="newboxes2" class="hide">
-  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out>-Change your password</label></div>
+  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out>-Edit information </label></div>
   <fmt:message key="org.usrinput6" var="submitbtn"/>
   <div id="form_organizationentry" class="entry_form">
     <form method="POST" action ="http://localhost:9090/orgs/sn/${it.user.organization.uniqueShortName}/users/un/${it.user.username}/update" accept="application/json" id="organizationform">
@@ -102,7 +102,7 @@
 </div>
 
 <div name="newboxes" id="newboxes3" class="hide">
-  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out>-Edit Information</label></div>
+  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out>-Change Password</label></div>
   <fmt:message key="org.usrinput6" var="submitbtn"/>
   <div id="form_organizationentry" class="entry_form">
     <form method="POST" action ="http://localhost:9090/orgs/sn${it.user.organization.uniqueShortName}/users/un/${it.user.username}/update" accept="application/json" id="userEditForm">
@@ -118,7 +118,7 @@
       <div class="form_label"><label>Confirm Password</label></div>
       <div class="form_textField"><input type="password" name="confirmPassword" class="textField" id="confirmPassword"></div>
       <div class="clear"></div>
-      <div class="btnfield"><input type="submit" value="UPDATE" name="submitbtn" class="submitbtn" id="update"></div>
+      <div class="btnfield"><input type="submit" value="CHANGE" name="submitbtn" class="submitbtn" id="update"></div>
       <div class="clear"></div>
 
       <input type="hidden" name="id" value="${it.id}" class="textField" id="id">

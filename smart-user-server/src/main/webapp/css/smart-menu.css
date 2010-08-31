@@ -31,7 +31,9 @@ root {
   text-align: center;
   color: #23819C;
   font-weight: bold;
-  background-image: url(/images/top.jpg);
+  /*background-image: url(/images/top.jpg);*/
+  /*background-color:#BBBBFF;*/
+  background-color:#99CCFF;
   height: 25px;
   border: 1px solid;
   border-color: #FFFFFF;
@@ -44,9 +46,11 @@ root {
 
 .leftmenu_body{
   background-color:#736F6E;
-  background-image: url(/images/top.jpg);
+  /*background-image: url(/images/top.jpg);*/
+  background-image: url(/images/l.gif);
   background-repeat: repeat;
-  background-position:bottom left;
+  /*background-position:bottom left;*/
+  background-position: top left;
   border: 1px solid;
   border-color: #FFFFFF;
 
@@ -57,12 +61,10 @@ root {
   text-align: left;
 }
 
-
 .leftmenu ul li{
   list-style:  url(../images/arrow.gif) inside;
   color:#E8C6FF;
-
-  border-bottom: #F3F8F4 1px solid;
+  border-bottom: #D698FE 1px solid;
   line-height:20px;
   width:190px;
 
@@ -74,5 +76,4 @@ root {
   color:#23819C;
   font-size: 10pt;
   text-decoration: none;
-
 }

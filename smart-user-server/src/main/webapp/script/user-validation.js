@@ -22,7 +22,6 @@ $(document).ready(function(){
   });  
 
   $(".submitbtn").click(function(){
-    alert(1);
     var fname = $("input#fname");
     var mname = $("input#mname");
     var lname = $("input#lname");
