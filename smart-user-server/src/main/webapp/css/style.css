@@ -96,13 +96,13 @@ body{
 
 .template_content{
   background: url(../images/bg_shadow_bot.gif) repeat;
-  height:570px;
+  height:587px;
   float: right;
   width: 73.6%;
 }
 
 .left_menu{
-  height:570px;;
+  height:587px;;
   float: left;
   width: 26%;
   border-color: #24E0FB;

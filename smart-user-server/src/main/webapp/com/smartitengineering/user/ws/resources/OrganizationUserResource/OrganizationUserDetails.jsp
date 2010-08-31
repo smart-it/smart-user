@@ -86,7 +86,7 @@
 
       <div class="clear"></div>
       <div class="form_label"><label><fmt:message key="org.usrtablehead2"/></label></div>
-      <div class="form_textField"><label><c:out value="${it.user.username}"/></label></div>
+      <div class="form_textField"><label class="unLabel"><c:out value="${it.user.username}"/></label></div>
       <div class="clear"></div>
       <div class="form_label"><label><fmt:message key="org.usrinput1"/></label></div>
       <div class="form_textField"><input type="text" name="firstName" value="${it.person.self.name.firstName}" class="textField" id="fname"></div>
@@ -135,10 +135,10 @@
       <input type="hidden" name="originalPassword" value="${it.user.password}" class="textField" id="originalPassword">
 
       <div class="form_label"><label><fmt:message key="org.usrtablehead2"/></label></div>
-      <div class="form_textField"><label><c:out value="${it.user.username}"/></label></div>
+      <div class="form_textField"><label class="unLabel"><c:out value="${it.user.username}"/></label></div>
       <div class="clear"></div>
       <div class="form_label"><label>Old Password</label></div>
-      <div class="form_textField"><input type="password" name="oldPassword" class="textField" id="oldPassword"><label id="error"><img id="wrong" src="/css/images/wrong.png" />   Wrong Password</label></div>
+      <div class="form_textField"><input type="password" name="oldPassword" class="textField" id="oldPassword"><label id="error" class="errorAlert"><img id="wrong" src="/css/images/wrong.png" alt="error!!!">&nbsp;Wrong Password</label></div>
       <div class="clear"></div>
       <div class="form_label"><label>New Password</label></div>
       <div class="form_textField"><input type="password" name="password" class="textField" id="newPassword"></div>
