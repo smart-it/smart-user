@@ -4,7 +4,8 @@
  */
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.user.client.api.AuthorizationResource;
+
+import com.smartitengineering.smartuser.client.api.AuthorizationResource;
 import com.smartitengineering.util.rest.atom.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
 import java.net.URI;

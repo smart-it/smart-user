@@ -5,13 +5,13 @@
 
 package com.smartitengineering.user.client.impl.domain;
 
-import com.smartitengineering.user.client.api.Organization;
+import com.smartitengineering.smartuser.client.api.Organization;
 
 /**
  *
  * @author russel
  */
-public class SecuredObject implements com.smartitengineering.user.client.api.SecuredObject{
+public class SecuredObject implements com.smartitengineering.smartuser.client.api.SecuredObject{
 
   @Override
   public String getName() {

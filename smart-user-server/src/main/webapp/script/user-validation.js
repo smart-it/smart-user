@@ -21,25 +21,9 @@ $(document).ready(function(){
     }    
   });  
 
-  $(".submitbtn").click(function(){
-    var fname = $("input#fname");
-    var mname = $("input#mname");
-    var lname = $("input#lname");
-    var password = $("input#password");
-    var phone = $("input#phone");
-    var datastring = 'firstName='+ fname + '&middleInitial='+ mname + '&lastName='+ lname + '&password='+ password + '&phone='+ phone;
-    $.ajax({
-      type: "POST",
-      url: window.location,
-      data: datastring,
-      success: function(){
-        
-      }
-    });
-  });
-  $("#userEditForm").validate({
+  $("#changePasswordForm").validate({
     rules: {
-      password: {
+      newPassword: {
         required:true,
         minlength:6
       },
@@ -49,14 +33,21 @@ $(document).ready(function(){
       }
     }    
   });
-$('#error').hide();
-$("#update").click(function(){
   $('#error').hide();
-  var pass = $("input#oldPassword").val();
-  var pass1 = $("input#originalPassword").val();
-  if(pass!=pass1)
-    $("label#error").show();
-  return false;
-})
+  $("#update").click(function(){
+    alert(1);
+    $('#error').hide();
+    var pass = $("input#oldPassword").val();
+    var pass1 = $("input#originalPassword").val();
+    if(pass!=pass1)
+      $("#error").show();   
+  });
+  $("#userEditForm").validate({
+    rules: {
+      fname: "required",
+      lname: "required"
+    }
+  });
+
 });
 

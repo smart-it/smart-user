@@ -6,7 +6,6 @@ package com.smartitengineering.user.client.impl;
 
 import com.smartitengineering.user.client.impl.login.LoginCenter;
 import com.smartitengineering.util.rest.atom.HttpClient;
-import com.sun.corba.se.impl.orb.ParserTable.TestContactInfoListFactory;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.atom.abdera.impl.provider.entity.FeedProvider;
 import java.net.URI;
@@ -16,7 +15,6 @@ import com.sun.jersey.client.apache.config.ApacheHttpClientConfig;
 import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
 import javax.ws.rs.core.UriBuilder;
 import org.springframework.context.ApplicationContext;
-import com.sun.jersey.json.impl.provider.entity.JSONRootElementProvider;
 
 /**
  *

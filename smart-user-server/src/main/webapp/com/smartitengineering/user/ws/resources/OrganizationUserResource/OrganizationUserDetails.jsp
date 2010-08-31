@@ -51,7 +51,7 @@
       <input type="hidden" name="fatherVersion" value="${it.person.father.version}" class="textField" id="version">
       <input type="hidden" name="motherId" value="${it.person.mother.id}" class="textField" id="id">
       <input type="hidden" name="motherVersion" value="${it.person.mother.version}" class="textField" id="version">
-      <input type="hidden" name="userName" value="${it.user.username}" class="textField" id="name">
+      <input type="hidden" name="userName" value="${it.user.username}" class="textField" id="userName">
       <input type="hidden" name="password" value="${it.user.password}" class="textField" id="password">
       <div class="clear"></div>
       <div class="btnfield"><input type="submit" value="DELETE" name="submitbtn" class="submitbtn"></div>
@@ -61,28 +61,10 @@
 </div>
 
 <div name="newboxes" id="newboxes2" class="hide">
-  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out>-Edit information </label></div>
+  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out>-Edit Information</label></div>
   <fmt:message key="org.usrinput6" var="submitbtn"/>
   <div id="form_organizationentry" class="entry_form">
-    <form method="POST" action ="http://localhost:9090/orgs/sn/${it.user.organization.uniqueShortName}/users/un/${it.user.username}/update" accept="application/json" id="organizationform">
-      <div class="form_label"><label><fmt:message key="org.usrtablehead1"/></label></div>
-      <div class="form_textField"><input type="text" name="firstName" value="${it.person.self.name.firstName}" class="textField" id="name"></div>
-      <div class="clear"></div>
-      <div class="form_label"><label><fmt:message key="org.usrtablehead2"/></label></div>
-      <div class="form_textField"><input type="text" name="middleInitial" value="${it.person.self.name.middleInitial}" class="textField" id="name"></div>
-      <div class="clear"></div>
-      <div class="form_label"><label><fmt:message key="org.usrtablehead3"/></label></div>
-      <div class="form_textField"><input type="text" name="lastName" value="${it.person.self.name.lastName}" class="textField" id="name"></div>
-      <div class="clear"></div>
-      <div class="form_label"><label><fmt:message key="org.usrtablehead2"/></label></div>
-      <div class="form_textField"><input type="text" name="userName" value="${it.user.username}" class="textField" id="name"></div>
-      <div class="clear"></div>
-      <div class="form_label"><label><fmt:message key="org.usrinput4"/></label></div>
-      <div class="form_textField"><input type="text" name="password" value="${it.user.password}" class="textField" id="password"></div>
-      <div class="clear"></div>
-      <div class="btnfield"><input type="submit" value="UPDATE" name="submitbtn" class="submitbtn"></div>
-      <div class="clear"></div>
-
+    <form method="POST" action ="http://localhost:9090/orgs/sn/${it.user.organization.uniqueShortName}/users/un/${it.user.username}/update" accept="application/json" id="userEditForm">
       <input type="hidden" name="id" value="${it.id}" class="textField" id="id">
       <input type="hidden" name="version" value="${it.version}" class="textField" id="version">
       <input type="hidden" name="userId" value="${it.user.id}" class="textField" id="id">
@@ -97,20 +79,66 @@
       <input type="hidden" name="fatherVersion" value="${it.person.father.version}" class="textField" id="version">
       <input type="hidden" name="motherId" value="${it.person.mother.id}" class="textField" id="id">
       <input type="hidden" name="motherVersion" value="${it.person.mother.version}" class="textField" id="version">
+      <input type="hidden" name="nationalID" value="${it.person.self.nationalID}" class="textField" id="name">
+      <input type="hidden" name="primaryEmail" value="${it.person.primaryEmail}" class="textField" id="name">
+      <input type="hidden" name="userName" value="${it.user.username}" class="textField" id="userName">
+      <input type="hidden" name="password" value="${it.user.password}" class="textField" id="password">
+
+      <div class="clear"></div>
+      <div class="form_label"><label><fmt:message key="org.usrtablehead2"/></label></div>
+      <div class="form_textField"><label><c:out value="${it.user.username}"/></label></div>
+      <div class="clear"></div>
+      <div class="form_label"><label><fmt:message key="org.usrinput1"/></label></div>
+      <div class="form_textField"><input type="text" name="firstName" value="${it.person.self.name.firstName}" class="textField" id="fname"></div>
+      <div class="clear"></div>
+      <div class="form_label"><label><fmt:message key="org.usrinput2"/></label></div>
+      <div class="form_textField"><input type="text" name="middleInitial" value="${it.person.self.name.middleInitial}" class="textField" id="mname"></div>
+      <div class="clear"></div>
+      <div class="form_label"><label><fmt:message key="org.usrinput3"/></label></div>
+      <div class="form_textField"><input type="text" name="lastName" value="${it.person.self.name.lastName}" class="textField" id="lname"></div>
+      <div class="clear"></div>
+      <div class="form_label"><label><fmt:message key="org.usrinput5"/></label></div>
+      <div class="form_textField"><input type="text" name="cellPhoneNumber" value="${it.person.cellPhoneNumber}" class="textField" id="phone"></div>
+      <div class="clear"></div>
+      <div class="btnfield"><input type="submit" value="UPDATE" name="submitbtn" class="submitbtn" id="edit"></div>
+      <div class="clear"></div>
     </form>
   </div>
 </div>
 
 <div name="newboxes" id="newboxes3" class="hide">
-  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out>-Change Password</label></div>
+  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out>-Change your password</label></div>
   <fmt:message key="org.usrinput6" var="submitbtn"/>
   <div id="form_organizationentry" class="entry_form">
-    <form method="POST" action ="http://localhost:9090/orgs/sn${it.user.organization.uniqueShortName}/users/un/${it.user.username}/update" accept="application/json" id="userEditForm">
+    <form method="POST" action ="http://localhost:9090/orgs/sn/${it.user.organization.uniqueShortName}/users/un/${it.user.username}/update" accept="application/json" id="changePasswordForm">      
+      <input type="hidden" name="id" value="${it.id}" class="textField" id="id">
+      <input type="hidden" name="version" value="${it.version}" class="textField" id="version">
+      <input type="hidden" name="userId" value="${it.user.id}" class="textField" id="id">
+      <input type="hidden" name="userVersion" value="${it.user.version}" class="textField" id="version">
+      <input type="hidden" name="personId" value="${it.person.id}" class="textField" id="id">
+      <input type="hidden" name="personVersion" value="${it.person.version}" class="textField" id="version">
+      <input type="hidden" name="selfId" value="${it.person.self.id}" class="textField" id="id">
+      <input type="hidden" name="selfVersion" value="${it.person.self.version}" class="textField" id="version">
+      <input type="hidden" name="spouseId" value="${it.person.spouse.id}" class="textField" id="id">
+      <input type="hidden" name="spouseVersion" value="${it.person.spouse.version}" class="textField" id="version">
+      <input type="hidden" name="fatherId" value="${it.person.father.id}" class="textField" id="id">
+      <input type="hidden" name="fatherVersion" value="${it.person.father.version}" class="textField" id="version">
+      <input type="hidden" name="motherId" value="${it.person.mother.id}" class="textField" id="id">
+      <input type="hidden" name="motherVersion" value="${it.person.mother.version}" class="textField" id="version">
+      <input type="hidden" name="nationalID" value="${it.person.self.nationalID}" class="textField" id="name">
+      <input type="hidden" name="primaryEmail" value="${it.person.primaryEmail}" class="textField" id="name">
+      <input type="hidden" name="firstName" value="${it.person.self.name.firstName}" class="textField" id="name">
+      <input type="hidden" name="middleInitial" value="${it.person.self.name.middleInitial}" class="textField" id="name">
+      <input type="hidden" name="lastName" value="${it.person.self.name.lastName}" class="textField" id="name">
+      <input type="hidden" name="cellPhoneNumber" value="${it.person.cellPhoneNumber}" class="textField" id="name">
+      <input type="hidden" name="userName" value="${it.user.username}" class="textField" id="userName">
+      <input type="hidden" name="originalPassword" value="${it.user.password}" class="textField" id="originalPassword">
+
       <div class="form_label"><label><fmt:message key="org.usrtablehead2"/></label></div>
-      <div class="individual_details_data"><label><c:out value="${it.user.username}"/></label></div>
+      <div class="form_textField"><label><c:out value="${it.user.username}"/></label></div>
       <div class="clear"></div>
       <div class="form_label"><label>Old Password</label></div>
-      <div class="form_textField"><input type="password" name="oldPassword" class="textField" id="oldPassword"><img id="wrong" src="/css/images/icontexto-webdev-remove-032x032.png" alt="wrong" /><label class="error">Wrong Password</label></div>
+      <div class="form_textField"><input type="password" name="oldPassword" class="textField" id="oldPassword"><label id="error"><img id="wrong" src="/css/images/wrong.png" />   Wrong Password</label></div>
       <div class="clear"></div>
       <div class="form_label"><label>New Password</label></div>
       <div class="form_textField"><input type="password" name="password" class="textField" id="newPassword"></div>
@@ -120,28 +148,6 @@
       <div class="clear"></div>
       <div class="btnfield"><input type="submit" value="CHANGE" name="submitbtn" class="submitbtn" id="update"></div>
       <div class="clear"></div>
-
-      <input type="hidden" name="id" value="${it.id}" class="textField" id="id">
-      <input type="hidden" name="version" value="${it.version}" class="textField" id="version">
-      <input type="hidden" name="userId" value="${it.user.id}" class="textField" id="id">
-      <input type="hidden" name="userVersion" value="${it.user.version}" class="textField" id="version">
-      <input type="hidden" name="personId" value="${it.person.id}" class="textField" id="id">
-      <input type="hidden" name="personVersion" value="${it.person.version}" class="textField" id="version">
-      <input type="hidden" name="selfId" value="${it.person.self.id}" class="textField" id="id">
-      <input type="hidden" name="selfVersion" value="${it.person.self.version}" class="textField" id="version">
-      <input type="hidden" name="spouseId" value="${it.person.spouse.id}" class="textField" id="id">
-      <input type="hidden" name="spouseVersion" value="${it.person.spouse.version}" class="textField" id="version">
-      <input type="hidden" name="fatherId" value="${it.person.father.id}" class="textField" id="id">
-      <input type="hidden" name="fatherVersion" value="${it.person.father.version}" class="textField" id="version">
-      <input type="hidden" name="motherId" value="${it.person.mother.id}" class="textField" id="id">
-      <input type="hidden" name="motherVersion" value="${it.person.mother.version}" class="textField" id="version">
-      <input type="hidden" name="firstName" value="${it.person.self.name.firstName}" class="textField" id="name">
-      <input type="hidden" name="middleInitial" value="${it.person.self.name.middleInitial}" class="textField" id="name">
-      <input type="hidden" name="lastName" value="${it.person.self.name.lastName}" class="textField" id="name">
-      <input type="hidden" name="nationalID" value="${it.person.self.nationalID}" class="textField" id="name">
-      <input type="hidden" name="primaryEmail" value="${it.person.primaryEmail}" class="textField" id="name">
-      <input type="hidden" name="cellPhoneNumber" value="${it.person.cellPhoneNumber}" class="textField" id="name">
-      <input type="hidden" name="originalPassword" value="${it.user.password}" class="textField" id="originalPassword">
     </form>
   </div>
 </div>

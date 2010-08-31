@@ -5,13 +5,13 @@
 
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.user.client.api.OrganizationResource;
-import com.smartitengineering.user.client.api.Person;
-import com.smartitengineering.user.client.api.PrivilegesResource;
-import com.smartitengineering.user.client.api.RolesResource;
-import com.smartitengineering.user.client.api.User;
 
-import com.smartitengineering.user.client.api.UserResource;
+import com.smartitengineering.smartuser.client.api.OrganizationResource;
+import com.smartitengineering.smartuser.client.api.Person;
+import com.smartitengineering.smartuser.client.api.PrivilegesResource;
+import com.smartitengineering.smartuser.client.api.RolesResource;
+import com.smartitengineering.smartuser.client.api.User;
+import com.smartitengineering.smartuser.client.api.UserResource;
 import com.smartitengineering.util.rest.atom.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
 import java.net.URI;
@@ -45,7 +45,7 @@ public class UserResourceImpl extends AbstractClientImpl implements UserResource
 
   private User user;
 
-  UserResourceImpl(com.smartitengineering.user.client.impl.domain.User user){
+  UserResourceImpl(User user){
 
     Link createdUserLink = Abdera.getNewFactory().newLink();
     createdUserLink.setHref(BASE_URI.toString() + "/username/"+ user.getUsername());
@@ -117,7 +117,7 @@ public class UserResourceImpl extends AbstractClientImpl implements UserResource
       ClientResponse contentResponse = ClientUtil.readClientResponse(orgContentURI, getHttpClient(), MediaType.APPLICATION_JSON);
 
       if(contentResponse.getStatus() != 401){
-        user = ClientUtil.getResponseEntity(contentResponse, com.smartitengineering.user.client.impl.domain.User.class);
+        user = ClientUtil.getResponseEntity(contentResponse, com.smartitengineering.user.client.impl.domain.User.class);        
         //String str = ClientUtil.getResponseEntity(contentResponse, String.class);
 
       }

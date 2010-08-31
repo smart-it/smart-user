@@ -5,9 +5,9 @@
 
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.user.client.api.OrganizationResource;
-import com.smartitengineering.user.client.api.Privilege;
-import com.smartitengineering.user.client.api.PrivilegeResource;
+import com.smartitengineering.smartuser.client.api.OrganizationResource;
+import com.smartitengineering.smartuser.client.api.Privilege;
+import com.smartitengineering.smartuser.client.api.PrivilegeResource;
 import com.smartitengineering.util.rest.atom.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -39,7 +39,7 @@ public class PrivilegeResourceImpl extends AbstractClientImpl implements Privile
 
   private Privilege privilege;
 
-  public PrivilegeResourceImpl(com.smartitengineering.user.client.impl.domain.Privilege privilege){
+  public PrivilegeResourceImpl(Privilege privilege){
 
     Link createdPrivilegeLink = Abdera.getNewFactory().newLink();
     createdPrivilegeLink.setHref(BASE_URI.toString() + "/privs/" + privilege.getName());

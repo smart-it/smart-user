@@ -197,7 +197,7 @@ public class OrganizationUserResource extends AbstractResource {
   public Response updatePost(@HeaderParam("Content-type") String contentType, String message) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
 
-    if (StringUtils.isBlank(message)) {
+     if (StringUtils.isBlank(message)) {
       responseBuilder = Response.status(Status.BAD_REQUEST);
       responseBuilder.build();
     }

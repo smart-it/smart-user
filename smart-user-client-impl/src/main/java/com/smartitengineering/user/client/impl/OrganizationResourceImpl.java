@@ -5,12 +5,12 @@
 
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.user.client.api.Organization;
-import com.smartitengineering.user.client.api.OrganizationResource;
-import com.smartitengineering.user.client.api.OrganizationsResource;
-import com.smartitengineering.user.client.api.PrivilegesResource;
-import com.smartitengineering.user.client.api.SecuredObjectsResource;
-import com.smartitengineering.user.client.api.UsersResource;
+import com.smartitengineering.smartuser.client.api.Organization;
+import com.smartitengineering.smartuser.client.api.OrganizationResource;
+import com.smartitengineering.smartuser.client.api.OrganizationsResource;
+import com.smartitengineering.smartuser.client.api.PrivilegesResource;
+import com.smartitengineering.smartuser.client.api.SecuredObjectsResource;
+import com.smartitengineering.smartuser.client.api.UsersResource;
 import com.smartitengineering.util.rest.atom.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -47,9 +47,9 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
   private Date lastModifiedDate;
   private Date expirationDate;
 
-  private com.smartitengineering.user.client.impl.domain.Organization organization;
+  private Organization organization;
 
-  public OrganizationResourceImpl(com.smartitengineering.user.client.impl.domain.Organization organization){
+  public OrganizationResourceImpl(Organization organization){
     Link createdOrgLink = Abdera.getNewFactory().newLink();
     createdOrgLink.setHref(BASE_URI.toString() + "/shortname/"+ organization.getUniqueShortName());
 

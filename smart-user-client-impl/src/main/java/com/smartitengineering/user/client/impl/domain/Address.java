@@ -5,13 +5,13 @@
 
 package com.smartitengineering.user.client.impl.domain;
 
-import com.smartitengineering.user.client.api.GeoLocation;
+
 
 /**
  *
  * @author russel
  */
-public class Address implements com.smartitengineering.user.client.api.Address {
+public class Address implements com.smartitengineering.smartuser.client.api.Address {
 
    private String streetAddress;
     private String city;
