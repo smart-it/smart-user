@@ -23,7 +23,7 @@ $(document).ready(function(){
 
   $("#changePasswordForm").validate({
     rules: {
-      newPassword: {
+      password: {
         required:true,
         minlength:6
       },
@@ -35,12 +35,13 @@ $(document).ready(function(){
   });
   $('#error').hide();
   $("#update").click(function(){
-    alert(1);
     $('#error').hide();
     var pass = $("input#oldPassword").val();
     var pass1 = $("input#originalPassword").val();
-    if(pass!=pass1)
-      $("#error").show();   
+    if(pass!=pass1){
+      $("#error").show();
+      return false;
+    }
   });
   $("#userEditForm").validate({
     rules: {
