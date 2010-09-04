@@ -29,14 +29,8 @@ public class AbstractClientImpl {
     ApplicationContext context = new ClassPathXmlApplicationContext("config-context.xml");
     CONNECTION_CONFIG = ConfigFactory.getInstance().getConnectionConfig();
 
-    UriBuilder.fromUri(CONNECTION_CONFIG.getBasicUri());
-
-//    BASE_URI = UriBuilder.fromUri(CONNECTION_CONFIG.getContextPath()).host(CONNECTION_CONFIG.getHost()).port(CONNECTION_CONFIG.
-//        getPort()).path(CONNECTION_CONFIG.getBasicUri()).build();
-
-    //BASE_URI = UriBuilder.fromUri("").host(CONNECTION_CONFIG.getHost()).port(CONNECTION_CONFIG.getPort()).path(CONNECTION_CONFIG.getBasicUri()).build();
-    BASE_URI = UriBuilder.fromUri("http://localhost:9090").build();
-
+    BASE_URI = UriBuilder.fromUri(CONNECTION_CONFIG.getContextPath()).path(CONNECTION_CONFIG.getBasicUri()).host(CONNECTION_CONFIG.
+        getHost()).port(CONNECTION_CONFIG.getPort()).scheme("http").build();
   }
   private Client client;
   private HttpClient httpClient;
