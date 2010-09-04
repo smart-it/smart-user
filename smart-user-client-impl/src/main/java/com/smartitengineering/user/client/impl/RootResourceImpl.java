@@ -6,9 +6,11 @@ package com.smartitengineering.user.client.impl;
 
 import com.smartitengineering.smartuser.client.api.LoginResource;
 import com.smartitengineering.smartuser.client.api.RootResource;
-import com.smartitengineering.util.rest.atom.AtomClientUtil;
-import com.smartitengineering.util.rest.client.ClientUtil;
-import com.sun.jersey.api.client.ClientResponse;
+import com.smartitengineering.user.client.impl.login.LoginCenter;
+import com.smartitengineering.util.rest.client.AbstractClientResource;
+import com.smartitengineering.util.rest.client.jersey.cache.CacheableClientConfigProps;
+import com.sun.jersey.api.client.config.ClientConfig;
+import java.net.URISyntaxException;
 import javax.ws.rs.core.MediaType;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
@@ -17,35 +19,42 @@ import org.apache.abdera.model.Link;
  *
  * @author modhu7
  */
-public class RootResourceImpl extends AbstractClientImpl implements RootResource {
+public class RootResourceImpl
+    extends AbstractClientResource<Feed>
+    implements RootResource {
+
   public static final String REL_LOGIN = "login";
-
   private final Link loginLink;
+  public static RootResource getInstance() {
 
-  public static RootResource getInstance(){
     return new RootResourceImpl();
   }
 
   public RootResourceImpl() {
-//    URI testUri = null;
-//    try{
-//      testUri = new URI("http://localhost:9090");
-//    }catch(Exception ex){
-//
-//    }
-    ClientResponse response = ClientUtil.readClientResponse( BASE_URI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
-    Feed feed = AtomClientUtil.getFeed(response);
+    super(null, BASE_URI, MediaType.APPLICATION_ATOM_XML, Feed.class);
+    Feed feed = get();
     Link link = feed.getLink(REL_LOGIN);
     loginLink = link;
   }
 
-
   @Override
-  public LoginResource performAuthentication(String userName, String password) {
-    return new LoginResourceImpl(userName, password, loginLink);
+  public LoginResource performAuthentication(String userName,
+                                             String password) {
+    try {
+      return new LoginResourceImpl(userName, password, loginLink, this);
+    }
+    catch (URISyntaxException ex) {
+      throw new RuntimeException(ex);
+    }
   }
 
-  public Link getLoginLink(){
+  public Link getLoginLink() {
     return loginLink;
+  }
+
+  @Override
+  protected void processClientConfig(ClientConfig clientConfig) {
+    clientConfig.getProperties().put(CacheableClientConfigProps.USERNAME, LoginCenter.getUsername());
+    clientConfig.getProperties().put(CacheableClientConfigProps.PASSWORD, LoginCenter.getPassword());
   }
 }
