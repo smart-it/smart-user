@@ -26,5 +26,9 @@
       <artifactId>smart-user-api</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.smartitengineering.smart-util.rest</groupId>
+      <artifactId>generic-client</artifactId>
+    </dependency>
   </dependencies>
 </project>
