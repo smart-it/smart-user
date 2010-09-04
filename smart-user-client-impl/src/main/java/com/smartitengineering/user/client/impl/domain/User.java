@@ -9,7 +9,7 @@ package com.smartitengineering.user.client.impl.domain;
  *
  * @author russel
  */
-public class User implements com.smartitengineering.user.client.api.User{
+public class User implements com.smartitengineering.smartuser.client.api.User{
 
   @Override
   public String getUsername() {

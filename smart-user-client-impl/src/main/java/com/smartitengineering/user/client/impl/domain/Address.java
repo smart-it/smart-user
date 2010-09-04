@@ -5,13 +5,16 @@
 
 package com.smartitengineering.user.client.impl.domain;
 
-import com.smartitengineering.user.client.api.GeoLocation;
+import com.smartitengineering.domain.AbstractPersistentDTO;
+import com.smartitengineering.domain.PersistentDTO;
+
+
 
 /**
  *
  * @author russel
  */
-public class Address implements com.smartitengineering.user.client.api.Address {
+public class Address extends AbstractPersistentDTO<Address> implements com.smartitengineering.smartuser.client.api.Address {
 
    private String streetAddress;
     private String city;
@@ -75,6 +78,9 @@ public class Address implements com.smartitengineering.user.client.api.Address {
     this.zip = zip;
   }
 
+  public boolean isValid(){
+    return true;
+  }
   
 
 }

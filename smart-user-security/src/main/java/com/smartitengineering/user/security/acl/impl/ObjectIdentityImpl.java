@@ -21,7 +21,7 @@ public class ObjectIdentityImpl implements ObjectIdentity {
     public ObjectIdentityImpl(Object object) {
         if(object instanceof PersistentDTO)  {
             objectIdentity.setClassType(object.getClass());
-            objectIdentity.setObjectIdentityId(((PersistentDTO)object).getId());
+            objectIdentity.setObjectIdentityId(((PersistentDTO<PersistentDTO, Integer, Integer>)object).getId());
         }else if(object instanceof SmartObjectIdentity){
             this.objectIdentity = (SmartObjectIdentity) object;
         }

@@ -60,9 +60,8 @@
       <div class="form_textField"><input type="text" name="lastName" id="lname" class="textfield"></div>
       <div class="clear"></div>
       <div class="form_label"><label><fmt:message key="org.usrtablehead2"/></label></div>
-      <div class="form_textField"><input type="text" name="userName" id="uname" class="textfield"></div>
+      <div class="form_textField"><input type="text" name="userName" id="uname" class="textfield"><img id="wrong" src="/css/images/wrong.png" /><label id ="alertlabel" class="alertlabel"></label></div>
       <div class="clear"></div>
-      <label id ="alertlabel" class="alertlabel"></label>
       <div class="form_label"><label><fmt:message key="org.usrinput8"/></label></div>
       <div class="form_textField"><input type="text" name="nationalID" id="fname" class="textfield"></div>
       <div class="clear"></div>

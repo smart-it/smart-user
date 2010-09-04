@@ -4,15 +4,15 @@
  */
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.user.client.api.AuthorizationResource;
-import com.smartitengineering.user.client.api.LoginResource;
-import com.smartitengineering.user.client.api.OrganizationResource;
-import com.smartitengineering.user.client.api.OrganizationsResource;
-import com.smartitengineering.user.client.api.UserResource;
-import com.smartitengineering.user.client.api.UsersResource;
+import com.smartitengineering.smartuser.client.api.AuthorizationResource;
+import com.smartitengineering.smartuser.client.api.GenericClientException;
+import com.smartitengineering.smartuser.client.api.LoginResource;
+import com.smartitengineering.smartuser.client.api.OrganizationResource;
+import com.smartitengineering.smartuser.client.api.OrganizationsResource;
+import com.smartitengineering.smartuser.client.api.UserResource;
+import com.smartitengineering.smartuser.client.api.UsersResource;
 import com.smartitengineering.util.rest.atom.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -51,9 +51,9 @@ class LoginResourceImpl extends AbstractClientImpl implements LoginResource {
     this.userName = userName;
     this.password = password;
     this.loginLink = loginLink;
-    URI uri = UriBuilder.fromUri(BASE_URI.toString() + loginLink.getHref().toString() + "?username=" + this.userName).
-        build();
-    ClientResponse response = ClientUtil.readClientResponse(uri, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
+    URI loginResourceUri = UriBuilder.fromUri(BASE_URI.toString()).path(loginLink.getHref().toString()).
+        queryParam("username", this.userName).build();
+    ClientResponse response = ClientUtil.readClientResponse(loginResourceUri, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
 
     if (response.getStatus() != 401) {
@@ -85,12 +85,7 @@ class LoginResourceImpl extends AbstractClientImpl implements LoginResource {
 
     }
     else {
-      orgsLink = null;
-      orgLink = null;
-      usersLink = null;
-      userLink = null;
-      aclAuthLink = null;
-      roleAuthLink = null;
+      throw new GenericClientException(response);
     }
 
     //ClientResponse response = webResource.post();

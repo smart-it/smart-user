@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.sun.jersey.api.view.Viewable;
 import java.util.Date;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -41,6 +42,19 @@ public class RootResource extends AbstractResource {
     organizationsLink.setRel("Organizations");
     atomFeed.addLink(organizationsLink);
     responseBuilder.entity(atomFeed);
+    return responseBuilder.build();
+  }
+
+  @GET
+  @Produces(MediaType.TEXT_HTML)
+  public Response getHtml()
+  {
+    ResponseBuilder responseBuilder = Response.ok();
+
+
+    Viewable view = new Viewable("rootPage.jsp");
+
+    responseBuilder.entity(view);
     return responseBuilder.build();
   }
 }

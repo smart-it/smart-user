@@ -5,10 +5,12 @@
 
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.user.client.api.OrganizationFilter;
-import com.smartitengineering.user.client.api.OrganizationResource;
-import com.smartitengineering.user.client.api.OrganizationsResource;
-import com.smartitengineering.user.domain.Organization;
+
+import com.smartitengineering.smartuser.client.api.Organization;
+import com.smartitengineering.smartuser.client.api.OrganizationFilter;
+import com.smartitengineering.smartuser.client.api.OrganizationResource;
+import com.smartitengineering.smartuser.client.api.OrganizationsResource;
+
 import com.smartitengineering.util.rest.atom.ClientUtil;
 import com.smartitengineering.util.rest.atom.PaginatedFeedEntitiesList;
 import com.sun.jersey.api.client.ClientResponse;
@@ -46,10 +48,10 @@ class OrganizationsResourceImpl extends AbstractClientImpl implements Organizati
 
     this.orgsLink = orgsLink;
 
-    orgsURI = UriBuilder.fromUri(BASE_URI.toString() + orgsLink.getHref().toString()).build();
+    orgsURI = getBaseUriBuilder().path(orgsLink.getHref().toString()).build();
     
-    URI uri = UriBuilder.fromUri(BASE_URI.toString() + orgsLink.getHref().toString()).build();
-    ClientResponse response = ClientUtil.readClientResponse(uri, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
+    URI uri = getBaseUriBuilder().path(orgsLink.getHref().toString()).build();
+    ClientResponse response = ClientUtil.readClientResponse(orgsURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
     PaginatedFeedEntitiesList<Organization> pgs;
     if (response.getStatus() == 200) {
@@ -86,7 +88,7 @@ class OrganizationsResourceImpl extends AbstractClientImpl implements Organizati
   }
 
   @Override
-  public OrganizationResource create(com.smartitengineering.user.client.impl.domain.Organization organization) {
+  public OrganizationResource create(Organization organization) {
     
     WebResource webResource = getClient().resource(orgsURI);
     getClient().getProviders();
@@ -128,10 +130,7 @@ class OrganizationsResourceImpl extends AbstractClientImpl implements Organizati
   }
 
   @Override
-  public OrganizationsResource search(OrganizationFilter filter) {
-
-    
-
+  public OrganizationsResource search(OrganizationFilter filter) {   
     throw new UnsupportedOperationException("Not supported yet.");
   }
 

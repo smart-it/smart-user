@@ -5,12 +5,12 @@
 
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.user.client.api.Organization;
-import com.smartitengineering.user.client.api.OrganizationResource;
-import com.smartitengineering.user.client.api.OrganizationsResource;
-import com.smartitengineering.user.client.api.PrivilegesResource;
-import com.smartitengineering.user.client.api.SecuredObjectsResource;
-import com.smartitengineering.user.client.api.UsersResource;
+import com.smartitengineering.smartuser.client.api.Organization;
+import com.smartitengineering.smartuser.client.api.OrganizationResource;
+import com.smartitengineering.smartuser.client.api.OrganizationsResource;
+import com.smartitengineering.smartuser.client.api.PrivilegesResource;
+import com.smartitengineering.smartuser.client.api.SecuredObjectsResource;
+import com.smartitengineering.smartuser.client.api.UsersResource;
 import com.smartitengineering.util.rest.atom.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -47,14 +47,14 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
   private Date lastModifiedDate;
   private Date expirationDate;
 
-  private com.smartitengineering.user.client.impl.domain.Organization organization;
+  private Organization organization;
 
-  public OrganizationResourceImpl(com.smartitengineering.user.client.impl.domain.Organization organization){
+  public OrganizationResourceImpl(Organization organization){
     Link createdOrgLink = Abdera.getNewFactory().newLink();
     createdOrgLink.setHref(BASE_URI.toString() + "/shortname/"+ organization.getUniqueShortName());
 
     this.orgLink = createdOrgLink;
-    orgURI = UriBuilder.fromUri(BASE_URI.toString() + orgLink.getHref().toString()).build();
+    orgURI = getBaseUriBuilder().path(orgLink.getHref().toString()).build();
 
     ClientResponse response = ClientUtil.readClientResponse(orgURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
@@ -97,7 +97,9 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
       }
       catch (Exception ex) {
       }
-      orgURI = response.getLocation();
+      if(response.getLocation() != null) {
+        orgURI = response.getLocation();
+      }
       
     }else{
       orgLink = null;
@@ -108,7 +110,7 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
   public OrganizationResourceImpl(Link orgLink) {
 
     this.orgLink = orgLink;
-    orgURI = UriBuilder.fromUri(BASE_URI.toString() + orgLink.getHref().toString()).build();
+    orgURI = getBaseUriBuilder().path(orgLink.getHref().toString()).build();
 
     ClientResponse response = ClientUtil.readClientResponse(orgURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
@@ -123,7 +125,7 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
       privilegesLink = feed.getLink(REL_PRIVILEGES);
       securedObjectsLink = feed.getLink(REL_SECUREDOBJECTS);
 
-      URI orgContentURI = UriBuilder.fromUri(BASE_URI.toString() + orgLink.getHref().toString()).build();
+      URI orgContentURI = getBaseUriBuilder().path(orgLink.getHref().toString()).build();
       ClientResponse contentResponse = ClientUtil.readClientResponse(orgContentURI, getHttpClient(), MediaType.APPLICATION_JSON);
 
       if(contentResponse.getStatus() != 401){        
@@ -131,7 +133,7 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
         
       }
 
-      Feed contentFeed = ClientUtil.getFeed(response);
+      //Feed contentFeed = ClientUtil.getFeed(response);
 
       String href = orgLink.getHref().toString();
 
@@ -150,7 +152,9 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
       }
       catch (Exception ex) {
       }
-      orgURI = response.getLocation();
+      if(response.getLocation() != null) {
+        orgURI = response.getLocation();
+      }
       
     }else{
       orgLink = null;

@@ -113,6 +113,7 @@
         <module>smart-user-server</module>
         <!--<module>smart-user-ui</module>-->
         <module>smart-user-client-impl</module>
+    <module>smart-user-client-api</module>
   </modules>
 
       

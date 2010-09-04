@@ -4,11 +4,10 @@
  */
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.user.client.api.LoginResource;
-import com.smartitengineering.user.client.api.RootResource;
+import com.smartitengineering.smartuser.client.api.LoginResource;
+import com.smartitengineering.smartuser.client.api.RootResource;
 import com.smartitengineering.util.rest.atom.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
-import java.net.URI;
 import javax.ws.rs.core.MediaType;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;

@@ -5,10 +5,10 @@
 
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.user.client.api.User;
-import com.smartitengineering.user.client.api.UserFilter;
-import com.smartitengineering.user.client.api.UserResource;
-import com.smartitengineering.user.client.api.UsersResource;
+import com.smartitengineering.smartuser.client.api.User;
+import com.smartitengineering.smartuser.client.api.UserFilter;
+import com.smartitengineering.smartuser.client.api.UserResource;
+import com.smartitengineering.smartuser.client.api.UsersResource;
 import com.smartitengineering.user.resource.api.LinkedResource;
 import com.smartitengineering.util.rest.atom.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
@@ -115,7 +115,7 @@ class UsersResourceImpl extends AbstractClientImpl implements UsersResource{
 
 
   @Override
-  public UserResource create(com.smartitengineering.user.client.impl.domain.User user) {
+  public UserResource create(User user) {
 
     WebResource webResource = getClient().resource(usersURI);
     webResource.type(MediaType.APPLICATION_JSON).post(user);
