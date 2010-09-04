@@ -26,7 +26,7 @@ public class AbstractClientImpl {
   protected static final ConnectionConfig CONNECTION_CONFIG;
 
   static {
-    ApplicationContext context = new ClassPathXmlApplicationContext("config-context.xml");
+    ApplicationContext context = new ClassPathXmlApplicationContext("config-context_deprecated.xml");
     CONNECTION_CONFIG = ConfigFactory.getInstance().getConnectionConfig();
 
     BASE_URI = UriBuilder.fromUri(CONNECTION_CONFIG.getContextPath()).path(CONNECTION_CONFIG.getBasicUri()).host(CONNECTION_CONFIG.
