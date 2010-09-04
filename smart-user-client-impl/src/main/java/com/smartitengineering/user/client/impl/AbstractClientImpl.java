@@ -5,7 +5,7 @@
 package com.smartitengineering.user.client.impl;
 
 import com.smartitengineering.user.client.impl.login.LoginCenter;
-import com.smartitengineering.util.rest.atom.HttpClient;
+import com.smartitengineering.util.rest.client.HttpClient;
 import com.smartitengineering.util.rest.client.jersey.cache.CacheableClient;
 import com.smartitengineering.util.rest.client.jersey.cache.CacheableClientConfigProps;
 import com.sun.jersey.api.client.Client;
