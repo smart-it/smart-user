@@ -4,7 +4,6 @@
  */
 package com.smartitengineering.user.client.impl;
 
-
 import com.smartitengineering.smartuser.client.api.AuthorizationResource;
 import com.smartitengineering.util.rest.atom.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
@@ -40,8 +39,8 @@ class AuthorizationResourceImpl extends AbstractClientImpl implements Authorizat
     this.permission = permission;
     this.authLink = aclAuthLink;
     this.configAttribute = null;
-    URI uri = UriBuilder.fromUri(BASE_URI.toString() + authLink.getHref().toString() + "?username=" + this.username +
-        "&orgname=" + organizationName + "&oid=" + oid + "&permission=" + permission).build();
+    URI uri = getBaseUriBuilder().path(authLink.getHref().toString()).queryParam("username", this.username).queryParam(
+        "orgname", organizationName).queryParam("oid", oid).queryParam("permission", permission).build();
     ClientResponse response = ClientUtil.readClientResponse(uri, getHttpClient(), MediaType.TEXT_PLAIN);
 
     if (response.getStatus() == 200) {
@@ -64,10 +63,10 @@ class AuthorizationResourceImpl extends AbstractClientImpl implements Authorizat
       catch (Exception ex) {
       }
       uri = response.getLocation();
-    }   
+    }
   }
 
-  AuthorizationResourceImpl(String username, String configAttribute, Link roleAuthLink) {    
+  AuthorizationResourceImpl(String username, String configAttribute, Link roleAuthLink) {
   }
 
   private AuthorizationResourceImpl() {
@@ -105,11 +104,15 @@ class AuthorizationResourceImpl extends AbstractClientImpl implements Authorizat
 
   @Override
   public Object refresh() {
-    if(configAttribute == null && username != null && organizationName != null && permission != null && oid != null)
+    if (configAttribute == null && username != null && organizationName != null && permission != null && oid != null) {
       return new AuthorizationResourceImpl(username, organizationName, oid, permission, authLink);
-    else if (configAttribute != null && username == null && organizationName == null && permission == null && oid == null)
+    }
+    else if (configAttribute != null && username == null && organizationName == null && permission == null && oid ==
+        null) {
       return new AuthorizationResourceImpl(username, configAttribute, authLink);
-    else
+    }
+    else {
       return new AuthorizationResourceImpl();
+    }
   }
 }

@@ -42,6 +42,10 @@ public class AbstractClientImpl {
     return BASE_URI;
   }
 
+  protected UriBuilder getBaseUriBuilder() {
+    return UriBuilder.fromUri(BASE_URI.toString());
+  }
+
   public Client getClient() {
     if (client == null) {
       DefaultClientConfig clientConfig = new DefaultClientConfig();

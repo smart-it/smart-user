@@ -54,7 +54,7 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
     createdOrgLink.setHref(BASE_URI.toString() + "/shortname/"+ organization.getUniqueShortName());
 
     this.orgLink = createdOrgLink;
-    orgURI = UriBuilder.fromUri(BASE_URI.toString() + orgLink.getHref().toString()).build();
+    orgURI = getBaseUriBuilder().path(orgLink.getHref().toString()).build();
 
     ClientResponse response = ClientUtil.readClientResponse(orgURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
@@ -97,7 +97,9 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
       }
       catch (Exception ex) {
       }
-      orgURI = response.getLocation();
+      if(response.getLocation() != null) {
+        orgURI = response.getLocation();
+      }
       
     }else{
       orgLink = null;
@@ -108,7 +110,7 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
   public OrganizationResourceImpl(Link orgLink) {
 
     this.orgLink = orgLink;
-    orgURI = UriBuilder.fromUri(BASE_URI.toString() + orgLink.getHref().toString()).build();
+    orgURI = getBaseUriBuilder().path(orgLink.getHref().toString()).build();
 
     ClientResponse response = ClientUtil.readClientResponse(orgURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
@@ -123,7 +125,7 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
       privilegesLink = feed.getLink(REL_PRIVILEGES);
       securedObjectsLink = feed.getLink(REL_SECUREDOBJECTS);
 
-      URI orgContentURI = UriBuilder.fromUri(BASE_URI.toString() + orgLink.getHref().toString()).build();
+      URI orgContentURI = getBaseUriBuilder().path(orgLink.getHref().toString()).build();
       ClientResponse contentResponse = ClientUtil.readClientResponse(orgContentURI, getHttpClient(), MediaType.APPLICATION_JSON);
 
       if(contentResponse.getStatus() != 401){        
@@ -150,7 +152,9 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
       }
       catch (Exception ex) {
       }
-      orgURI = response.getLocation();
+      if(response.getLocation() != null) {
+        orgURI = response.getLocation();
+      }
       
     }else{
       orgLink = null;

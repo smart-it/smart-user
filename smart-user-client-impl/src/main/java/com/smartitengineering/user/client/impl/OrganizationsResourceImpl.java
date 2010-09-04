@@ -48,10 +48,10 @@ class OrganizationsResourceImpl extends AbstractClientImpl implements Organizati
 
     this.orgsLink = orgsLink;
 
-    orgsURI = UriBuilder.fromUri(BASE_URI.toString() + orgsLink.getHref().toString()).build();
+    orgsURI = getBaseUriBuilder().path(orgsLink.getHref().toString()).build();
     
-    URI uri = UriBuilder.fromUri(BASE_URI.toString() + orgsLink.getHref().toString()).build();
-    ClientResponse response = ClientUtil.readClientResponse(uri, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
+    URI uri = getBaseUriBuilder().path(orgsLink.getHref().toString()).build();
+    ClientResponse response = ClientUtil.readClientResponse(orgsURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
     PaginatedFeedEntitiesList<Organization> pgs;
     if (response.getStatus() == 200) {

@@ -51,9 +51,9 @@ class LoginResourceImpl extends AbstractClientImpl implements LoginResource {
     this.userName = userName;
     this.password = password;
     this.loginLink = loginLink;
-    URI uri = UriBuilder.fromUri(BASE_URI.toString() + loginLink.getHref().toString() + "?username=" + this.userName).
-        build();
-    ClientResponse response = ClientUtil.readClientResponse(uri, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
+    URI loginResourceUri = UriBuilder.fromUri(BASE_URI.toString()).path(loginLink.getHref().toString()).
+        queryParam("username", this.userName).build();
+    ClientResponse response = ClientUtil.readClientResponse(loginResourceUri, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
 
     if (response.getStatus() != 401) {
