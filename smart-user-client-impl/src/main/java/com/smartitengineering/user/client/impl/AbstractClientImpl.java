@@ -48,9 +48,7 @@ public class AbstractClientImpl {
       clientConfig.getProperties().put(CacheableClientConfigProps.USERNAME, LoginCenter.getUsername());
       clientConfig.getProperties().put(CacheableClientConfigProps.PASSWORD, LoginCenter.getPassword());
       clientConfig.getClasses().add(FeedProvider.class);
-      //clientConfig.getClasses().add(JSONRootElementProvider.App.class);
       clientConfig.getClasses().add(JacksonJsonProvider.class);
-
       client = CacheableClient.create(clientConfig);
     }
     return client;

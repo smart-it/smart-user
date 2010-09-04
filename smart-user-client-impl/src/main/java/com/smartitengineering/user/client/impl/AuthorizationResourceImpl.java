@@ -11,7 +11,6 @@ import com.sun.jersey.api.client.ClientResponse;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.net.ssl.SSLEngineResult.Status;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 import org.apache.abdera.model.Link;
