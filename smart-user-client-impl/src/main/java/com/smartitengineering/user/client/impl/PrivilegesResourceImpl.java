@@ -9,7 +9,8 @@ import com.smartitengineering.smartuser.client.api.Privilege;
 import com.smartitengineering.smartuser.client.api.PrivilegeFilter;
 import com.smartitengineering.smartuser.client.api.PrivilegeResource;
 import com.smartitengineering.smartuser.client.api.PrivilegesResource;
-import com.smartitengineering.util.rest.atom.ClientUtil;
+import com.smartitengineering.util.rest.atom.AtomClientUtil;
+import com.smartitengineering.util.rest.client.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.net.URI;
@@ -50,7 +51,7 @@ public class PrivilegesResourceImpl extends AbstractClientImpl implements Privil
 
     ClientResponse response = ClientUtil.readClientResponse(privilegesURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
     if (response.getStatus() == 200) {
-      Feed feed = ClientUtil.getFeed(response);
+      Feed feed = AtomClientUtil.getFeed(response);
 
       entries = feed.getEntries();
 

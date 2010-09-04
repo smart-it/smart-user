@@ -8,7 +8,8 @@ package com.smartitengineering.user.client.impl;
 import com.smartitengineering.smartuser.client.api.OrganizationResource;
 import com.smartitengineering.smartuser.client.api.Privilege;
 import com.smartitengineering.smartuser.client.api.PrivilegeResource;
-import com.smartitengineering.util.rest.atom.ClientUtil;
+import com.smartitengineering.util.rest.atom.AtomClientUtil;
+import com.smartitengineering.util.rest.client.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.net.URI;
@@ -51,7 +52,7 @@ public class PrivilegeResourceImpl extends AbstractClientImpl implements Privile
     ClientResponse response = ClientUtil.readClientResponse(privilegeURI, getHttpClient(), MediaType.APPLICATION_JSON);
 
     if(response.getStatus() == 200){
-      Feed feed = ClientUtil.getFeed(response);
+      Feed feed = AtomClientUtil.getFeed(response);
 
       Link privilegeContentLink = feed.getLink(REL_ALT);
 
@@ -62,7 +63,7 @@ public class PrivilegeResourceImpl extends AbstractClientImpl implements Privile
       if(contentResponse.getStatus() != 401){
         privilege = ClientUtil.getResponseEntity(contentResponse, com.smartitengineering.user.client.impl.domain.Privilege.class);
       }
-      Feed contentFeed = ClientUtil.getFeed(response);
+      Feed contentFeed = AtomClientUtil.getFeed(response);
 
 
 
@@ -95,7 +96,7 @@ public class PrivilegeResourceImpl extends AbstractClientImpl implements Privile
     ClientResponse response = ClientUtil.readClientResponse(privilegeURI, getHttpClient(), MediaType.APPLICATION_JSON);
 
     if(response.getStatus() != 401){
-      Feed feed = ClientUtil.getFeed(response);
+      Feed feed = AtomClientUtil.getFeed(response);
 
       Link privilegeContentLink = feed.getLink(REL_ALT);
 
@@ -106,7 +107,7 @@ public class PrivilegeResourceImpl extends AbstractClientImpl implements Privile
       if(contentResponse.getStatus() != 401){
         privilege = ClientUtil.getResponseEntity(contentResponse, com.smartitengineering.user.client.impl.domain.Privilege.class);
       }
-      Feed contentFeed = ClientUtil.getFeed(response);
+      Feed contentFeed = AtomClientUtil.getFeed(response);
 
 
 

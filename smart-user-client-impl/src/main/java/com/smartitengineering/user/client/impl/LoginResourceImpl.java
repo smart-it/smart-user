@@ -11,7 +11,8 @@ import com.smartitengineering.smartuser.client.api.OrganizationResource;
 import com.smartitengineering.smartuser.client.api.OrganizationsResource;
 import com.smartitengineering.smartuser.client.api.UserResource;
 import com.smartitengineering.smartuser.client.api.UsersResource;
-import com.smartitengineering.util.rest.atom.ClientUtil;
+import com.smartitengineering.util.rest.atom.AtomClientUtil;
+import com.smartitengineering.util.rest.client.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
 import java.net.URI;
 import java.text.SimpleDateFormat;
@@ -57,7 +58,7 @@ class LoginResourceImpl extends AbstractClientImpl implements LoginResource {
 
 
     if (response.getStatus() != 401) {
-      Feed feed = ClientUtil.getFeed(response);
+      Feed feed = AtomClientUtil.getFeed(response);
       orgsLink = feed.getLink(REL_ORGS);
       orgLink = feed.getLink(REL_ORG);
       usersLink = feed.getLink(REL_USERS);

@@ -11,7 +11,8 @@ import com.smartitengineering.smartuser.client.api.OrganizationsResource;
 import com.smartitengineering.smartuser.client.api.PrivilegesResource;
 import com.smartitengineering.smartuser.client.api.SecuredObjectsResource;
 import com.smartitengineering.smartuser.client.api.UsersResource;
-import com.smartitengineering.util.rest.atom.ClientUtil;
+import com.smartitengineering.util.rest.atom.AtomClientUtil;
+import com.smartitengineering.util.rest.client.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.net.URI;
@@ -60,7 +61,7 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
 
     if(response.getStatus() != 401){
 
-      Feed feed = ClientUtil.getFeed(response);
+      Feed feed = AtomClientUtil.getFeed(response);
 
       orgLink = feed.getLink(REL_ALT);
 
@@ -78,7 +79,7 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
 
       }
 
-      Feed contentFeed = ClientUtil.getFeed(response);
+      Feed contentFeed = AtomClientUtil.getFeed(response);
 
       String href = orgLink.getHref().toString();
 
@@ -116,7 +117,7 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
 
     if(response.getStatus() == 200){
 
-      Feed feed = ClientUtil.getFeed(response);
+      Feed feed = AtomClientUtil.getFeed(response);
 
       orgLink = feed.getLink(REL_ALT);
 

@@ -9,7 +9,8 @@ import com.smartitengineering.smartuser.client.api.SecuredObject;
 import com.smartitengineering.smartuser.client.api.SecuredObjectFilter;
 import com.smartitengineering.smartuser.client.api.SecuredObjectResource;
 import com.smartitengineering.smartuser.client.api.SecuredObjectsResource;
-import com.smartitengineering.util.rest.atom.ClientUtil;
+import com.smartitengineering.util.rest.atom.AtomClientUtil;
+import com.smartitengineering.util.rest.client.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
 import java.net.URI;
 import java.text.SimpleDateFormat;
@@ -49,7 +50,7 @@ public class SecuredObjectsResourceImpl extends AbstractClientImpl implements Se
     ClientResponse response = ClientUtil.readClientResponse(uri, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
     if (response.getStatus() == 200) {
-      Feed feed = ClientUtil.getFeed(response);
+      Feed feed = AtomClientUtil.getFeed(response);
 
       entries = feed.getEntries();
 

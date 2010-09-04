@@ -8,7 +8,8 @@ package com.smartitengineering.user.client.impl;
 import com.smartitengineering.smartuser.client.api.OrganizationResource;
 import com.smartitengineering.smartuser.client.api.SecuredObject;
 import com.smartitengineering.smartuser.client.api.SecuredObjectResource;
-import com.smartitengineering.util.rest.atom.ClientUtil;
+import com.smartitengineering.util.rest.atom.AtomClientUtil;
+import com.smartitengineering.util.rest.client.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.net.URI;
@@ -47,7 +48,7 @@ public class SecuredObjectResourceImpl extends AbstractClientImpl implements Sec
 
     if(response.getStatus() == 200){
 
-      Feed feed = ClientUtil.getFeed(response);
+      Feed feed = AtomClientUtil.getFeed(response);
 
       securedObjectLink = feed.getLink(REL_ALT);
 
@@ -62,7 +63,7 @@ public class SecuredObjectResourceImpl extends AbstractClientImpl implements Sec
 
       }
 
-      Feed contentFeed = ClientUtil.getFeed(response);
+      Feed contentFeed = AtomClientUtil.getFeed(response);
 
       String href = securedObjectLink.getHref().toString();
 
@@ -100,7 +101,7 @@ public class SecuredObjectResourceImpl extends AbstractClientImpl implements Sec
 
     if(response.getStatus() != 401){
 
-      Feed feed = ClientUtil.getFeed(response);
+      Feed feed = AtomClientUtil.getFeed(response);
 
       securedObjectLink = feed.getLink(REL_ALT);
 
@@ -115,7 +116,7 @@ public class SecuredObjectResourceImpl extends AbstractClientImpl implements Sec
 
       }
 
-      Feed contentFeed = ClientUtil.getFeed(response);
+      Feed contentFeed = AtomClientUtil.getFeed(response);
 
       String href = securedObjectLink.getHref().toString();
 

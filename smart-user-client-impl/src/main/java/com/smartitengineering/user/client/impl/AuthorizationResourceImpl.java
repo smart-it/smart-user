@@ -5,13 +5,12 @@
 package com.smartitengineering.user.client.impl;
 
 import com.smartitengineering.smartuser.client.api.AuthorizationResource;
-import com.smartitengineering.util.rest.atom.ClientUtil;
+import com.smartitengineering.util.rest.client.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriBuilder;
 import org.apache.abdera.model.Link;
 
 /**

@@ -10,9 +10,10 @@ import com.smartitengineering.smartuser.client.api.Organization;
 import com.smartitengineering.smartuser.client.api.OrganizationFilter;
 import com.smartitengineering.smartuser.client.api.OrganizationResource;
 import com.smartitengineering.smartuser.client.api.OrganizationsResource;
+import com.smartitengineering.util.rest.atom.AtomClientUtil;
 
-import com.smartitengineering.util.rest.atom.ClientUtil;
 import com.smartitengineering.util.rest.atom.PaginatedFeedEntitiesList;
+import com.smartitengineering.util.rest.client.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.net.URI;
@@ -21,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriBuilder;
 import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
@@ -55,7 +55,7 @@ class OrganizationsResourceImpl extends AbstractClientImpl implements Organizati
 
     PaginatedFeedEntitiesList<Organization> pgs;
     if (response.getStatus() == 200) {
-      Feed feed = ClientUtil.getFeed(response);
+      Feed feed = AtomClientUtil.getFeed(response);
 
       entries = feed.getEntries();
 

@@ -9,14 +9,13 @@ import com.smartitengineering.smartuser.client.api.User;
 import com.smartitengineering.smartuser.client.api.UserFilter;
 import com.smartitengineering.smartuser.client.api.UserResource;
 import com.smartitengineering.smartuser.client.api.UsersResource;
-import com.smartitengineering.user.resource.api.LinkedResource;
-import com.smartitengineering.util.rest.atom.ClientUtil;
+import com.smartitengineering.util.rest.atom.AtomClientUtil;
+import com.smartitengineering.util.rest.client.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.ws.rs.core.MediaType;
@@ -54,7 +53,7 @@ class UsersResourceImpl extends AbstractClientImpl implements UsersResource{
 
     //PaginatedFeedEntitiesList<Organization> pgs;
     if (response.getStatus() == 200) {
-      Feed feed = ClientUtil.getFeed(response);
+      Feed feed = AtomClientUtil.getFeed(response);
 
       entries = feed.getEntries();
 
