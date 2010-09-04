@@ -4,8 +4,8 @@
  */
 package com.smartitengineering.user.client.impl;
 
-
 import com.smartitengineering.smartuser.client.api.AuthorizationResource;
+import com.smartitengineering.smartuser.client.api.GenericClientException;
 import com.smartitengineering.smartuser.client.api.LoginResource;
 import com.smartitengineering.smartuser.client.api.OrganizationResource;
 import com.smartitengineering.smartuser.client.api.OrganizationsResource;
@@ -85,12 +85,7 @@ class LoginResourceImpl extends AbstractClientImpl implements LoginResource {
 
     }
     else {
-      orgsLink = null;
-      orgLink = null;
-      usersLink = null;
-      userLink = null;
-      aclAuthLink = null;
-      roleAuthLink = null;
+      throw new GenericClientException(response);
     }
 
     //ClientResponse response = webResource.post();
