@@ -47,7 +47,12 @@ public class SmartAccessDecisionManager extends AbstractAccessDecisionManager {
             return;
           }
         }
-        else if (voter instanceof SmartUserAdminVoter) {
+      }
+
+      while (voters.hasNext()) {
+        AccessDecisionVoter voter = (AccessDecisionVoter) voters.next();
+
+        if (voter instanceof SmartUserAdminVoter) {
           int result = voter.vote(authentication, object, singleAttrDef);
 
           switch (result) {

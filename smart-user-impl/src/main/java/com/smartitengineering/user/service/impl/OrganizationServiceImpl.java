@@ -204,8 +204,8 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
   @Override
   public void delete(Organization organization) {
     try {
-      super.delete(organization);
       observable.notifyObserver(ObserverNotification.DELETE_ORGNIZATION, organization);
+      super.delete(organization);
     }
     catch (RuntimeException e) {
       String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
