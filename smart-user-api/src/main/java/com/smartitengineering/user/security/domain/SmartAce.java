@@ -11,7 +11,7 @@ import com.smartitengineering.user.domain.User;
  *
  * @author modhu7
  */
-public class SmartAce extends AbstractPersistentDTO{
+public class SmartAce extends AbstractPersistentDTO<SmartAce> {
 
     private User sid;
     private int permissionMask;
