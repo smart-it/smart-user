@@ -13,6 +13,7 @@ import com.smartitengineering.smartuser.client.api.UserResource;
 import com.smartitengineering.smartuser.client.api.UsersResource;
 import com.smartitengineering.util.rest.atom.AtomClientUtil;
 import com.smartitengineering.util.rest.client.AbstractClientResource;
+import com.smartitengineering.util.rest.client.ResouceLink;
 import com.smartitengineering.util.rest.client.Resource;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -43,22 +44,13 @@ class LoginResourceImpl
 
   public LoginResourceImpl(String userName,
                            String password,
-                           Link loginLink,
+                           ResouceLink loginLink,
                            Resource referrer)
       throws URISyntaxException {
     super(referrer, getSelfUri(loginLink, userName), MediaType.APPLICATION_ATOM_XML, Feed.class,
           AtomClientUtil.getInstance());
     this.userName = userName;
     this.password = password;
-    try {
-      get();
-    }
-    catch (UniformInterfaceException exception) {
-      throw new GenericClientException(exception.getResponse());
-    }
-
-    //ClientResponse response = webResource.post();
-
   }
 
   @Override
@@ -97,12 +89,12 @@ class LoginResourceImpl
         getRelatedResourceUris().getFirst(REL_ROLE_AUTH)));
   }
 
-  protected static URI getSelfUri(Link loginLink,
+  protected static URI getSelfUri(ResouceLink loginLink,
                                   String username)
       throws IllegalArgumentException,
              UriBuilderException {
     URI loginResourceUri =
-        UriBuilder.fromUri(BASE_URI.toString()).path(loginLink.getHref().toString()).queryParam("username", username).
+        UriBuilder.fromUri(BASE_URI.toString()).path(loginLink.getUri().toString()).queryParam("username", username).
         build();
     return loginResourceUri;
   }
