@@ -54,7 +54,7 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
     createdOrgLink.setHref(BASE_URI.toString() + "/shortname/"+ organization.getUniqueShortName());
 
     this.orgLink = createdOrgLink;
-    orgURI = UriBuilder.fromUri(BASE_URI.toString() + orgLink.getHref().toString()).build();
+    this.orgURI = UriBuilder.fromUri(BASE_URI.toString() + orgLink.getHref().toString()).build();
 
     ClientResponse response = ClientUtil.readClientResponse(orgURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
@@ -108,7 +108,7 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
   public OrganizationResourceImpl(Link orgLink) {
 
     this.orgLink = orgLink;
-    orgURI = UriBuilder.fromUri(BASE_URI.toString() + orgLink.getHref().toString()).build();
+    this.orgURI = UriBuilder.fromUri(BASE_URI.toString() + orgLink.getHref().toString()).build();
 
     ClientResponse response = ClientUtil.readClientResponse(orgURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
