@@ -11,6 +11,7 @@ import com.smartitengineering.smartuser.client.api.OrganizationResource;
 import com.smartitengineering.smartuser.client.api.OrganizationsResource;
 import com.smartitengineering.smartuser.client.api.UserResource;
 import com.smartitengineering.smartuser.client.api.UsersResource;
+import com.smartitengineering.util.rest.atom.AtomClientUtil;
 import com.smartitengineering.util.rest.client.AbstractClientResource;
 import com.smartitengineering.util.rest.client.Resource;
 import com.sun.jersey.api.client.UniformInterfaceException;
@@ -37,33 +38,22 @@ class LoginResourceImpl
   private static final String REL_USER = "User";
   private static final String REL_ACL_AUTH = "aclAuth";
   private static final String REL_ROLE_AUTH = "roleAuth";
-  private final Link orgsLink;
-  private final Link orgLink;
-  private final Link usersLink;
-  private final Link userLink;
   private String userName;
   private String password;
-  private Link aclAuthLink;
-  private Link roleAuthLink;
 
   public LoginResourceImpl(String userName,
                            String password,
                            Link loginLink,
                            Resource referrer)
       throws URISyntaxException {
-    super(referrer, getSelfUri(loginLink, userName), MediaType.APPLICATION_ATOM_XML, Feed.class);
+    super(referrer, getSelfUri(loginLink, userName), MediaType.APPLICATION_ATOM_XML, Feed.class,
+          AtomClientUtil.getInstance());
     this.userName = userName;
     this.password = password;
     try {
-      Feed feed = get();
-      orgsLink = feed.getLink(REL_ORGS);
-      orgLink = feed.getLink(REL_ORG);
-      usersLink = feed.getLink(REL_USERS);
-      userLink = feed.getLink(REL_USER);
-      aclAuthLink = feed.getLink(REL_ACL_AUTH);
-      roleAuthLink = feed.getLink(REL_ROLE_AUTH);
+      get();
     }
-    catch(UniformInterfaceException exception) {
+    catch (UniformInterfaceException exception) {
       throw new GenericClientException(exception.getResponse());
     }
 
@@ -73,12 +63,12 @@ class LoginResourceImpl
 
   @Override
   public OrganizationsResource getOrganizationsResource() {
-    return new OrganizationsResourceImpl(orgsLink);
+    return new OrganizationsResourceImpl(getRelatedResourceUris().getFirst(REL_ORGS));
   }
 
   @Override
   public UsersResource getUsersResource(String OrganizationShortName) {
-    return new UsersResourceImpl(usersLink);
+    return new UsersResourceImpl(getRelatedResourceUris().getFirst(REL_USERS));
   }
 
   @Override
@@ -88,7 +78,7 @@ class LoginResourceImpl
 
   @Override
   public OrganizationResource getOrganizationResource() {
-    return new OrganizationResourceImpl(orgLink);
+    return new OrganizationResourceImpl(getRelatedResourceUris().getFirst(REL_ORG));
   }
 
   @Override
@@ -96,13 +86,15 @@ class LoginResourceImpl
                                                            String organizationName,
                                                            String oid,
                                                            Integer permission) {
-    return new AuthorizationResourceImpl(username, organizationName, oid, permission, aclAuthLink);
+    return new AuthorizationResourceImpl(username, organizationName, oid, permission, AtomClientUtil.
+        convertFromResourceLinkToAtomLink(getRelatedResourceUris().getFirst(REL_ACL_AUTH)));
   }
 
   @Override
   public AuthorizationResource getRoleAuthorizationResource(String username,
                                                             String configAttribute) {
-    return new AuthorizationResourceImpl(username, configAttribute, roleAuthLink);
+    return new AuthorizationResourceImpl(username, configAttribute, AtomClientUtil.convertFromResourceLinkToAtomLink(
+        getRelatedResourceUris().getFirst(REL_ROLE_AUTH)));
   }
 
   protected static URI getSelfUri(Link loginLink,

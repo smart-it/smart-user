@@ -11,6 +11,7 @@ import com.smartitengineering.smartuser.client.api.UserResource;
 import com.smartitengineering.smartuser.client.api.UsersResource;
 import com.smartitengineering.util.rest.atom.AtomClientUtil;
 import com.smartitengineering.util.rest.client.ClientUtil;
+import com.smartitengineering.util.rest.client.ResouceLink;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.net.URI;
@@ -33,8 +34,7 @@ class UsersResourceImpl extends AbstractClientImpl implements UsersResource{
   public static final String REL_USERS = "users";
   public static final String REL_ALT = "alternate";
   
-  private Link usersLink;
-  private Link userLink;
+  private ResouceLink usersLink;
   private URI usersURI;
 
   private boolean isCacheEnabled;
@@ -42,13 +42,13 @@ class UsersResourceImpl extends AbstractClientImpl implements UsersResource{
   private Date expirationDate;
   private List<Entry> entries;
 
-  public UsersResourceImpl(Link usersLink) {
+  public UsersResourceImpl(ResouceLink usersLink) {
 
     this.usersLink = usersLink;
 
-    usersURI = UriBuilder.fromUri(BASE_URI.toString() + usersLink.getHref().toString()).build();
+    usersURI = getBaseUriBuilder().path(usersLink.getUri().toString()).build();
 
-    URI uri = UriBuilder.fromUri(BASE_URI.toString() + usersLink.getHref().toString()).build();
+    URI uri = getBaseUriBuilder().path(usersLink.getUri().toString()).build();
     ClientResponse response = ClientUtil.readClientResponse(uri, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
     //PaginatedFeedEntitiesList<Organization> pgs;
@@ -56,9 +56,6 @@ class UsersResourceImpl extends AbstractClientImpl implements UsersResource{
       Feed feed = AtomClientUtil.getFeed(response);
 
       entries = feed.getEntries();
-
-      usersLink = feed.getLink(REL_USERS);
-
 
       if(response.getHeaders().getFirst("Cache-Control") != null)
         isCacheEnabled = response.getHeaders().getFirst("Cache-Control").equals("no-cache");

@@ -5,6 +5,7 @@
 
 package com.smartitengineering.user.client.impl;
 
+import com.smartitengineering.smartuser.client.api.GenericClientException;
 import com.smartitengineering.smartuser.client.api.Organization;
 import com.smartitengineering.smartuser.client.api.OrganizationResource;
 import com.smartitengineering.smartuser.client.api.OrganizationsResource;
@@ -13,6 +14,8 @@ import com.smartitengineering.smartuser.client.api.SecuredObjectsResource;
 import com.smartitengineering.smartuser.client.api.UsersResource;
 import com.smartitengineering.util.rest.atom.AtomClientUtil;
 import com.smartitengineering.util.rest.client.ClientUtil;
+import com.smartitengineering.util.rest.client.DefaultResouceLinkImpl;
+import com.smartitengineering.util.rest.client.ResouceLink;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.net.URI;
@@ -38,7 +41,7 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
   public static final String REL_SECUREDOBJECTS = "securedobjects";
 
   private URI orgURI;
-  private Link orgLink;
+  private ResouceLink orgLink;
   private Link usersLink;
   private Link privilegesLink;
   private Link securedObjectsLink;
@@ -51,11 +54,12 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
   private Organization organization;
 
   public OrganizationResourceImpl(Organization organization){
-    Link createdOrgLink = Abdera.getNewFactory().newLink();
-    createdOrgLink.setHref(BASE_URI.toString() + "/shortname/"+ organization.getUniqueShortName());
-
-    this.orgLink = createdOrgLink;
-    orgURI = getBaseUriBuilder().path(orgLink.getHref().toString()).build();
+    DefaultResouceLinkImpl linkImpl = new DefaultResouceLinkImpl();
+    this.orgLink = linkImpl;
+    linkImpl.setUri(getBaseUriBuilder().path("sn").path(organization.getUniqueShortName()).build());
+    linkImpl.setMimeType(MediaType.APPLICATION_ATOM_XML);
+    linkImpl.setRel(REL_ORG);
+    orgURI = getBaseUriBuilder().path(orgLink.getUri().toString()).build();
 
     ClientResponse response = ClientUtil.readClientResponse(orgURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
@@ -63,14 +67,11 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
 
       Feed feed = AtomClientUtil.getFeed(response);
 
-      orgLink = feed.getLink(REL_ALT);
-
-      orgLink = feed.getLink(REL_ORGS);
       usersLink = feed.getLink(REL_USERS);
       privilegesLink = feed.getLink(REL_PRIVILEGES);
       securedObjectsLink = feed.getLink(REL_SECUREDOBJECTS);
 
-      URI orgContentURI = UriBuilder.fromUri(BASE_URI.toString() + orgLink.getHref().toString()).build();
+      URI orgContentURI = getBaseUriBuilder().path(orgLink.getUri().toString()).build();
       ClientResponse contentResponse = ClientUtil.readClientResponse(orgContentURI, getHttpClient(), MediaType.APPLICATION_JSON);
 
       if(contentResponse.getStatus() != 401){        
@@ -81,7 +82,7 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
 
       Feed contentFeed = AtomClientUtil.getFeed(response);
 
-      String href = orgLink.getHref().toString();
+      String href = orgLink.getUri().toString();
 
       if(response.getHeaders().getFirst("Cache-Control") != null)
         isCacheEnabled = response.getHeaders().getFirst("Cache-Control").equals("no-cache");
@@ -108,10 +109,10 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
 
   }
 
-  public OrganizationResourceImpl(Link orgLink) {
+  public OrganizationResourceImpl(ResouceLink orgLink) {
 
     this.orgLink = orgLink;
-    orgURI = getBaseUriBuilder().path(orgLink.getHref().toString()).build();
+    orgURI = getBaseUriBuilder().path(orgLink.getUri().toString()).build();
 
     ClientResponse response = ClientUtil.readClientResponse(orgURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
 
@@ -119,24 +120,24 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
 
       Feed feed = AtomClientUtil.getFeed(response);
 
-      orgLink = feed.getLink(REL_ALT);
-
       //orgLink = feed.getLink(REL_ORG);
       usersLink = feed.getLink(REL_USERS);
       privilegesLink = feed.getLink(REL_PRIVILEGES);
       securedObjectsLink = feed.getLink(REL_SECUREDOBJECTS);
 
-      URI orgContentURI = getBaseUriBuilder().path(orgLink.getHref().toString()).build();
+      URI orgContentURI = getBaseUriBuilder().path(orgLink.getUri().toString()).path("content").build();
       ClientResponse contentResponse = ClientUtil.readClientResponse(orgContentURI, getHttpClient(), MediaType.APPLICATION_JSON);
 
-      if(contentResponse.getStatus() != 401){        
+      if(contentResponse.getStatus() == 200){
         organization = ClientUtil.getResponseEntity(contentResponse, com.smartitengineering.user.client.impl.domain.Organization.class);
-        
+      }
+      else {
+        throw new GenericClientException(contentResponse);
       }
 
       //Feed contentFeed = ClientUtil.getFeed(response);
 
-      String href = orgLink.getHref().toString();
+      String href = orgLink.getUri().toString();
 
       if(response.getHeaders().getFirst("Cache-Control") != null)
         isCacheEnabled = response.getHeaders().getFirst("Cache-Control").equals("no-cache");
@@ -164,7 +165,7 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
 
   @Override
   public UsersResource getUsersResource() {
-    return new UsersResourceImpl(usersLink);
+    return new UsersResourceImpl(AtomClientUtil.convertFromAtomLinkToResourceLink(usersLink));
   }
 
   @Override
