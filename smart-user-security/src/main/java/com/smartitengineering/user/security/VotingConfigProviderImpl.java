@@ -4,10 +4,6 @@
  */
 package com.smartitengineering.user.security;
 
-import com.smartitengineering.user.security.acl.impl.ConfigAttributeImpl;
-import com.smartitengineering.user.security.acl.impl.ConfigAttributeImpl;
-import com.smartitengineering.user.security.VotingConfig;
-import com.smartitengineering.user.security.VotingConfigProvider;
 import java.io.InputStream;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
@@ -25,59 +21,57 @@ import org.springframework.security.acls.domain.BasePermission;
  *
  * @author modhu7
  */
-public class VotingConfigProviderImpl implements VotingConfigProvider{
+public class VotingConfigProviderImpl implements VotingConfigProvider {
 
-    private List<VotingConfig> listVotingConfig = new ArrayList<VotingConfig>();
+  private List<VotingConfig> listVotingConfig = new ArrayList<VotingConfig>();
 
-    public VotingConfigProviderImpl(String xmlFileName) {
-        try {
-            InputStream votersStream = getClass().getClassLoader().getResourceAsStream(xmlFileName);
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            Document doc = db.parse(votersStream);
-            doc.getDocumentElement().normalize();
-            NodeList nodeLst = doc.getElementsByTagName("voter");
+  public VotingConfigProviderImpl(String xmlFileName) {
+    try {
+      InputStream votersStream = getClass().getClassLoader().getResourceAsStream(xmlFileName);
+      DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+      DocumentBuilder db = dbf.newDocumentBuilder();
+      Document doc = db.parse(votersStream);
+      doc.getDocumentElement().normalize();
+      NodeList nodeLst = doc.getElementsByTagName("voter");
 
-            for (int s = 0; s < nodeLst.getLength(); s++) {
+      for (int s = 0; s < nodeLst.getLength(); s++) {
 
-                Node voterNode = nodeLst.item(s);
-                VotingConfig votingConfig = new VotingConfig();
+        Node voterNode = nodeLst.item(s);
+        VotingConfig votingConfig = new VotingConfig();
 
-                if (voterNode.getNodeType() == Node.ELEMENT_NODE) {
+        if (voterNode.getNodeType() == Node.ELEMENT_NODE) {
 
-                    Element voterElement = (Element) voterNode;
+          Element voterElement = (Element) voterNode;
 
-                    NodeList permissionElementList = voterElement.getElementsByTagName("permission");
-                    Element permissionElement = (Element) permissionElementList.item(0);
-                    NodeList permissions = permissionElement.getChildNodes();
-                    String permission = ((Node) permissions.item(0)).getNodeValue();                    
-                    votingConfig.setRequirePermission(new Permission[]{BasePermission.buildFromMask(Integer.parseInt(permission))});
+          NodeList permissionElementList = voterElement.getElementsByTagName("permission");
+          Element permissionElement = (Element) permissionElementList.item(0);
+          NodeList permissions = permissionElement.getChildNodes();
+          String permission = ((Node) permissions.item(0)).getNodeValue();
+          votingConfig.setRequirePermission(new Permission[]{BasePermission.buildFromMask(Integer.parseInt(permission))});
 
-                    NodeList roleList = voterElement.getElementsByTagName("role");
-                    Element roleElement = (Element) roleList.item(0);
-                    NodeList roles = roleElement.getChildNodes();
-                    String role = ((Node) roles.item(0)).getNodeValue();
-                    ConfigAttribute attribute = new ConfigAttributeImpl(role);
-                    votingConfig.setProcessConfigAttribute(attribute);
-                   
+          NodeList roleList = voterElement.getElementsByTagName("role");
+          Element roleElement = (Element) roleList.item(0);
+          NodeList roles = roleElement.getChildNodes();
+          String role = ((Node) roles.item(0)).getNodeValue();
+          ConfigAttribute attribute = new ConfigAttributeImpl(role);
+          votingConfig.setProcessConfigAttribute(attribute);
 
-                    listVotingConfig.add(votingConfig);
-                }
-            }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+          listVotingConfig.add(votingConfig);
         }
+      }
+
     }
-
-    public List<VotingConfig> getVotingConfigList() {
-        if(listVotingConfig==null){
-            return new ArrayList<VotingConfig>();
-        }
-        return listVotingConfig;
+    catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 
-   
-
-    
+  @Override
+  public List<VotingConfig> getVotingConfigList() {
+    if (listVotingConfig == null) {
+      return new ArrayList<VotingConfig>();
+    }
+    return listVotingConfig;
+  }
 }

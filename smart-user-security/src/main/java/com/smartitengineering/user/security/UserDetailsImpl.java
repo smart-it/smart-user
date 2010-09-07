@@ -17,51 +17,58 @@ import org.springframework.security.userdetails.UserDetails;
  */
 public class UserDetailsImpl implements UserDetails {
 
-    private User user = new User();
+  private User user = new User();
 
-    public User getUser() {
-        return user;
-    }
+  public User getUser() {
+    return user;
+  }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+  public void setUser(User user) {
+    this.user = user;
+  }
 
-    public GrantedAuthority[] getAuthorities() {       
-        Set<SmartUserAuthority> authoritiesSet = new HashSet<SmartUserAuthority>();
-        for (Role role : user.getRoles()) {
-            authoritiesSet.add(new SmartUserAuthority(role.getName()));
-        }
-        return authoritiesSet.toArray(new GrantedAuthority[authoritiesSet.size()]);
+  @Override
+  public GrantedAuthority[] getAuthorities() {
+    Set<SmartUserAuthority> authoritiesSet = new HashSet<SmartUserAuthority>();
+    for (Role role : user.getRoles()) {
+      authoritiesSet.add(new SmartUserAuthority(role.getName()));
     }
+    return authoritiesSet.toArray(new GrantedAuthority[authoritiesSet.size()]);
+  }
 
-    public String getPassword() {
-        System.out.println("--------------------- password " + user.getPassword());
-        return user.getPassword();
-    }
+  @Override
+  public String getPassword() {
+    System.out.println("--------------------- password " + user.getPassword());
+    return user.getPassword();
+  }
 
-    public String getUsername() {
-        System.out.println("--------------------- username " + user.getUsername());
-        return getUserNameWithOrganizationName();
-    }
+  @Override
+  public String getUsername() {
+    System.out.println("--------------------- username " + user.getUsername());
+    return getUserNameWithOrganizationName();
+  }
 
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
 
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
 
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
 
-    public boolean isEnabled() {
-        return true;
-    }
+  @Override
+  public boolean isEnabled() {
+    return true;
+  }
 
-    private String getUserNameWithOrganizationName() {
-        return user.getUsername() + "@" + user.getOrganization().getUniqueShortName();
-    }
+  private String getUserNameWithOrganizationName() {
+    return user.getUsername() + "@" + user.getOrganization().getUniqueShortName();
+  }
 }

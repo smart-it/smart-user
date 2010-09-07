@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.security;
 
 /**
@@ -11,6 +10,5 @@ package com.smartitengineering.user.security;
  */
 public interface OidRetrievalStrategy {
 
-    public String getOid(Object object);
-
+  public String getOid(Object object);
 }

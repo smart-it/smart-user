@@ -4,18 +4,14 @@
  */
 package com.smartitengineering.user.security;
 
-import java.util.Collection;
 import java.util.Iterator;
 import org.springframework.security.AccessDeniedException;
 import org.springframework.security.Authentication;
 import org.springframework.security.ConfigAttribute;
 import org.springframework.security.ConfigAttributeDefinition;
-import org.springframework.security.InsufficientAuthenticationException;
-import org.springframework.security.intercept.web.FilterInvocation;
 import org.springframework.security.vote.AbstractAccessDecisionManager;
 import org.springframework.security.vote.AccessDecisionVoter;
 import org.springframework.security.vote.RoleVoter;
-import org.springframework.security.vote.UnanimousBased;
 
 /**
  *
@@ -71,7 +67,7 @@ public class SmartAccessDecisionManager extends AbstractAccessDecisionManager {
               break;
           }
         }
-      }     
+      }
     }
 
     // To get this far, there were no deny votes
