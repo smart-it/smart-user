@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.user.security.acl;
+package com.smartitengineering.user.security;
 
 import org.springframework.security.acls.sid.Sid;
 
