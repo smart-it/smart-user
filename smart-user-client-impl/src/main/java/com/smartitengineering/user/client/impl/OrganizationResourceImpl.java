@@ -77,11 +77,7 @@ class OrganizationResourceImpl extends AbstractFeedClientResource<Resource<? ext
 
   @Override
   public void update() {
-    ClientResponse response = put(MediaType.APPLICATION_JSON, getOrganization());
-    final int status = response.getStatus();
-    if (!(status == ClientResponse.Status.OK.getStatusCode() || status ==
-          ClientResponse.Status.SEE_OTHER.getStatusCode() || status == ClientResponse.Status.FOUND.getStatusCode())) {
-      throw new GenericClientException(response);
-    }
+    put(MediaType.APPLICATION_JSON, getOrganization(), ClientResponse.Status.OK, ClientResponse.Status.SEE_OTHER,
+        ClientResponse.Status.FOUND);
   }
 }

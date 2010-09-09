@@ -38,14 +38,10 @@ class OrganizationsResourceImpl extends AbstractFeedClientResource<Organizations
 
   @Override
   public OrganizationResource create(Organization organization) {
-    ClientResponse response = post(MediaType.APPLICATION_JSON, organization);
-    if (response.getStatus() == ClientResponse.Status.CREATED.getStatusCode()) {
-      return new OrganizationResourceImpl(ClientUtil.createResourceLink(REL_ORG, response.getLocation(),
-                                                                        MediaType.APPLICATION_ATOM_XML), this);
-    }
-    else {
-      throw new GenericClientException(response);
-    }
+    ClientResponse response = post(MediaType.APPLICATION_JSON, organization, ClientResponse.Status.CREATED);
+    final ResourceLink orgLink = ClientUtil.createResourceLink(REL_ORG, response.getLocation(),
+                                                               MediaType.APPLICATION_ATOM_XML);
+    return new OrganizationResourceImpl(orgLink, this);
   }
 
   @Override
