@@ -50,7 +50,7 @@ class LoginResourceImpl
 
   @Override
   public OrganizationsResource getOrganizationsResource() {
-    return new OrganizationsResourceImpl(getRelatedResourceUris().getFirst(REL_ORGS));
+    return new OrganizationsResourceImpl(getRelatedResourceUris().getFirst(REL_ORGS), this);
   }
 
   @Override
@@ -65,7 +65,7 @@ class LoginResourceImpl
 
   @Override
   public OrganizationResource getOrganizationResource() {
-    return new OrganizationResourceImpl(getRelatedResourceUris().getFirst(REL_ORG));
+    return new OrganizationResourceImpl(getRelatedResourceUris().getFirst(REL_ORG), this);
   }
 
   @Override

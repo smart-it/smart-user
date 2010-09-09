@@ -12,6 +12,7 @@ import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;
 import com.smartitengineering.util.rest.client.jersey.cache.CacheableClientConfigProps;
 import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.atom.abdera.impl.provider.entity.FeedProvider;
 import java.net.URISyntaxException;
 import org.apache.abdera.model.Feed;
 
@@ -52,6 +53,8 @@ public class RootResourceImpl
   protected void processClientConfig(ClientConfig clientConfig) {
     clientConfig.getProperties().put(CacheableClientConfigProps.USERNAME, LoginCenter.getUsername());
     clientConfig.getProperties().put(CacheableClientConfigProps.PASSWORD, LoginCenter.getPassword());
+    clientConfig.getClasses().add(JacksonJsonProvider.class);
+    clientConfig.getClasses().add(FeedProvider.class);
   }
 
   @Override
