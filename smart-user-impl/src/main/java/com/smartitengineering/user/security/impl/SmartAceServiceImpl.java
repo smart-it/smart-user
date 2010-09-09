@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleStateException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -30,7 +29,7 @@ import org.hibernate.exception.ConstraintViolationException;
  */
 public class SmartAceServiceImpl implements SmartAceService {
 
-    private CommonReadDao<SmartAce> smartAceReadDao;
+    private CommonReadDao<SmartAce, Integer> smartAceReadDao;
     private CommonWriteDao<SmartAce> smartAceWriteDao;
     private SmartAclService smartAclService;
 
@@ -42,11 +41,11 @@ public class SmartAceServiceImpl implements SmartAceService {
         this.smartAclService = smartAclService;
     }
 
-    public CommonReadDao<SmartAce> getSmartAceReadDao() {
+    public CommonReadDao<SmartAce, Integer> getSmartAceReadDao() {
         return smartAceReadDao;
     }
 
-    public void setSmartAceReadDao(CommonReadDao<SmartAce> smartAceReadDao) {
+    public void setSmartAceReadDao(CommonReadDao<SmartAce, Integer> smartAceReadDao) {
         this.smartAceReadDao = smartAceReadDao;
     }
 

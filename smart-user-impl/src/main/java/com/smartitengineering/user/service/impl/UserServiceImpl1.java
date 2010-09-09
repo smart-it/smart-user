@@ -32,11 +32,11 @@ import org.hibernate.exception.ConstraintViolationException;
 public class UserServiceImpl1 //implements UserService, RoleService,
         /*PrivilegeService*/ {
 
-    private CommonReadDao<User> userReadDao;
+    private CommonReadDao<User, Integer> userReadDao;
     private CommonWriteDao<User> userWriteDao;
-    private CommonReadDao<Role> roleReadDao;
+    private CommonReadDao<Role, Integer> roleReadDao;
     private CommonWriteDao<Role> roleWriteDao;
-    private CommonReadDao<Privilege> privilegeReadDao;
+    private CommonReadDao<Privilege, Integer> privilegeReadDao;
     private CommonWriteDao<Privilege> privilegeWriteDao;
     private PersonService personService;
 
@@ -251,11 +251,11 @@ public class UserServiceImpl1 //implements UserService, RoleService,
         return privileges;
     }
 
-    public CommonReadDao<User> getUserReadDao() {
+    public CommonReadDao<User, Integer> getUserReadDao() {
         return userReadDao;
     }
 
-    public void setUserReadDao(CommonReadDao<User> userReadDao) {
+    public void setUserReadDao(CommonReadDao<User, Integer> userReadDao) {
         this.userReadDao = userReadDao;
     }
 
@@ -267,11 +267,11 @@ public class UserServiceImpl1 //implements UserService, RoleService,
         this.userWriteDao = userWriteDao;
     }
 
-    public CommonReadDao<Privilege> getPrivilegeReadDao() {
+    public CommonReadDao<Privilege, Integer> getPrivilegeReadDao() {
         return privilegeReadDao;
     }
 
-    public void setPrivilegeReadDao(CommonReadDao<Privilege> privilegeReadDao) {
+    public void setPrivilegeReadDao(CommonReadDao<Privilege, Integer> privilegeReadDao) {
         this.privilegeReadDao = privilegeReadDao;
     }
 
@@ -283,11 +283,11 @@ public class UserServiceImpl1 //implements UserService, RoleService,
         this.privilegeWriteDao = privilegeWriteDao;
     }
 
-    public CommonReadDao<Role> getRoleReadDao() {
+    public CommonReadDao<Role, Integer> getRoleReadDao() {
         return roleReadDao;
     }
 
-    public void setRoleReadDao(CommonReadDao<Role> roleReadDao) {
+    public void setRoleReadDao(CommonReadDao<Role, Integer> roleReadDao) {
         this.roleReadDao = roleReadDao;
     }
 

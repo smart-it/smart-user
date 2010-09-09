@@ -32,7 +32,7 @@ import org.hibernate.exception.ConstraintViolationException;
  */
 public class SmartAclServiceImpl implements SmartAclService {
 
-    private CommonReadDao<SmartAcl> smartAclReadDao;
+    private CommonReadDao<SmartAcl, Integer> smartAclReadDao;
     private CommonWriteDao<SmartAcl> smartAclWriteDao;
     private SmartAceService smartAceService;
 
@@ -46,11 +46,11 @@ public class SmartAclServiceImpl implements SmartAclService {
 
 
 
-    public CommonReadDao<SmartAcl> getSmartAclReadDao() {
+    public CommonReadDao<SmartAcl, Integer> getSmartAclReadDao() {
         return smartAclReadDao;
     }
 
-    public void setSmartAclReadDao(CommonReadDao<SmartAcl> smartAclReadDao) {
+    public void setSmartAclReadDao(CommonReadDao<SmartAcl, Integer> smartAclReadDao) {
         this.smartAclReadDao = smartAclReadDao;
     }
 
