@@ -4,7 +4,7 @@
  */
 package com.smartitengineering.smartuser.client.api;
 
-import com.smartitengineering.util.rest.client.ResouceLink;
+import com.smartitengineering.util.rest.client.ResourceLink;
 
 /**
  *
@@ -15,5 +15,5 @@ public interface RootResource{
   //public OrganizationsResource getOrganizationsResource();
   LoginResource performAuthentication(String userName, String password);
 
-  ResouceLink getLoginLink();
+  ResourceLink getLoginLink();
 }

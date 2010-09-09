@@ -11,7 +11,7 @@ import com.smartitengineering.smartuser.client.api.UserResource;
 import com.smartitengineering.smartuser.client.api.UsersResource;
 import com.smartitengineering.util.rest.atom.AtomClientUtil;
 import com.smartitengineering.util.rest.client.ClientUtil;
-import com.smartitengineering.util.rest.client.ResouceLink;
+import com.smartitengineering.util.rest.client.ResourceLink;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.net.URI;
@@ -20,10 +20,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriBuilder;
 import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
-import org.apache.abdera.model.Link;
 
 /**
  *
@@ -34,7 +32,7 @@ class UsersResourceImpl extends AbstractClientImpl implements UsersResource{
   public static final String REL_USERS = "users";
   public static final String REL_ALT = "alternate";
   
-  private ResouceLink usersLink;
+  private ResourceLink usersLink;
   private URI usersURI;
 
   private boolean isCacheEnabled;
@@ -42,7 +40,7 @@ class UsersResourceImpl extends AbstractClientImpl implements UsersResource{
   private Date expirationDate;
   private List<Entry> entries;
 
-  public UsersResourceImpl(ResouceLink usersLink) {
+  public UsersResourceImpl(ResourceLink usersLink) {
 
     this.usersLink = usersLink;
 

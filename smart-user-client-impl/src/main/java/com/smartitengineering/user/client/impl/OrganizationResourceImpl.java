@@ -15,15 +15,13 @@ import com.smartitengineering.smartuser.client.api.UsersResource;
 import com.smartitengineering.util.rest.atom.AtomClientUtil;
 import com.smartitengineering.util.rest.client.ClientUtil;
 import com.smartitengineering.util.rest.client.DefaultResouceLinkImpl;
-import com.smartitengineering.util.rest.client.ResouceLink;
+import com.smartitengineering.util.rest.client.ResourceLink;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriBuilder;
-import org.apache.abdera.Abdera;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 
@@ -41,7 +39,7 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
   public static final String REL_SECUREDOBJECTS = "securedobjects";
 
   private URI orgURI;
-  private ResouceLink orgLink;
+  private ResourceLink orgLink;
   private Link usersLink;
   private Link privilegesLink;
   private Link securedObjectsLink;
@@ -109,7 +107,7 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
 
   }
 
-  public OrganizationResourceImpl(ResouceLink orgLink) {
+  public OrganizationResourceImpl(ResourceLink orgLink) {
 
     this.orgLink = orgLink;
     orgURI = getBaseUriBuilder().path(orgLink.getUri().toString()).build();

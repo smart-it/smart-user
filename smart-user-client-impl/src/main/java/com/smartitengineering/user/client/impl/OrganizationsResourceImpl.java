@@ -14,7 +14,7 @@ import com.smartitengineering.util.rest.atom.AtomClientUtil;
 
 import com.smartitengineering.util.rest.atom.PaginatedFeedEntitiesList;
 import com.smartitengineering.util.rest.client.ClientUtil;
-import com.smartitengineering.util.rest.client.ResouceLink;
+import com.smartitengineering.util.rest.client.ResourceLink;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.net.URI;
@@ -32,7 +32,7 @@ import org.apache.abdera.model.Feed;
  */
 class OrganizationsResourceImpl extends AbstractClientImpl implements OrganizationsResource{
 
-  private ResouceLink orgsLink;
+  private ResourceLink orgsLink;
   private URI orgsURI;
   private static final String REL_ORG = "Organization";
   private static final String REL_ALT = "alternate";
@@ -43,7 +43,7 @@ class OrganizationsResourceImpl extends AbstractClientImpl implements Organizati
   private List<Entry> entries;
  
 
-  OrganizationsResourceImpl(ResouceLink orgsLink) {
+  OrganizationsResourceImpl(ResourceLink orgsLink) {
 
     this.orgsLink = orgsLink;
 
