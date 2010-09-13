@@ -20,6 +20,7 @@ import org.springframework.context.ApplicationContext;
  *
  * @author russel
  */
+@Deprecated
 public class AbstractClientImpl {
 
   protected static final URI BASE_URI;

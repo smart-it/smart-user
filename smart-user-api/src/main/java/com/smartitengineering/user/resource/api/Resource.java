@@ -11,6 +11,7 @@ import java.util.Date;
  *
  * @author modhu7
  */
+@Deprecated
 public interface Resource<T> {
 
   public boolean isCacheEnabled();
