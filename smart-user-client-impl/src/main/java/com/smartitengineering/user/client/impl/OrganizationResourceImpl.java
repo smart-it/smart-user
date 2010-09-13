@@ -57,8 +57,7 @@ class OrganizationResourceImpl extends AbstractFeedClientResource<Resource<? ext
 
   @Override
   public PrivilegesResource getPrivilegesResource() {
-    return new PrivilegesResourceImpl(AtomClientUtil.convertFromResourceLinkToAtomLink(getRelatedResourceUris().getFirst(
-        REL_PRIVILEGES)));
+    return new PrivilegesResourceImpl(getRelatedResourceUris().getFirst(REL_PRIVILEGES), this);
   }
 
   @Override
