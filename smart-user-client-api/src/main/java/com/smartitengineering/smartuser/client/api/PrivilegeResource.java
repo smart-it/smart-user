@@ -16,4 +16,6 @@ public interface PrivilegeResource extends WritableResource<Feed> {
   public Privilege getPrivilege();
 
   public OrganizationResource getOrganizationResource();
+
+  public void update();
 }

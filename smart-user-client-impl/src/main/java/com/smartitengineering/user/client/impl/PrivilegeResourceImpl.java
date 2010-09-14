@@ -11,7 +11,9 @@ import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;
 import com.smartitengineering.util.rest.client.SimpleResourceImpl;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.config.ClientConfig;
+import javax.ws.rs.core.MediaType;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 
@@ -50,5 +52,11 @@ public class PrivilegeResourceImpl extends AbstractFeedClientResource<Resource<?
   @Override
   public OrganizationResource getOrganizationResource() {
     throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public void update() {
+    put(MediaType.APPLICATION_JSON, getPrivilege(), ClientResponse.Status.OK, ClientResponse.Status.SEE_OTHER,
+        ClientResponse.Status.FOUND);
   }
 }
