@@ -50,8 +50,7 @@ class OrganizationResourceImpl extends AbstractFeedClientResource<Resource<? ext
 
   @Override
   public SecuredObjectsResource getSecuredObjectsResource() {
-    return new SecuredObjectsResourceImpl(AtomClientUtil.convertFromResourceLinkToAtomLink(getRelatedResourceUris().
-        getFirst(REL_SECUREDOBJECTS)));
+    return new SecuredObjectsResourceImpl(getRelatedResourceUris().getFirst(REL_SECUREDOBJECTS), this);
   }
 
   @Override
