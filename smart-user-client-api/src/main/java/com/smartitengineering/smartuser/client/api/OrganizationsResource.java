@@ -16,7 +16,6 @@ public interface OrganizationsResource extends WritableResource<Feed> {
 
   public OrganizationResource create(Organization organization);
 
-  //public Collection<LinkedResource<OrganizationResource>> getOrganizationResources();
   public List<OrganizationResource> getOrganizationResources();
 
   public OrganizationsResource search(OrganizationFilter filter);

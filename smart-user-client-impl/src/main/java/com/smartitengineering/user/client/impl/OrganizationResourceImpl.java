@@ -4,7 +4,6 @@
  */
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.smartuser.client.api.GenericClientException;
 import com.smartitengineering.smartuser.client.api.Organization;
 import com.smartitengineering.smartuser.client.api.OrganizationResource;
 import com.smartitengineering.smartuser.client.api.PrivilegesResource;

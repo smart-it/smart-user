@@ -20,6 +20,7 @@ public interface OrganizationResource extends WritableResource<Feed> {
   public PrivilegesResource getPrivilegesResource();
 
   //public RolesResource getRolesResource();
+
   public Organization getOrganization();
 
   public void update();
