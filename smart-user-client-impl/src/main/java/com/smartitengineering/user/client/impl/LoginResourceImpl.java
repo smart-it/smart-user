@@ -11,7 +11,6 @@ import com.smartitengineering.smartuser.client.api.OrganizationsResource;
 import com.smartitengineering.smartuser.client.api.UserResource;
 import com.smartitengineering.smartuser.client.api.UsersResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
-import com.smartitengineering.util.rest.atom.AtomClientUtil;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -73,15 +72,15 @@ class LoginResourceImpl
                                                            String organizationName,
                                                            String oid,
                                                            Integer permission) {
-    return new AuthorizationResourceImpl(username, organizationName, oid, permission, AtomClientUtil.
-        convertFromResourceLinkToAtomLink(getRelatedResourceUris().getFirst(REL_ACL_AUTH)));
+    return new AuthorizationResourceImpl(username, organizationName, oid, permission, getRelatedResourceUris().getFirst(
+        REL_ACL_AUTH), this);
   }
 
   @Override
-  public AuthorizationResource getRoleAuthorizationResource(String username,
+  public AuthorizationResource getRoleAuthorizationResource(String username, String organizationName,
                                                             String configAttribute) {
-    return new AuthorizationResourceImpl(username, configAttribute, AtomClientUtil.convertFromResourceLinkToAtomLink(
-        getRelatedResourceUris().getFirst(REL_ROLE_AUTH)));
+    return new AuthorizationResourceImpl(username, organizationName, configAttribute, getRelatedResourceUris().getFirst(
+        REL_ROLE_AUTH), this);
   }
 
   protected static URI getSelfUri(ResourceLink loginLink,
