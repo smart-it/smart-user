@@ -4,17 +4,18 @@
  */
 package com.smartitengineering.smartuser.client.api;
 
-import com.smartitengineering.user.resource.api.LinkedResource;
 import com.smartitengineering.user.resource.api.Resource;
-import java.util.Collection;
+import com.smartitengineering.util.rest.client.WritableResource;
+import java.util.List;
+import org.apache.abdera.model.Feed;
 
 /**
  *
  * @author modhu7
  */
-public interface RolesResource extends Resource {
+public interface RolesResource extends WritableResource<Feed> {
 
-  public Collection<LinkedResource<RoleResource>> getRoleResources();
+  public List<RoleResource> getRoleResources();
 
   public RoleResource create(Role role);
 

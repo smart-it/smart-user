@@ -4,15 +4,16 @@
  */
 package com.smartitengineering.smartuser.client.api;
 
-import com.smartitengineering.user.resource.api.WritableResource;
+import com.smartitengineering.util.rest.client.WritableResource;
+import org.apache.abdera.model.Feed;
 
 /**
  *
  * @author modhu7
  */
-public interface RoleResource extends WritableResource<RoleResource> {
+public interface RoleResource extends WritableResource<Feed> {
 
   public Role getRole();
 
-  public OrganizationResource getOrganizationResource();
+  public void update();
 }
