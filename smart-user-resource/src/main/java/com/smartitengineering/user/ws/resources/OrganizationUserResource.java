@@ -78,6 +78,8 @@ public class OrganizationUserResource extends AbstractResource {
   private String organizationUniqueShortName;
   @PathParam("userName")
   private String userName;
+  private String REL_USER_PRIVILEGES = "privileges";
+  private String REL_USER_ROLES = "roles";
 
   public OrganizationUserResource(@PathParam("organizationShortName") String organizationShortName, @PathParam(
       "userName") String userName) {
@@ -168,6 +170,20 @@ public class OrganizationUserResource extends AbstractResource {
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(altLink);
+
+    Link privilegesLink = abderaFactory.newLink();
+    privilegesLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(userPerson.getUser().getOrganization().getUniqueShortName(),
+                                                           userPerson.getUser().getUsername()).toString());
+    privilegesLink.setRel(REL_USER_PRIVILEGES);
+    privilegesLink.setMimeType(MediaType.APPLICATION_JSON);
+    userFeed.addLink(privilegesLink);
+
+    Link rolesLink = abderaFactory.newLink();
+    rolesLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(userPerson.getUser().getOrganization().getUniqueShortName(),
+                                                           userPerson.getUser().getUsername()).toString());
+    rolesLink.setRel(REL_USER_ROLES);
+    rolesLink.setMimeType(MediaType.APPLICATION_JSON);
+    userFeed.addLink(rolesLink);
 
     return userFeed;
   }
