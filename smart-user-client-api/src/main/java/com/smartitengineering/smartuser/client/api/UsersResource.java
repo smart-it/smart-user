@@ -5,20 +5,19 @@
 package com.smartitengineering.smartuser.client.api;
 
 
-import com.smartitengineering.user.resource.api.Resource;
+import com.smartitengineering.util.rest.client.WritableResource;
 import java.util.List;
+import org.apache.abdera.model.Feed;
 
 /**
  *
  * @author modhu7
  */
-public interface UsersResource extends Resource {
-
-  //public Collection<LinkedResource<UserResource>> getUserResources();
+public interface UsersResource extends WritableResource<Feed> {
 
   public List<UserResource> getUserResources();
 
-  public UserResource create(User user);
+  public UserResource create(UserPerson user);
 
   public UsersResource search(UserFilter filter);
 }

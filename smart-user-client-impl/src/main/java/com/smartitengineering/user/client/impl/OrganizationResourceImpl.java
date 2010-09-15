@@ -45,7 +45,7 @@ class OrganizationResourceImpl extends AbstractFeedClientResource<Resource<? ext
 
   @Override
   public UsersResource getUsersResource() {
-    return new UsersResourceImpl(getRelatedResourceUris().getFirst(REL_USERS));
+    return new UsersResourceImpl(getRelatedResourceUris().getFirst(REL_USERS), this);
   }
 
   @Override

@@ -54,7 +54,7 @@ class LoginResourceImpl
 
   @Override
   public UsersResource getUsersResource(String OrganizationShortName) {
-    return new UsersResourceImpl(getRelatedResourceUris().getFirst(REL_USERS));
+    return new UsersResourceImpl(getRelatedResourceUris().getFirst(REL_USERS), this);
   }
 
   @Override
