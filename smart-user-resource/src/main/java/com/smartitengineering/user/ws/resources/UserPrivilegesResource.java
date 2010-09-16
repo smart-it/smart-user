@@ -84,9 +84,7 @@ public class UserPrivilegesResource extends AbstractResource {
   public Response get() {
     return get(null, true);
   }
-
-  @GET
-  @Produces(MediaType.APPLICATION_ATOM_XML)
+  
   public Response get(String privilegeName, boolean isBefore) {
     ResponseBuilder responseBuilder = Response.ok();
 

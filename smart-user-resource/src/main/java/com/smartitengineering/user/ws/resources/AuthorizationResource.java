@@ -49,7 +49,7 @@ public class AuthorizationResource extends AbstractResource {
     ROLE_AUTHORIZATION_URI_BUILDER = UriBuilder.fromResource(AuthorizationResource.class);
     try {
       ROLE_AUTHORIZATION_URI_BUILDER.path(AuthorizationResource.class.getMethod("getRoleAuthorization",
-                                                                                String.class, String.class));
+                                                                                String.class, String.class, String.class));
     }
     catch (NoSuchMethodException ex) {
       Logger.getLogger(AuthorizationResource.class.getName()).log(Level.SEVERE, null, ex);
