@@ -15,6 +15,4 @@ public interface GeoLocation {
   public Double getLatitude();
 
   public Double getLongitude();
-
-  public Date getLastModifiedDate();
 }

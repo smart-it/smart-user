@@ -15,7 +15,6 @@ public class Name extends AbstractClientDomain implements com.smartitengineering
   private String firstName;
   private String lastName;
   private String middleInitial;
-  private Date lastModifiedDate;
 
   @Override
   public String getFirstName() {
@@ -51,17 +50,5 @@ public class Name extends AbstractClientDomain implements com.smartitengineering
       return;
     }
     this.middleInitial = middleInitial;
-  }
-
-  @Override
-  public Date getLastModifiedDate() {
-    return lastModifiedDate;
-  }
-
-  public void setLastModifiedDate(Date lastModifiedDate) {
-    if (lastModifiedDate == null) {
-      return;
-    }
-    this.lastModifiedDate = lastModifiedDate;
   }
 }

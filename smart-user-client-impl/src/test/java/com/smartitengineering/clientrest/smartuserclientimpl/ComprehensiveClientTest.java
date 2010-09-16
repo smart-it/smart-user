@@ -5,11 +5,13 @@ import com.smartitengineering.smartuser.client.api.OrganizationResource;
 import com.smartitengineering.smartuser.client.api.OrganizationsResource;
 import com.smartitengineering.smartuser.client.api.RootResource;
 import com.smartitengineering.user.client.impl.RootResourceImpl;
+import com.smartitengineering.user.client.impl.domain.Address;
 import com.smartitengineering.user.client.impl.domain.Organization;
 import com.smartitengineering.user.client.impl.login.LoginCenter;
 import com.smartitengineering.util.rest.client.ApplicationWideClientFactoryImpl;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -81,9 +83,25 @@ public class ComprehensiveClientTest {
     Assert.assertNotNull(orgResource);
     OrganizationsResource orgsResource = loginResource.getOrganizationsResource();
     Organization org = new Organization();
+
+    org.setName("Smart It Engineering");
+    org.setUniqueShortName("SITEL");
+    Address address = new Address();
+    address.setCity("Dhaka");
+    address.setCountry("Bangladesh");
+    address.setState("Dhaka");
+    address.setStreetAddress("23/S hazi chinu miah road, Mohammadpur");
+    address.setZip("1207");    
+    org.setAddress(address);
+    orgsResource.create(org);
     List<OrganizationResource> orgResourceList = new ArrayList<OrganizationResource>(orgsResource.
         getOrganizationResources());
+    System.out.println(orgResourceList.size());
     Assert.assertTrue(orgResourceList.size() == 1);
+  }
+
+  @Test
+  public void doDeleteOrganization(){
   }
 
   @Test
