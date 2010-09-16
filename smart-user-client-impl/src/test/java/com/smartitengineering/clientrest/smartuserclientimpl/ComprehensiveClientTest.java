@@ -1,9 +1,9 @@
 package com.smartitengineering.clientrest.smartuserclientimpl;
 
-import com.smartitengineering.smartuser.client.api.LoginResource;
-import com.smartitengineering.smartuser.client.api.OrganizationResource;
-import com.smartitengineering.smartuser.client.api.OrganizationsResource;
-import com.smartitengineering.smartuser.client.api.RootResource;
+import com.smartitengineering.user.client.api.LoginResource;
+import com.smartitengineering.user.client.api.OrganizationResource;
+import com.smartitengineering.user.client.api.OrganizationsResource;
+import com.smartitengineering.user.client.api.RootResource;
 import com.smartitengineering.user.client.impl.RootResourceImpl;
 import com.smartitengineering.user.client.impl.domain.Address;
 import com.smartitengineering.user.client.impl.domain.Organization;
@@ -92,7 +92,7 @@ public class ComprehensiveClientTest {
     org.setAddress(address);
     OrganizationResource newOrgResource = orgsResource.create(org);
     Assert.assertNotNull(newOrgResource);
-    com.smartitengineering.smartuser.client.api.Organization newlyCreatedOrg = newOrgResource.getOrganization();
+    com.smartitengineering.user.client.api.Organization newlyCreatedOrg = newOrgResource.getOrganization();
     Assert.assertEquals(org.getName(), newlyCreatedOrg.getName());
     Assert.assertEquals(1, orgsResource.getOrganizationResources().size());
     orgsResource.get();

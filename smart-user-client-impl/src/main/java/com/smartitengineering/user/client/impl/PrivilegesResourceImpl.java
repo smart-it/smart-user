@@ -5,10 +5,10 @@
 
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.smartuser.client.api.Privilege;
-import com.smartitengineering.smartuser.client.api.PrivilegeFilter;
-import com.smartitengineering.smartuser.client.api.PrivilegeResource;
-import com.smartitengineering.smartuser.client.api.PrivilegesResource;
+import com.smartitengineering.user.client.api.Privilege;
+import com.smartitengineering.user.client.api.PrivilegeFilter;
+import com.smartitengineering.user.client.api.PrivilegeResource;
+import com.smartitengineering.user.client.api.PrivilegesResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.atom.AtomClientUtil;
 import com.smartitengineering.util.rest.client.ClientUtil;

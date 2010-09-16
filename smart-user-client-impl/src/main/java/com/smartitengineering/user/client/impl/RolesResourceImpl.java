@@ -5,10 +5,10 @@
 
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.smartuser.client.api.Role;
-import com.smartitengineering.smartuser.client.api.RoleFilter;
-import com.smartitengineering.smartuser.client.api.RoleResource;
-import com.smartitengineering.smartuser.client.api.RolesResource;
+import com.smartitengineering.user.client.api.Role;
+import com.smartitengineering.user.client.api.RoleFilter;
+import com.smartitengineering.user.client.api.RoleResource;
+import com.smartitengineering.user.client.api.RolesResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.atom.AtomClientUtil;
 import com.smartitengineering.util.rest.client.ClientUtil;

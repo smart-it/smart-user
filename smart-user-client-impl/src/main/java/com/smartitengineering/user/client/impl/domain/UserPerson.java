@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author russel
  */
-public class UserPerson extends AbstractClientDomain implements com.smartitengineering.smartuser.client.api.UserPerson {
+public class UserPerson extends AbstractClientDomain implements com.smartitengineering.user.client.api.UserPerson {
 
   private User user;
   private Person person;

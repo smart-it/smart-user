@@ -11,7 +11,7 @@ package com.smartitengineering.user.client.impl.domain;
 import java.util.Date;
 
 public class Organization extends AbstractClientDomain implements
-    com.smartitengineering.smartuser.client.api.Organization {
+    com.smartitengineering.user.client.api.Organization {
 
   private String name;
   private String uniqueShortName;

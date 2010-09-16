@@ -4,14 +4,14 @@
  */
 package com.smartitengineering.user.client.impl.domain;
 
-import com.smartitengineering.smartuser.client.api.Address;
+import com.smartitengineering.user.client.api.Address;
 import java.util.Date;
 
 /**
  *
  * @author modhu7
  */
-public class Person extends AbstractClientDomain implements com.smartitengineering.smartuser.client.api.Person {
+public class Person extends AbstractClientDomain implements com.smartitengineering.user.client.api.Person {
 
   private BasicIdentity father;
   private BasicIdentity mother;

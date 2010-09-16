@@ -6,10 +6,10 @@
 package com.smartitengineering.user.client.impl;
 
 
-import com.smartitengineering.smartuser.client.api.PrivilegesResource;
-import com.smartitengineering.smartuser.client.api.RolesResource;
-import com.smartitengineering.smartuser.client.api.UserPerson;
-import com.smartitengineering.smartuser.client.api.UserResource;
+import com.smartitengineering.user.client.api.PrivilegesResource;
+import com.smartitengineering.user.client.api.RolesResource;
+import com.smartitengineering.user.client.api.UserPerson;
+import com.smartitengineering.user.client.api.UserResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;

@@ -4,10 +4,10 @@
  */
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.smartuser.client.api.UserFilter;
-import com.smartitengineering.smartuser.client.api.UserPerson;
-import com.smartitengineering.smartuser.client.api.UserResource;
-import com.smartitengineering.smartuser.client.api.UsersResource;
+import com.smartitengineering.user.client.api.UserFilter;
+import com.smartitengineering.user.client.api.UserPerson;
+import com.smartitengineering.user.client.api.UserResource;
+import com.smartitengineering.user.client.api.UsersResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.atom.AtomClientUtil;
 import com.smartitengineering.util.rest.client.ClientUtil;

@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author russel
  */
-public class GeoLocation extends AbstractClientDomain implements com.smartitengineering.smartuser.client.api.GeoLocation {
+public class GeoLocation extends AbstractClientDomain implements com.smartitengineering.user.client.api.GeoLocation {
 
   private Double longitude;
   private Double latitude;

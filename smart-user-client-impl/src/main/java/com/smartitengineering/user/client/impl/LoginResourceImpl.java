@@ -4,12 +4,12 @@
  */
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.smartuser.client.api.AuthorizationResource;
-import com.smartitengineering.smartuser.client.api.LoginResource;
-import com.smartitengineering.smartuser.client.api.OrganizationResource;
-import com.smartitengineering.smartuser.client.api.OrganizationsResource;
-import com.smartitengineering.smartuser.client.api.UserResource;
-import com.smartitengineering.smartuser.client.api.UsersResource;
+import com.smartitengineering.user.client.api.AuthorizationResource;
+import com.smartitengineering.user.client.api.LoginResource;
+import com.smartitengineering.user.client.api.OrganizationResource;
+import com.smartitengineering.user.client.api.OrganizationsResource;
+import com.smartitengineering.user.client.api.UserResource;
+import com.smartitengineering.user.client.api.UsersResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;

@@ -4,11 +4,11 @@
  */
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.smartuser.client.api.Organization;
-import com.smartitengineering.smartuser.client.api.OrganizationResource;
-import com.smartitengineering.smartuser.client.api.PrivilegesResource;
-import com.smartitengineering.smartuser.client.api.SecuredObjectsResource;
-import com.smartitengineering.smartuser.client.api.UsersResource;
+import com.smartitengineering.user.client.api.Organization;
+import com.smartitengineering.user.client.api.OrganizationResource;
+import com.smartitengineering.user.client.api.PrivilegesResource;
+import com.smartitengineering.user.client.api.SecuredObjectsResource;
+import com.smartitengineering.user.client.api.UsersResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.atom.AtomClientUtil;
 import com.smartitengineering.util.rest.client.Resource;

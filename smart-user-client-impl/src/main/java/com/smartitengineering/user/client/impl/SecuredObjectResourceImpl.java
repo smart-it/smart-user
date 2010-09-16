@@ -4,9 +4,9 @@
  */
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.smartuser.client.api.OrganizationResource;
-import com.smartitengineering.smartuser.client.api.SecuredObject;
-import com.smartitengineering.smartuser.client.api.SecuredObjectResource;
+import com.smartitengineering.user.client.api.OrganizationResource;
+import com.smartitengineering.user.client.api.SecuredObject;
+import com.smartitengineering.user.client.api.SecuredObjectResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;

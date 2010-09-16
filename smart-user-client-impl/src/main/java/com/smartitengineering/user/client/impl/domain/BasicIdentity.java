@@ -11,7 +11,7 @@ import java.util.Date;
  * @author modhu7
  */
 public class BasicIdentity extends AbstractClientDomain implements
-    com.smartitengineering.smartuser.client.api.BasicIdentity {
+    com.smartitengineering.user.client.api.BasicIdentity {
 
   private Name name;
   private String nationalID;

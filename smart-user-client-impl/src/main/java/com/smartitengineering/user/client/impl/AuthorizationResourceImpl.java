@@ -4,7 +4,7 @@
  */
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.smartuser.client.api.AuthorizationResource;
+import com.smartitengineering.user.client.api.AuthorizationResource;
 import com.smartitengineering.util.rest.client.AbstractClientResource;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;

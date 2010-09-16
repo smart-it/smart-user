@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author modhu7
  */
-public class Role extends AbstractClientDomain implements com.smartitengineering.smartuser.client.api.Role {
+public class Role extends AbstractClientDomain implements com.smartitengineering.user.client.api.Role {
 
   private String name;
   private String displayName;

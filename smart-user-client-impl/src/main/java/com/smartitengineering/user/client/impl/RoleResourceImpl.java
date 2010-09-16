@@ -5,7 +5,7 @@
 
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.smartuser.client.api.Role;
+import com.smartitengineering.user.client.api.Role;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;
@@ -21,7 +21,7 @@ import org.apache.abdera.model.Link;
  *
  * @author modhu7
  */
-public class RoleResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements com.smartitengineering.smartuser.client.api.RoleResource{
+public class RoleResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements com.smartitengineering.user.client.api.RoleResource{
   
   private Resource<? extends Role> role;
 

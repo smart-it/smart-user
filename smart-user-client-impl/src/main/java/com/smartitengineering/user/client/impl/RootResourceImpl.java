@@ -4,8 +4,8 @@
  */
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.smartuser.client.api.LoginResource;
-import com.smartitengineering.smartuser.client.api.RootResource;
+import com.smartitengineering.user.client.api.LoginResource;
+import com.smartitengineering.user.client.api.RootResource;
 import com.smartitengineering.user.client.impl.login.LoginCenter;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.client.Resource;
