@@ -10,9 +10,6 @@ import com.smartitengineering.user.client.impl.domain.Organization;
 import com.smartitengineering.user.client.impl.login.LoginCenter;
 import com.smartitengineering.util.rest.client.ApplicationWideClientFactoryImpl;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -93,11 +90,13 @@ public class ComprehensiveClientTest {
     address.setStreetAddress("23/S hazi chinu miah road, Mohammadpur");
     address.setZip("1207");    
     org.setAddress(address);
-    orgsResource.create(org);
-    List<OrganizationResource> orgResourceList = new ArrayList<OrganizationResource>(orgsResource.
-        getOrganizationResources());
-    System.out.println(orgResourceList.size());
-    Assert.assertTrue(orgResourceList.size() == 1);
+    OrganizationResource newOrgResource = orgsResource.create(org);
+    Assert.assertNotNull(newOrgResource);
+    com.smartitengineering.smartuser.client.api.Organization newlyCreatedOrg = newOrgResource.getOrganization();
+    Assert.assertEquals(org.getName(), newlyCreatedOrg.getName());
+    Assert.assertEquals(1, orgsResource.getOrganizationResources().size());
+    orgsResource.get();
+    Assert.assertEquals(2, orgsResource.getOrganizationResources().size());
   }
 
   @Test
