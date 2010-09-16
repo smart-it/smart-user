@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.client.impl.domain;
 
 import java.util.Date;
@@ -11,11 +10,11 @@ import java.util.Date;
  *
  * @author russel
  */
-public class GeoLocation extends AbstractClientDomain implements com.smartitengineering.smartuser.client.api.GeoLocation{
+public class GeoLocation extends AbstractClientDomain implements com.smartitengineering.smartuser.client.api.GeoLocation {
 
-   private Double longitude;
-   private Double latitude;
-   private Date lastModifiedDate;
+  private Double longitude;
+  private Double latitude;
+  private Date lastModifiedDate;
 
   @Override
   public Double getLatitude() {
@@ -28,27 +27,16 @@ public class GeoLocation extends AbstractClientDomain implements com.smartitengi
   }
 
   public void setLatitude(Double latitude) {
-    if(latitude==null)
+    if (latitude == null) {
       return;
+    }
     this.latitude = latitude;
   }
 
   public void setLongitude(Double longitude) {
-    if(longitude==null)
-      return;
-    this.longitude = longitude;
-  }
-
-  @Override
-  public Date getLastModifiedDate() {
-    return lastModifiedDate;
-  }
-
-  public void setLastModifiedDate(Date lastModifiedDate) {
-    if (lastModifiedDate == null) {
+    if (longitude == null) {
       return;
     }
-    this.lastModifiedDate = lastModifiedDate;
+    this.longitude = longitude;
   }
-
 }

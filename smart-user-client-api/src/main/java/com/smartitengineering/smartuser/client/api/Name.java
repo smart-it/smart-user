@@ -17,6 +17,4 @@ public interface Name {
   public String getLastName();
 
   public String getMiddleInitial();
-
-  public Date getLastModifiedDate();
 }

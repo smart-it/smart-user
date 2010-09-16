@@ -33,6 +33,4 @@ public interface Person {
   public String getCellPhoneNumber();
 
   public String getFaxNumber();
-
-  public Date getLastModifiedDate();
 }

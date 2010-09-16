@@ -24,7 +24,6 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
   private String phoneNumber;
   private String cellPhoneNumber;
   private String faxNumber;
-  private Date lastModifiedDate;
 
   @Override
   public BasicIdentity getFather() {
@@ -157,17 +156,4 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
     }
     this.spouse = spouse;
   }
-
-  @Override
-  public Date getLastModifiedDate() {
-    return lastModifiedDate;
-  }
-
-  public void setLastModifiedDate(Date lastModifiedDate) {
-    if (lastModifiedDate == null) {
-      return;
-    }
-    this.lastModifiedDate = lastModifiedDate;
-  }
-
 }

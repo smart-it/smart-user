@@ -23,6 +23,4 @@ public interface Address {
   public String getStreetAddress();
 
   public String getZip();
-
-  public Date getLastModifiedDate();
 }
