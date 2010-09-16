@@ -67,12 +67,18 @@ public class ComprehensiveClientTest {
     LoginResource loginResource = rootResource.performAuthentication("smartadmin@smart-user", "02040250204039");
     Assert.assertNotNull(loginResource);
     OrganizationResource orgResource = loginResource.getOrganizationResource();
-    Assert.assertNotNull(orgResource);
+    Assert.assertNotNull(orgResource);    
   }
 
 //Test Started by Uzzal
   @Test
-  public void doTestCreateOrganization(LoginResource loginResource) {
+  public void doTestCreateOrganization() {
+    RootResource rootResource = RootResourceImpl.getInstance();
+    Assert.assertNotNull(rootResource);
+    LoginResource loginResource = rootResource.performAuthentication("smartadmin@smart-user", "02040250204039");
+    Assert.assertNotNull(loginResource);
+    OrganizationResource orgResource = loginResource.getOrganizationResource();
+    Assert.assertNotNull(orgResource);
     OrganizationsResource orgsResource = loginResource.getOrganizationsResource();
     Organization org = new Organization();
     List<OrganizationResource> orgResourceList = new ArrayList<OrganizationResource>(orgsResource.
