@@ -9,6 +9,7 @@ package com.smartitengineering.user.resource.api;
  *
  * @author modhu7
  */
+@Deprecated
 public interface WritableResource<T> extends Resource<T> {
 
   public T update();

@@ -5,6 +5,8 @@
 
 package com.smartitengineering.smartuser.client.api;
 
+import java.util.Date;
+
 /**
  *
  * @author modhu7
@@ -16,5 +18,7 @@ public interface Organization {
   public String getUniqueShortName();
 
   public Address getAddress();
+
+  public Date getLastModifiedDate();
 
 }

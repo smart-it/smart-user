@@ -15,6 +15,5 @@ public interface SecuredObject {
   public String getObjectID();
 
   public String getParentObjectID();
-
-  public Organization getOrganization();
+  
 }

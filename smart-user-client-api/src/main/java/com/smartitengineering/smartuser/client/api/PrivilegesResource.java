@@ -4,17 +4,16 @@
  */
 package com.smartitengineering.smartuser.client.api;
 
-
-import com.smartitengineering.user.resource.api.Resource;
+import com.smartitengineering.util.rest.client.WritableResource;
 import java.util.List;
+import org.apache.abdera.model.Feed;
 
 /**
  *
  * @author modhu7
  */
-public interface PrivilegesResource extends Resource {
+public interface PrivilegesResource extends WritableResource<Feed> {
 
-  //public Collection<LinkedResource<PrivilegeResource>> getPrivilegeResources();
   public List<PrivilegeResource> getPrivilegeResources();
 
   public PrivilegeResource create(Privilege Privilege);

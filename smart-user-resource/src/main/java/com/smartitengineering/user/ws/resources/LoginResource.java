@@ -5,18 +5,10 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.User;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -27,7 +19,6 @@ import javax.ws.rs.core.UriBuilder;
 import org.apache.abdera.Abdera;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
-import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -53,7 +44,7 @@ public class LoginResource extends AbstractResource {
   public Response get() {
 
     System.out.println("Inside Login Resource");
-    ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+    ResponseBuilder responseBuilder = Response.status(Status.OK);
 
     Feed atomFeed = getFeed("Login Resource", new Date());
 

@@ -4,7 +4,6 @@
  */
 package com.smartitengineering.user.security;
 
-import com.smartitengineering.user.security.acl.UserSid;
 import com.smartitengineering.user.service.AuthorizationService;
 import java.util.Iterator;
 import org.springframework.security.Authentication;

@@ -4,19 +4,16 @@
  */
 package com.smartitengineering.smartuser.client.api;
 
-import com.smartitengineering.user.filter.UserFilter;
-import com.smartitengineering.user.resource.api.LinkedResource;
-import com.smartitengineering.user.resource.api.Resource;
-import java.util.Collection;
+import com.smartitengineering.util.rest.client.WritableResource;
 import java.util.List;
+import org.apache.abdera.model.Feed;
 
 /**
  *
  * @author modhu7
  */
-public interface SecuredObjectsResource extends Resource {
-
-  //public Collection<LinkedResource<SecuredObjectResource>> getSecuredObjectResources();
+public interface SecuredObjectsResource extends WritableResource<Feed> {
+  
   public List<SecuredObjectResource> getSecuredObjectResources();
 
   public SecuredObjectResource create(SecuredObject securedObjcet);

@@ -9,7 +9,7 @@ package com.smartitengineering.user.client.impl.domain;
  *
  * @author russel
  */
-public class GeoLocation implements com.smartitengineering.smartuser.client.api.GeoLocation{
+public class GeoLocation extends AbstractClientDomain implements com.smartitengineering.smartuser.client.api.GeoLocation{
 
    private Double longitude;
    private Double latitude;
@@ -25,11 +25,14 @@ public class GeoLocation implements com.smartitengineering.smartuser.client.api.
   }
 
   public void setLatitude(Double latitude) {
+    if(latitude==null)
+      return;
     this.latitude = latitude;
   }
 
   public void setLongitude(Double longitude) {
+    if(longitude==null)
+      return;
     this.longitude = longitude;
   }
-
 }

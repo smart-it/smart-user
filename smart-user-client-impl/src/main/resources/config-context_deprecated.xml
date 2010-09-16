@@ -23,7 +23,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
             </list>
         </property>
     </bean>
-    <bean id="connectionConfig" class="com.smartitengineering.util.rest.client.ConnectionConfig">
+    <bean id="connectionConfig" class="com.smartitengineering.user.client.impl.ConnectionConfig">
         <property name="basicUri">
             <value>${baseUri}</value>
         </property>

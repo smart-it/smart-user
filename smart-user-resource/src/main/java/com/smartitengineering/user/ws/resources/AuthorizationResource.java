@@ -4,7 +4,8 @@
  */
 package com.smartitengineering.user.ws.resources;
 
-import java.util.Date;
+import com.smartitengineering.user.domain.Role;
+import com.smartitengineering.user.domain.User;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.DefaultValue;
@@ -18,9 +19,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
-import org.apache.abdera.model.Entry;
-import org.apache.abdera.model.Feed;
-import sun.net.www.content.text.Generic;
 
 /**
  *
@@ -51,7 +49,7 @@ public class AuthorizationResource extends AbstractResource {
     ROLE_AUTHORIZATION_URI_BUILDER = UriBuilder.fromResource(AuthorizationResource.class);
     try {
       ROLE_AUTHORIZATION_URI_BUILDER.path(AuthorizationResource.class.getMethod("getRoleAuthorization",
-                                                                                String.class, String.class));
+                                                                                String.class, String.class, String.class));
     }
     catch (NoSuchMethodException ex) {
       Logger.getLogger(AuthorizationResource.class.getName()).log(Level.SEVERE, null, ex);
@@ -59,8 +57,6 @@ public class AuthorizationResource extends AbstractResource {
     catch (SecurityException ex) {
       Logger.getLogger(AuthorizationResource.class.getName()).log(Level.SEVERE, null, ex);
     }
-
-
   }
 
   @Path("acl")
@@ -74,11 +70,12 @@ public class AuthorizationResource extends AbstractResource {
     ResponseBuilder responseBuilder = Response.status(Status.OK);
     Integer auth = Services.getInstance().getAuthorizationService().authorize(userName, organizationName, oid,
                                                                               permission);
-//    Feed atomFeed = getFeed("Authorization Acl Resource", new Date());
-//
-//    atomFeed.addEntry()
-//    GenericEntity<Integer> entity = new GenericEntity<Integer>(auth, Integer.class);
-    responseBuilder.entity(auth.toString());
+    Boolean authResult;
+    if(auth < 1)
+      authResult = Boolean.FALSE;
+    else
+      authResult = Boolean.TRUE;
+    responseBuilder.entity(authResult.toString());
     return responseBuilder.build();
   }
 
@@ -87,8 +84,17 @@ public class AuthorizationResource extends AbstractResource {
   @Produces(MediaType.TEXT_PLAIN)
   public Response getRoleAuthorization(
       @DefaultValue("NO USERNAME") @QueryParam("username") final String userName,
+      @DefaultValue("NO ORGNAME") @QueryParam("orgname") final String organizationName,
       @DefaultValue("NO CONFIG") @QueryParam("config") final String configAttribute) {
     ResponseBuilder responseBuilder = Response.status(Status.OK);
+    User user = Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationName, userName);
+    Boolean authResult = Boolean.FALSE;
+    for (Role role : user.getRoles()) {
+      if (role.getName().equals(configAttribute)) {
+        authResult = Boolean.TRUE;
+      }
+    }
+    responseBuilder.entity(authResult.toString());
     return responseBuilder.build();
   }
 

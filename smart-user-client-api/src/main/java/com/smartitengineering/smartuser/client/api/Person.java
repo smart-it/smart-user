@@ -20,7 +20,7 @@ public interface Person {
 
   public BasicIdentity getSelf();
 
-  public Address address();
+  public Address getAddress();
 
   public Date getBirthday();
 

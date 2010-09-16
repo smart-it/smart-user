@@ -11,28 +11,22 @@ import com.smartitengineering.user.client.impl.exception.SmartException;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.client.apache.ApacheHttpClient;
-import com.sun.jersey.client.apache.config.ApacheHttpClientConfig;
-import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
 
 
 /**
  *
  * @author russel
  */
-public class LoginService extends AbstractClientImpl{
+public class LoginService {
+
+  private static AbstractClientImpl clientImpl = new AbstractClientImpl(){};
 
     public static void login(String username, String password) {
         System.out.println(username);
         System.out.println(password);
-        System.out.println(BASE_URI);
-        DefaultApacheHttpClientConfig clientConfig = new DefaultApacheHttpClientConfig();
-        clientConfig.getState().setCredentials(null, null, -1, username, password);
-        clientConfig.getProperties().put(ApacheHttpClientConfig.PROPERTY_PREEMPTIVE_AUTHENTICATION,
-                Boolean.TRUE);
-        Client client = ApacheHttpClient.create(clientConfig);
-        WebResource resource = client.resource(BASE_URI);
-
+        System.out.println(clientImpl.getBaseUri());
+        Client client = clientImpl.getClient();
+        WebResource resource = client.resource(clientImpl.getBaseUri());
         try {
             resource.get(UserElements.class);
         } catch (UniformInterfaceException ex) {

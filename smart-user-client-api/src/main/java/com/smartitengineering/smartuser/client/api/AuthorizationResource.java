@@ -5,14 +5,13 @@
 
 package com.smartitengineering.smartuser.client.api;
 
-import com.smartitengineering.user.resource.api.Resource;
-import java.util.Collection;
+import com.smartitengineering.util.rest.client.Resource;
 
 /**
  *
  * @author modhu7
  */
-public interface AuthorizationResource extends Resource{
+public interface AuthorizationResource extends Resource<String>{
   
-  public Integer getAuthorization();
+  public Boolean getAuthorization();
 }

@@ -16,7 +16,7 @@ import org.apache.commons.lang.math.NumberUtils;
  *
  * @author russel
  */
-@Aggregator(contextName = "userRestClientContext")
+@Aggregator(contextName = "com.smartitengineering.user.client")
 public final class ConfigFactory {
 
   @InjectableField
@@ -33,6 +33,7 @@ public final class ConfigFactory {
   private ConfigFactory() {
     BeanFactoryRegistrar.aggregate(this);
     if (connectionConfig == null) {
+      System.out.println("Dependency not injected!");
       String propFileName = "user-client-config.properties";
       InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
       if (inputStream != null) {

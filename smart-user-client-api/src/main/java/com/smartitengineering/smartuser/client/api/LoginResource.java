@@ -4,13 +4,15 @@
  */
 package com.smartitengineering.smartuser.client.api;
 
-import com.smartitengineering.user.resource.api.Resource;
+import com.smartitengineering.util.rest.client.Resource;
+import org.apache.abdera.model.Feed;
+
 
 /**
  *
  * @author russel
  */
-public interface LoginResource extends Resource {
+public interface LoginResource extends Resource<Feed> {
 
   public OrganizationsResource getOrganizationsResource();
 
@@ -22,5 +24,5 @@ public interface LoginResource extends Resource {
 
   public AuthorizationResource getAclAuthorizationResource(String username, String organizationName, String oid, Integer permission);
 
-  public AuthorizationResource getRoleAuthorizationResource(String username, String configAttribute);
+  public AuthorizationResource getRoleAuthorizationResource(String username, String organizationName, String configAttribute);
 }

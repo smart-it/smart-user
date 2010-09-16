@@ -34,7 +34,7 @@ public class InitialUserFactory {
   final static String SECURED_OBJECTS_OID_NAME = "Smart User Secured Objects";
   final static String PRIVILEGES_OID = "/privs";
   final static String PRIVILEGES_OID_NAME = "Smart User Privileges";
-  final static Integer PRIVILEGE_PERMISSION_MASK = 13;
+  final static Integer PRIVILEGE_PERMISSION_MASK = 31;
   final static String USER_OID_NAME = "Super Admin User Secured Object";
   final static String USER_OID = "/users";
   final static String USER_UNIQUE_FRAG = "/un";
