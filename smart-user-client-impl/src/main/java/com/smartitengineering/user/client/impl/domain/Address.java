@@ -4,6 +4,8 @@
  */
 package com.smartitengineering.user.client.impl.domain;
 
+import java.util.Date;
+
 /**
  *
  * @author russel
@@ -16,6 +18,7 @@ public class Address extends AbstractClientDomain implements com.smartitengineer
   private String country;
   private String zip;
   private GeoLocation geoLocation;
+  private Date lastModifiedDate;
 
   @Override
   public GeoLocation getGeoLocation() {
@@ -87,5 +90,17 @@ public class Address extends AbstractClientDomain implements com.smartitengineer
       return;
     }
     this.zip = zip;
+  }
+
+  @Override
+  public Date getLastModifiedDate() {
+    return lastModifiedDate;
+  }
+
+  public void setLastModifiedDate(Date lastModifiedDate) {
+    if (lastModifiedDate == null) {
+      return;
+    }
+    this.lastModifiedDate = lastModifiedDate;
   }
 }

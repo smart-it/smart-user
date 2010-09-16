@@ -4,6 +4,8 @@
  */
 package com.smartitengineering.smartuser.client.api;
 
+import java.util.Date;
+
 /**
  *
  * @author modhu7
@@ -16,7 +18,9 @@ public interface Privilege {
 
   public String getShortDescription();
 
-  public SecuredObject getSecuredObjcet();
+  public SecuredObject getSecuredObject();
 
   public Integer getPermissionMask();
+
+  public Date getLastModifiedDate();
 }

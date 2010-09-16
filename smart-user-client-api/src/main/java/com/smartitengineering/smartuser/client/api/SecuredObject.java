@@ -4,6 +4,8 @@
  */
 package com.smartitengineering.smartuser.client.api;
 
+import java.util.Date;
+
 /**
  *
  * @author modhu7
@@ -15,5 +17,6 @@ public interface SecuredObject {
   public String getObjectID();
 
   public String getParentObjectID();
-  
+
+  public Date getLastModifiedDate();
 }

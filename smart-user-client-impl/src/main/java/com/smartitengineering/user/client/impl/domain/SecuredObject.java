@@ -4,15 +4,19 @@
  */
 package com.smartitengineering.user.client.impl.domain;
 
+import java.util.Date;
+
 /**
  *
  * @author russel
  */
-public class SecuredObject extends AbstractClientDomain implements com.smartitengineering.smartuser.client.api.SecuredObject {
+public class SecuredObject extends AbstractClientDomain implements
+    com.smartitengineering.smartuser.client.api.SecuredObject {
 
   private String name;
   private String objectID;
   private String parentObjectID;
+  private Date lastModifiedDate;
 
   @Override
   public String getName() {
@@ -30,20 +34,35 @@ public class SecuredObject extends AbstractClientDomain implements com.smartiten
   }
 
   public void setName(String name) {
-    if(name==null)
+    if (name == null) {
       return;
+    }
     this.name = name;
   }
 
   public void setObjectID(String objectID) {
-    if(objectID==null)
+    if (objectID == null) {
       return;
+    }
     this.objectID = objectID;
   }
 
   public void setParentObjectID(String parentObjectID) {
-    if(parentObjectID==null)
+    if (parentObjectID == null) {
       return;
+    }
     this.parentObjectID = parentObjectID;
+  }
+
+  @Override
+  public Date getLastModifiedDate() {
+    return lastModifiedDate;
+  }
+
+  public void setLastModifiedDate(Date lastModifiedDate) {
+    if (lastModifiedDate == null) {
+      return;
+    }
+    this.lastModifiedDate = lastModifiedDate;
   }
 }
