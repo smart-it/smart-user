@@ -4,6 +4,8 @@
  */
 package com.smartitengineering.user.client.impl.domain;
 
+import java.util.Date;
+
 /**
  *
  * @author modhu7
@@ -13,6 +15,7 @@ public class Role extends AbstractClientDomain implements com.smartitengineering
   private String name;
   private String displayName;
   private String shortDescription;
+  private Date lastModifiedDate;
 
   @Override
   public String getName() {
@@ -49,4 +52,17 @@ public class Role extends AbstractClientDomain implements com.smartitengineering
     }
     this.shortDescription = shortDescription;
   }
+
+  @Override
+  public Date getLastModifiedDate() {
+    return lastModifiedDate;
+  }
+
+  public void setLastModifiedDate(Date lastModifiedDate) {
+    if (lastModifiedDate == null) {
+      return;
+    }
+    this.lastModifiedDate = lastModifiedDate;
+  }
+
 }

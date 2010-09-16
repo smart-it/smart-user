@@ -4,6 +4,8 @@
  */
 package com.smartitengineering.user.client.impl.domain;
 
+import java.util.Date;
+
 /**
  *
  * @author russel
@@ -12,6 +14,7 @@ public class UserPerson extends AbstractClientDomain implements com.smartitengin
 
   private User user;
   private Person person;
+  private Date lastModifiedDate;
 
   @Override
   public User getUser() {
@@ -24,15 +27,28 @@ public class UserPerson extends AbstractClientDomain implements com.smartitengin
   }
 
   public void setPerson(Person person) {
-    if(person==null)
+    if (person == null) {
       return;
+    }
     this.person = person;
   }
 
   public void setUser(User user) {
-    if(user==null)
+    if (user == null) {
       return;
+    }
     this.user = user;
   }
 
+  @Override
+  public Date getLastModifiedDate() {
+    return lastModifiedDate;
+  }
+
+  public void setLastModifiedDate(Date lastModifiedDate) {
+    if (lastModifiedDate == null) {
+      return;
+    }
+    this.lastModifiedDate = lastModifiedDate;
+  }
 }

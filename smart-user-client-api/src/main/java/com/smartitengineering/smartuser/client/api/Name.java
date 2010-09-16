@@ -4,6 +4,8 @@
  */
 package com.smartitengineering.smartuser.client.api;
 
+import java.util.Date;
+
 /**
  *
  * @author modhu7
@@ -15,4 +17,6 @@ public interface Name {
   public String getLastName();
 
   public String getMiddleInitial();
+
+  public Date getLastModifiedDate();
 }

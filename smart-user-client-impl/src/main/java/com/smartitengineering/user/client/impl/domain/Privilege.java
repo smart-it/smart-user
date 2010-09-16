@@ -4,6 +4,8 @@
  */
 package com.smartitengineering.user.client.impl.domain;
 
+import java.util.Date;
+
 /**
  *
  * @author russel
@@ -15,6 +17,7 @@ public class Privilege extends AbstractClientDomain implements com.smartitengine
   private String shortDescription;
   private Integer permissionMask;
   private SecuredObject securedObject;
+  private Date lastModifiedDate;
 
   @Override
   public String getName() {
@@ -32,7 +35,7 @@ public class Privilege extends AbstractClientDomain implements com.smartitengine
   }
 
   @Override
-  public SecuredObject getSecuredObjcet() {
+  public SecuredObject getSecuredObject() {
     return securedObject;
   }
 
@@ -74,5 +77,17 @@ public class Privilege extends AbstractClientDomain implements com.smartitengine
       return;
     }
     this.shortDescription = shortDescription;
+  }
+
+  @Override
+  public Date getLastModifiedDate() {
+    return lastModifiedDate;
+  }
+
+  public void setLastModifiedDate(Date lastModifiedDate) {
+    if (lastModifiedDate == null) {
+      return;
+    }
+    this.lastModifiedDate = lastModifiedDate;
   }
 }

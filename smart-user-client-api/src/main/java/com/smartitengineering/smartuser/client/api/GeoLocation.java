@@ -4,6 +4,8 @@
  */
 package com.smartitengineering.smartuser.client.api;
 
+import java.util.Date;
+
 /**
  *
  * @author modhu7
@@ -13,4 +15,6 @@ public interface GeoLocation {
   public Double getLatitude();
 
   public Double getLongitude();
+
+  public Date getLastModifiedDate();
 }
