@@ -7,7 +7,7 @@
     <groupId>com.smartitengineering</groupId>
     <version>0.2-SNAPSHOT</version>
   </parent>
-  <groupId>com.smartitengineering.clientrest</groupId>
+  <groupId>com.smartitengineering.smart-user</groupId>
   <artifactId>smart-user-client-impl</artifactId>
   <version>0.2-SNAPSHOT</version>
   <name>smart-user-client-impl</name>
