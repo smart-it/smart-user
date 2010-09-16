@@ -5,14 +5,11 @@
 
 package com.smartitengineering.user.client.impl.domain;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
-import com.smartitengineering.domain.PersistentDTO;
-
 /**
  *
  * @author russel
  */
-public class GeoLocation extends AbstractPersistentDTO<GeoLocation> implements com.smartitengineering.smartuser.client.api.GeoLocation{
+public class GeoLocation extends AbstractClientDomain implements com.smartitengineering.smartuser.client.api.GeoLocation{
 
    private Double longitude;
    private Double latitude;
@@ -28,15 +25,14 @@ public class GeoLocation extends AbstractPersistentDTO<GeoLocation> implements c
   }
 
   public void setLatitude(Double latitude) {
+    if(latitude==null)
+      return;
     this.latitude = latitude;
   }
 
   public void setLongitude(Double longitude) {
+    if(longitude==null)
+      return;
     this.longitude = longitude;
   }
-
-  public boolean isValid(){
-    return true;
-  }
-
 }

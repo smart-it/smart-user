@@ -7,18 +7,28 @@ package com.smartitengineering.user.client.impl.domain;
 
 /**
  *
- * @author russel
+ * @author modhu7
  */
-public class User implements com.smartitengineering.smartuser.client.api.User{
+public class User extends AbstractClientDomain implements com.smartitengineering.smartuser.client.api.User{
+
+  private String username;
+  private String password;
 
   @Override
   public String getUsername() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return username;
   }
 
   @Override
   public String getPassword() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return password;
   }
 
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
 }

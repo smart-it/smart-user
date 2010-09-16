@@ -2,29 +2,21 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.client.impl.domain;
 
 /**
  *
  * @author russel
  */
-
-import com.smartitengineering.domain.AbstractPersistentDTO;
-import com.smartitengineering.domain.PersistentDTO;
 import java.util.Date;
 
-
-public class Organization extends AbstractPersistentDTO<Organization> implements com.smartitengineering.smartuser.client.api.Organization{
+public class Organization extends AbstractClientDomain implements
+    com.smartitengineering.smartuser.client.api.Organization {
 
   private String name;
-
-    private String uniqueShortName;
-
-    private Address address;
-    //private String contactPerson;
-
-    private Date lastModifiedDate;
+  private String uniqueShortName;
+  private Address address;
+  private Date lastModifiedDate;
 
   @Override
   public String getName() {
@@ -32,17 +24,25 @@ public class Organization extends AbstractPersistentDTO<Organization> implements
   }
 
   public void setAddress(Address address) {
+    if (address == null) {
+      return;
+    }
     this.address = address;
   }
 
   public void setName(String name) {
+    if (name == null) {
+      return;
+    }
     this.name = name;
   }
 
   public void setUniqueShortName(String uniqueShortName) {
+    if (uniqueShortName == null) {
+      return;
+    }
     this.uniqueShortName = uniqueShortName;
   }
-  
 
   @Override
   public String getUniqueShortName() {
@@ -50,20 +50,18 @@ public class Organization extends AbstractPersistentDTO<Organization> implements
   }
 
   @Override
-  public com.smartitengineering.smartuser.client.api.Address getAddress() {
+  public Address getAddress() {
     return address;
   }
 
+  @Override
   public Date getLastModifiedDate() {
     return lastModifiedDate;
   }
 
   public void setLastModifiedDate(Date lastModifiedDate) {
+    if(lastModifiedDate==null)
+      return;
     this.lastModifiedDate = lastModifiedDate;
   }
-
-  public boolean isValid(){
-    return true;
-  }
-
 }

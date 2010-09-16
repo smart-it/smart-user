@@ -6,15 +6,13 @@ package com.smartitengineering.user.client.impl.domain;
 
 /**
  *
- * @author russel
+ * @author modhu7
  */
-public class Privilege extends AbstractClientDomain implements com.smartitengineering.smartuser.client.api.Privilege {
+public class Role extends AbstractClientDomain implements com.smartitengineering.smartuser.client.api.Role {
 
   private String name;
   private String displayName;
   private String shortDescription;
-  private Integer permissionMask;
-  private SecuredObject securedObject;
 
   @Override
   public String getName() {
@@ -31,16 +29,6 @@ public class Privilege extends AbstractClientDomain implements com.smartitengine
     return shortDescription;
   }
 
-  @Override
-  public SecuredObject getSecuredObjcet() {
-    return securedObject;
-  }
-
-  @Override
-  public Integer getPermissionMask() {
-    return permissionMask;
-  }
-
   public void setDisplayName(String displayName) {
     if (displayName == null) {
       return;
@@ -53,20 +41,6 @@ public class Privilege extends AbstractClientDomain implements com.smartitengine
       return;
     }
     this.name = name;
-  }
-
-  public void setPermissionMask(Integer permissionMask) {
-    if (permissionMask == null) {
-      return;
-    }
-    this.permissionMask = permissionMask;
-  }
-
-  public void setSecuredObject(SecuredObject securedObject) {
-    if (securedObject == null) {
-      return;
-    }
-    this.securedObject = securedObject;
   }
 
   public void setShortDescription(String shortDescription) {

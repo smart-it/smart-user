@@ -2,27 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.client.impl.domain;
-
-import com.smartitengineering.domain.AbstractPersistentDTO;
-import com.smartitengineering.domain.PersistentDTO;
-
-
 
 /**
  *
  * @author russel
  */
-public class Address extends AbstractPersistentDTO<Address> implements com.smartitengineering.smartuser.client.api.Address {
+public class Address extends AbstractClientDomain implements com.smartitengineering.smartuser.client.api.Address {
 
-   private String streetAddress;
-    private String city;
-    private String state;
-    private String country;
-    private String zip;
-    private GeoLocation geoLocation;
-
+  private String streetAddress;
+  private String city;
+  private String state;
+  private String country;
+  private String zip;
+  private GeoLocation geoLocation;
 
   @Override
   public GeoLocation getGeoLocation() {
@@ -55,32 +48,44 @@ public class Address extends AbstractPersistentDTO<Address> implements com.smart
   }
 
   public void setCity(String city) {
+    if (city == null) {
+      return;
+    }
     this.city = city;
   }
 
   public void setCountry(String country) {
+    if (country == null) {
+      return;
+    }
     this.country = country;
   }
 
   public void setGeoLocation(GeoLocation geoLocation) {
+    if (geoLocation == null) {
+      return;
+    }
     this.geoLocation = geoLocation;
   }
 
   public void setState(String state) {
+    if (state == null) {
+      return;
+    }
     this.state = state;
   }
 
   public void setStreetAddress(String streetAddress) {
+    if (streetAddress == null) {
+      return;
+    }
     this.streetAddress = streetAddress;
   }
 
   public void setZip(String zip) {
+    if (zip == null) {
+      return;
+    }
     this.zip = zip;
   }
-
-  public boolean isValid(){
-    return true;
-  }
-  
-
 }
