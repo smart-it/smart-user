@@ -4,6 +4,8 @@
  */
 package com.smartitengineering.user.client.impl.domain;
 
+import java.util.Date;
+
 /**
  *
  * @author modhu7
@@ -13,6 +15,7 @@ public class BasicIdentity extends AbstractClientDomain implements
 
   private Name name;
   private String nationalID;
+  private Date lastModifiedDate;
 
   @Override
   public Name getName() {
@@ -37,4 +40,17 @@ public class BasicIdentity extends AbstractClientDomain implements
     }
     this.nationalID = nationalID;
   }
+
+  @Override
+  public Date getLastModifiedDate() {
+    return lastModifiedDate;
+  }
+
+  public void setLastModifiedDate(Date lastModifiedDate) {
+    if (lastModifiedDate == null) {
+      return;
+    }
+    this.lastModifiedDate = lastModifiedDate;
+  }
+
 }

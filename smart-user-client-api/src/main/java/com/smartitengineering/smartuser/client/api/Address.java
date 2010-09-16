@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.smartuser.client.api;
+
+import java.util.Date;
 
 /**
  *
@@ -11,15 +12,17 @@ package com.smartitengineering.smartuser.client.api;
  */
 public interface Address {
 
-    public GeoLocation getGeoLocation();
-    
-    public String getCountry();
+  public GeoLocation getGeoLocation();
 
-    public String getCity();
+  public String getCountry();
 
-    public String getState();
+  public String getCity();
 
-    public String getStreetAddress();
+  public String getState();
 
-    public String getZip();
+  public String getStreetAddress();
+
+  public String getZip();
+
+  public Date getLastModifiedDate();
 }

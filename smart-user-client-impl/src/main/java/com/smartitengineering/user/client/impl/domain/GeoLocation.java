@@ -5,6 +5,8 @@
 
 package com.smartitengineering.user.client.impl.domain;
 
+import java.util.Date;
+
 /**
  *
  * @author russel
@@ -13,6 +15,7 @@ public class GeoLocation extends AbstractClientDomain implements com.smartitengi
 
    private Double longitude;
    private Double latitude;
+   private Date lastModifiedDate;
 
   @Override
   public Double getLatitude() {
@@ -35,4 +38,17 @@ public class GeoLocation extends AbstractClientDomain implements com.smartitengi
       return;
     this.longitude = longitude;
   }
+
+  @Override
+  public Date getLastModifiedDate() {
+    return lastModifiedDate;
+  }
+
+  public void setLastModifiedDate(Date lastModifiedDate) {
+    if (lastModifiedDate == null) {
+      return;
+    }
+    this.lastModifiedDate = lastModifiedDate;
+  }
+
 }
