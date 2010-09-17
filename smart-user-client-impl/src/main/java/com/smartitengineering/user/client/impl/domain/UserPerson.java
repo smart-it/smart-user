@@ -5,6 +5,7 @@
 package com.smartitengineering.user.client.impl.domain;
 
 import java.util.Date;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
 /**
  *
@@ -27,6 +28,7 @@ public class UserPerson extends AbstractClientDomain implements com.smartitengin
   }
 
   @Override
+  @JsonDeserialize(as = Person.class)
   public void setPerson(com.smartitengineering.user.client.api.Person person) {
     if (person == null) {
       return;
@@ -35,6 +37,7 @@ public class UserPerson extends AbstractClientDomain implements com.smartitengin
   }
 
   @Override
+  @JsonDeserialize(as = User.class)
   public void setUser(com.smartitengineering.user.client.api.User user) {
     if (user == null) {
       return;

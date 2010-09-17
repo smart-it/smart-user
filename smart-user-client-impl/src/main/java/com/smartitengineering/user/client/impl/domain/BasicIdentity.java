@@ -4,6 +4,8 @@
  */
 package com.smartitengineering.user.client.impl.domain;
 
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+
 /**
  *
  * @author modhu7
@@ -33,6 +35,7 @@ public class BasicIdentity extends AbstractClientDomain implements
   }
 
   @Override
+  @JsonDeserialize(as = Name.class)
   public void setName(com.smartitengineering.user.client.api.Name name) {
     if (name == null) {
       return;

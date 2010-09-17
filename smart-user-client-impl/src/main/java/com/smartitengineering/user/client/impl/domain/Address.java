@@ -4,6 +4,8 @@
  */
 package com.smartitengineering.user.client.impl.domain;
 
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+
 /**
  *
  * @author russel
@@ -64,6 +66,7 @@ public class Address extends AbstractClientDomain implements com.smartitengineer
   }
 
   @Override
+  @JsonDeserialize(as = GeoLocation.class)
   public void setGeoLocation(com.smartitengineering.user.client.api.GeoLocation geoLocation) {
     if (geoLocation == null) {
       return;

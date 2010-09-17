@@ -6,6 +6,7 @@ package com.smartitengineering.user.client.impl.domain;
 
 import com.smartitengineering.user.client.api.Address;
 import java.util.Date;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
 /**
  *
@@ -81,6 +82,7 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
   }
 
   @Override
+  @JsonDeserialize(as = Address.class)
   public void setAddress(Address address) {
     if (address == null) {
       return;
@@ -105,6 +107,7 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
   }
 
   @Override
+  @JsonDeserialize(as = BasicIdentity.class)
   public void setFather(com.smartitengineering.user.client.api.BasicIdentity father) {
     if (father == null) {
       return;
@@ -121,6 +124,7 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
   }
 
   @Override
+  @JsonDeserialize(as = BasicIdentity.class)
   public void setMother(com.smartitengineering.user.client.api.BasicIdentity mother) {
     if (mother == null) {
       return;
@@ -153,6 +157,7 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
   }
 
   @Override
+  @JsonDeserialize(as = BasicIdentity.class)
   public void setSelf(com.smartitengineering.user.client.api.BasicIdentity self) {
     if (self == null) {
       return;
@@ -161,6 +166,7 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
   }
 
   @Override
+  @JsonDeserialize(as = BasicIdentity.class)
   public void setSpouse(com.smartitengineering.user.client.api.BasicIdentity spouse) {
     if (spouse == null) {
       return;

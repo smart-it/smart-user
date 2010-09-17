@@ -5,6 +5,7 @@
 package com.smartitengineering.user.client.impl.domain;
 
 import java.util.Date;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
 /**
  *
@@ -69,6 +70,7 @@ public class Privilege extends AbstractClientDomain implements com.smartitengine
   }
 
   @Override
+  @JsonDeserialize(as = SecuredObject.class)
   public void setSecuredObject(com.smartitengineering.user.client.api.SecuredObject securedObject) {
     if (securedObject == null) {
       return;
