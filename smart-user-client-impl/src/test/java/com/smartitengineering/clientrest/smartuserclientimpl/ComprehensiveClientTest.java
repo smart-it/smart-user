@@ -22,6 +22,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class ComprehensiveClientTest {
 
+  public static final String CHITTAGONG = "Chittagong";
   private static Server jettyServer;
   private static final int PORT = 9090;
 
@@ -66,7 +67,7 @@ public class ComprehensiveClientTest {
     LoginResource loginResource = rootResource.performAuthentication("smartadmin@smart-user", "02040250204039");
     Assert.assertNotNull(loginResource);
     OrganizationResource orgResource = loginResource.getOrganizationResource();
-    Assert.assertNotNull(orgResource);    
+    Assert.assertNotNull(orgResource);
   }
 
 //Test Started by Uzzal
@@ -88,7 +89,7 @@ public class ComprehensiveClientTest {
     address.setCountry("Bangladesh");
     address.setState("Dhaka");
     address.setStreetAddress("23/S hazi chinu miah road, Mohammadpur");
-    address.setZip("1207");    
+    address.setZip("1207");
     org.setAddress(address);
     OrganizationResource newOrgResource = orgsResource.create(org);
     Assert.assertNotNull(newOrgResource);
@@ -100,11 +101,30 @@ public class ComprehensiveClientTest {
   }
 
   @Test
-  public void doDeleteOrganization(){
+  public void doDeleteOrganization() {
   }
 
   @Test
   public void doTestUpdateOrganization() {
+    RootResource rootResource = RootResourceImpl.getInstance();
+    Assert.assertNotNull(rootResource);
+    LoginResource loginResource = rootResource.performAuthentication("smartadmin@smart-user", "02040250204039");
+    Assert.assertNotNull(loginResource);
+    OrganizationResource orgResource = loginResource.getOrganizationResource();
+    Assert.assertNotNull(orgResource);
+    OrganizationsResource orgsResource = loginResource.getOrganizationsResource();
+    Assert.assertEquals(2, orgsResource.getOrganizationResources().size());
+    for (OrganizationResource orgIterResource : orgsResource.getOrganizationResources()) {
+      com.smartitengineering.user.client.api.Organization organization = orgIterResource.getOrganization();
+      Assert.assertNotNull(organization);
+      Assert.assertNotNull(organization.getAddress());
+      Assert.assertFalse(CHITTAGONG.equals(organization.getAddress().getCity()));
+      organization.getAddress().setCity(CHITTAGONG);
+      orgIterResource.update();
+      organization = orgIterResource.getOrganization();
+      Assert.assertEquals(CHITTAGONG, organization.getAddress().getCity());
+    }
+
   }
   //Test Ended by Uzzal
   //Test Method Started by Atiqul
