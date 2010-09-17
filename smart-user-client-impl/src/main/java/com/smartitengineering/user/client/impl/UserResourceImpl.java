@@ -30,15 +30,14 @@ public class UserResourceImpl extends AbstractFeedClientResource<Resource<? exte
   public static final String REL_ALT = "alternate";
   public static final String REL_USER_PRIVS = "privileges";
   public static final String REL_USER_ROLES = "roles";
-
-  private Resource<? extends UserPerson> user;
+  
 
   public UserResourceImpl(ResourceLink userLink, Resource referrer) {
     super(referrer, userLink);
     final ResourceLink altLink = getRelatedResourceUris().getFirst(Link.REL_ALTERNATE);
-    user = new SimpleResourceImpl<com.smartitengineering.user.client.impl.domain.UserPerson>(
+    addNestedResource(REL_USER, new SimpleResourceImpl<com.smartitengineering.user.client.impl.domain.UserPerson>(
         this, altLink.getUri(), altLink.getMimeType(), com.smartitengineering.user.client.impl.domain.UserPerson.class,
-        null, false, null, null);
+        null, false, null, null));
   }
 
   @Override
@@ -68,6 +67,15 @@ public class UserResourceImpl extends AbstractFeedClientResource<Resource<? exte
 
   @Override
   public UserPerson getUser() {
-    return user.getLastReadStateOfEntity();
-  } 
+    return getUser(false);
+  }
+  protected UserPerson getUser(boolean reload) {
+    Resource<UserPerson> user = super.<UserPerson>getNestedResource(REL_USER);
+    if(reload){
+      return user.get();
+    }
+    else{
+      return user.getLastReadStateOfEntity();
+    }
+  }
 }

@@ -23,14 +23,14 @@ import org.apache.abdera.model.Link;
  */
 public class RoleResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements com.smartitengineering.user.client.api.RoleResource{
   
-  private Resource<? extends Role> role;
+  public static final String REL_ROLE = "role";
 
   public RoleResourceImpl(ResourceLink roleLink, Resource referrer) {
     super(referrer, roleLink);
     final ResourceLink altLink = getRelatedResourceUris().getFirst(Link.REL_ALTERNATE);
-    role = new SimpleResourceImpl<com.smartitengineering.user.client.impl.domain.Role>(
+    addNestedResource(REL_ROLE, new SimpleResourceImpl<com.smartitengineering.user.client.impl.domain.Role>(
         this, altLink.getUri(), altLink.getMimeType(), com.smartitengineering.user.client.impl.domain.Role.class,
-        null, false, null, null);
+        null, false, null, null));
   }
 
   @Override
@@ -44,13 +44,23 @@ public class RoleResourceImpl extends AbstractFeedClientResource<Resource<? exte
 
   @Override
   public Role getRole() {
-    return role.getLastReadStateOfEntity();
+    return getRole(false);
   }
 
   @Override
   public void update() {
     put(MediaType.APPLICATION_JSON, getRole(), ClientResponse.Status.OK, ClientResponse.Status.SEE_OTHER,
         ClientResponse.Status.FOUND);
+  }
+
+  private Role getRole(boolean reload) {
+    Resource<Role> role = super.<Role>getNestedResource(REL_ROLE);
+    if(reload){
+      return role.get();
+    }
+    else{
+      return role.getLastReadStateOfEntity();
+    }
   }
 
 }
