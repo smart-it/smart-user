@@ -19,4 +19,10 @@ public interface Role {
   public String getShortDescription();
 
   public Date getLastModifiedDate();
+
+  public void setName(String name);
+
+  public void setDisplayName(String displayName);
+
+  public void setShortDescription(String shortDescription);
 }

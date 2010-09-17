@@ -15,7 +15,7 @@ public class Organization extends AbstractClientDomain implements
 
   private String name;
   private String uniqueShortName;
-  private Address address;
+  private com.smartitengineering.user.client.api.Address address;
   private Date lastModifiedDate;
 
   @Override
@@ -24,12 +24,9 @@ public class Organization extends AbstractClientDomain implements
   }
 
   public void setAddress(Address address) {
-    if (address == null) {
-      return;
-    }
-    this.address = address;
   }
 
+  @Override
   public void setName(String name) {
     if (name == null) {
       return;
@@ -37,6 +34,7 @@ public class Organization extends AbstractClientDomain implements
     this.name = name;
   }
 
+  @Override
   public void setUniqueShortName(String uniqueShortName) {
     if (uniqueShortName == null) {
       return;
@@ -50,7 +48,7 @@ public class Organization extends AbstractClientDomain implements
   }
 
   @Override
-  public Address getAddress() {
+  public com.smartitengineering.user.client.api.Address getAddress() {
     return address;
   }
 
@@ -60,8 +58,17 @@ public class Organization extends AbstractClientDomain implements
   }
 
   public void setLastModifiedDate(Date lastModifiedDate) {
-    if(lastModifiedDate==null)
+    if (lastModifiedDate == null) {
       return;
+    }
     this.lastModifiedDate = lastModifiedDate;
+  }
+
+  @Override
+  public void setAddress(com.smartitengineering.user.client.api.Address address) {
+    if (address == null) {
+      return;
+    }
+    this.address = address;
   }
 }

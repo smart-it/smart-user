@@ -4,8 +4,6 @@
  */
 package com.smartitengineering.user.client.impl.domain;
 
-import java.util.Date;
-
 /**
  *
  * @author modhu7
@@ -13,30 +11,32 @@ import java.util.Date;
 public class BasicIdentity extends AbstractClientDomain implements
     com.smartitengineering.user.client.api.BasicIdentity {
 
-  private Name name;
+  private com.smartitengineering.user.client.api.Name name;
   private String nationalID;
 
   @Override
-  public Name getName() {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public com.smartitengineering.user.client.api.Name getName() {
+    return name;
   }
 
   @Override
   public String getNationalID() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return nationalID;
   }
 
-  public void setName(Name name) {
-    if (name == null) {
-      return;
-    }
-    this.name = name;
-  }
-
+  @Override
   public void setNationalID(String nationalID) {
     if (nationalID == null) {
       return;
     }
     this.nationalID = nationalID;
+  }
+
+  @Override
+  public void setName(com.smartitengineering.user.client.api.Name name) {
+    if (name == null) {
+      return;
+    }
+    this.name = name;
   }
 }

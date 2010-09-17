@@ -19,4 +19,10 @@ public interface SecuredObject {
   public String getParentObjectID();
 
   public Date getLastModifiedDate();
+
+  public void setName(String name);
+
+  public void setObjectID(String objectID);
+
+  public void setParentObjectID(String parentObjectID);
 }

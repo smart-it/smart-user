@@ -16,7 +16,7 @@ public class Privilege extends AbstractClientDomain implements com.smartitengine
   private String displayName;
   private String shortDescription;
   private Integer permissionMask;
-  private SecuredObject securedObject;
+  private com.smartitengineering.user.client.api.SecuredObject securedObject;
   private Date lastModifiedDate;
 
   @Override
@@ -35,7 +35,7 @@ public class Privilege extends AbstractClientDomain implements com.smartitengine
   }
 
   @Override
-  public SecuredObject getSecuredObject() {
+  public com.smartitengineering.user.client.api.SecuredObject getSecuredObject() {
     return securedObject;
   }
 
@@ -44,6 +44,7 @@ public class Privilege extends AbstractClientDomain implements com.smartitengine
     return permissionMask;
   }
 
+  @Override
   public void setDisplayName(String displayName) {
     if (displayName == null) {
       return;
@@ -51,6 +52,7 @@ public class Privilege extends AbstractClientDomain implements com.smartitengine
     this.displayName = displayName;
   }
 
+  @Override
   public void setName(String name) {
     if (name == null) {
       return;
@@ -58,6 +60,7 @@ public class Privilege extends AbstractClientDomain implements com.smartitengine
     this.name = name;
   }
 
+  @Override
   public void setPermissionMask(Integer permissionMask) {
     if (permissionMask == null) {
       return;
@@ -65,13 +68,15 @@ public class Privilege extends AbstractClientDomain implements com.smartitengine
     this.permissionMask = permissionMask;
   }
 
-  public void setSecuredObject(SecuredObject securedObject) {
+  @Override
+  public void setSecuredObject(com.smartitengineering.user.client.api.SecuredObject securedObject) {
     if (securedObject == null) {
       return;
     }
     this.securedObject = securedObject;
   }
 
+  @Override
   public void setShortDescription(String shortDescription) {
     if (shortDescription == null) {
       return;

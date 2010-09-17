@@ -33,4 +33,26 @@ public interface Person {
   public String getCellPhoneNumber();
 
   public String getFaxNumber();
+
+  public void setFather(BasicIdentity father);
+
+  public void setMother(BasicIdentity mother);
+
+  public void setSpouse(BasicIdentity spouse);
+
+  public void setSelf(BasicIdentity self);
+
+  public void setAddress(Address address);
+
+  public void setBirthday(Date birthday);
+
+  public void setPrimaryEmail(String primaryEmail);
+
+  public void setSecondaryEmail(String secondaryEmail);
+
+  public void setPhoneNumber(String phoneNumber);
+
+  public void setCellPhoneNumber(String cellPhoneNumber);
+
+  public void setFaxNumber(String faxNumber);
 }

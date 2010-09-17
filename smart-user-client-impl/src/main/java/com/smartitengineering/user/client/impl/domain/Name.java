@@ -31,6 +31,7 @@ public class Name extends AbstractClientDomain implements com.smartitengineering
     return middleInitial;
   }
 
+  @Override
   public void setFirstName(String firstName) {
     if (firstName == null) {
       return;
@@ -38,6 +39,7 @@ public class Name extends AbstractClientDomain implements com.smartitengineering
     this.firstName = firstName;
   }
 
+  @Override
   public void setLastName(String lastName) {
     if (lastName == null) {
       return;
@@ -45,6 +47,7 @@ public class Name extends AbstractClientDomain implements com.smartitengineering
     this.lastName = lastName;
   }
 
+  @Override
   public void setMiddleInitial(String middleInitial) {
     if (middleInitial == null) {
       return;

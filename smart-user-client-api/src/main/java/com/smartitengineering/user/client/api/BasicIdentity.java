@@ -15,4 +15,8 @@ public interface BasicIdentity {
   public Name getName();
 
   public String getNationalID();
+
+  public void setName(Name name);
+
+  public void setNationalID(String nationalID);
 }

@@ -13,10 +13,10 @@ import java.util.Date;
  */
 public class Person extends AbstractClientDomain implements com.smartitengineering.user.client.api.Person {
 
-  private BasicIdentity father;
-  private BasicIdentity mother;
-  private BasicIdentity spouse;
-  private BasicIdentity self;
+  private com.smartitengineering.user.client.api.BasicIdentity father;
+  private com.smartitengineering.user.client.api.BasicIdentity mother;
+  private com.smartitengineering.user.client.api.BasicIdentity spouse;
+  private com.smartitengineering.user.client.api.BasicIdentity self;
   private Address address;
   private Date birthday;
   private String primaryEmail;
@@ -26,22 +26,22 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
   private String faxNumber;
 
   @Override
-  public BasicIdentity getFather() {
+  public com.smartitengineering.user.client.api.BasicIdentity getFather() {
     return father;
   }
 
   @Override
-  public BasicIdentity getMother() {
+  public com.smartitengineering.user.client.api.BasicIdentity getMother() {
     return mother;
   }
 
   @Override
-  public BasicIdentity getSpouse() {
+  public com.smartitengineering.user.client.api.BasicIdentity getSpouse() {
     return spouse;
   }
 
   @Override
-  public BasicIdentity getSelf() {
+  public com.smartitengineering.user.client.api.BasicIdentity getSelf() {
     return self;
   }
 
@@ -80,6 +80,7 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
     return faxNumber;
   }
 
+  @Override
   public void setAddress(Address address) {
     if (address == null) {
       return;
@@ -87,6 +88,7 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
     this.address = address;
   }
 
+  @Override
   public void setBirthday(Date birthday) {
     if (birthday == null) {
       return;
@@ -94,6 +96,7 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
     this.birthday = birthday;
   }
 
+  @Override
   public void setCellPhoneNumber(String cellPhoneNumber) {
     if (cellPhoneNumber == null) {
       return;
@@ -101,13 +104,15 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
     this.cellPhoneNumber = cellPhoneNumber;
   }
 
-  public void setFather(BasicIdentity father) {
+  @Override
+  public void setFather(com.smartitengineering.user.client.api.BasicIdentity father) {
     if (father == null) {
       return;
     }
     this.father = father;
   }
 
+  @Override
   public void setFaxNumber(String faxNumber) {
     if (faxNumber == null) {
       return;
@@ -115,13 +120,15 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
     this.faxNumber = faxNumber;
   }
 
-  public void setMother(BasicIdentity mother) {
+  @Override
+  public void setMother(com.smartitengineering.user.client.api.BasicIdentity mother) {
     if (mother == null) {
       return;
     }
     this.mother = mother;
   }
 
+  @Override
   public void setPhoneNumber(String phoneNumber) {
     if (phoneNumber == null) {
       return;
@@ -129,6 +136,7 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
     this.phoneNumber = phoneNumber;
   }
 
+  @Override
   public void setPrimaryEmail(String primaryEmail) {
     if (primaryEmail == null) {
       return;
@@ -136,6 +144,7 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
     this.primaryEmail = primaryEmail;
   }
 
+  @Override
   public void setSecondaryEmail(String secondaryEmail) {
     if (secondaryEmail == null) {
       return;
@@ -143,14 +152,16 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
     this.secondaryEmail = secondaryEmail;
   }
 
-  public void setSelf(BasicIdentity self) {
+  @Override
+  public void setSelf(com.smartitengineering.user.client.api.BasicIdentity self) {
     if (self == null) {
       return;
     }
     this.self = self;
   }
 
-  public void setSpouse(BasicIdentity spouse) {
+  @Override
+  public void setSpouse(com.smartitengineering.user.client.api.BasicIdentity spouse) {
     if (spouse == null) {
       return;
     }

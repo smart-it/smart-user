@@ -12,28 +12,30 @@ import java.util.Date;
  */
 public class UserPerson extends AbstractClientDomain implements com.smartitengineering.user.client.api.UserPerson {
 
-  private User user;
-  private Person person;
+  private com.smartitengineering.user.client.api.User user;
+  private com.smartitengineering.user.client.api.Person person;
   private Date lastModifiedDate;
 
   @Override
-  public User getUser() {
+  public com.smartitengineering.user.client.api.User getUser() {
     return user;
   }
 
   @Override
-  public Person getPerson() {
+  public com.smartitengineering.user.client.api.Person getPerson() {
     return person;
   }
 
-  public void setPerson(Person person) {
+  @Override
+  public void setPerson(com.smartitengineering.user.client.api.Person person) {
     if (person == null) {
       return;
     }
     this.person = person;
   }
 
-  public void setUser(User user) {
+  @Override
+  public void setUser(com.smartitengineering.user.client.api.User user) {
     if (user == null) {
       return;
     }

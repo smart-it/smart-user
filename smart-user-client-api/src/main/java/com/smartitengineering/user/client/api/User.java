@@ -17,4 +17,8 @@ public interface User {
   public String getPassword();
 
   public Date getLastModifiedDate();
+
+  public void setUsername(String username);
+
+  public void setPassword(String password);
 }
