@@ -17,4 +17,8 @@ public interface UserPerson {
   public Person getPerson();
 
   public Date getLastModifiedDate();
+
+  public void setUser(User user);
+
+  public void setPerson(Person person);
 }

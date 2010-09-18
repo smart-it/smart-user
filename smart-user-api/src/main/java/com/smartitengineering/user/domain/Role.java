@@ -6,9 +6,6 @@ package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -18,80 +15,77 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  */
 public class Role extends AbstractPersistentDTO<Role> {
 
-    
+  private String name;
+  private String displayName;
+  private String shortDescription;
+  private Date lastModifiedDate;
 
-    private String name;
-    private String displayName;    
-    private String shortDescription;
-    
-    
-    private Date lastModifiedDate;
+  public Role() {
+  }
 
-    public Role(){
+  public Role(String name, String displayName, String shortDescription) {
+    this.name = name;
+    this.displayName = displayName;
+    this.shortDescription = shortDescription;
+  }
 
+  public String getDisplayName() {
+    if (displayName == null) {
+      displayName = "";
     }
+    return displayName;
+  }
 
-    public Role(String name, String displayName, String shortDescription){
-        this.name = name;
-        this.displayName = displayName;
-        this.shortDescription = shortDescription;
+  public void setDisplayName(String displayName) {
+    if (displayName == null) {
+      return;
     }
+    this.displayName = displayName;
+  }
 
-
-    public String getDisplayName() {
-        if (displayName == null) {
-            displayName = "";
-        }
-        return displayName;
+  public String getName() {
+    if (name == null) {
+      name = "";
     }
+    return name;
+  }
 
-    public void setDisplayName(String displayName) {
-        if (displayName == null) {
-            return;
-        }
-        this.displayName = displayName;
+  public void setName(String name) {
+    if (name == null) {
+      return;
     }
+    this.name = name;
+  }
 
-    public String getName() {
-        if (name == null) {
-            name = "";
-        }
-        return name;
+  public String getShortDescription() {
+    if (shortDescription == null) {
+      shortDescription = "";
     }
+    return shortDescription;
+  }
 
-    public void setName(String name) {
-        if (name == null) {
-            return;
-        }
-        this.name = name;
+  public void setShortDescription(String shortDescription) {
+    if (shortDescription == null) {
+      return;
     }
+    this.shortDescription = shortDescription;
+  }
 
-    public String getShortDescription() {
-        if (shortDescription == null) {
-            shortDescription = "";
-        }
-        return shortDescription;
-    }
+  @JsonIgnore
+  public Date getLastModifiedDate() {
+    return lastModifiedDate;
+  }
 
-    public void setShortDescription(String shortDescription) {
-        if (shortDescription == null) {
-            return;
-        }
-        this.shortDescription = shortDescription;
-    }
+  public void setLastModifiedDate(Date lastModifiedDate) {
+    this.lastModifiedDate = lastModifiedDate;
+  }
 
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
+  @Override
+  @JsonIgnore
+  public boolean isValid() {
+    if (StringUtils.isEmpty(name) || StringUtils.isEmpty(displayName)) {
+      return false;
     }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    public boolean isValid() {
-        if (StringUtils.isEmpty(name) || StringUtils.isEmpty(displayName)) {
-            return false;
-        }
-        return true;
-    }
+    return true;
+  }
 }

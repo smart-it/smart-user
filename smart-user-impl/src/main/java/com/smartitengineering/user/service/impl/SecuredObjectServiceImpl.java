@@ -111,18 +111,4 @@ public class SecuredObjectServiceImpl extends AbstractCommonDaoImpl<SecuredObjec
 
         }
     }
-
-    @Override
-    public void populateSecuredObject(Privilege privilege) throws Exception {
-        Integer securedObjectID = privilege.getSecuredObjectID();
-        if (securedObjectID != null) {
-            SecuredObject securedObject = getById(securedObjectID);
-            if (securedObject == null) {
-                throw new Exception("Secured Object not found");
-            }
-            privilege.setSecuredObject(securedObject);
-        }
-    }
-
-
 }

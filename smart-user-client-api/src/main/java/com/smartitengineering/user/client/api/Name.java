@@ -4,8 +4,6 @@
  */
 package com.smartitengineering.user.client.api;
 
-import java.util.Date;
-
 /**
  *
  * @author modhu7
@@ -17,4 +15,10 @@ public interface Name {
   public String getLastName();
 
   public String getMiddleInitial();
+
+  public void setFirstName(String firstName);
+
+  public void setLastName(String lastName);
+
+  public void setMiddleInitial(String middleInitial);
 }

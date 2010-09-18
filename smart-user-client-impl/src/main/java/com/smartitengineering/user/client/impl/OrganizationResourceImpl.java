@@ -33,14 +33,13 @@ class OrganizationResourceImpl extends AbstractFeedClientResource<Resource<? ext
   public static final String REL_USERS = "users";
   public static final String REL_PRIVILEGES = "privileges";
   public static final String REL_SECUREDOBJECTS = "securedobjects";
-  private Resource<? extends Organization> organization;
 
   public OrganizationResourceImpl(ResourceLink orgLink, Resource referrer) {
     super(referrer, orgLink);
     final ResourceLink altLink = getRelatedResourceUris().getFirst(Link.REL_ALTERNATE);
-    organization = new SimpleResourceImpl<com.smartitengineering.user.client.impl.domain.Organization>(
+    addNestedResource(REL_ORG, new SimpleResourceImpl<com.smartitengineering.user.client.impl.domain.Organization>(
         this, altLink.getUri(), altLink.getMimeType(), com.smartitengineering.user.client.impl.domain.Organization.class,
-        null, false, null, null);
+        null, false, null, null));
   }
 
   @Override
@@ -60,7 +59,17 @@ class OrganizationResourceImpl extends AbstractFeedClientResource<Resource<? ext
 
   @Override
   public Organization getOrganization() {
-    return organization.getLastReadStateOfEntity();
+    return getOrganization(false);
+  }
+
+  protected Organization getOrganization(boolean reload) {
+    Resource<Organization> organization = super.<Organization>getNestedResource(REL_ORG);
+    if (reload) {
+      return organization.get();
+    }
+    else {
+      return organization.getLastReadStateOfEntity();
+    }
   }
 
   @Override

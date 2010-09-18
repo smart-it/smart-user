@@ -26,10 +26,12 @@ public class User extends AbstractClientDomain implements com.smartitengineering
     return password;
   }
 
+  @Override
   public void setPassword(String password) {
     this.password = password;
   }
 
+  @Override
   public void setUsername(String username) {
     this.username = username;
   }

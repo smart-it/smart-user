@@ -23,4 +23,14 @@ public interface Privilege {
   public Integer getPermissionMask();
 
   public Date getLastModifiedDate();
+
+  public void setName(String name);
+
+  public void setDisplayName(String displayName);
+
+  public void setShortDescription(String shortDescription);
+
+  public void setSecuredObject(SecuredObject securedObject);
+
+  public void setPermissionMask(Integer permissionMask);
 }

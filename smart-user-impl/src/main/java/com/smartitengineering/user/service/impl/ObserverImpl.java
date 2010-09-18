@@ -233,7 +233,7 @@ public class ObserverImpl implements CRUDObserver {
         getName());
     Set<Privilege> privileges = userPerson.getUser().getPrivileges();
     privileges.add(privilegeUser);
-    User user = userPerson.getUser();
+    User user = persistentUserPerson.getUser();
     user.setPrivileges(privileges);
     userService.update(user);
   }

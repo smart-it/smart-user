@@ -4,7 +4,7 @@
  */
 package com.smartitengineering.user.client.impl.domain;
 
-import java.util.Date;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
 /**
  *
@@ -17,10 +17,10 @@ public class Address extends AbstractClientDomain implements com.smartitengineer
   private String state;
   private String country;
   private String zip;
-  private GeoLocation geoLocation;  
+  private com.smartitengineering.user.client.api.GeoLocation geoLocation;
 
   @Override
-  public GeoLocation getGeoLocation() {
+  public com.smartitengineering.user.client.api.GeoLocation getGeoLocation() {
     return geoLocation;
   }
 
@@ -49,6 +49,7 @@ public class Address extends AbstractClientDomain implements com.smartitengineer
     return zip;
   }
 
+  @Override
   public void setCity(String city) {
     if (city == null) {
       return;
@@ -56,6 +57,7 @@ public class Address extends AbstractClientDomain implements com.smartitengineer
     this.city = city;
   }
 
+  @Override
   public void setCountry(String country) {
     if (country == null) {
       return;
@@ -63,13 +65,16 @@ public class Address extends AbstractClientDomain implements com.smartitengineer
     this.country = country;
   }
 
-  public void setGeoLocation(GeoLocation geoLocation) {
+  @Override
+  @JsonDeserialize(as = GeoLocation.class)
+  public void setGeoLocation(com.smartitengineering.user.client.api.GeoLocation geoLocation) {
     if (geoLocation == null) {
       return;
     }
     this.geoLocation = geoLocation;
   }
 
+  @Override
   public void setState(String state) {
     if (state == null) {
       return;
@@ -77,6 +82,7 @@ public class Address extends AbstractClientDomain implements com.smartitengineer
     this.state = state;
   }
 
+  @Override
   public void setStreetAddress(String streetAddress) {
     if (streetAddress == null) {
       return;
@@ -84,6 +90,7 @@ public class Address extends AbstractClientDomain implements com.smartitengineer
     this.streetAddress = streetAddress;
   }
 
+  @Override
   public void setZip(String zip) {
     if (zip == null) {
       return;

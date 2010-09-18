@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.service.impl;
 
 import com.smartitengineering.dao.common.queryparam.FetchMode;
@@ -33,125 +32,129 @@ import org.hibernate.exception.ConstraintViolationException;
  *
  * @author russel
  */
-public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> implements PrivilegeService{
+public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> implements PrivilegeService {
 
-    public PrivilegeServiceImpl(){
-        setEntityClass(Privilege.class);
+  public PrivilegeServiceImpl() {
+    setEntityClass(Privilege.class);
+  }
+  private UserService userService;
+
+  public UserService getUserService() {
+    return userService;
+  }
+
+  public void setUserService(UserService userService) {
+    this.userService = userService;
+  }
+
+  @Override
+  public void create(Privilege privilege) {
+
+    validatePrivilege(privilege);
+    try {
+      super.save(privilege);
     }
-
-    private UserService userService;
-
-    public UserService getUserService() {
-        return userService;
+    catch (ConstraintViolationException e) {
+      String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
+      throw new RuntimeException(message, e);
     }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    catch (StaleStateException e) {
+      String message =
+             ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
+      throw new RuntimeException(message, e);
     }
+  }
 
-
-
-    @Override
-    public void create(Privilege privilege){
-
-        validatePrivilege(privilege);
-        try{
-            super.save(privilege);
-        }catch (ConstraintViolationException e) {
-            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
-            throw new RuntimeException(message, e);
-        } catch (StaleStateException e) {
-            String message =
-                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-"
-                    + UniqueConstrainedField.OTHER;
-            throw new RuntimeException(message, e);
-        }
+  @Override
+  public void delete(Privilege privilege) {
+    try {
+      super.delete(privilege);
     }
-
-    @Override
-    public void delete(Privilege privilege) {
-        try {
-            super.delete(privilege);
-        } catch (Exception e) {
-        }
+    catch (Exception e) {
     }
+  }
 
-    @Override
-    public void update(Privilege privilege) {
-        validatePrivilege(privilege);
-        try {
-            super.update(privilege);
-        } catch (ConstraintViolationException e) {
-            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.
-                    name() + "-" + UniqueConstrainedField.OTHER;
-            throw new RuntimeException(message, e);
-        } catch (StaleStateException e) {
-            String message =
-                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
-                    UniqueConstrainedField.OTHER;
-            throw new RuntimeException(message, e);
-        }
+  @Override
+  public void update(Privilege privilege) {
+    validatePrivilege(privilege);
+    try {
+      super.update(privilege);
     }
+    catch (ConstraintViolationException e) {
+      String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
+      throw new RuntimeException(message, e);
+    }
+    catch (StaleStateException e) {
+      String message =
+             ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
+          UniqueConstrainedField.OTHER;
+      throw new RuntimeException(message, e);
+    }
+  }
 //    public Privilege getPrivilegesByObjectID(String objectID){
 //
 //    }
 
-    @Override
-    public Privilege getPrivilegeByName(String privilegeName){
-        throw new UnsupportedOperationException("Not supported yet.");
+  @Override
+  public Privilege getPrivilegeByName(String privilegeName) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Privilege getPrivilegeByOrganizationAndPrivilegeName(String organizationName, String privilegename) {
+    return super.getSingle(QueryParameterFactory.getEqualPropertyParam("name", privilegename),
+                           QueryParameterFactory.getNestedParametersParam("parentOrganization", FetchMode.DEFAULT,
+                                                                          QueryParameterFactory.getEqualPropertyParam(
+        "uniqueShortName", organizationName)));
+  }
+
+  @Override
+  public Collection<Privilege> getPrivilegesByOrganizationAndUser(String organizationName, String userName) {
+    User user = userService.getUserByOrganizationAndUserName(organizationName, userName);
+    return user.getPrivileges();
+  }
+
+  @Override
+  public Collection<Privilege> getPrivilegesByOrganization(String organization) {
+    Collection<Privilege> users = new HashSet<Privilege>();
+    QueryParameter qp = QueryParameterFactory.getNestedParametersParam("parentOrganization", FetchMode.DEFAULT, QueryParameterFactory.
+        getEqualPropertyParam("uniqueShortName", organization));
+    return super.getList(qp);
+  }
+
+  public Collection<Privilege> getPrivilegess(String nameLike, String name, boolean isSmallerThan, int count) {
+
+    List<QueryParameter> params = new ArrayList<QueryParameter>();
+
+    if (StringUtils.isNotBlank(nameLike)) {
+      final QueryParameter orgNameLikeParam = QueryParameterFactory.getNestedParametersParam("name",
+                                                                                             FetchMode.EAGER,
+                                                                                             QueryParameterFactory.
+          getStringLikePropertyParam("name", nameLike));
+      params.add(orgNameLikeParam);
+    }
+    else {
+      params.add(QueryParameterFactory.getNestedParametersParam("username", FetchMode.EAGER));
     }
 
-    @Override
-    public Privilege getPrivilegeByOrganizationAndPrivilegeName(String organizationName, String privilegename){
-        return super.getSingle(QueryParameterFactory.getEqualPropertyParam("name", privilegename),
-               QueryParameterFactory.getNestedParametersParam("parentOrganization", FetchMode.DEFAULT,
-               QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationName)));
-    }
-
-    @Override
-    public Collection<Privilege> getPrivilegesByOrganizationAndUser(String organizationName, String userName){
-        User user = userService.getUserByOrganizationAndUserName(organizationName, userName);
-        return user.getPrivileges();
-    }
-
-    @Override
-    public Collection<Privilege> getPrivilegesByOrganization(String organization){
-        Collection<Privilege> users = new HashSet<Privilege>();
-        QueryParameter qp = QueryParameterFactory.getNestedParametersParam("parentOrganization", FetchMode.DEFAULT,QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organization));
-        return super.getList(qp);
-    }
-
-    public Collection<Privilege> getPrivilegess(String nameLike, String name, boolean isSmallerThan, int count){
-
-      List<QueryParameter> params = new ArrayList<QueryParameter>();
-
-      if(StringUtils.isNotBlank(nameLike)){
-        final QueryParameter orgNameLikeParam =   QueryParameterFactory.getNestedParametersParam("name",
-                                                                                               FetchMode.EAGER,
-                                                                                               QueryParameterFactory.getStringLikePropertyParam("name", nameLike));
-        params.add(orgNameLikeParam);
+    if (StringUtils.isNotBlank(name)) {
+      if (isSmallerThan) {
+        params.add(QueryParameterFactory.getLesserThanPropertyParam("username", name));
       }
-      else{
-        params.add(QueryParameterFactory.getNestedParametersParam("username", FetchMode.EAGER));
+      else {
+        params.add(QueryParameterFactory.getGreaterThanPropertyParam("username", name));
       }
+    }
 
-      if(StringUtils.isNotBlank(name)){
-        if(isSmallerThan){
-          params.add(QueryParameterFactory.getLesserThanPropertyParam("username", name));
-        }else{
-          params.add(QueryParameterFactory.getGreaterThanPropertyParam("username", name));
-        }
-      }
+    params.add(QueryParameterFactory.getMaxResultsParam(count));
+    params.add(QueryParameterFactory.getOrderByParam("id", Order.DESC));
+    params.add(QueryParameterFactory.getDistinctPropProjectionParam("id"));
 
-      params.add(QueryParameterFactory.getMaxResultsParam(count));
-      params.add(QueryParameterFactory.getOrderByParam("id", Order.DESC));
-      params.add(QueryParameterFactory.getDistinctPropProjectionParam("id"));
+    List<Integer> userIDs = getOtherList(params);
 
-      List<Integer> userIDs = getOtherList(params);
-
-      if (userIDs != null && !userIDs.isEmpty()) {
+    if (userIDs != null && !userIDs.isEmpty()) {
       List<Privilege> privileges = new ArrayList<Privilege>(super.getByIds(userIDs));
-      Collections.sort(privileges, new Comparator<Privilege>(){
+      Collections.sort(privileges, new Comparator<Privilege>() {
 
         @Override
         public int compare(Privilege o1, Privilege o2) {
@@ -163,56 +166,44 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
     else {
       return Collections.emptySet();
     }
+  }
+
+  public void validatePrivilege(Privilege privilege) {
+    if (privilege.getId() == null) {
+      Integer count = (Integer) super.getOther(
+          QueryParameterFactory.getElementCountParam("name"), QueryParameterFactory.getConjunctionParam(
+          QueryParameterFactory.getEqualPropertyParam("parentOrganization.id",
+                                                      privilege.getParentOrganization().getId()), QueryParameterFactory.
+          getStringLikePropertyParam(
+          "name", privilege.getName())));
+      if (count.intValue() > 0) {
+        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.SECURED_OBJECT_OBJECT_ID.
+            name());
+      }
     }
+    else {
+      Integer count = (Integer) super.getOther(
+          QueryParameterFactory.getElementCountParam("name"),
+          QueryParameterFactory.getConjunctionParam(
+          QueryParameterFactory.getNotEqualPropertyParam("id",
+                                                         privilege.getId()), QueryParameterFactory.getEqualPropertyParam(
+          "parentOrganization.id",
+                                                                                                                         privilege.
+          getParentOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
+          "name", privilege.getName())));
+      if (count.intValue() > 0) {
+        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.SECURED_OBJECT_OBJECT_ID.
+            name());
+      }
 
-    public void validatePrivilege(Privilege privilege){
-        if (privilege.getId() == null) {
-            Integer count = (Integer) super.getOther(
-                    QueryParameterFactory.getElementCountParam("name"), QueryParameterFactory.getConjunctionParam(
-                    QueryParameterFactory.getEqualPropertyParam("parentOrganization.id",
-                    privilege.getParentOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
-                    "name", privilege.getName())));
-            if (count.intValue() > 0) {
-                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-"
-                        + UniqueConstrainedField.SECURED_OBJECT_OBJECT_ID.name());
-            }
-        } else {
-            Integer count = (Integer) super.getOther(
-                    QueryParameterFactory.getElementCountParam("name"),
-                    QueryParameterFactory.getConjunctionParam(
-                    QueryParameterFactory.getNotEqualPropertyParam("id",
-                    privilege.getId()), QueryParameterFactory.getEqualPropertyParam("parentOrganization.id",
-                    privilege.getParentOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
-                    "name", privilege.getName())));
-            if (count.intValue() > 0) {
-                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-"
-                        + UniqueConstrainedField.SECURED_OBJECT_OBJECT_ID.name());
-            }
-
-        }
     }
-
-    @Override
-    public void populatePrivilege(User user) throws Exception{
-        List<Integer> privilegeIDs = user.getPrivilegeIDs();
-        if(privilegeIDs != null && ! privilegeIDs.isEmpty()){
-            Set<Privilege> privileges = getByIds(privilegeIDs);
-
-            if(privileges == null || privilegeIDs.size() != privileges.size()){
-                throw new Exception("Privilege not found");
-            }
-
-            user.setPrivileges(privileges);
-        }
-    }
-
-    @Override
-    public void populatePrivilege(Role role)throws Exception {
-       throw new UnsupportedOperationException("Not supported yet.");
-    }
+  }
 
   @Override
   public Collection<Privilege> getPrivilegesByOrganizationNameAndObjectID(String organizationName, String objectID) {
-    return super.getList(QueryParameterFactory.getConjunctionParam(QueryParameterFactory.getNestedParametersParam("securedObject", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam("objectID", objectID)), QueryParameterFactory.getNestedParametersParam("parentOrganization", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationName))));
+    return super.getList(QueryParameterFactory.getConjunctionParam(QueryParameterFactory.getNestedParametersParam(
+        "securedObject", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam("objectID", objectID)), QueryParameterFactory.
+        getNestedParametersParam("parentOrganization", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam(
+        "uniqueShortName", organizationName))));
   }
 }

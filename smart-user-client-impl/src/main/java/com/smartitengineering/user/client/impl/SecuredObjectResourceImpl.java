@@ -26,19 +26,19 @@ public class SecuredObjectResourceImpl extends AbstractFeedClientResource<Resour
 
   public static final String REL_SECUREDOBJECT = "securedobject";
   public static final String REL_ALT = "alternate";
-  private Resource<? extends SecuredObject> securedObject;
 
   public SecuredObjectResourceImpl(ResourceLink securedObjectLink, Resource referrer) {
     super(referrer, securedObjectLink);
     final ResourceLink altLink = getRelatedResourceUris().getFirst(Link.REL_ALTERNATE);
-    securedObject = new SimpleResourceImpl<com.smartitengineering.user.client.impl.domain.SecuredObject>(this, altLink.
+    addNestedResource(REL_SECUREDOBJECT,
+                      new SimpleResourceImpl<com.smartitengineering.user.client.impl.domain.SecuredObject>(this, altLink.
         getUri(), altLink.getMimeType(), com.smartitengineering.user.client.impl.domain.SecuredObject.class, null, false,
-                                                                                                         null, null);
+                                                                                                           null, null));
   }
 
   @Override
   public SecuredObject getSecuredObjcet() {
-    return securedObject.getLastReadStateOfEntity();
+    return getSecuredObject(false);
   }
 
   @Override
@@ -59,5 +59,15 @@ public class SecuredObjectResourceImpl extends AbstractFeedClientResource<Resour
   @Override
   protected Resource<? extends Feed> instantiatePageableResource(ResourceLink link) {
     return null;
+  }
+
+  private SecuredObject getSecuredObject(boolean reload) {
+    Resource<SecuredObject> securedObject = super.<SecuredObject>getNestedResource(REL_SECUREDOBJECT);
+    if(reload){
+      return securedObject.get();
+    }
+    else{
+      return securedObject.getLastReadStateOfEntity();
+    }
   }
 }

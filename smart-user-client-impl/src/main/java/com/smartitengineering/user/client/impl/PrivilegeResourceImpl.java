@@ -24,15 +24,15 @@ import org.apache.abdera.model.Link;
 public class PrivilegeResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements
     PrivilegeResource {
 
-  private Resource<? extends Privilege> privilege;
+  public static final String REL_PRIV = "privilege";  
 
   public PrivilegeResourceImpl(ResourceLink privLink, Resource referrer) {
 
     super(referrer, privLink);
     final ResourceLink altLink = getRelatedResourceUris().getFirst(Link.REL_ALTERNATE);
-    privilege = new SimpleResourceImpl<com.smartitengineering.user.client.impl.domain.Privilege>(
+    addNestedResource(REL_PRIV, new SimpleResourceImpl<com.smartitengineering.user.client.impl.domain.Privilege>(
         this, altLink.getUri(), altLink.getMimeType(), com.smartitengineering.user.client.impl.domain.Privilege.class,
-        null, false, null, null);
+        null, false, null, null));
   }
 
   @Override
@@ -46,7 +46,7 @@ public class PrivilegeResourceImpl extends AbstractFeedClientResource<Resource<?
 
   @Override
   public Privilege getPrivilege() {
-    return privilege.getLastReadStateOfEntity();
+    return getPrivilege(false);
   }
 
   @Override
@@ -58,5 +58,15 @@ public class PrivilegeResourceImpl extends AbstractFeedClientResource<Resource<?
   public void update() {
     put(MediaType.APPLICATION_JSON, getPrivilege(), ClientResponse.Status.OK, ClientResponse.Status.SEE_OTHER,
         ClientResponse.Status.FOUND);
+  }
+
+  protected Privilege getPrivilege(boolean reload) {
+    Resource<Privilege> privilege = super.<Privilege>getNestedResource(REL_PRIV);
+    if(reload){
+      return privilege.get();
+    }
+    else{
+      return privilege.getLastReadStateOfEntity();
+    }
   }
 }

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
@@ -13,96 +12,64 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
-     * @author russel
+ * @author russel
  */
-public class UserGroup extends AbstractPersistentDTO<UserGroup>{
+public class UserGroup extends AbstractPersistentDTO<UserGroup> {
 
-    private String name;
-    private Set<User> users;
-    private Set<Privilege> privileges;
-    private Organization organization;
+  private String name;
+  private Set<User> users;
+  private Set<Privilege> privileges;
+  private Organization organization;
+  private Date lastModifiedDate;
 
-    private List<Integer> userIDs;
-    private List<Integer> privilegeIDs;
-    private Integer parentOrganizationID;
+  public String getName() {
+    return name;
+  }
 
-    private Date lastModifiedDate;
+  public void setName(String name) {
+    this.name = name;
+  }
+  
+  @JsonIgnore
+  public Set<User> getUsers() {
+    return users;
+  }
 
-    public String getName() {
-        return name;
-    }
+  @JsonIgnore
+  public void setUsers(Set<User> users) {
+    this.users = users;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  @JsonIgnore
+  public Set<Privilege> getPrivileges() {
+    return privileges;
+  }
 
-    @JsonIgnore
-    public List<Integer> getUserIDs() {
-        return userIDs;
-    }
+  @JsonIgnore
+  public void setPrivileges(Set<Privilege> privileges) {
+    this.privileges = privileges;
+  }
 
-    public void setUserIDs(List<Integer> userIDs) {
-        this.userIDs = userIDs;
-    }
+  @Override
+  @JsonIgnore
+  public boolean isValid() {
+    return true;
+  }
 
-    @JsonIgnore
-    public List<Integer> getPrivilegeIDs() {
-        return privilegeIDs;
-    }
+  public Organization getOrganization() {
+    return organization;
+  }
 
-    public void setPrivilegeIDs(List<Integer> privilegeIDs) {
-        this.privilegeIDs = privilegeIDs;
-    }
+  public void setOrganization(Organization organization) {
+    this.organization = organization;
+  }
 
+  @JsonIgnore
+  public Date getLastModifiedDate() {
+    return lastModifiedDate;
+  }
 
-    @JsonIgnore
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    @JsonIgnore
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
-    @JsonIgnore
-    public Set<Privilege> getPrivileges() {
-        return privileges;
-    }
-
-    @JsonIgnore
-    public void setPrivileges(Set<Privilege> privileges) {
-        this.privileges = privileges;
-    }
-
-    public boolean isValid(){
-        return true;
-    }
-
-    public Organization getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
-    }
-
-    public Integer getParentOrganizationID() {
-        return parentOrganizationID;
-    }
-
-    public void setParentOrganizationID(Integer parentOrganizationID) {
-        this.parentOrganizationID = parentOrganizationID;
-    }
-
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    
-
+  public void setLastModifiedDate(Date lastModifiedDate) {
+    this.lastModifiedDate = lastModifiedDate;
+  }
 }

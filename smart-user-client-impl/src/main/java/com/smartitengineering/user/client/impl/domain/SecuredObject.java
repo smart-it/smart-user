@@ -33,6 +33,7 @@ public class SecuredObject extends AbstractClientDomain implements
     return parentObjectID;
   }
 
+  @Override
   public void setName(String name) {
     if (name == null) {
       return;
@@ -40,6 +41,7 @@ public class SecuredObject extends AbstractClientDomain implements
     this.name = name;
   }
 
+  @Override
   public void setObjectID(String objectID) {
     if (objectID == null) {
       return;
@@ -47,6 +49,7 @@ public class SecuredObject extends AbstractClientDomain implements
     this.objectID = objectID;
   }
 
+  @Override
   public void setParentObjectID(String parentObjectID) {
     if (parentObjectID == null) {
       return;

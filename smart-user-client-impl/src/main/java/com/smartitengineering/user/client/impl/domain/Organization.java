@@ -9,13 +9,15 @@ package com.smartitengineering.user.client.impl.domain;
  * @author russel
  */
 import java.util.Date;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
 public class Organization extends AbstractClientDomain implements
     com.smartitengineering.user.client.api.Organization {
 
+  public static final String ADDRESS_TYPE = Address.class.getName();
   private String name;
   private String uniqueShortName;
-  private Address address;
+  private com.smartitengineering.user.client.api.Address address;
   private Date lastModifiedDate;
 
   @Override
@@ -23,13 +25,7 @@ public class Organization extends AbstractClientDomain implements
     return name;
   }
 
-  public void setAddress(Address address) {
-    if (address == null) {
-      return;
-    }
-    this.address = address;
-  }
-
+  @Override
   public void setName(String name) {
     if (name == null) {
       return;
@@ -37,6 +33,7 @@ public class Organization extends AbstractClientDomain implements
     this.name = name;
   }
 
+  @Override
   public void setUniqueShortName(String uniqueShortName) {
     if (uniqueShortName == null) {
       return;
@@ -50,7 +47,7 @@ public class Organization extends AbstractClientDomain implements
   }
 
   @Override
-  public Address getAddress() {
+  public com.smartitengineering.user.client.api.Address getAddress() {
     return address;
   }
 
@@ -60,8 +57,15 @@ public class Organization extends AbstractClientDomain implements
   }
 
   public void setLastModifiedDate(Date lastModifiedDate) {
-    if(lastModifiedDate==null)
+    if (lastModifiedDate == null) {
       return;
+    }
     this.lastModifiedDate = lastModifiedDate;
+  }
+
+  @Override
+  @JsonDeserialize(as = Address.class)
+  public void setAddress(com.smartitengineering.user.client.api.Address address) {
+    this.address = address;
   }
 }

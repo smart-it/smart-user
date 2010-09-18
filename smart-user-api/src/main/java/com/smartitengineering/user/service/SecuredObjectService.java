@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.service;
 
 import com.smartitengineering.user.domain.Privilege;
@@ -15,17 +14,13 @@ import java.util.Collection;
  */
 public interface SecuredObjectService {
 
-    public void save(SecuredObject securedObject);
+  public void save(SecuredObject securedObject);
 
-    public void update(SecuredObject securedObject);
+  public void update(SecuredObject securedObject);
 
-    public void delete(SecuredObject securedObject);
+  public void delete(SecuredObject securedObject);
 
-    public Collection<SecuredObject> getByOrganization(String organizationName);
+  public Collection<SecuredObject> getByOrganization(String organizationName);
 
-    public SecuredObject getByOrganizationAndObjectID(String organizationName, String objectID);
-
-    public void populateSecuredObject(Privilege privilege) throws Exception;
-
-
+  public SecuredObject getByOrganizationAndObjectID(String organizationName, String objectID);
 }
