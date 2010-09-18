@@ -4,7 +4,6 @@
  */
 package com.smartitengineering.user.client.impl.domain;
 
-import com.smartitengineering.user.client.api.Address;
 import java.util.Date;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
@@ -18,7 +17,7 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
   private com.smartitengineering.user.client.api.BasicIdentity mother;
   private com.smartitengineering.user.client.api.BasicIdentity spouse;
   private com.smartitengineering.user.client.api.BasicIdentity self;
-  private Address address;
+  private com.smartitengineering.user.client.api.Address address;
   private Date birthday;
   private String primaryEmail;
   private String secondaryEmail;
@@ -47,12 +46,12 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
   }
 
   @Override
-  public Address getAddress() {
+  public com.smartitengineering.user.client.api.Address getAddress() {
     return address;
   }
 
   @Override
-  public Date getBirthday() {
+  public Date getBirthDay() {
     return birthday;
   }
 
@@ -83,7 +82,7 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
 
   @Override
   @JsonDeserialize(as = Address.class)
-  public void setAddress(Address address) {
+  public void setAddress(com.smartitengineering.user.client.api.Address address) {
     if (address == null) {
       return;
     }
@@ -91,7 +90,7 @@ public class Person extends AbstractClientDomain implements com.smartitengineeri
   }
 
   @Override
-  public void setBirthday(Date birthday) {
+  public void setBirthDay(Date birthday) {
     if (birthday == null) {
       return;
     }

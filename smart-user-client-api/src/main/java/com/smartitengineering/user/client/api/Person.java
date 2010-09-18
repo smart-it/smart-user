@@ -22,7 +22,7 @@ public interface Person {
 
   public Address getAddress();
 
-  public Date getBirthday();
+  public Date getBirthDay();
 
   public String getPrimaryEmail();
 
@@ -44,7 +44,7 @@ public interface Person {
 
   public void setAddress(Address address);
 
-  public void setBirthday(Date birthday);
+  public void setBirthDay(Date birthday);
 
   public void setPrimaryEmail(String primaryEmail);
 
