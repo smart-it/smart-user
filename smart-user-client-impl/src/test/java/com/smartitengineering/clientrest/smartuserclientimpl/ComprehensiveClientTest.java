@@ -100,7 +100,7 @@ public class ComprehensiveClientTest {
   }
 
   @Test
-  public void doDeleteOrganization(){
+  public void doTestDeleteOrganization(){
   }
 
   @Test
