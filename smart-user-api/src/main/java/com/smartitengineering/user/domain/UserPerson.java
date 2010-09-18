@@ -5,6 +5,8 @@
 package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
+import java.util.Date;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -12,38 +14,50 @@ import com.smartitengineering.domain.AbstractPersistentDTO;
  */
 public class UserPerson extends AbstractPersistentDTO<UserPerson> {
 
-    User user;
-    Person person;
+  User user;
+  Person person;
+  private Date lastModifiedDate;
 
-    public Person getPerson() {
-        if (person == null) {
-            person = new Person();
-        }
-        return person;
+  public Person getPerson() {
+    if (person == null) {
+      person = new Person();
     }
+    return person;
+  }
 
-    public void setPerson(Person person) {
-        if (person == null) {
-            return;
-        }
-        this.person = person;
+  public void setPerson(Person person) {
+    if (person == null) {
+      return;
     }
+    this.person = person;
+  }
 
-    public User getUser() {
-        if (user == null) {
-            user = new User();
-        }
-        return user;
+  public User getUser() {
+    if (user == null) {
+      user = new User();
     }
+    return user;
+  }
 
-    public void setUser(User user) {
-        if (user == null) {
-            return;
-        }
-        this.user = user;
+  public void setUser(User user) {
+    if (user == null) {
+      return;
     }
+    this.user = user;
+  }
 
-    public boolean isValid() {
-        return user.isValid();
-    }
+  @Override
+  @JsonIgnore
+  public boolean isValid() {
+    return user.isValid();
+  }
+
+  @JsonIgnore
+  public Date getLastModifiedDate() {
+    return lastModifiedDate;
+  }
+
+  public void setLastModifiedDate(Date lastModifiedDate) {
+    this.lastModifiedDate = lastModifiedDate;
+  }
 }

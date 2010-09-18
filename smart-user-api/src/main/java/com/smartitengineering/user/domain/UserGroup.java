@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
@@ -13,96 +12,93 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
-     * @author russel
+ * @author russel
  */
-public class UserGroup extends AbstractPersistentDTO<UserGroup>{
+public class UserGroup extends AbstractPersistentDTO<UserGroup> {
 
-    private String name;
-    private Set<User> users;
-    private Set<Privilege> privileges;
-    private Organization organization;
+  private String name;
+  private Set<User> users;
+  private Set<Privilege> privileges;
+  private Organization organization;
+  private List<Integer> userIDs;
+  private List<Integer> privilegeIDs;
+  private Integer parentOrganizationID;
+  private Date lastModifiedDate;
 
-    private List<Integer> userIDs;
-    private List<Integer> privilegeIDs;
-    private Integer parentOrganizationID;
+  public String getName() {
+    return name;
+  }
 
-    private Date lastModifiedDate;
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public String getName() {
-        return name;
-    }
+  @JsonIgnore
+  public List<Integer> getUserIDs() {
+    return userIDs;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setUserIDs(List<Integer> userIDs) {
+    this.userIDs = userIDs;
+  }
 
-    @JsonIgnore
-    public List<Integer> getUserIDs() {
-        return userIDs;
-    }
+  @JsonIgnore
+  public List<Integer> getPrivilegeIDs() {
+    return privilegeIDs;
+  }
 
-    public void setUserIDs(List<Integer> userIDs) {
-        this.userIDs = userIDs;
-    }
+  public void setPrivilegeIDs(List<Integer> privilegeIDs) {
+    this.privilegeIDs = privilegeIDs;
+  }
 
-    @JsonIgnore
-    public List<Integer> getPrivilegeIDs() {
-        return privilegeIDs;
-    }
+  @JsonIgnore
+  public Set<User> getUsers() {
+    return users;
+  }
 
-    public void setPrivilegeIDs(List<Integer> privilegeIDs) {
-        this.privilegeIDs = privilegeIDs;
-    }
+  @JsonIgnore
+  public void setUsers(Set<User> users) {
+    this.users = users;
+  }
 
+  @JsonIgnore
+  public Set<Privilege> getPrivileges() {
+    return privileges;
+  }
 
-    @JsonIgnore
-    public Set<User> getUsers() {
-        return users;
-    }
+  @JsonIgnore
+  public void setPrivileges(Set<Privilege> privileges) {
+    this.privileges = privileges;
+  }
 
-    @JsonIgnore
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
+  @Override
+  @JsonIgnore
+  public boolean isValid() {
+    return true;
+  }
 
-    @JsonIgnore
-    public Set<Privilege> getPrivileges() {
-        return privileges;
-    }
+  public Organization getOrganization() {
+    return organization;
+  }
 
-    @JsonIgnore
-    public void setPrivileges(Set<Privilege> privileges) {
-        this.privileges = privileges;
-    }
+  public void setOrganization(Organization organization) {
+    this.organization = organization;
+  }
 
-    public boolean isValid(){
-        return true;
-    }
+  public Integer getParentOrganizationID() {
+    return parentOrganizationID;
+  }
 
-    public Organization getOrganization() {
-        return organization;
-    }
+  public void setParentOrganizationID(Integer parentOrganizationID) {
+    this.parentOrganizationID = parentOrganizationID;
+  }
 
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
-    }
+  @JsonIgnore
+  public Date getLastModifiedDate() {
+    return lastModifiedDate;
+  }
 
-    public Integer getParentOrganizationID() {
-        return parentOrganizationID;
-    }
-
-    public void setParentOrganizationID(Integer parentOrganizationID) {
-        this.parentOrganizationID = parentOrganizationID;
-    }
-
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    
-
+  public void setLastModifiedDate(Date lastModifiedDate) {
+    this.lastModifiedDate = lastModifiedDate;
+  }
 }
