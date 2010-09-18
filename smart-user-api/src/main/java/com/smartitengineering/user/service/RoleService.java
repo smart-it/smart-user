@@ -26,6 +26,4 @@ public interface RoleService {
   Collection<Role> search(RoleFilter filter);
 
   void update(Role role);
-
-  public void populateRole(User user) throws Exception;
 }

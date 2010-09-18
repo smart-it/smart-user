@@ -15,24 +15,20 @@ import java.util.Collection;
  */
 public interface PrivilegeService {
 
-    void create(Privilege privilege);
+  void create(Privilege privilege);
 
-    void delete(Privilege privilege);
+  void delete(Privilege privilege);
 
-    Privilege getPrivilegeByName(String name);
+  Privilege getPrivilegeByName(String name);
 
-    Collection<Privilege> getPrivilegesByOrganizationNameAndObjectID(String organizationName,String objectID);
-    //Privilege getPrivilegesByObjectID(String objectID);
+  Collection<Privilege> getPrivilegesByOrganizationNameAndObjectID(String organizationName, String objectID);
+  //Privilege getPrivilegesByObjectID(String objectID);
 
-    Privilege getPrivilegeByOrganizationAndPrivilegeName(String organizationName, String privilegename);
+  Privilege getPrivilegeByOrganizationAndPrivilegeName(String organizationName, String privilegename);
 
-    Collection<Privilege> getPrivilegesByOrganizationAndUser(String organizationName, String userName);
+  Collection<Privilege> getPrivilegesByOrganizationAndUser(String organizationName, String userName);
 
-    Collection<Privilege> getPrivilegesByOrganization(String organization);
+  Collection<Privilege> getPrivilegesByOrganization(String organization);
 
-    void update(Privilege privilege);
-
-    void populatePrivilege(User user) throws Exception;
-
-    void populatePrivilege(Role role) throws Exception;
+  void update(Privilege privilege);
 }

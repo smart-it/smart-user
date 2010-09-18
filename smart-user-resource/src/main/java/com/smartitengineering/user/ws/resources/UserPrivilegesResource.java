@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.domain.User;
 import java.util.ArrayList;
@@ -166,13 +167,8 @@ public class UserPrivilegesResource extends AbstractResource {
       }
       else {
         responseBuilder = Response.status(Status.CREATED);
-        if (privilege.getSecuredObjectID() != null) {
-          Services.getInstance().getSecuredObjectService().populateSecuredObject(privilege);
-        }
-        if (privilege.getParentOrganizationID() == null) {
-          throw new Exception("No parent Organization");
-        }
-        Services.getInstance().getOrganizationService().populateOrganization(privilege);
+        
+        privilege.setParentOrganization(getOrganization());
         user.getPrivileges().add(privilege);
         Services.getInstance().getUserService().update(user);
       }
@@ -182,5 +178,9 @@ public class UserPrivilegesResource extends AbstractResource {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
+  }
+
+  private Organization getOrganization() {
+    return Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationName);
   }
 }

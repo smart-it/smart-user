@@ -37,13 +37,13 @@ import org.apache.commons.lang.StringUtils;
 @Path("/orgs/sn/{organizationUniqueShortName}/privs/{privilegeName}")
 public class OrganizationPrivilegeResource extends AbstractResource {
 
-  private Privilege privilege;
   private String organizationUniqueShortName;
+  private String privilegeName;
 
-  public OrganizationPrivilegeResource(@PathParam("organizationUniqueShortName") String organizationUniqueShortName, @PathParam("privilegeName") String privilegeName) {
-
+  public OrganizationPrivilegeResource(@PathParam("organizationUniqueShortName") String organizationUniqueShortName, @PathParam(
+      "privilegeName") String privilegeName) {
     this.organizationUniqueShortName = organizationUniqueShortName;
-    privilege = Services.getInstance().getPrivilegeService().getPrivilegeByOrganizationAndPrivilegeName(organizationUniqueShortName, privilegeName);
+    this.privilegeName = privilegeName;
   }
 
   @GET
@@ -54,7 +54,8 @@ public class OrganizationPrivilegeResource extends AbstractResource {
       responseBuilder = Response.status(Status.OK);
       Feed privilegeFeed = getPrivilegeFeed();
       responseBuilder = Response.ok(privilegeFeed);
-    } catch (Exception ex) {
+    }
+    catch (Exception ex) {
       ex.printStackTrace();
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
@@ -66,8 +67,9 @@ public class OrganizationPrivilegeResource extends AbstractResource {
     ResponseBuilder responseBuilder;
     try {
       responseBuilder = Response.status(Status.OK);
-      Services.getInstance().getPrivilegeService().delete(privilege);
-    } catch (Exception ex) {
+      Services.getInstance().getPrivilegeService().delete(getPrivilege());
+    }
+    catch (Exception ex) {
       ex.printStackTrace();
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
@@ -81,15 +83,10 @@ public class OrganizationPrivilegeResource extends AbstractResource {
     ResponseBuilder responseBuilder;
     try {
       responseBuilder = Response.status(Status.OK);
-      if (privilege.getParentOrganizationID() == null) {
-        throw new Exception("No parent Organization");
-      }
-      Services.getInstance().getOrganizationService().populateOrganization(privilege);
-      if (privilege.getSecuredObjectID() != null) {
-        Services.getInstance().getSecuredObjectService().populateSecuredObject(privilege);
-      }
-      Services.getInstance().getPrivilegeService().delete(newPrivilege);
-    } catch (Exception ex) {
+      newPrivilege.setParentOrganization(getOrganization());
+      Services.getInstance().getPrivilegeService().update(newPrivilege);
+    }
+    catch (Exception ex) {
       ex.printStackTrace();
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
@@ -100,8 +97,8 @@ public class OrganizationPrivilegeResource extends AbstractResource {
 
     Feed privilegeFeed = abderaFactory.newFeed();
 
-    privilegeFeed.setId(privilege.getName());
-    privilegeFeed.setTitle(privilege.getName());
+    privilegeFeed.setId(privilegeName);
+    privilegeFeed.setTitle(privilegeName);
     privilegeFeed.addLink(getSelfLink());
 
     Link editLink = abderaFactory.newLink();
@@ -111,7 +108,8 @@ public class OrganizationPrivilegeResource extends AbstractResource {
 
 
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(UriBuilder.fromResource(OrganizationPrivilegeResource.class).build(organizationUniqueShortName, privilege.getName()).toString());
+    altLink.setHref(UriBuilder.fromResource(OrganizationPrivilegeResource.class).build(organizationUniqueShortName,
+                                                                                       privilegeName).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
 
@@ -126,8 +124,9 @@ public class OrganizationPrivilegeResource extends AbstractResource {
   public Response deletePost() {
     ResponseBuilder responseBuilder = Response.ok();
     try {
-      Services.getInstance().getPrivilegeService().delete(privilege);
-    } catch (Exception ex) {
+      Services.getInstance().getPrivilegeService().delete(getPrivilege());
+    }
+    catch (Exception ex) {
       ex.printStackTrace();
       responseBuilder = Response.ok(Status.INTERNAL_SERVER_ERROR);
     }
@@ -149,7 +148,8 @@ public class OrganizationPrivilegeResource extends AbstractResource {
     if (StringUtils.isBlank(contentType)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
       isHtmlPost = false;
-    } else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+    }
+    else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
       isHtmlPost = true;
       try {
@@ -159,10 +159,12 @@ public class OrganizationPrivilegeResource extends AbstractResource {
         final String realMsg = message.substring(startIndex);
         //Decode the message to ignore the form encodings and make them human readable
         message = URLDecoder.decode(realMsg, "UTF-8");
-      } catch (UnsupportedEncodingException ex) {
+      }
+      catch (UnsupportedEncodingException ex) {
         ex.printStackTrace();
       }
-    } else {
+    }
+    else {
       contentType = contentType;
       isHtmlPost = false;
     }
@@ -172,7 +174,8 @@ public class OrganizationPrivilegeResource extends AbstractResource {
       try {
         Services.getInstance().getPrivilegeService().update(newPrivilege);
         responseBuilder = Response.ok(getPrivilegeFeed());
-      } catch (Exception ex) {
+      }
+      catch (Exception ex) {
         responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
       }
     }
@@ -190,30 +193,42 @@ public class OrganizationPrivilegeResource extends AbstractResource {
     }
 
     Privilege newPrivilege = new Privilege();
-    if (keyValueMap.get("id")!=null) {
+    if (keyValueMap.get("id") != null) {
       newPrivilege.setId(Integer.valueOf(keyValueMap.get("id")));
     }
-    if (keyValueMap.get("name")!=null) {
+    if (keyValueMap.get("name") != null) {
       newPrivilege.setName(keyValueMap.get("name"));
     }
-    if (keyValueMap.get("displayName")!=null) {
+    if (keyValueMap.get("displayName") != null) {
       newPrivilege.setDisplayName(keyValueMap.get("displayName"));
     }
-    if (keyValueMap.get("shortDescription")!=null) {
+    if (keyValueMap.get("shortDescription") != null) {
       newPrivilege.setShortDescription(keyValueMap.get("shortDescription"));
     }
-    if (keyValueMap.get("permissionMask")!=null) {
+    if (keyValueMap.get("permissionMask") != null) {
       newPrivilege.setPermissionMask(Integer.valueOf(keyValueMap.get("permissionMask")));
     }
 
-    if (keyValueMap.get("orgName")!=null) {
-      Organization parentOrganization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.get("orgName"));
+    if (keyValueMap.get("orgName") != null) {
+      Organization parentOrganization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.
+          get("orgName"));
       newPrivilege.setParentOrganization(parentOrganization);
-      if (keyValueMap.get("securedObjectID")!=null) {
-        SecuredObject securedObject = Services.getInstance().getSecuredObjectService().getByOrganizationAndObjectID(parentOrganization.getUniqueShortName(), keyValueMap.get("securedObjectID"));
-        newPrivilege.setSecuredObject(securedObject);
-      }
+
+    }
+    if (keyValueMap.get("securedObjectID") != null) {
+      SecuredObject securedObject = Services.getInstance().getSecuredObjectService().getByOrganizationAndObjectID(
+          organizationUniqueShortName, keyValueMap.get("securedObjectID"));
+      newPrivilege.setSecuredObject(securedObject);
     }
     return newPrivilege;
+  }
+
+  private Privilege getPrivilege() {
+    return Services.getInstance().getPrivilegeService().getPrivilegeByOrganizationAndPrivilegeName(
+        organizationUniqueShortName, privilegeName);
+  }
+
+  private Organization getOrganization() {
+    return Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationUniqueShortName);
   }
 }

@@ -24,19 +24,7 @@ public class User extends AbstractPersistentDTO<User> {
   private Organization organization;
   private Set<Role> roles;
   private Set<Privilege> privileges;
-  private List<Integer> roleIDs;
-  private List<Integer> privilegeIDs;
-  private Integer parentOrganizationID;
   private Date lastModifiedDate;
-
-  @JsonIgnore
-  public Integer getParentOrganizationID() {
-    return parentOrganizationID;
-  }
-
-  public void setParentOrganizationID(Integer parentOrganizationID) {
-    this.parentOrganizationID = parentOrganizationID;
-  }
 
   public String getPassword() {
     if (password == null) {
@@ -112,24 +100,6 @@ public class User extends AbstractPersistentDTO<User> {
       return;
     }
     this.username = username;
-  }
-
-  @JsonIgnore
-  public List<Integer> getPrivilegeIDs() {
-    return privilegeIDs;
-  }
-
-  public void setPrivilegeIDs(List<Integer> privilegeIDs) {
-    this.privilegeIDs = privilegeIDs;
-  }
-
-  @JsonIgnore
-  public List<Integer> getRoleIDs() {
-    return roleIDs;
-  }
-
-  public void setRoleIDs(List<Integer> roleIDs) {
-    this.roleIDs = roleIDs;
   }
 
   @JsonIgnore

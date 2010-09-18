@@ -20,9 +20,6 @@ public class UserGroup extends AbstractPersistentDTO<UserGroup> {
   private Set<User> users;
   private Set<Privilege> privileges;
   private Organization organization;
-  private List<Integer> userIDs;
-  private List<Integer> privilegeIDs;
-  private Integer parentOrganizationID;
   private Date lastModifiedDate;
 
   public String getName() {
@@ -32,25 +29,7 @@ public class UserGroup extends AbstractPersistentDTO<UserGroup> {
   public void setName(String name) {
     this.name = name;
   }
-
-  @JsonIgnore
-  public List<Integer> getUserIDs() {
-    return userIDs;
-  }
-
-  public void setUserIDs(List<Integer> userIDs) {
-    this.userIDs = userIDs;
-  }
-
-  @JsonIgnore
-  public List<Integer> getPrivilegeIDs() {
-    return privilegeIDs;
-  }
-
-  public void setPrivilegeIDs(List<Integer> privilegeIDs) {
-    this.privilegeIDs = privilegeIDs;
-  }
-
+  
   @JsonIgnore
   public Set<User> getUsers() {
     return users;
@@ -83,14 +62,6 @@ public class UserGroup extends AbstractPersistentDTO<UserGroup> {
 
   public void setOrganization(Organization organization) {
     this.organization = organization;
-  }
-
-  public Integer getParentOrganizationID() {
-    return parentOrganizationID;
-  }
-
-  public void setParentOrganizationID(Integer parentOrganizationID) {
-    this.parentOrganizationID = parentOrganizationID;
   }
 
   @JsonIgnore

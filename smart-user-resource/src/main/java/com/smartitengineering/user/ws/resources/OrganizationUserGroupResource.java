@@ -38,7 +38,7 @@ import org.apache.commons.lang.StringUtils;
 @Path("/orgs/sn/{uniqueShortName}/usergroups/name/{name}")
 public class OrganizationUserGroupResource extends AbstractResource {
 
-  private UserGroup userGroup;
+  
   static final UriBuilder ORGANIZATION_USER_GROUP_URI_BUILDER = UriBuilder.fromResource(OrganizationUserGroupResource.class);
   static final UriBuilder ORGANIZATION_USER_GROUP_CONTENT_URI_BUILDER;
 
@@ -52,8 +52,11 @@ public class OrganizationUserGroupResource extends AbstractResource {
     }
   }
 
-  public OrganizationUserGroupResource(@PathParam("uniqueShortName") String uniqueShortname, @PathParam("name") String name) {
-    userGroup = Services.getInstance().getUserGroupService().getByOrganizationAndUserGroupName(uniqueShortname, name);
+  @PathParam("uniqueShortName")
+  private String orgShortName;
+  @PathParam("name")
+  private String name;
+  public OrganizationUserGroupResource() {    
   }
 
   @GET
@@ -67,8 +70,8 @@ public class OrganizationUserGroupResource extends AbstractResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/content")
-  public Response getOrganization() {
-    ResponseBuilder responseBuilder = Response.ok(userGroup);
+  public Response getContent() {
+    ResponseBuilder responseBuilder = Response.ok(getUserGroup());
     return responseBuilder.build();
   }
 
@@ -77,7 +80,7 @@ public class OrganizationUserGroupResource extends AbstractResource {
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
 
-    Viewable view = new Viewable("OrganizationUserDetails", userGroup, OrganizationResource.class);
+    Viewable view = new Viewable("OrganizationUserDetails", getUserGroup(), OrganizationResource.class);
     responseBuilder.entity(view);
     return responseBuilder.build();
   }
@@ -87,19 +90,9 @@ public class OrganizationUserGroupResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response update(UserGroup newUserGroup) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-    try {
-//            if (userGroup.getRoleIDs() != null) {
-//                Services.getInstance().getRoleService().populateRole(user);
-//            }
-//            if (user.getPrivilegeIDs() != null) {
-//                Services.getInstance().getPrivilegeService().populatePrivilege(user);
-//            }
-      if (userGroup.getParentOrganizationID() == null) {
-        throw new Exception("No organization found");
-      }
-      Services.getInstance().getOrganizationService().populateOrganization(userGroup);
-      Services.getInstance().getUserGroupService().update(userGroup);
-      userGroup = Services.getInstance().getUserGroupService().getByOrganizationAndUserGroupName(newUserGroup.getOrganization().getUniqueShortName(), newUserGroup.getName()); //.getUserByUsername(newUser.getUsername());
+    try {      
+      newUserGroup.setOrganization(getOrganization());
+      Services.getInstance().getUserGroupService().update(newUserGroup);
       responseBuilder = Response.ok(getUserGroupFeed());
     } catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
@@ -109,6 +102,7 @@ public class OrganizationUserGroupResource extends AbstractResource {
   }
 
   private Feed getUserGroupFeed() throws UriBuilderException, IllegalArgumentException {
+    UserGroup userGroup = getUserGroup();
     Feed userFeed = getFeed(userGroup.getName(), new Date());
     userFeed.setTitle(userGroup.getName());
 
@@ -133,7 +127,7 @@ public class OrganizationUserGroupResource extends AbstractResource {
 
   @DELETE
   public Response delete() {
-    Services.getInstance().getUserGroupService().delete(userGroup);
+    Services.getInstance().getUserGroupService().delete(getUserGroup());
     ResponseBuilder responseBuilder = Response.ok();
     return responseBuilder.build();
   }
@@ -143,7 +137,7 @@ public class OrganizationUserGroupResource extends AbstractResource {
   public Response deletePost() {
     ResponseBuilder responseBuilder = Response.ok();
     try {
-      Services.getInstance().getUserGroupService().delete(userGroup);
+      Services.getInstance().getUserGroupService().delete(getUserGroup());
     } catch (Exception ex) {
       ex.printStackTrace();
       responseBuilder = Response.ok(Status.INTERNAL_SERVER_ERROR);
@@ -187,6 +181,7 @@ public class OrganizationUserGroupResource extends AbstractResource {
     if (isHtmlPost) {
       UserGroup newUserGroup = getUserGroupFromContent(message);
       try {
+        newUserGroup.setOrganization(getOrganization());
         Services.getInstance().getUserGroupService().update(newUserGroup);
         responseBuilder = Response.ok(getUserGroupFeed());
       } catch (Exception ex) {
@@ -212,12 +207,15 @@ public class OrganizationUserGroupResource extends AbstractResource {
     }
     if (keyValueMap.get("name")!=null) {
       newUserGroup.setName(keyValueMap.get("name"));
-    }
-
-    if (keyValueMap.get("orgName")!=null) {
-      Organization parentOrganization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.get("orgName"));
-      newUserGroup.setOrganization(parentOrganization);
-    }
+    }    
     return newUserGroup;
+  }
+
+  private UserGroup getUserGroup() {
+    return Services.getInstance().getUserGroupService().getByOrganizationAndUserGroupName(orgShortName, name);
+  }
+
+  private Organization getOrganization() {
+    return Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(orgShortName);
   }
 }

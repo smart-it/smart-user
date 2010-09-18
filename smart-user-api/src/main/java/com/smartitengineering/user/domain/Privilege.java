@@ -21,8 +21,6 @@ public class Privilege extends AbstractPersistentDTO<Privilege> {
   private String shortDescription;
   private SecuredObject securedObject;
   private Integer permissionMask;
-  private Integer parentOrganizationID;
-  private Integer securedObjectID;
   private Date lastModifiedDate;
 
   @JsonIgnore
@@ -35,15 +33,7 @@ public class Privilege extends AbstractPersistentDTO<Privilege> {
     this.securedObject = securedObject;
   }
 
-  @JsonIgnore
-  public Integer getSecuredObjectID() {
-    return securedObjectID;
-  }
-
-  public void setSecuredObjectID(Integer securedObjectID) {
-    this.securedObjectID = securedObjectID;
-  }
-
+  
   @JsonIgnore
   public Organization getParentOrganization() {
     return parentOrganization;
@@ -52,15 +42,6 @@ public class Privilege extends AbstractPersistentDTO<Privilege> {
   @JsonIgnore
   public void setParentOrganization(Organization parentOrganization) {
     this.parentOrganization = parentOrganization;
-  }
-
-  @JsonIgnore
-  public Integer getParentOrganizationID() {
-    return parentOrganizationID;
-  }
-
-  public void setParentOrganizationID(Integer parentOrganizationID) {
-    this.parentOrganizationID = parentOrganizationID;
   }
 
   public String getShortDescription() {

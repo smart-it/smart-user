@@ -16,28 +16,19 @@ import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
-
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.HashMap;
 import java.util.Map;
-
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
-
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -56,8 +47,7 @@ import org.apache.commons.lang.StringUtils;
 @Path("/orgs/sn/{organizationShortName}/users/un/{userName}")
 public class OrganizationUserResource extends AbstractResource {
 
-  //private User user;
-  private UserPerson userPerson;
+  //private User user;  
   static final UriBuilder USER_URI_BUILDER = UriBuilder.fromResource(OrganizationUserResource.class);
   static final UriBuilder USER_CONTENT_URI_BUILDER;
   @Context
@@ -81,12 +71,7 @@ public class OrganizationUserResource extends AbstractResource {
   private String REL_USER_PRIVILEGES = "privileges";
   private String REL_USER_ROLES = "roles";
 
-  public OrganizationUserResource(@PathParam("organizationShortName") String organizationShortName, @PathParam(
-      "userName") String userName) {
-    userPerson = Services.getInstance().getUserPersonService().getUserPersonByUsernameAndOrgName(userName,
-                                                                                                 organizationShortName);
-    //user = Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationShortName, userName);
-
+  public OrganizationUserResource() {
   }
 
   @GET
@@ -101,7 +86,7 @@ public class OrganizationUserResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/content")
   public Response getUser() {
-    ResponseBuilder responseBuilder = Response.ok(userPerson);
+    ResponseBuilder responseBuilder = Response.ok(getUserPerson());
     return responseBuilder.build();
   }
 
@@ -115,7 +100,7 @@ public class OrganizationUserResource extends AbstractResource {
                                 "/com/smartitengineering/user/ws/resources/OrganizationUserResource/userDetailsHeader.jsp");
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/user/ws/resources/OrganizationUserResource/OrganizationUserDetails.jsp");
-    Viewable view = new Viewable("/template/template.jsp", userPerson);
+    Viewable view = new Viewable("/template/template.jsp", getUserPerson());
 
     responseBuilder.entity(view);
     return responseBuilder.build();
@@ -128,18 +113,8 @@ public class OrganizationUserResource extends AbstractResource {
 
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
     try {
-      if (newUserPerson.getUser().getRoleIDs() != null) {
-        Services.getInstance().getRoleService().populateRole(newUserPerson.getUser());
-      }
-      if (newUserPerson.getUser().getPrivilegeIDs() != null) {
-        Services.getInstance().getPrivilegeService().populatePrivilege(newUserPerson.getUser());
-      }
-      if (newUserPerson.getUser().getParentOrganizationID() == null) {
-        throw new Exception("No organization found");
-      }
-      //newUser = Services.getInstance().getUserService().getUserByUsername(newUser.getUsername());
-      Services.getInstance().getOrganizationService().populateOrganization(newUserPerson.getUser());
-      Services.getInstance().getUserPersonService().update(userPerson);
+      newUserPerson.getUser().setOrganization(getOrganization());
+      Services.getInstance().getUserPersonService().update(getUserPerson());
       responseBuilder = Response.ok(getUserFeed());
     }
     catch (Exception ex) {
@@ -150,8 +125,11 @@ public class OrganizationUserResource extends AbstractResource {
   }
 
   private Feed getUserFeed() throws UriBuilderException, IllegalArgumentException {
-    Feed userFeed = getFeed(userPerson.getUser().getUsername(), new Date());
-    userFeed.setTitle(userPerson.getUser().getUsername());
+
+    System.out.println("---------------------------" + organizationUniqueShortName);
+    System.out.println("---------------------------" + userName);
+    Feed userFeed = getFeed(userName, new Date());
+    userFeed.setTitle(userName);
 
     // add a self link
     userFeed.addLink(getSelfLink());
@@ -165,22 +143,19 @@ public class OrganizationUserResource extends AbstractResource {
 
     // add a alternate link
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(userPerson.getUser().getOrganization().getUniqueShortName(),
-                                                           userPerson.getUser().getUsername()).toString());
+    altLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName, userName).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(altLink);
 
     Link privilegesLink = abderaFactory.newLink();
-    privilegesLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(userPerson.getUser().getOrganization().getUniqueShortName(),
-                                                           userPerson.getUser().getUsername()).toString());
+    privilegesLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName, userName).toString());
     privilegesLink.setRel(REL_USER_PRIVILEGES);
     privilegesLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(privilegesLink);
 
     Link rolesLink = abderaFactory.newLink();
-    rolesLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(userPerson.getUser().getOrganization().getUniqueShortName(),
-                                                           userPerson.getUser().getUsername()).toString());
+    rolesLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName, userName).toString());
     rolesLink.setRel(REL_USER_ROLES);
     rolesLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(rolesLink);
@@ -190,6 +165,7 @@ public class OrganizationUserResource extends AbstractResource {
 
   @DELETE
   public Response delete() {
+    UserPerson userPerson = getUserPerson();
     Services.getInstance().getUserPersonService().delete(userPerson);
     Services.getInstance().getUserService().delete(userPerson.getUser());
     Services.getInstance().getPersonService().delete(userPerson.getPerson());
@@ -200,6 +176,7 @@ public class OrganizationUserResource extends AbstractResource {
   @POST
   @Path("/delete")
   public Response deletePost() {
+    UserPerson userPerson = getUserPerson();
     Services.getInstance().getUserPersonService().delete(userPerson);
     Services.getInstance().getUserService().delete(userPerson.getUser());
     Services.getInstance().getPersonService().delete(userPerson.getPerson());
@@ -213,7 +190,7 @@ public class OrganizationUserResource extends AbstractResource {
   public Response updatePost(@HeaderParam("Content-type") String contentType, String message) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
 
-     if (StringUtils.isBlank(message)) {
+    if (StringUtils.isBlank(message)) {
       responseBuilder = Response.status(Status.BAD_REQUEST);
       responseBuilder.build();
     }
@@ -245,7 +222,11 @@ public class OrganizationUserResource extends AbstractResource {
     }
 
     if (isHtmlPost) {
+      UserPerson userPerson = getUserPerson();
       UserPerson newUserPerson = getUserFromContent(message);
+      newUserPerson.getUser().setOrganization(getOrganization());
+      newUserPerson.getUser().setPrivileges(userPerson.getUser().getPrivileges());
+      newUserPerson.getUser().setRoles(userPerson.getUser().getRoles());
       try {
         Services.getInstance().getUserPersonService().update(newUserPerson);
         responseBuilder = Response.ok(getUserFeed());
@@ -266,7 +247,7 @@ public class OrganizationUserResource extends AbstractResource {
     for (int i = 0; i < keyValuePairs.length; i++) {
 
       String[] keyValuePair = keyValuePairs[i].split("=");
-      if (keyValuePair.length>1) {
+      if (keyValuePair.length > 1) {
         keyValueMap.put(keyValuePair[0], keyValuePair[1]);
       }
     }
@@ -279,14 +260,6 @@ public class OrganizationUserResource extends AbstractResource {
     }
     if (keyValueMap.get("password") != null) {
       newUser.setPassword(keyValueMap.get("password"));
-    }
-
-    Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(
-        organizationUniqueShortName);
-
-    if (parentOrg != null) {
-      newUser.setOrganization(parentOrg);
-      newUser.setParentOrganizationID(parentOrg.getId());
     }
 
     Person person = new Person();
@@ -510,5 +483,14 @@ public class OrganizationUserResource extends AbstractResource {
     userPerson.setPerson(person);
 
     return userPerson;
+  }
+
+  private Organization getOrganization() {
+    return Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationUniqueShortName);
+  }
+
+  private UserPerson getUserPerson() {
+    return Services.getInstance().getUserPersonService().getUserPersonByUsernameAndOrgName(userName,
+                                                                                           organizationUniqueShortName);
   }
 }
