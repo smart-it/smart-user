@@ -4,8 +4,7 @@
  */
 package com.smartitengineering.smartuser.client.api;
 
-import com.smartitengineering.user.resource.api.Resource;
-import org.apache.abdera.model.Link;
+import com.smartitengineering.util.rest.client.ResouceLink;
 
 /**
  *
@@ -16,5 +15,5 @@ public interface RootResource{
   //public OrganizationsResource getOrganizationsResource();
   LoginResource performAuthentication(String userName, String password);
 
-  Link getLoginLink();
+  ResouceLink getLoginLink();
 }

@@ -12,7 +12,8 @@ import com.smartitengineering.smartuser.client.api.PrivilegesResource;
 import com.smartitengineering.smartuser.client.api.RolesResource;
 import com.smartitengineering.smartuser.client.api.User;
 import com.smartitengineering.smartuser.client.api.UserResource;
-import com.smartitengineering.util.rest.atom.ClientUtil;
+import com.smartitengineering.util.rest.atom.AtomClientUtil;
+import com.smartitengineering.util.rest.client.ClientUtil;
 import com.sun.jersey.api.client.ClientResponse;
 import java.net.URI;
 import java.text.SimpleDateFormat;
@@ -57,7 +58,7 @@ public class UserResourceImpl extends AbstractClientImpl implements UserResource
 
     if(response.getStatus() != 401){
 
-      Feed feed = ClientUtil.getFeed(response);
+      Feed feed = AtomClientUtil.getFeed(response);
 
 
 
@@ -72,7 +73,7 @@ public class UserResourceImpl extends AbstractClientImpl implements UserResource
 
       }
 
-      Feed contentFeed = ClientUtil.getFeed(response);
+      Feed contentFeed = AtomClientUtil.getFeed(response);
 
       String href = userLink.getHref().toString();
 
@@ -107,7 +108,7 @@ public class UserResourceImpl extends AbstractClientImpl implements UserResource
 
     if(response.getStatus() == 200){
 
-      Feed feed = ClientUtil.getFeed(response);
+      Feed feed = AtomClientUtil.getFeed(response);
 
 
 
@@ -122,7 +123,7 @@ public class UserResourceImpl extends AbstractClientImpl implements UserResource
 
       }
 
-      Feed contentFeed = ClientUtil.getFeed(response);
+      Feed contentFeed = AtomClientUtil.getFeed(response);
 
       String href = userLink.getHref().toString();
 

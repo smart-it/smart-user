@@ -80,8 +80,8 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
     }
     personService.validatePerson(userPerson.getPerson());
     try {
-      super.save(userPerson);
       observable.notifyObserver(ObserverNotification.CREATE_USER_PERSON, userPerson);
+      super.save(userPerson);
     }
     catch (ConstraintViolationException e) {
       String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
