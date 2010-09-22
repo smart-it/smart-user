@@ -38,14 +38,14 @@ import org.apache.abdera.model.Link;
 public class OrganizationPrivilegesResource extends AbstractResource {
 
   private String organizationUniqueShortName;
-  static UriBuilder ORGANIZATION_PRIVILEGE_URIBUILDER;
+  static UriBuilder ORGANIZATION_PRIVILEGES_URIBUILDER;
   static UriBuilder ORGANIZATION_PRIVILEGE_AFTER_NAME_URIBUILDER;
   static UriBuilder ORGANIZATION_PRIVILEGE_BEFORE_NAME_URIBUILDER;
   @Context
   private HttpServletRequest servletRequest;
 
   static {
-    ORGANIZATION_PRIVILEGE_URIBUILDER = UriBuilder.fromResource(OrganizationPrivilegesResource.class);
+    ORGANIZATION_PRIVILEGES_URIBUILDER = UriBuilder.fromResource(OrganizationPrivilegesResource.class);
     ORGANIZATION_PRIVILEGE_BEFORE_NAME_URIBUILDER = UriBuilder.fromResource(OrganizationPrivilegesResource.class);
 
     try {
@@ -158,9 +158,9 @@ public class OrganizationPrivilegesResource extends AbstractResource {
 
       // add entry of individual organization
       for (Privilege privilege : privileges) {
-        Entry organizationPrivilegeEntry = abderaFactory.newEntry();
+        Entry organizationPrivilegeEntry = abderaFactory.newEntry();       
 
-        organizationPrivilegeEntry.setId(privilege.getName().toString());
+        organizationPrivilegeEntry.setId(privilege.getName());
         organizationPrivilegeEntry.setTitle(privilege.getDisplayName());
         organizationPrivilegeEntry.setSummary(privilege.getShortDescription());
         //organizationEntry.setUpdated(privilege.);
@@ -186,11 +186,13 @@ public class OrganizationPrivilegesResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response post(Privilege privilege) {
     ResponseBuilder responseBuilder;
-    try {
-      responseBuilder = Response.status(Status.CREATED);
+    try {      
       privilege.setParentOrganization(getOrganization());
-
       Services.getInstance().getPrivilegeService().create(privilege);
+      responseBuilder = Response.status(Status.CREATED);
+      responseBuilder.location(uriInfo.getBaseUriBuilder().path(OrganizationPrivilegeResource.PRIVILEGE_URI_BUILDER.clone().
+          build(organizationUniqueShortName, privilege.getName()).toString()).build());
+
     }
     catch (Exception ex) {
       ex.printStackTrace();

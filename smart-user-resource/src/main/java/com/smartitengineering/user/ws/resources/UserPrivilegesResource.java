@@ -30,7 +30,7 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-@Path("/orgs/sn/{organizationName}/users/username/{userName}/privileges")
+@Path("/orgs/sn/{organizationName}/users/un/{userName}/privileges")
 public class UserPrivilegesResource extends AbstractResource {
 
   private String organizationName;
@@ -85,7 +85,7 @@ public class UserPrivilegesResource extends AbstractResource {
   public Response get() {
     return get(null, true);
   }
-  
+
   public Response get(String privilegeName, boolean isBefore) {
     ResponseBuilder responseBuilder = Response.ok();
 
@@ -102,7 +102,6 @@ public class UserPrivilegesResource extends AbstractResource {
     Collection<Privilege> privileges = user.getPrivileges();
 
     if (privileges != null && !privileges.isEmpty()) {
-
       MultivaluedMap<String, String> queryParam = uriInfo.getQueryParameters();
       List<Privilege> privilegeList = new ArrayList<Privilege>(privileges);
 
@@ -114,14 +113,12 @@ public class UserPrivilegesResource extends AbstractResource {
       Link nextLink = abderaFactory.newLink();
       nextLink.setRel(Link.REL_NEXT);
       Privilege lastPrivilege = privilegeList.get(0);
-
-
       for (String key : queryParam.keySet()) {
         final Object[] values = queryParam.get(key).toArray();
         nextUri.queryParam(key, values);
         previousUri.queryParam(key, values);
       }
-      nextLink.setHref(nextUri.build(organizationName, lastPrivilege.getName()).toString());
+      nextLink.setHref(nextUri.build(organizationName, userName, lastPrivilege.getName()).toString());
       //nextLink.setHref(UriBuilder.fromResource(OrganizationsResource.class).build(lastOrganization.getUniqueShortName()).toString());
 
       atomFeed.addLink(nextLink);
@@ -131,7 +128,7 @@ public class UserPrivilegesResource extends AbstractResource {
       prevLink.setRel(Link.REL_PREVIOUS);
       Privilege firstPrivilege = privilegeList.get(privileges.size() - 1);
 
-      prevLink.setHref(previousUri.build(organizationName, firstPrivilege.getName()).toString());
+      prevLink.setHref(previousUri.build(organizationName, userName, firstPrivilege.getName()).toString());
       //prevLink.setHref(nameLike)
       atomFeed.addLink(prevLink);
 
@@ -167,7 +164,7 @@ public class UserPrivilegesResource extends AbstractResource {
       }
       else {
         responseBuilder = Response.status(Status.CREATED);
-        
+
         privilege.setParentOrganization(getOrganization());
         user.getPrivileges().add(privilege);
         Services.getInstance().getUserService().update(user);

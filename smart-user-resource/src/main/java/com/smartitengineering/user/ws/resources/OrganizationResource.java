@@ -303,13 +303,13 @@ public class OrganizationResource extends AbstractResource {
     organizationFeed.addLink(usersLink);
 
     Link privilegesLink = abderaFactory.newLink();
-    privilegesLink.setHref(OrganizationUsersResource.ORGANIZATION_USERS_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
+    privilegesLink.setHref(OrganizationPrivilegesResource.ORGANIZATION_PRIVILEGES_URIBUILDER.clone().build(organization.getUniqueShortName()).toString());
     privilegesLink.setRel(REL_PRIVILEGES);
     privilegesLink.setMimeType(MediaType.APPLICATION_JSON);
     organizationFeed.addLink(privilegesLink);
 
     Link securedObjectsLink = abderaFactory.newLink();
-    securedObjectsLink.setHref(OrganizationUsersResource.ORGANIZATION_USERS_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
+    securedObjectsLink.setHref(OrganizationSecuredObjectsResource.ORGANIZATION_SECURED_OBJECTS_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
     securedObjectsLink.setRel(REL_SECUREDOBJECTS);
     securedObjectsLink.setMimeType(MediaType.APPLICATION_JSON);
     organizationFeed.addLink(securedObjectsLink);
