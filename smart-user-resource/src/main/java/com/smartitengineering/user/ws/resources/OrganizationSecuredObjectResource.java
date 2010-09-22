@@ -34,10 +34,10 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author russel
  */
-@Path("/orgs/sn/{organizationUniqueShortName}/so/{oid}")
+@Path("/orgs/sn/{organizationUniqueShortName}/so/name/{name}")
 public class OrganizationSecuredObjectResource extends AbstractResource {
 
-  private String oid;
+  private String name;
   private String organizationUniqueName;
   static final UriBuilder ORGANIZATION_SECURED_OBJECT_URI_BUILDER = UriBuilder.fromResource(
       OrganizationSecuredObjectResource.class);
@@ -47,7 +47,7 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
     ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER = ORGANIZATION_SECURED_OBJECT_URI_BUILDER.clone();
     try {
       ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.path(OrganizationSecuredObjectResource.class.getMethod(
-          "getSecuredObject"));
+          "getContent"));
     }
     catch (Exception ex) {
       ex.printStackTrace();
@@ -56,9 +56,9 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   }
 
   public OrganizationSecuredObjectResource(@PathParam("organizationUniqueShortName") String organizationUniqueShortName, @PathParam(
-      "oid") String oid) {
+      "name") String name) {
     this.organizationUniqueName = organizationUniqueShortName;
-    this.oid = oid;
+    this.name = name;
 
   }
 
@@ -109,8 +109,8 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
 
   private Feed getSecuredObjectFeed() throws UriBuilderException, IllegalArgumentException {
 
-    Feed securedObjectFeed = getFeed(oid, new Date());
-    securedObjectFeed.setTitle(oid);
+    Feed securedObjectFeed = getFeed(name, new Date());
+    securedObjectFeed.setTitle(name);
 
     // add a self link
     securedObjectFeed.addLink(getSelfLink());
@@ -124,7 +124,7 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
     // add a alternate link
     Link altLink = abderaFactory.newLink();
     altLink.setHref(
-        ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.clone().build(organizationUniqueName, oid).toString());
+        ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.clone().build(organizationUniqueName, name).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     securedObjectFeed.addLink(altLink);
@@ -227,6 +227,6 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   }
 
   private SecuredObject getSecuredObject() {
-    return Services.getInstance().getSecuredObjectService().getByOrganizationAndObjectID(organizationUniqueName, oid);
+    return Services.getInstance().getSecuredObjectService().getByOrganizationAndName(organizationUniqueName, name);
   }
 }

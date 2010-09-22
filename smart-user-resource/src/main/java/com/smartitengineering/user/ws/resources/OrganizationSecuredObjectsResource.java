@@ -63,7 +63,7 @@ public class OrganizationSecuredObjectsResource extends AbstractResource {
   }
   @PathParam("count")
   private Integer count;
-  @PathParam("uniqueShortName")
+  @PathParam("organizationUniqueShortName")
   private String organizationUniqueShortName;
 
   public OrganizationSecuredObjectsResource() {
@@ -111,13 +111,22 @@ public class OrganizationSecuredObjectsResource extends AbstractResource {
     Feed atomFeed = getFeed(userName, new Date());
 
     Link parentLink = abderaFactory.newLink();
-    parentLink.setHref(UriBuilder.fromResource(OrganizationResource.class).build().toString());
+    parentLink.setHref(UriBuilder.fromResource(OrganizationResource.class).build(uniqueOrganizationName).toString());
     parentLink.setRel("parent");
     atomFeed.addLink(parentLink);
 
 
     Collection<SecuredObject> securedObjects = Services.getInstance().getSecuredObjectService().getByOrganization(
         uniqueOrganizationName);
+
+    System.out.println("--------------------------------------------------------Start");
+    if(securedObjects == null)
+      System.out.println("null");
+    else{
+      System.out.println("not null");
+      System.out.println(securedObjects.size());
+    }
+    System.out.println("--------------------------------------------------------End");
 
 
     if (securedObjects != null && !securedObjects.isEmpty()) {
@@ -165,7 +174,7 @@ public class OrganizationSecuredObjectsResource extends AbstractResource {
         // setting link to the each individual user
         Link securedObjectLink = abderaFactory.newLink();
         securedObjectLink.setHref(OrganizationSecuredObjectResource.ORGANIZATION_SECURED_OBJECT_URI_BUILDER.clone().
-            build(uniqueOrganizationName, securedObject.getObjectID()).toString());
+            build(uniqueOrganizationName, securedObject.getName()).toString());
         securedObjectLink.setRel(Link.REL_ALTERNATE);
         securedObjectLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
 
@@ -187,6 +196,8 @@ public class OrganizationSecuredObjectsResource extends AbstractResource {
       securedObject.setOrganization(getOrganization());
       Services.getInstance().getSecuredObjectService().save(securedObject);
       responseBuilder = Response.status(Status.CREATED);
+      responseBuilder.location(uriInfo.getBaseUriBuilder().path(OrganizationSecuredObjectResource.ORGANIZATION_SECURED_OBJECT_URI_BUILDER.clone().
+          build(organizationUniqueShortName, securedObject.getName()).toString()).build());
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
