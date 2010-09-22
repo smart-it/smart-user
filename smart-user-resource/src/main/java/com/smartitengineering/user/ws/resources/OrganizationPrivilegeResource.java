@@ -34,8 +34,24 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author russel
  */
-@Path("/orgs/sn/{organizationUniqueShortName}/privs/{privilegeName}")
+@Path("/orgs/sn/{organizationUniqueShortName}/privs/name/{privilegeName}")
 public class OrganizationPrivilegeResource extends AbstractResource {
+
+  static final UriBuilder PRIVILEGE_URI_BUILDER = UriBuilder.fromResource(OrganizationPrivilegeResource.class);
+  static final UriBuilder PRIVILEGE_CONTENT_URI_BUILDER;
+
+  static {
+    PRIVILEGE_CONTENT_URI_BUILDER = PRIVILEGE_URI_BUILDER.clone();
+    try {
+      PRIVILEGE_CONTENT_URI_BUILDER.path(OrganizationPrivilegeResource.class.getMethod("getContent"));
+    }
+    catch (Exception ex) {
+      ex.printStackTrace();
+      throw new InstantiationError();
+
+    }
+  }
+
 
   private String organizationUniqueShortName;
   private String privilegeName;
@@ -44,6 +60,14 @@ public class OrganizationPrivilegeResource extends AbstractResource {
       "privilegeName") String privilegeName) {
     this.organizationUniqueShortName = organizationUniqueShortName;
     this.privilegeName = privilegeName;
+  }
+
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/content")
+  public Response getContent() {
+    ResponseBuilder responseBuilder = Response.ok(getPrivilege());
+    return responseBuilder.build();
   }
 
   @GET
@@ -108,10 +132,10 @@ public class OrganizationPrivilegeResource extends AbstractResource {
 
 
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(UriBuilder.fromResource(OrganizationPrivilegeResource.class).build(organizationUniqueShortName,
-                                                                                       privilegeName).toString());
+    altLink.setHref(PRIVILEGE_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName, privilegeName).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
+    privilegeFeed.addLink(altLink);
 
     privilegeFeed.addLink(editLink);
     privilegeFeed.addLink(altLink);
