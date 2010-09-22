@@ -134,7 +134,7 @@ public class ObserverImpl implements CRUDObserver {
 
     String orgUri = ORGS_OID + ORG_UNIQUE_FRAG + "/" + organization.getUniqueShortName();
     SecuredObject securedObjectOrganization = new SecuredObject();
-    securedObjectOrganization.setName(organization.getName());
+    securedObjectOrganization.setName(organization.getUniqueShortName());
     securedObjectOrganization.setObjectID(orgUri);
     securedObjectOrganization.setOrganization(organization);
     securedObjectOrganization.setParentObjectID(ORGS_OID);
@@ -143,21 +143,21 @@ public class ObserverImpl implements CRUDObserver {
         getObjectID());
 
     SecuredObject securedObjectUsers = new SecuredObject();
-    securedObjectUsers.setName(organization.getName() + USERS_OID_NAME);
+    securedObjectUsers.setName(organization.getUniqueShortName()+ "-" + USERS_OID_NAME);
     securedObjectUsers.setObjectID(orgUri + USERS_OID);
     securedObjectUsers.setOrganization(organization);
     securedObjectUsers.setParentObjectID(securedObjectOrganization.getObjectID());
     securedObjectService.save(securedObjectUsers);
 
     SecuredObject securedObjectSOs = new SecuredObject();
-    securedObjectSOs.setName(organization.getName() + SECURED_OBJECTS_NAME);
+    securedObjectSOs.setName(organization.getUniqueShortName()+ "-"  + SECURED_OBJECTS_NAME);
     securedObjectSOs.setObjectID(orgUri + SECURED_OBJECTS_OID); //This objectId is actually the http url of secured objcets list of smart-user organizations
     securedObjectSOs.setOrganization(organization);
     securedObjectSOs.setParentObjectID(securedObjectOrganization.getObjectID());
     securedObjectService.save(securedObjectSOs);
 
     SecuredObject securedObjectPrivileges = new SecuredObject();
-    securedObjectPrivileges.setName(organization.getName() + PRIVILEGES_OID_NAME);
+    securedObjectPrivileges.setName(organization.getName()+ "-"  + PRIVILEGES_OID_NAME);
     securedObjectPrivileges.setObjectID(orgUri + PRIVILEGES_OID); //This objectId is actually the http url of secured objcets list of smart-user organizations
     securedObjectPrivileges.setOrganization(organization);
     securedObjectPrivileges.setParentObjectID(securedObjectOrganization.getObjectID());
@@ -165,7 +165,7 @@ public class ObserverImpl implements CRUDObserver {
 
     Privilege privilege = new Privilege();
     privilege.setDisplayName(organization.getName() + " " + "admin user profile privilege");
-    privilege.setName(organization.getName() + " " + "admin");
+    privilege.setName(organization.getUniqueShortName() + "-" + "admin");
     privilege.setParentOrganization(organization);
     privilege.setPermissionMask(PRIVILEGE_PERMISSION_MASK); //permission mask 31 means all privileges are there 11111
     privilege.setSecuredObject(securedObjectOrganization);
@@ -210,7 +210,7 @@ public class ObserverImpl implements CRUDObserver {
     String organizationShortName = userPerson.getUser().getOrganization().getUniqueShortName();
     UserPerson persistentUserPerson = userPersonService.getUserPersonByUsernameAndOrgName(username, organizationShortName);
     SecuredObject securedObjectUser = new SecuredObject();
-    securedObjectUser.setName(username + "'s Profile");
+    securedObjectUser.setName(username + "-profile");
     String orgUri = ORGS_OID + ORG_UNIQUE_FRAG + "/" + organizationShortName;
     securedObjectUser.setObjectID(orgUri + USERS_OID + USER_UNIQUE_FRAG + "/" + username);
     securedObjectUser.setOrganization(userPerson.getUser().getOrganization());
