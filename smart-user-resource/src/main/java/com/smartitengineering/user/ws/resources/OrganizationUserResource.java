@@ -149,13 +149,13 @@ public class OrganizationUserResource extends AbstractResource {
     userFeed.addLink(altLink);
 
     Link privilegesLink = abderaFactory.newLink();
-    privilegesLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName, userName).toString());
+    privilegesLink.setHref(UserPrivilegesResource.USER_PRIVILEGE_URIBUILDER.clone().build(organizationUniqueShortName, userName).toString());
     privilegesLink.setRel(REL_USER_PRIVILEGES);
     privilegesLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(privilegesLink);
 
     Link rolesLink = abderaFactory.newLink();
-    rolesLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName, userName).toString());
+    rolesLink.setHref(UserRolesResource.ROLE_URI_BUILDER.clone().build(organizationUniqueShortName, userName).toString());
     rolesLink.setRel(REL_USER_ROLES);
     rolesLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(rolesLink);
