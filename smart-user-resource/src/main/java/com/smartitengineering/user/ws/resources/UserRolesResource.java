@@ -30,7 +30,7 @@ import org.apache.abdera.model.Link;
  *
  * @author modhu7
  */
-@Path("/orgs/sn/{organizationName}/users/username/{userName}/roles")
+@Path("/orgs/sn/{organizationName}/users/un/{userName}/roles")
 public class UserRolesResource extends AbstractResource {
 
   private String organizationName;
@@ -116,7 +116,7 @@ public class UserRolesResource extends AbstractResource {
       nextLink.setRel(Link.REL_NEXT);
 
       Role firstRole = roleList.get(0);
-      nextLink.setHref(nextRoleUri.build(firstRole.getName()).toString());
+      nextLink.setHref(nextRoleUri.build(organizationName, userName, firstRole.getName()).toString());
       atomFeed.addLink(nextLink);
 
       Role lastRole = roleList.get(roleList.size() - 1);
@@ -124,7 +124,7 @@ public class UserRolesResource extends AbstractResource {
       // link to the previous uri according to the count value
       Link previousLink = abderaFactory.newLink();
       previousLink.setRel(Link.REL_PREVIOUS);
-      previousLink.setHref(previousRoleUri.build(lastRole.getName()).toString());
+      previousLink.setHref(previousRoleUri.build(organizationName, userName, lastRole.getName()).toString());
 
       atomFeed.addLink(previousLink);
 
