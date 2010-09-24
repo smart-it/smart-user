@@ -5,19 +5,16 @@
 package com.smartitengineering.user.client.api;
 
 import com.smartitengineering.util.rest.client.WritableResource;
+import java.util.List;
 import org.apache.abdera.model.Feed;
 
 /**
  *
  * @author modhu7
  */
-public interface UserResource extends WritableResource<Feed> {
+public interface UserPrivilegesResource extends WritableResource<Feed> {
 
-  public UserPerson getUser();  
+  public List<UserPrivilegeResource> getUserPrivilegeResources();
 
-  public UserPrivilegesResource getPrivilegesResource();
-
-  public UserRolesResource getRolesResource();
-
-  public void update();
+  public UserPrivilegeResource add(Privilege privilege);
 }

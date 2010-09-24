@@ -11,13 +11,7 @@ import org.apache.abdera.model.Feed;
  *
  * @author modhu7
  */
-public interface UserResource extends WritableResource<Feed> {
+public interface UserRoleResource extends WritableResource<Feed> {
 
-  public UserPerson getUser();  
-
-  public UserPrivilegesResource getPrivilegesResource();
-
-  public UserRolesResource getRolesResource();
-
-  public void update();
+  public RoleResource getRoleResource();
 }
