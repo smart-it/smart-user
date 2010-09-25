@@ -163,6 +163,8 @@ public class UserRolesResource extends AbstractResource {
         user.getRoles().add(role);
         Services.getInstance().getUserService().update(user);
         responseBuilder = Response.status(Status.CREATED);
+        responseBuilder.location(uriInfo.getBaseUriBuilder().path(UserRoleResource.ROLE_URI_BUILDER.clone().build(organizationName, userName, role.getName()).toString()).
+              build());
       }
     }
     catch (Exception ex) {

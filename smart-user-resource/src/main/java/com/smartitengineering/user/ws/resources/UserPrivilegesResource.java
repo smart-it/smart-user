@@ -163,11 +163,12 @@ public class UserPrivilegesResource extends AbstractResource {
         responseBuilder = Response.status(Status.BAD_REQUEST);
       }
       else {
-        responseBuilder = Response.status(Status.CREATED);
-
         privilege.setParentOrganization(getOrganization());
         user.getPrivileges().add(privilege);
         Services.getInstance().getUserService().update(user);
+        responseBuilder = Response.status(Status.CREATED);
+        responseBuilder.location(uriInfo.getBaseUriBuilder().path(UserPrivilegeResource.PRIVILEGE_URI_BUILDER.clone().
+            build(organizationName, userName, privilege.getName()).toString()).build());
       }
     }
     catch (Exception ex) {
