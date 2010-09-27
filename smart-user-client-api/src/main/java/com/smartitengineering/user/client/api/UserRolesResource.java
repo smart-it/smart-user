@@ -17,5 +17,4 @@ public interface UserRolesResource extends WritableResource<Feed>{
   public List<UserRoleResource> getUserPrivilegeResources();
 
   public UserRoleResource add(Role role);
-
 }

@@ -188,6 +188,11 @@ public class PersonServiceImpl extends AbstractCommonDaoImpl<Person> implements 
   @Override
   public void validatePerson(Person person) {
 
+    if (StringUtils.isEmpty(person.getPrimaryEmail())) {
+      throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.PERSON_EMAIL.
+          name());
+    }
+
     if (person.getId() != null) {
       Integer count = (Integer) super.getOther(QueryParameterFactory.getElementCountParam(
           "primaryEmail"), QueryParameterFactory.getConjunctionParam(
