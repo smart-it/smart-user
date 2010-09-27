@@ -296,15 +296,12 @@ public class ComprehensiveClientTest {
 
   @Test
   public void doTestRemoveUserPrivilege() {
-    System.out.println("----------------------------------------------------Do Test Remove User Privilege Started from here");
     UserPrivilegesResource sitelUserPrivsResource = sitelUserResource.getPrivilegesResource();
     List<UserPrivilegeResource> userPrivilegeResources = sitelUserPrivsResource.getUserPrivilegeResources();
     for (UserPrivilegeResource userPrivilegeResource : userPrivilegeResources) {
       if (userPrivilegeResource.getPrivilegeResource().getPrivilege().getName().equals("organization-admin-user-privilege-test-2")) {
-        System.out.println("------------------------------Entered delete domain");
         userPrivilegeResource.delete();
       }
-      System.out.println("------------------------------Not Entered delete domain");
     }
     sitelUserPrivsResource.get();
     Assert.assertEquals(ASSERTON_FOR_SINGLE_PRIV, sitelUserPrivsResource.getUserPrivilegeResources().size());
