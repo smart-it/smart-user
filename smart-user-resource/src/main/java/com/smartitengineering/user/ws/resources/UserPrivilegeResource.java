@@ -87,11 +87,11 @@ public class UserPrivilegeResource extends AbstractResource {
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     privilegeFeed.addLink(altLink);
-
+    
     Link privLink = abderaFactory.newLink();
-    altLink.setHref(PRIVILEGE_URI_BUILDER.clone().build(organizationUniqueShortName, privilegeName).toString());
-    altLink.setRel(REL_PRIV);
-    altLink.setMimeType(MediaType.APPLICATION_JSON);
+    privLink.setHref(PRIVILEGE_URI_BUILDER.clone().build(organizationUniqueShortName, privilegeName).toString());
+    privLink.setRel(REL_PRIV);
+    privLink.setMimeType(MediaType.APPLICATION_JSON);
     privilegeFeed.addLink(privLink);
 
     return privilegeFeed;

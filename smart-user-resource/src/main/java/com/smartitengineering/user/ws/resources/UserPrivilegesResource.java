@@ -141,7 +141,7 @@ public class UserPrivilegesResource extends AbstractResource {
         userPrivilegeEntry.setSummary(privilege.getShortDescription());
 
         Link userPrivilegeLink = abderaFactory.newLink();
-        userPrivilegeLink.setHref(UriBuilder.fromResource(OrganizationPrivilegeResource.class).build(organizationName, privilege.
+        userPrivilegeLink.setHref(UriBuilder.fromResource(UserPrivilegeResource.class).build(organizationName, userName, privilege.
             getName()).toString());
         userPrivilegeLink.setRel(Link.REL_ALTERNATE);
         userPrivilegeLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
@@ -167,7 +167,7 @@ public class UserPrivilegesResource extends AbstractResource {
         user.getPrivileges().add(privilege);
         Services.getInstance().getUserService().update(user);
         responseBuilder = Response.status(Status.CREATED);
-        responseBuilder.location(uriInfo.getBaseUriBuilder().path(UserPrivilegeResource.PRIVILEGE_URI_BUILDER.clone().
+        responseBuilder.location(uriInfo.getBaseUriBuilder().path(UserPrivilegeResource.USER_PRIVILEGE_URI_BUILDER.clone().
             build(organizationName, userName, privilege.getName()).toString()).build());
       }
     }

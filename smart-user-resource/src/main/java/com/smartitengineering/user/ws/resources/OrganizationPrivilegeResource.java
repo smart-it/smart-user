@@ -124,7 +124,7 @@ public class OrganizationPrivilegeResource extends AbstractResource {
     privilegeFeed.setId(privilegeName);
     privilegeFeed.setTitle(privilegeName);
     privilegeFeed.addLink(getSelfLink());
-
+    
     Link editLink = abderaFactory.newLink();
     editLink.setHref(uriInfo.getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
@@ -137,8 +137,7 @@ public class OrganizationPrivilegeResource extends AbstractResource {
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     privilegeFeed.addLink(altLink);
 
-    privilegeFeed.addLink(editLink);
-    privilegeFeed.addLink(altLink);
+    privilegeFeed.addLink(editLink);    
 
     return privilegeFeed;
   }
