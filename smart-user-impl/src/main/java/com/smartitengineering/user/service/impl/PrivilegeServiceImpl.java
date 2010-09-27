@@ -177,7 +177,7 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
           getStringLikePropertyParam(
           "name", privilege.getName())));
       if (count.intValue() > 0) {
-        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.SECURED_OBJECT_OBJECT_ID.
+        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.PRIVILEGE_NAME.
             name());
       }
     }
@@ -192,7 +192,7 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
           getParentOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
           "name", privilege.getName())));
       if (count.intValue() > 0) {
-        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.SECURED_OBJECT_OBJECT_ID.
+        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.PRIVILEGE_NAME.
             name());
       }
 
