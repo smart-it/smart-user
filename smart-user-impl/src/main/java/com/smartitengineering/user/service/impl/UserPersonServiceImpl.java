@@ -4,16 +4,12 @@
  */
 package com.smartitengineering.user.service.impl;
 
-import com.smartitengineering.dao.common.CommonReadDao;
-import com.smartitengineering.dao.common.CommonWriteDao;
 import com.smartitengineering.dao.common.queryparam.FetchMode;
 import com.smartitengineering.dao.common.queryparam.MatchMode;
 import com.smartitengineering.dao.common.queryparam.Order;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl;
-import com.smartitengineering.dao.impl.hibernate.AbstractDAO;
-import com.smartitengineering.domain.PersistentDTO;
 import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.domain.User;
@@ -53,7 +49,6 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
     this.observable = observable;
   }
 
-
   public UserPersonServiceImpl() {
     setEntityClass(UserPerson.class);
   }
@@ -66,6 +61,7 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
     this.personService = personService;
   }
 
+  @Override
   public void create(UserPerson userPerson) {
     getUserService().validateUser(userPerson.getUser());
     if (userPerson.getPerson().getId() != null) {
@@ -80,8 +76,8 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
     }
     personService.validatePerson(userPerson.getPerson());
     try {
-      observable.notifyObserver(ObserverNotification.CREATE_USER_PERSON, userPerson);
       super.save(userPerson);
+      observable.notifyObserver(ObserverNotification.CREATE_USER_PERSON, userPerson);
     }
     catch (ConstraintViolationException e) {
       String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
@@ -95,6 +91,7 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
     }
   }
 
+  @Override
   public void update(UserPerson userPerson) {
     getUserService().validateUser(userPerson.getUser());
     personService.validatePerson(userPerson.getPerson());
@@ -113,15 +110,17 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
     }
   }
 
+  @Override
   public void delete(UserPerson userPerson) {
     try {
-      super.delete(userPerson);
       observable.notifyObserver(ObserverNotification.DELETE_USER_PERSON, userPerson);
+      super.delete(userPerson);
     }
     catch (Exception e) {
     }
   }
 
+  @Override
   public Collection<UserPerson> search(UserPersonFilter filter) {
     QueryParameter qp;
     List<QueryParameter> queryParameters = new ArrayList<QueryParameter>();
@@ -151,6 +150,7 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
     return userPersons;
   }
 
+  @Override
   public Collection<UserPerson> getAllUserPerson() {
     Collection<UserPerson> userPersons = new HashSet<UserPerson>();
     try {
@@ -161,6 +161,7 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
     return userPersons;
   }
 
+  @Override
   public Collection<UserPerson> getByOrganization(String organizationUniqueShortName, String userName,
                                                   boolean isSmallerThan, int count) {
 
@@ -199,9 +200,11 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
     params.add(QueryParameterFactory.getMaxResultsParam(count));
     params.add(QueryParameterFactory.getOrderByParam("username", isSmallerThan ? Order.DESC : Order.ASC));
     //params.add(QueryParameterFactory.getDistinctPropProjectionParam("username"));
-    List<UserPerson> userPersons = getList(QueryParameterFactory.getNestedParametersParam("user", FetchMode.DEFAULT, params.toArray(new QueryParameter[0])));
+    List<UserPerson> userPersons = getList(QueryParameterFactory.getNestedParametersParam("user", FetchMode.DEFAULT, params.
+        toArray(new QueryParameter[0])));
     if (userPersons != null && !userPersons.isEmpty()) {
       Collections.sort(userPersons, new Comparator<UserPerson>() {
+
         @Override
         public int compare(UserPerson o1, UserPerson o2) {
           //return o1.getId().compareTo(o2.getId()) * -1;
@@ -232,6 +235,7 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
 
   }
 
+  @Override
   public void deleteByPerson(Person person) {
     if (person == null) {
       return;
@@ -244,6 +248,7 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
     }
   }
 
+  @Override
   public void deleteByUser(User user) {
     if (user == null) {
       return;
@@ -282,6 +287,8 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
 
   @Override
   public Collection<UserPerson> getAllByOrganization(String organizationUniqueShortName) {
-    return super.getList(QueryParameterFactory.getNestedParametersParam("user", FetchMode.DEFAULT, QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationUniqueShortName))));
+    return super.getList(QueryParameterFactory.getNestedParametersParam("user", FetchMode.DEFAULT, QueryParameterFactory.
+        getNestedParametersParam("organization", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam(
+        "uniqueShortName", organizationUniqueShortName))));
   }
 }

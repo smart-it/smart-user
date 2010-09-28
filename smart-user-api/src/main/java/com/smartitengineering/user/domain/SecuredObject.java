@@ -22,6 +22,7 @@ public class SecuredObject extends AbstractPersistentDTO<SecuredObject> {
   private Integer parentOrganizationID;
   private Date lastModifiedDate;
 
+  @JsonIgnore
   public Date getLastModifiedDate() {
     if (lastModifiedDate == null) {
       lastModifiedDate = new Date();
@@ -88,6 +89,8 @@ public class SecuredObject extends AbstractPersistentDTO<SecuredObject> {
     this.objectID = objectID;
   }
 
+  @Override
+  @JsonIgnore
   public boolean isValid() {
     return StringUtils.isNotBlank(objectID) && (organization != null);
   }

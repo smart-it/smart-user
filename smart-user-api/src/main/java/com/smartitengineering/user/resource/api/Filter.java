@@ -12,6 +12,7 @@ import java.util.Map;
  * provides searching parameters
  * @author modhu7
  */
+@Deprecated
 public interface Filter {
 
   /**

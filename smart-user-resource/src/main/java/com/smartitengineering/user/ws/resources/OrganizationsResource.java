@@ -317,7 +317,8 @@ public class OrganizationsResource extends AbstractResource {
       //Services.getInstance().getOrganizationService().populateAuthor(organization);
       Services.getInstance().getOrganizationService().save(organization);
       responseBuilder = Response.status(Response.Status.CREATED);
-      responseBuilder.location(OrganizationResource.ORGANIZATION_URI_BUILDER.clone().build(organization.getName()));
+      responseBuilder.location(uriInfo.getBaseUriBuilder().path(OrganizationResource.ORGANIZATION_URI_BUILDER.clone().
+            build(organization.getUniqueShortName()).toString()).build());
 
     }
     catch (Exception ex) {

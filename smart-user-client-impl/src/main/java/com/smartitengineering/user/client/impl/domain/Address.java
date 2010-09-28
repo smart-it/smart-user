@@ -2,30 +2,25 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.client.impl.domain;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
-import com.smartitengineering.domain.PersistentDTO;
-
-
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
 /**
  *
  * @author russel
  */
-public class Address extends AbstractPersistentDTO<Address> implements com.smartitengineering.smartuser.client.api.Address {
+public class Address extends AbstractClientDomain implements com.smartitengineering.user.client.api.Address {
 
-   private String streetAddress;
-    private String city;
-    private String state;
-    private String country;
-    private String zip;
-    private GeoLocation geoLocation;
-
+  private String streetAddress;
+  private String city;
+  private String state;
+  private String country;
+  private String zip;
+  private com.smartitengineering.user.client.api.GeoLocation geoLocation;
 
   @Override
-  public GeoLocation getGeoLocation() {
+  public com.smartitengineering.user.client.api.GeoLocation getGeoLocation() {
     return geoLocation;
   }
 
@@ -54,33 +49,52 @@ public class Address extends AbstractPersistentDTO<Address> implements com.smart
     return zip;
   }
 
+  @Override
   public void setCity(String city) {
+    if (city == null) {
+      return;
+    }
     this.city = city;
   }
 
+  @Override
   public void setCountry(String country) {
+    if (country == null) {
+      return;
+    }
     this.country = country;
   }
 
-  public void setGeoLocation(GeoLocation geoLocation) {
+  @Override
+  @JsonDeserialize(as = GeoLocation.class)
+  public void setGeoLocation(com.smartitengineering.user.client.api.GeoLocation geoLocation) {
+    if (geoLocation == null) {
+      return;
+    }
     this.geoLocation = geoLocation;
   }
 
+  @Override
   public void setState(String state) {
+    if (state == null) {
+      return;
+    }
     this.state = state;
   }
 
+  @Override
   public void setStreetAddress(String streetAddress) {
+    if (streetAddress == null) {
+      return;
+    }
     this.streetAddress = streetAddress;
   }
 
+  @Override
   public void setZip(String zip) {
+    if (zip == null) {
+      return;
+    }
     this.zip = zip;
   }
-
-  public boolean isValid(){
-    return true;
-  }
-  
-
 }

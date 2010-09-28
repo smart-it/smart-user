@@ -111,17 +111,4 @@ public class RoleServiceImpl extends AbstractCommonDaoImpl<Role> implements Role
   public Collection<Role> search(RoleFilter filter) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
-
-  public void populateRole(User user) throws Exception {
-    List<Integer> roleIDs = user.getRoleIDs();
-
-    if (roleIDs != null && !roleIDs.isEmpty()) {
-      Set<Role> roles = getByIds(roleIDs);
-
-      if (roles == null || roleIDs.size() != roles.size()) {
-        throw new Exception("Role not found");
-      }
-      user.setRoles(roles);
-    }
-  }
 }

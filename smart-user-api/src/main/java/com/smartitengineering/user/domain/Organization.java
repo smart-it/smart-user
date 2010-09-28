@@ -7,9 +7,6 @@ package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
 import java.util.Date;
-import javax.ws.rs.Encoded;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -62,7 +59,7 @@ public class Organization extends AbstractPersistentDTO<Organization> {
         return lastModifiedDate;
     }
 
-    @JsonIgnore
+    
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }

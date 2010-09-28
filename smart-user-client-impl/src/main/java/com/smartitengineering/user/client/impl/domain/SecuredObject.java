@@ -2,35 +2,70 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.client.impl.domain;
 
-import com.smartitengineering.smartuser.client.api.Organization;
+import java.util.Date;
 
 /**
  *
  * @author russel
  */
-public class SecuredObject implements com.smartitengineering.smartuser.client.api.SecuredObject{
+public class SecuredObject extends AbstractClientDomain implements
+    com.smartitengineering.user.client.api.SecuredObject {
+
+  private String name;
+  private String objectID;
+  private String parentObjectID;
+  private Date lastModifiedDate;
 
   @Override
   public String getName() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return name;
   }
 
   @Override
   public String getObjectID() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return objectID;
   }
 
   @Override
   public String getParentObjectID() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return parentObjectID;
   }
 
   @Override
-  public Organization getOrganization() {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public void setName(String name) {
+    if (name == null) {
+      return;
+    }
+    this.name = name;
   }
 
+  @Override
+  public void setObjectID(String objectID) {
+    if (objectID == null) {
+      return;
+    }
+    this.objectID = objectID;
+  }
+
+  @Override
+  public void setParentObjectID(String parentObjectID) {
+    if (parentObjectID == null) {
+      return;
+    }
+    this.parentObjectID = parentObjectID;
+  }
+
+  @Override
+  public Date getLastModifiedDate() {
+    return lastModifiedDate;
+  }
+
+  public void setLastModifiedDate(Date lastModifiedDate) {
+    if (lastModifiedDate == null) {
+      return;
+    }
+    this.lastModifiedDate = lastModifiedDate;
+  }
 }

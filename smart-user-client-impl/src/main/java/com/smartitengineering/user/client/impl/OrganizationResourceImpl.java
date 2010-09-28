@@ -2,28 +2,22 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.smartuser.client.api.GenericClientException;
-import com.smartitengineering.smartuser.client.api.Organization;
-import com.smartitengineering.smartuser.client.api.OrganizationResource;
-import com.smartitengineering.smartuser.client.api.OrganizationsResource;
-import com.smartitengineering.smartuser.client.api.PrivilegesResource;
-import com.smartitengineering.smartuser.client.api.SecuredObjectsResource;
-import com.smartitengineering.smartuser.client.api.UsersResource;
-//import com.smartitengineering.util.rest.atom.AtomClientUtil;
-import com.smartitengineering.util.rest.client.ClientUtil;
-import com.smartitengineering.util.rest.client.DefaultResouceLinkImpl;
-import com.smartitengineering.util.rest.client.ResouceLink;
+
+import com.smartitengineering.user.client.api.Organization;
+import com.smartitengineering.user.client.api.OrganizationResource;
+import com.smartitengineering.user.client.api.PrivilegesResource;
+import com.smartitengineering.user.client.api.SecuredObjectsResource;
+import com.smartitengineering.user.client.api.UsersResource;
+import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
+import com.smartitengineering.util.rest.atom.AtomClientUtil;
+import com.smartitengineering.util.rest.client.Resource;
+import com.smartitengineering.util.rest.client.ResourceLink;
+import com.smartitengineering.util.rest.client.SimpleResourceImpl;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import java.net.URI;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.sun.jersey.api.client.config.ClientConfig;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriBuilder;
-import org.apache.abdera.Abdera;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 
@@ -31,7 +25,8 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-class OrganizationResourceImpl extends AbstractClientImpl implements OrganizationResource{
+class OrganizationResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements
+    OrganizationResource {
 
   public static final String REL_ORGS = "organizations";
   public static final String REL_ORG = "Organization";
@@ -40,217 +35,57 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
   public static final String REL_PRIVILEGES = "privileges";
   public static final String REL_SECUREDOBJECTS = "securedobjects";
 
-  private URI orgURI;
-  private ResouceLink orgLink;
-  private Link usersLink;
-  private Link privilegesLink;
-  private Link securedObjectsLink;
-  //private Link userLink;
 
-  private boolean isCacheEnabled;
-  private Date lastModifiedDate;
-  private Date expirationDate;
-
-  private Organization organization;
-
-  public OrganizationResourceImpl(Organization organization){
-//<<<<<<< HEAD
-//    Link createdOrgLink = Abdera.getNewFactory().newLink();
-//    createdOrgLink.setHref(BASE_URI.toString() + "/shortname/"+ organization.getUniqueShortName());
-//
-//    this.orgLink = createdOrgLink;
-//    this.orgURI = UriBuilder.fromUri(BASE_URI.toString() + orgLink.getHref().toString()).build();
-//=======
-    DefaultResouceLinkImpl linkImpl = new DefaultResouceLinkImpl();
-    this.orgLink = linkImpl;
-    linkImpl.setUri(getBaseUriBuilder().path("sn").path(organization.getUniqueShortName()).build());
-    linkImpl.setMimeType(MediaType.APPLICATION_ATOM_XML);
-    linkImpl.setRel(REL_ORG);
-    orgURI = getBaseUriBuilder().path(orgLink.getUri().toString()).build();
-//>>>>>>> imyousuf/master
-
-    ClientResponse response = ClientUtil.readClientResponse(orgURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
-
-    if(response.getStatus() != 401){
-
-      Feed feed = AtomClientUtil.getFeed(response);
-
-      usersLink = feed.getLink(REL_USERS);
-      privilegesLink = feed.getLink(REL_PRIVILEGES);
-      securedObjectsLink = feed.getLink(REL_SECUREDOBJECTS);
-
-      URI orgContentURI = getBaseUriBuilder().path(orgLink.getUri().toString()).build();
-      ClientResponse contentResponse = ClientUtil.readClientResponse(orgContentURI, getHttpClient(), MediaType.APPLICATION_JSON);
-
-      if(contentResponse.getStatus() != 401){        
-        organization = ClientUtil.getResponseEntity(contentResponse, com.smartitengineering.user.client.impl.domain.Organization.class);
-        //String str = ClientUtil.getResponseEntity(contentResponse, String.class);
-
-      }
-
-      Feed contentFeed = AtomClientUtil.getFeed(response);
-
-      String href = orgLink.getUri().toString();
-
-      if(response.getHeaders().getFirst("Cache-Control") != null)
-        isCacheEnabled = response.getHeaders().getFirst("Cache-Control").equals("no-cache");
-      String dateString = response.getHeaders().getFirst("Last-Modified");
-      SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
-      try {
-        lastModifiedDate = format.parse(dateString);
-      }
-      catch (Exception ex) {
-      }
-      dateString = response.getHeaders().getFirst("Expires");
-      try {
-        lastModifiedDate = format.parse(dateString);
-      }
-      catch (Exception ex) {
-      }
-      if(response.getLocation() != null) {
-        orgURI = response.getLocation();
-      }
-      
-    }else{
-      orgLink = null;
-    }
-
-  }
-
-  public OrganizationResourceImpl(ResouceLink orgLink) {
-
-    this.orgLink = orgLink;
-    orgURI = getBaseUriBuilder().path(orgLink.getUri().toString()).build();
-
-    ClientResponse response = ClientUtil.readClientResponse(orgURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
-
-    if(response.getStatus() == 200){
-
-      Feed feed = AtomClientUtil.getFeed(response);
-
-      //orgLink = feed.getLink(REL_ORG);
-      usersLink = feed.getLink(REL_USERS);
-      privilegesLink = feed.getLink(REL_PRIVILEGES);
-      securedObjectsLink = feed.getLink(REL_SECUREDOBJECTS);
-
-      URI orgContentURI = getBaseUriBuilder().path(orgLink.getUri().toString()).path("content").build();
-      ClientResponse contentResponse = ClientUtil.readClientResponse(orgContentURI, getHttpClient(), MediaType.APPLICATION_JSON);
-
-      if(contentResponse.getStatus() == 200){
-        organization = ClientUtil.getResponseEntity(contentResponse, com.smartitengineering.user.client.impl.domain.Organization.class);
-      }
-      else {
-        throw new GenericClientException(contentResponse);
-      }
-
-      //Feed contentFeed = ClientUtil.getFeed(response);
-
-      String href = orgLink.getUri().toString();
-
-      if(response.getHeaders().getFirst("Cache-Control") != null)
-        isCacheEnabled = response.getHeaders().getFirst("Cache-Control").equals("no-cache");
-      String dateString = response.getHeaders().getFirst("Last-Modified");
-      SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
-      try {
-        lastModifiedDate = format.parse(dateString);
-      }
-      catch (Exception ex) {
-      }
-      dateString = response.getHeaders().getFirst("Expires");
-      try {
-        lastModifiedDate = format.parse(dateString);
-      }
-      catch (Exception ex) {
-      }
-      if(response.getLocation() != null) {
-        orgURI = response.getLocation();
-      }
-      
-    }else{
-      orgLink = null;
-    }
+  public OrganizationResourceImpl(ResourceLink orgLink, Resource referrer) {
+    super(referrer, orgLink);
+    final ResourceLink altLink = getRelatedResourceUris().getFirst(Link.REL_ALTERNATE);
+    addNestedResource(REL_ORG, new SimpleResourceImpl<com.smartitengineering.user.client.impl.domain.Organization>(
+        this, altLink.getUri(), altLink.getMimeType(), com.smartitengineering.user.client.impl.domain.Organization.class,
+        null, false, null, null));
   }
 
   @Override
   public UsersResource getUsersResource() {
-    return new UsersResourceImpl(AtomClientUtil.convertFromAtomLinkToResourceLink(usersLink));
+    return new UsersResourceImpl(getRelatedResourceUris().getFirst(REL_USERS), this);
   }
 
   @Override
   public SecuredObjectsResource getSecuredObjectsResource() {
-    return new SecuredObjectsResourceImpl(securedObjectsLink);
+    return new SecuredObjectsResourceImpl(getRelatedResourceUris().getFirst(REL_SECUREDOBJECTS), this);
   }
 
   @Override
   public PrivilegesResource getPrivilegesResource() {
-    return new PrivilegesResourceImpl(privilegesLink);
+    return new PrivilegesResourceImpl(getRelatedResourceUris().getFirst(REL_PRIVILEGES), this);
   }
 
   @Override
   public Organization getOrganization() {
-    return organization;
+    return getOrganization(false);
+  }
+
+  protected Organization getOrganization(boolean reload) {
+    Resource<Organization> organization = super.<Organization>getNestedResource(REL_ORG);
+    if (reload) {
+      return organization.get();
+    }
+    else {
+      return organization.getLastReadStateOfEntity();
+    }
   }
 
   @Override
-  public OrganizationsResource getOrganizationsResource() {
-    return new OrganizationsResourceImpl(orgLink);
+  protected void processClientConfig(ClientConfig clientConfig) {
   }
 
   @Override
-  public OrganizationResource update() {
-    WebResource webResource = getClient().resource(orgURI);
-    getClient().getProviders();
-    webResource.type(MediaType.APPLICATION_JSON_TYPE).put(organization);
-
-    return new OrganizationResourceImpl(orgLink);
+  protected Resource<? extends Feed> instantiatePageableResource(ResourceLink link) {
+    return null;
   }
 
   @Override
-  public void delete() {
-    WebResource webResource = getClient().resource(orgURI);
-    getClient().getProviders();
-    webResource.type(MediaType.APPLICATION_JSON).delete();
-
-
+  public void update() {
+    put(MediaType.APPLICATION_JSON, getOrganization(), ClientResponse.Status.OK, ClientResponse.Status.SEE_OTHER,
+        ClientResponse.Status.FOUND);
   }
-
-  @Override
-  public OrganizationResource refreshAndMerge() {
-    OrganizationResource organizationResource = new OrganizationResourceImpl(orgLink);
-
-    // need consultation
-
-    return organizationResource;
-  }
-
-  @Override
-  public boolean isCacheEnabled() {
-    return isCacheEnabled;
-  }
-
-  @Override
-  public Date getLastModifiedDate() {
-    return lastModifiedDate;
-  }
-
-  @Override
-  public Date getExpirationDate() {
-    return expirationDate;
-  }
-
-  @Override
-  public String getUUID() {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public URI getUri() {
-    return orgURI;
-  }
-
-  @Override
-  public OrganizationResource refresh() {
-    return new OrganizationResourceImpl(orgLink);
-  }
-
 }

@@ -44,6 +44,10 @@ public class OrganizationResource extends AbstractResource {
   static final UriBuilder ORGANIZATION_URI_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
   static final UriBuilder ORGANIZATION_CONTENT_URI_BUILDER;
 
+  private final String REL_USERS = "users";
+  private final String REL_PRIVILEGES = "privileges";
+  private final String REL_SECUREDOBJECTS = "securedobjects";
+
   @Context
   private HttpServletRequest servletRequest;
 
@@ -292,6 +296,23 @@ public class OrganizationResource extends AbstractResource {
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     organizationFeed.addLink(altLink);
 
+    Link usersLink = abderaFactory.newLink();
+    usersLink.setHref(OrganizationUsersResource.ORGANIZATION_USERS_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
+    usersLink.setRel(REL_USERS);
+    usersLink.setMimeType(MediaType.APPLICATION_JSON);
+    organizationFeed.addLink(usersLink);
+
+    Link privilegesLink = abderaFactory.newLink();
+    privilegesLink.setHref(OrganizationUsersResource.ORGANIZATION_USERS_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
+    privilegesLink.setRel(REL_PRIVILEGES);
+    privilegesLink.setMimeType(MediaType.APPLICATION_JSON);
+    organizationFeed.addLink(privilegesLink);
+
+    Link securedObjectsLink = abderaFactory.newLink();
+    securedObjectsLink.setHref(OrganizationUsersResource.ORGANIZATION_USERS_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
+    securedObjectsLink.setRel(REL_SECUREDOBJECTS);
+    securedObjectsLink.setMimeType(MediaType.APPLICATION_JSON);
+    organizationFeed.addLink(securedObjectsLink);
 
     return organizationFeed;
   }
