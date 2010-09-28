@@ -131,7 +131,7 @@ class OrganizationResourceImpl extends AbstractClientImpl implements Organizatio
         
       }
 
-      Feed contentFeed = ClientUtil.getFeed(response);
+      //Feed contentFeed = ClientUtil.getFeed(response);
 
       String href = orgLink.getHref().toString();
 

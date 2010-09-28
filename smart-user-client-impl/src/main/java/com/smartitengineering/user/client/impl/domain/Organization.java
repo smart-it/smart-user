@@ -10,10 +10,12 @@ package com.smartitengineering.user.client.impl.domain;
  * @author russel
  */
 
+import com.smartitengineering.domain.AbstractPersistentDTO;
+import com.smartitengineering.domain.PersistentDTO;
 import java.util.Date;
 
 
-public class Organization implements com.smartitengineering.smartuser.client.api.Organization{
+public class Organization extends AbstractPersistentDTO<Organization> implements com.smartitengineering.smartuser.client.api.Organization{
 
   private String name;
 
@@ -58,6 +60,10 @@ public class Organization implements com.smartitengineering.smartuser.client.api
 
   public void setLastModifiedDate(Date lastModifiedDate) {
     this.lastModifiedDate = lastModifiedDate;
+  }
+
+  public boolean isValid(){
+    return true;
   }
 
 }

@@ -49,5 +49,9 @@
       <artifactId>smart-user-client-api</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.smartitengineering</groupId>
+      <artifactId>smart-domain</artifactId>
+    </dependency>
   </dependencies>
 </project>

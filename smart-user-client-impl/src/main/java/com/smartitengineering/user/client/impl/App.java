@@ -37,12 +37,12 @@ public class App
         com.smartitengineering.user.client.impl.domain.Organization organization = new com.smartitengineering.user.client.impl.domain.Organization();
 
         organization.setName("Smart IT Engineering Limited");
-        organization.setUniqueShortName("SITEL");
+        organization.setUniqueShortName("SITEL");        
 
         //organizationsResource.create(organization);
         List<OrganizationResource> orgsResources = organizationsResource.getOrganizationResources();
 
-        OrganizationResource orgResource = orgsResources.get(1);
+        OrganizationResource orgResource = orgsResources.get(0);
         orgResource.update();
 
         //organizationsResource.getOrganizationResources();
