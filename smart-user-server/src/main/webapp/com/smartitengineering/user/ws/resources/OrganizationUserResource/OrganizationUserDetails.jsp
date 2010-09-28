@@ -62,7 +62,7 @@
 
 
 <div name="newboxes" id="newboxes3" class="hide">
-  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out>-Change your password</label></div>
+  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out><fmt:message key="org.usredittablehead1" /></label></div>
 
   <fmt:message key="org.usrinput6" var="submitbtn"/>
   <div id="form_organizationentry" class="entry_form">
@@ -99,13 +99,13 @@
       <div style="clear: both"></div>      
       <div class="form_textField"><input type="hidden" name="originalPassword" value="${it.user.password}" class="textField" id="originalPassword"></div>
       <div style="clear: both"></div>
-      <div class="form_label"><label>Old Password</label></div>
-      <div class="form_textField"><input type="password" name="oldPassword" class="textField" id="oldPassword"><label id="error"><img id="wrong" src="/css/images/wrong.png" />   Wrong Password</label></div>
+      <div class="form_label"><label><fmt:message key="org.usreditinput1"/></label></div>
+      <div class="form_textField"><input type="password" name="oldPassword" class="textField" id="oldPassword"><label id="error"><img id="wrong" src="/css/images/wrong.png" /><fmt:message key="org.error1" /></label></div>
       <div style="clear: both"></div>
-      <div class="form_label"><label>New Password</label></div>
+      <div class="form_label"><label><fmt:message key="org.usreditinput2"/></label></div>
       <div class="form_textField"><input type="password" name="password" class="textField" id="newPassword"></div>
       <div style="clear: both"></div>
-      <div class="form_label"><label>Confirm Password</label></div>
+      <div class="form_label"><label><fmt:message key="org.usrinput7"/></label></div>
       <div class="form_textField"><input type="password" name="confirmPassword" class="textField" id="confirmPassword"></div>
       <div style="clear: both"></div>
      
@@ -119,7 +119,7 @@
 </div>
 
 <div name="newboxes" id="newboxes2" class="hide">
-  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out>-Edit Information</label></div>
+  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out><fmt:message key="org.usredittablehead2" /></label></div>
   <fmt:message key="org.usrinput6" var="submitbtn"/>
   <div id="form_organizationentry" class="entry_form">
     <form method="POST" action ="http://localhost:9090/orgs/sn/${it.user.organization.uniqueShortName}/users/un/${it.user.username}/update" accept="application/json" id="userEditForm">

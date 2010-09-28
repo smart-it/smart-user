@@ -21,6 +21,9 @@ $(document).ready(function(){
     }    
   });  
 
+$(".submitbtn").click(function(){
+  
+})
 
   $("#changePasswordForm").validate({
     rules: {
@@ -35,8 +38,7 @@ $(document).ready(function(){
     }    
   });
   $('#error').hide();
-  $("#update").click(function(){
-    alert(1);
+  $("#update").click(function(){   
     $('#error').hide();
     var pass = $("input#oldPassword").val();
     var pass1 = $("input#originalPassword").val();
