@@ -4,113 +4,82 @@
  */
 package com.smartitengineering.user.client.impl;
 
-
-import com.smartitengineering.smartuser.client.api.AuthorizationResource;
-import com.smartitengineering.util.rest.atom.ClientUtil;
-import com.sun.jersey.api.client.ClientResponse;
+import com.smartitengineering.user.client.api.AuthorizationResource;
+import com.smartitengineering.util.rest.client.AbstractClientResource;
+import com.smartitengineering.util.rest.client.Resource;
+import com.smartitengineering.util.rest.client.ResourceLink;
+import com.sun.jersey.api.client.config.ClientConfig;
 import java.net.URI;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import javax.net.ssl.SSLEngineResult.Status;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
-import org.apache.abdera.model.Link;
+import javax.ws.rs.core.UriBuilderException;
 
 /**
  *
  * @author modhu7
  */
-class AuthorizationResourceImpl extends AbstractClientImpl implements AuthorizationResource {
+class AuthorizationResourceImpl extends AbstractClientResource<String, Resource> implements
+    AuthorizationResource {
 
-  private String username;
-  private String organizationName;
-  private String oid;
-  private Integer permission;
-  private Link authLink;
-  private String configAttribute;
-  private boolean isCacheEnabled;
-  private Date lastModifiedDate;
-  private Date expirationDate;
-  private URI uri;
-  private Integer authorizationResult;
-
-  AuthorizationResourceImpl(String username, String organizationName, String oid, Integer permission, Link aclAuthLink) {
-    this.username = username;
-    this.organizationName = organizationName;
-    this.oid = oid;
-    this.permission = permission;
-    this.authLink = aclAuthLink;
-    this.configAttribute = null;
-    URI uri = UriBuilder.fromUri(BASE_URI.toString() + authLink.getHref().toString() + "?username=" + this.username +
-        "&orgname=" + organizationName + "&oid=" + oid + "&permission=" + permission).build();
-    ClientResponse response = ClientUtil.readClientResponse(uri, getHttpClient(), MediaType.TEXT_PLAIN);
-
-    if (response.getStatus() == 200) {
-      String stringAuthorizationResult = response.getEntity(String.class);
-      authorizationResult = Integer.parseInt(stringAuthorizationResult);
-      if (response.getHeaders().getFirst("Cache-Control") != null) {
-        isCacheEnabled = response.getHeaders().getFirst("Cache-Control").equals("no-cache");
-      }
-      String dateString = response.getHeaders().getFirst("Last-Modified");
-      SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
-      try {
-        lastModifiedDate = format.parse(dateString);
-      }
-      catch (Exception ex) {
-      }
-      dateString = response.getHeaders().getFirst("Expires");
-      try {
-        expirationDate = format.parse(dateString);
-      }
-      catch (Exception ex) {
-      }
-      uri = response.getLocation();
-    }   
+  AuthorizationResourceImpl(String username, String organizationName, String oid, Integer permission,
+                            ResourceLink aclAuthLink, Resource referrer) {
+    super(referrer, getSelfUriForAcl(aclAuthLink, username, organizationName, oid, permission), MediaType.TEXT_PLAIN,
+          String.class);
   }
 
-  AuthorizationResourceImpl(String username, String configAttribute, Link roleAuthLink) {    
-  }
-
-  private AuthorizationResourceImpl() {
+  AuthorizationResourceImpl(String username, String organizationName, String configAttribute, ResourceLink aclRoleLink,
+                            Resource referrer) {
+    super(referrer, getSelfUriForRole(aclRoleLink, username, organizationName, configAttribute), MediaType.TEXT_PLAIN,
+          String.class);
   }
 
   @Override
-  public Integer getAuthorization() {
-    return authorizationResult;
+  protected void processClientConfig(ClientConfig clientConfig) {
   }
 
   @Override
-  public boolean isCacheEnabled() {
-    return isCacheEnabled;
+  public Boolean getAuthorization() {
+    return Boolean.valueOf(getLastReadStateOfEntity());
+  }
+
+  protected static URI getSelfUriForAcl(ResourceLink authLink,
+                                        String username,
+                                        String organizationName,
+                                        String oid,
+                                        Integer permission)
+      throws IllegalArgumentException, UriBuilderException {
+    URI authResourceUri = UriBuilder.fromPath(BASE_URI.toString()).path(authLink.getUri().toString()).queryParam(
+        "username", username).queryParam("orgname", organizationName).queryParam("oid", oid).queryParam("permission",
+                                                                                                        permission).
+        build();
+
+    return authResourceUri;
+  }
+
+  protected static URI getSelfUriForRole(ResourceLink authLink,
+                                         String username,
+                                         String organizationName,
+                                         String configAttribute)
+      throws IllegalArgumentException, UriBuilderException {
+    URI authResourceUri = UriBuilder.fromPath(BASE_URI.toString()).path(authLink.getUri().toString()).queryParam(
+        "username", username).queryParam("orgname", organizationName).queryParam("configAttribute", configAttribute).
+        build();
+
+    return authResourceUri;
   }
 
   @Override
-  public Date getLastModifiedDate() {
-    return lastModifiedDate;
+  protected ResourceLink getNextUri() {
+    return null;
   }
 
   @Override
-  public Date getExpirationDate() {
-    return expirationDate;
+  protected ResourceLink getPreviousUri() {
+    return null;
   }
 
   @Override
-  public String getUUID() {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public URI getUri() {
-    return uri;
-  }
-
-  @Override
-  public Object refresh() {
-    if(configAttribute == null && username != null && organizationName != null && permission != null && oid != null)
-      return new AuthorizationResourceImpl(username, organizationName, oid, permission, authLink);
-    else if (configAttribute != null && username == null && organizationName == null && permission == null && oid == null)
-      return new AuthorizationResourceImpl(username, configAttribute, authLink);
-    else
-      return new AuthorizationResourceImpl();
+  protected Resource instantiatePageableResource(ResourceLink link) {
+    return null;
   }
 }

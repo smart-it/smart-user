@@ -67,11 +67,12 @@ root {
   width:35%;
   float:left;
   text-align: left;
+  /*border: 1px solid;*/
 }
 
 .form_label label{
   font-family: vardana, sans-serif;
-  font-size: 12pt;
+  font-size: 11pt;
   font-weight: 500;
   font-style: normal;
   color:#330066;
@@ -79,21 +80,28 @@ root {
 
 .form_textField{
 
-  padding: 10px 10px 10px 0px;
-  width:60%;
+  padding: 8px 10px 10px 0px;
+  width:55%;
   float:left;
   /*border: 1px solid;*/
 }
 
 .textField{
-  height: 30px;
+  height: 25px;
   border: 1px outset;
   border-color:#9A03FE;
-  width: 75%  ;
+  width: 100%  ;
   font-family: sans-serif;
   font-weight: normal;
   font-size: 9pt;
 
+}
+
+.unLabel{
+  font-family: sans-serif;
+  font-size: 12pt;
+  font-weight: bold;
+  color:#FF9966;
 }
 
 .btnfield{
@@ -204,6 +212,16 @@ root {
   font-style: oblique;
   text-decoration: none;
   color: #333399;
+}
+
+label.error{
+  font-family:monospace;
+  color: red;
+}
+
+.errorAlert{
+  font-family: monospace;
+  color: red;
 }
 
 .clear{

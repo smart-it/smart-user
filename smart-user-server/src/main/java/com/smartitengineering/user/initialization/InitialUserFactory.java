@@ -27,15 +27,15 @@ public class InitialUserFactory {
   final static String SUPER_ADMIN_USERNAME = "smartadmin";
   final static String SUPER_ADMIN_PASSWORD = "02040250204039";
   final static String ORGS_OID = "/orgs";
-  final static String ORGS_OID_NAME = "Smart User Organizations";
-  final static String USERS_OID_NAME = "Smart User Users";
+  final static String ORGS_OID_NAME = "smart-user-organizations";
+  final static String USERS_OID_NAME = "smart-user-users";
   final static String USERS_OID = "/users";
   final static String SECURED_OBJECTS_OID = "/so";
-  final static String SECURED_OBJECTS_OID_NAME = "Smart User Secured Objects";
+  final static String SECURED_OBJECTS_OID_NAME = "smart-user-secured-objects";
   final static String PRIVILEGES_OID = "/privs";
-  final static String PRIVILEGES_OID_NAME = "Smart User Privileges";
-  final static Integer PRIVILEGE_PERMISSION_MASK = 13;
-  final static String USER_OID_NAME = "Super Admin User Secured Object";
+  final static String PRIVILEGES_OID_NAME = "smart-user-privileges";
+  final static Integer PRIVILEGE_PERMISSION_MASK = 31;
+  final static String USER_OID_NAME = "super-admin-user-secured-object";
   final static String USER_OID = "/users";
   final static String USER_UNIQUE_FRAG = "/un";
   final static String ORG_UNIQUE_FRAG = "/sn";
@@ -45,7 +45,7 @@ public class InitialUserFactory {
   private OrganizationService organizationService;
   private RoleService roleService;
   private UserPersonService userPersonService;
-
+  
   public UserPersonService getUserPersonService() {
     return userPersonService;
   }

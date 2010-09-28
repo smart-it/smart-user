@@ -7,6 +7,7 @@ package com.smartitengineering.user.domain;
 import com.smartitengineering.domain.AbstractPersistentDTO;
 import java.util.Date;
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -26,10 +27,7 @@ public class Person extends AbstractPersistentDTO<Person> {
     private String cellPhoneNumber;
     private String faxNumber;
 
-    public Date getBirthDay() {
-        if (birthDay == null) {
-            birthDay = new Date();
-        }
+    public Date getBirthDay() {        
         return birthDay;
     }
 
@@ -169,6 +167,7 @@ public class Person extends AbstractPersistentDTO<Person> {
     }
 
     @Override
+    @JsonIgnore
     public boolean isValid() {
         if (!StringUtils.isEmpty(primaryEmail) && self.isValid()) {
             return true;

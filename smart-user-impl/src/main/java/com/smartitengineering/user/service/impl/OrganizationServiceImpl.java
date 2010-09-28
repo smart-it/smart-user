@@ -204,8 +204,8 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
   @Override
   public void delete(Organization organization) {
     try {
-      super.delete(organization);
       observable.notifyObserver(ObserverNotification.DELETE_ORGNIZATION, organization);
+      super.delete(organization);
     }
     catch (RuntimeException e) {
       String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
@@ -235,63 +235,5 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
       organizations = super.getList(queryParameters);
     }
     return organizations;
-  }
-
-  @Override
-  public void populateOrganization(User user) throws Exception {
-    Integer organizationID = user.getParentOrganizationID();
-    if (user.getParentOrganizationID() != null) {
-
-      Organization parentOrganization = super.getById(organizationID);
-
-      if (parentOrganization == null) {
-        throw new Exception("No organization found");
-      }
-
-      user.setOrganization(parentOrganization);
-
-    }
-  }
-
-  @Override
-  public void populateOrganization(UserGroup userGroup) throws Exception {
-    Integer organizationID = userGroup.getParentOrganizationID();
-    if (userGroup.getParentOrganizationID() != null) {
-      Organization parentOrganization = super.getById(organizationID);
-
-      if (parentOrganization == null) {
-        throw new Exception("No organization found");
-      }
-      userGroup.setOrganization(parentOrganization);
-    }
-  }
-
-  @Override
-  public void populateOrganization(SecuredObject securedObject) throws Exception {
-    Integer organizationID = securedObject.getParentOrganizationID();
-    if (organizationID != null) {
-      Organization parentOrganization = super.getById(organizationID);
-
-      if (parentOrganization == null) {
-        throw new Exception("No organization found");
-      }
-      securedObject.setOrganization(parentOrganization);
-    }
-  }
-
-  @Override
-  public void populateOrganization(Privilege privilege) throws Exception {
-    Integer organizationID = privilege.getParentOrganizationID();
-    if (privilege.getParentOrganizationID() != null) {
-      Organization parentOrganization = super.getById(organizationID);
-
-      if (parentOrganization == null) {
-        throw new Exception("No organization found");
-      }
-      privilege.setParentOrganization(parentOrganization);
-    }
-
-  }
-
-  
+  }  
 }

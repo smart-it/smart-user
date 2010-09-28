@@ -10,6 +10,7 @@ import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.service.AuthorizationService;
 import com.smartitengineering.user.service.SecuredObjectService;
 import com.smartitengineering.user.service.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.security.vote.AccessDecisionVoter;
 
 /**
@@ -74,7 +75,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         return AccessDecisionVoter.ACCESS_GRANTED;
       }
     }
-    if (!securedObject.getParentObjectID().isEmpty()) {
+    if (StringUtils.isNotBlank(securedObject.getParentObjectID())) {
       return authorize(user, securedObjectService.getByOrganizationAndObjectID(securedObject.getOrganization().
           getUniqueShortName(), securedObject.getParentObjectID()), permission);
     }

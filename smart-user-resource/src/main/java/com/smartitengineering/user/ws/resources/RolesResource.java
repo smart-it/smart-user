@@ -164,6 +164,8 @@ public class RolesResource extends AbstractResource{
         try{
             Services.getInstance().getRoleService().create(role);
             responseBuilder = Response.status(Status.CREATED);
+            responseBuilder.location(uriInfo.getBaseUriBuilder().path(RoleResource.ROLE_URI_BUILDER.clone().toString()).
+              build());
         }catch(Exception ex){
             ex.printStackTrace();
             responseBuilder = Response.status(Status.BAD_REQUEST);

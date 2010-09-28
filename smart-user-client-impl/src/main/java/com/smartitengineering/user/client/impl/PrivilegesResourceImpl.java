@@ -5,113 +5,34 @@
 
 package com.smartitengineering.user.client.impl;
 
-import com.smartitengineering.smartuser.client.api.Privilege;
-import com.smartitengineering.smartuser.client.api.PrivilegeFilter;
-import com.smartitengineering.smartuser.client.api.PrivilegeResource;
-import com.smartitengineering.smartuser.client.api.PrivilegesResource;
-import com.smartitengineering.util.rest.atom.ClientUtil;
+import com.smartitengineering.user.client.api.Privilege;
+import com.smartitengineering.user.client.api.PrivilegeFilter;
+import com.smartitengineering.user.client.api.PrivilegeResource;
+import com.smartitengineering.user.client.api.PrivilegesResource;
+import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
+import com.smartitengineering.util.rest.atom.AtomClientUtil;
+import com.smartitengineering.util.rest.client.ClientUtil;
+import com.smartitengineering.util.rest.client.Resource;
+import com.smartitengineering.util.rest.client.ResourceLink;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import java.net.URI;
-import java.text.SimpleDateFormat;
+import com.sun.jersey.api.client.config.ClientConfig;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriBuilder;
 import org.apache.abdera.model.Entry;
-import org.apache.abdera.model.Feed;
-import org.apache.abdera.model.Link;
 
 /**
  *
  * @author russel
  */
-public class PrivilegesResourceImpl extends AbstractClientImpl implements PrivilegesResource{
+public class PrivilegesResourceImpl extends AbstractFeedClientResource<PrivilegesResourceImpl> implements PrivilegesResource{
 
-  public static final String REL_PRIVS = "Privileges";
-  public static final String REL_ALT = "alternate";
+  private static final String REL_PRIV = "Privilege";
+  private static final String REL_ALT = "alternate";
 
-  private Link privilegesLink;
-  private Link privilegeLink;
-  private URI privilegesURI;
-
-  private boolean isCacheEnabled;
-  private Date lastModifiedDate;
-  private Date expirationDate;
-  private List<Entry> entries;
-
-  public PrivilegesResourceImpl(Link privilegesLink){
-
-    this.privilegesLink = privilegesLink;
-    privilegesURI = UriBuilder.fromUri(BASE_URI.toString() + privilegesLink.getHref().toString()).build();
-
-    URI uri = UriBuilder.fromUri(BASE_URI.toString() + privilegesLink.getHref().toString()).build();
-
-    ClientResponse response = ClientUtil.readClientResponse(privilegesURI, getHttpClient(), MediaType.APPLICATION_ATOM_XML);
-    if (response.getStatus() == 200) {
-      Feed feed = ClientUtil.getFeed(response);
-
-      entries = feed.getEntries();
-
-      privilegesLink = feed.getLink(REL_PRIVS);
-
-
-      if(response.getHeaders().getFirst("Cache-Control") != null)
-        isCacheEnabled = response.getHeaders().getFirst("Cache-Control").equals("no-cache");
-      String dateString = response.getHeaders().getFirst("Last-Modified");
-      SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
-      try {
-        lastModifiedDate = format.parse(dateString);
-      }
-      catch (Exception ex) {
-      }
-      dateString = response.getHeaders().getFirst("Expires");
-      try {
-        lastModifiedDate = format.parse(dateString);
-      }
-      catch (Exception ex) {
-      }
-      uri = response.getLocation();
-
-    }else{
-
-      privilegesLink=null;
-
-    }
-  }
-
-  @Override
-  public List<PrivilegeResource> getPrivilegeResources(){
-
-    List<PrivilegeResource> privilegeResources = new ArrayList<PrivilegeResource>();
-
-    for(Entry entry: entries){
-      privilegeResources.add(new PrivilegeResourceImpl(entry.getLink(REL_ALT)));
-    }
-    return privilegeResources;
-  }
-
-//  @Override
-//  public Collection<LinkedResource<PrivilegeResource>> getPrivilegeResources() {
-//
-//    List<PrivilegeResource> privilegeResources = new ArrayList<PrivilegeResource>();
-//
-//    for(Entry entry: entries){
-//      privilegeResources.add(new PrivilegeResourceImpl(entry.getLink(REL_ALT)));
-//    }
-//    return null;
-//    //throw new UnsupportedOperationException("Not supported yet.");
-//  }
-
-  @Override
-  public PrivilegeResource create(Privilege privilege) {
-
-    WebResource webResource = getClient().resource(privilegesURI);
-    webResource.type(MediaType.APPLICATION_JSON).post(privilege);
-
-    return new PrivilegeResourceImpl(privilege);
-
+  
+  public PrivilegesResourceImpl(ResourceLink privsLink, Resource referrer){
+    super(referrer, privsLink);
   }
 
   @Override
@@ -120,37 +41,31 @@ public class PrivilegesResourceImpl extends AbstractClientImpl implements Privil
   }
 
   @Override
-  public boolean isCacheEnabled() {
-    return isCacheEnabled;
+  protected void processClientConfig(ClientConfig clientConfig) {    
   }
 
   @Override
-  public Date getLastModifiedDate() {
-    return lastModifiedDate;
+  protected PrivilegesResourceImpl instantiatePageableResource(ResourceLink link) {
+    return new PrivilegesResourceImpl(link, this);
   }
 
   @Override
-  public Date getExpirationDate() {
-    return expirationDate;
+  public List<PrivilegeResource> getPrivilegeResources() {
+    List<PrivilegeResource> privilegeResources = new ArrayList<PrivilegeResource>();
+
+    for (Entry entry : getLastReadStateOfEntity().getEntries()) {
+      privilegeResources.add(new PrivilegeResourceImpl(AtomClientUtil.convertFromAtomLinkToResourceLink(
+          entry.getLink(REL_ALT)), this));
+    }
+
+    return privilegeResources;
   }
 
   @Override
-  public String getUUID() {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public PrivilegeResource create(Privilege privilege) {
+    ClientResponse response = post(MediaType.APPLICATION_JSON, privilege, ClientResponse.Status.CREATED);
+    final ResourceLink privLink = ClientUtil.createResourceLink(REL_PRIV, response.getLocation(),
+                                                               MediaType.APPLICATION_ATOM_XML);
+    return new PrivilegeResourceImpl(privLink, this);
   }
-
-  @Override
-  public URI getUri() {
-    return privilegesURI;
-  }
-
-  @Override
-  public Object refresh() {
-    return new PrivilegesResourceImpl(privilegesLink);
-  }
-
-
-
-
-
 }

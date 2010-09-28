@@ -21,13 +21,16 @@ $(document).ready(function(){
     }    
   });  
 
+<<<<<<< HEAD
 $(".submitbtn").click(function(){
   
 })
 
+=======
+>>>>>>> modhu/master
   $("#changePasswordForm").validate({
     rules: {
-      newPassword: {
+      password: {
         required:true,
         minlength:6
       },
@@ -38,12 +41,18 @@ $(".submitbtn").click(function(){
     }    
   });
   $('#error').hide();
+<<<<<<< HEAD
   $("#update").click(function(){   
+=======
+  $("#update").click(function(){
+>>>>>>> modhu/master
     $('#error').hide();
     var pass = $("input#oldPassword").val();
     var pass1 = $("input#originalPassword").val();
-    if(pass!=pass1)
-      $("#error").show();   
+    if(pass!=pass1){
+      $("#error").show();
+      return false;
+    }
   });
   $("#userEditForm").validate({
     rules: {

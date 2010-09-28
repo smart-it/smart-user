@@ -34,27 +34,32 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author russel
  */
-@Path("/orgs/sn/{organizationUniqueShortName}/so/{old}")
+@Path("/orgs/sn/{organizationUniqueShortName}/so/name/{name}")
 public class OrganizationSecuredObjectResource extends AbstractResource {
 
-  private SecuredObject securedObject;
+  private String name;
   private String organizationUniqueName;
-  static final UriBuilder ORGANIZATION_SECURED_OBJECT_URI_BUILDER = UriBuilder.fromResource(OrganizationSecuredObjectResource.class);
+  static final UriBuilder ORGANIZATION_SECURED_OBJECT_URI_BUILDER = UriBuilder.fromResource(
+      OrganizationSecuredObjectResource.class);
   static final UriBuilder ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER;
 
   static {
     ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER = ORGANIZATION_SECURED_OBJECT_URI_BUILDER.clone();
     try {
-      ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.path(OrganizationSecuredObjectResource.class.getMethod("getSecuredObject"));
-    } catch (Exception ex) {
+      ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.path(OrganizationSecuredObjectResource.class.getMethod(
+          "getContent"));
+    }
+    catch (Exception ex) {
       ex.printStackTrace();
       throw new InstantiationError();
     }
   }
 
-  public OrganizationSecuredObjectResource(@PathParam("organizationUniqueShortName") String organizationUniqueShortName, @PathParam("old") String name) {
+  public OrganizationSecuredObjectResource(@PathParam("organizationUniqueShortName") String organizationUniqueShortName, @PathParam(
+      "name") String name) {
     this.organizationUniqueName = organizationUniqueShortName;
-    this.securedObject = Services.getInstance().getSecuredObjectService().getByOrganizationAndObjectID(organizationUniqueShortName, name);
+    this.name = name;
+
   }
 
   @GET
@@ -68,8 +73,8 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/content")
-  public Response getSecuredObject() {
-    ResponseBuilder responseBuilder = Response.ok(securedObject);
+  public Response getContent() {
+    ResponseBuilder responseBuilder = Response.ok(getSecuredObject());
     return responseBuilder.build();
   }
 
@@ -78,16 +83,12 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response update(SecuredObject newSecuredObject) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-    try {
-      if (securedObject.getParentOrganizationID() == null) {
-        throw new Exception("No parent Organization");
-      }
-
-      Services.getInstance().getOrganizationService().populateOrganization(securedObject);
+    try {      
+      newSecuredObject.setOrganization(getOrganization());
       Services.getInstance().getSecuredObjectService().save(newSecuredObject);
-      //newSecuredObject = Services.getInstance().getSecuredObjectService().getByObjectID(newSecuredObject.getObjectID());
       responseBuilder = Response.ok(getSecuredObjectFeed());
-    } catch (Exception ex) {
+    }
+    catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -97,8 +98,9 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   public Response delete() {
     ResponseBuilder responseBuilder = Response.ok();
     try {
-      Services.getInstance().getSecuredObjectService().delete(securedObject);
-    } catch (Exception ex) {
+      Services.getInstance().getSecuredObjectService().delete(getSecuredObject());
+    }
+    catch (Exception ex) {
       ex.printStackTrace();
       responseBuilder = Response.ok(Status.INTERNAL_SERVER_ERROR);
     }
@@ -107,8 +109,8 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
 
   private Feed getSecuredObjectFeed() throws UriBuilderException, IllegalArgumentException {
 
-    Feed securedObjectFeed = getFeed(securedObject.getObjectID(), new Date());
-    securedObjectFeed.setTitle(securedObject.getObjectID());
+    Feed securedObjectFeed = getFeed(name, new Date());
+    securedObjectFeed.setTitle(name);
 
     // add a self link
     securedObjectFeed.addLink(getSelfLink());
@@ -121,7 +123,8 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
 
     // add a alternate link
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.clone().build(organizationUniqueName, securedObject.getObjectID()).toString());
+    altLink.setHref(
+        ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.clone().build(organizationUniqueName, name).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     securedObjectFeed.addLink(altLink);
@@ -134,8 +137,9 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   public Response deletePost() {
     ResponseBuilder responseBuilder = Response.ok();
     try {
-      Services.getInstance().getSecuredObjectService().delete(securedObject);
-    } catch (Exception ex) {
+      Services.getInstance().getSecuredObjectService().delete(getSecuredObject());
+    }
+    catch (Exception ex) {
       ex.printStackTrace();
       responseBuilder = Response.ok(Status.INTERNAL_SERVER_ERROR);
     }
@@ -157,7 +161,8 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
     if (StringUtils.isBlank(contentType)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
       isHtmlPost = false;
-    } else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+    }
+    else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
       isHtmlPost = true;
       try {
@@ -167,20 +172,24 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
         final String realMsg = message.substring(startIndex);
         //Decode the message to ignore the form encodings and make them human readable
         message = URLDecoder.decode(realMsg, "UTF-8");
-      } catch (UnsupportedEncodingException ex) {
+      }
+      catch (UnsupportedEncodingException ex) {
         ex.printStackTrace();
       }
-    } else {
+    }
+    else {
       contentType = contentType;
       isHtmlPost = false;
     }
 
     if (isHtmlPost) {
       SecuredObject newSecuredObject = getSecuredObjectFromContent(message);
+      newSecuredObject.setOrganization(getOrganization());
       try {
         Services.getInstance().getSecuredObjectService().update(newSecuredObject);
         responseBuilder = Response.ok(getSecuredObjectFeed());
-      } catch (Exception ex) {
+      }
+      catch (Exception ex) {
         responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
       }
     }
@@ -198,23 +207,26 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
     }
 
     SecuredObject newSecuredObject = new SecuredObject();
-    if (keyValueMap.get("id")!=null) {
+    if (keyValueMap.get("id") != null) {
       newSecuredObject.setId(Integer.valueOf(keyValueMap.get("id")));
     }
-    if (keyValueMap.get("name")!=null) {
+    if (keyValueMap.get("name") != null) {
       newSecuredObject.setName(keyValueMap.get("name"));
     }
-    if (keyValueMap.get("objectID")!=null) {
+    if (keyValueMap.get("objectID") != null) {
       newSecuredObject.setObjectID(keyValueMap.get("objectID"));
     }
-    if (keyValueMap.get("parentObjectID")!=null) {
-      securedObject.setParentObjectID(keyValueMap.get("parentObjectID"));
+    if (keyValueMap.get("parentObjectID") != null) {
+      newSecuredObject.setParentObjectID(keyValueMap.get("parentObjectID"));
     }
+    return newSecuredObject;
+  }
 
-    if (keyValueMap.get("orgName")!=null) {
-      Organization parentOrganization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.get("orgName"));
-      newSecuredObject.setOrganization(parentOrganization);
-    }
-    return securedObject;
+  private Organization getOrganization() {
+    return Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationUniqueName);
+  }
+
+  private SecuredObject getSecuredObject() {
+    return Services.getInstance().getSecuredObjectService().getByOrganizationAndName(organizationUniqueName, name);
   }
 }
