@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.domain.User;
 import javax.ws.rs.DELETE;
@@ -31,6 +32,9 @@ public class UserPrivilegeResource extends AbstractResource {
   private String organizationUniqueShortName;
   private String username;
   private String privilegeName;
+  private Privilege privilege;
+  private Organization organization;
+  private User user;
   private static String REL_PRIV = "privilege";
 
   public UserPrivilegeResource(@PathParam("organizationUniqueShortName") String organizationUniqueShortName, @PathParam(
@@ -38,12 +42,19 @@ public class UserPrivilegeResource extends AbstractResource {
     this.organizationUniqueShortName = organizationUniqueShortName;
     this.username = username;
     this.privilegeName = privilegeName;
+    privilege = getPrivilege();
+    organization = getOrganization();
+    user = getUser();
   }
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
     ResponseBuilder responseBuilder;
+    if(organization==null || user==null || privilege==null){
+      responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
     try {
       responseBuilder = Response.status(Status.OK);
       Feed privilegeFeed = getUserPrivilegeFeed();
@@ -59,11 +70,15 @@ public class UserPrivilegeResource extends AbstractResource {
   @DELETE
   public Response delete() {
     ResponseBuilder responseBuilder;
+    if(organization==null || user==null || privilege==null){
+      responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
     try {
       responseBuilder = Response.status(Status.OK);
       User user = Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationUniqueShortName,
                                                                                            username);
-      user.getPrivileges().remove(getPrivilege());
+      user.getPrivileges().remove(privilege);
       Services.getInstance().getUserService().update(user);
     }
     catch (Exception ex) {
@@ -100,5 +115,14 @@ public class UserPrivilegeResource extends AbstractResource {
   private Privilege getPrivilege() {
     return Services.getInstance().getPrivilegeService().getPrivilegeByOrganizationAndPrivilegeName(
         organizationUniqueShortName, privilegeName);
+  }
+
+  private Organization getOrganization() {
+    return Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationUniqueShortName);
+  }
+
+  private User getUser() {
+    return Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationUniqueShortName,
+                                                                                    username);
   }
 }

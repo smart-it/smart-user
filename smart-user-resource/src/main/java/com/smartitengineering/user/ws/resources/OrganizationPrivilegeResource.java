@@ -51,29 +51,38 @@ public class OrganizationPrivilegeResource extends AbstractResource {
 
     }
   }
-
-
   private String organizationUniqueShortName;
   private String privilegeName;
+  private Organization organization;
+  private Privilege privilege;
 
   public OrganizationPrivilegeResource(@PathParam("organizationUniqueShortName") String organizationUniqueShortName, @PathParam(
       "privilegeName") String privilegeName) {
     this.organizationUniqueShortName = organizationUniqueShortName;
     this.privilegeName = privilegeName;
+    organization = getOrganization();
+    privilege = getPrivilege();
   }
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/content")
   public Response getContent() {
-    ResponseBuilder responseBuilder = Response.ok(getPrivilege());
+    ResponseBuilder responseBuilder = Response.ok();
+    if (organization==null || privilege == null) {
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
+    responseBuilder = Response.ok(getPrivilege());
     return responseBuilder.build();
   }
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
-    ResponseBuilder responseBuilder;
+    ResponseBuilder responseBuilder = Response.ok();
+    if (organization==null || privilege== null) {
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     try {
       responseBuilder = Response.status(Status.OK);
       Feed privilegeFeed = getPrivilegeFeed();
@@ -88,7 +97,10 @@ public class OrganizationPrivilegeResource extends AbstractResource {
 
   @DELETE
   public Response delete() {
-    ResponseBuilder responseBuilder;
+    ResponseBuilder responseBuilder = Response.ok();
+    if (organization==null || privilege == null) {
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     try {
       responseBuilder = Response.status(Status.OK);
       Services.getInstance().getPrivilegeService().delete(getPrivilege());
@@ -104,10 +116,13 @@ public class OrganizationPrivilegeResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Consumes(MediaType.APPLICATION_JSON)
   public Response update(Privilege newPrivilege) {
-    ResponseBuilder responseBuilder;
+    ResponseBuilder responseBuilder = Response.ok();
+    if(organization==null || privilege==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     try {
       responseBuilder = Response.status(Status.OK);
-      newPrivilege.setParentOrganization(getOrganization());
+      newPrivilege.setParentOrganization(organization);
       Services.getInstance().getPrivilegeService().update(newPrivilege);
     }
     catch (Exception ex) {
@@ -124,7 +139,7 @@ public class OrganizationPrivilegeResource extends AbstractResource {
     privilegeFeed.setId(privilegeName);
     privilegeFeed.setTitle(privilegeName);
     privilegeFeed.addLink(getSelfLink());
-    
+
     Link editLink = abderaFactory.newLink();
     editLink.setHref(uriInfo.getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
@@ -137,7 +152,7 @@ public class OrganizationPrivilegeResource extends AbstractResource {
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     privilegeFeed.addLink(altLink);
 
-    privilegeFeed.addLink(editLink);    
+    privilegeFeed.addLink(editLink);
 
     return privilegeFeed;
   }
@@ -146,6 +161,9 @@ public class OrganizationPrivilegeResource extends AbstractResource {
   @Path("/delete")
   public Response deletePost() {
     ResponseBuilder responseBuilder = Response.ok();
+    if(organization==null || privilege==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     try {
       Services.getInstance().getPrivilegeService().delete(getPrivilege());
     }
@@ -161,6 +179,9 @@ public class OrganizationPrivilegeResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   public Response updatePost(@HeaderParam("Content-type") String contentType, String message) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+    if(organization==null || privilege==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
 
     if (StringUtils.isBlank(message)) {
       responseBuilder = Response.status(Status.BAD_REQUEST);
@@ -187,8 +208,7 @@ public class OrganizationPrivilegeResource extends AbstractResource {
         ex.printStackTrace();
       }
     }
-    else {
-      contentType = contentType;
+    else {      
       isHtmlPost = false;
     }
 

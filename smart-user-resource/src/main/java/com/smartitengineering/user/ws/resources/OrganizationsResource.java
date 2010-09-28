@@ -407,8 +407,7 @@ public class OrganizationsResource extends AbstractResource {
         ex.printStackTrace();
       }
     }
-    else {
-      contentType = contentType;
+    else {      
       isHtmlPost = false;
     }
 
