@@ -36,6 +36,7 @@ public class UserPrivilegesResource extends AbstractResource {
   private String organizationName;
   private String userName;
   private User user;
+  private Organization organization;
   static UriBuilder USER_PRIVILEGE_URIBUILDER;
   static UriBuilder USER_PRIVILEGE_AFTER_NAME_URIBUILDER;
   static UriBuilder USER_PRIVILEGE_BEFORE_NAME_URIBUILDER;
@@ -64,6 +65,7 @@ public class UserPrivilegesResource extends AbstractResource {
     this.organizationName = organizationName;
     this.userName = userName;
     user = Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationName, userName);
+    organization = getOrganization();
   }
 
   @GET
@@ -88,6 +90,14 @@ public class UserPrivilegesResource extends AbstractResource {
 
   public Response get(String privilegeName, boolean isBefore) {
     ResponseBuilder responseBuilder = Response.ok();
+    if(organization==null || user==null){
+      responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
+    
+    if (user == null) {
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
 
     // create a new atom feed
     Feed atomFeed = abderaFactory.newFeed();
@@ -158,12 +168,16 @@ public class UserPrivilegesResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response post(Privilege privilege) {
     ResponseBuilder responseBuilder;
+    if(organization==null || user==null){
+      responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
     try {
       if (privilege.getId() == null || privilege.getVersion() == null) {
         responseBuilder = Response.status(Status.BAD_REQUEST);
       }
       else {
-        privilege.setParentOrganization(getOrganization());
+        privilege.setParentOrganization(organization);
         user.getPrivileges().add(privilege);
         Services.getInstance().getUserService().update(user);
         responseBuilder = Response.status(Status.CREATED);

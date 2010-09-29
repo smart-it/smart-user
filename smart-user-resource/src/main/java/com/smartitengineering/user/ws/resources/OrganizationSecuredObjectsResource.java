@@ -62,11 +62,13 @@ public class OrganizationSecuredObjectsResource extends AbstractResource {
     }
   }
   @PathParam("count")
-  private Integer count;
-  @PathParam("organizationUniqueShortName")
+  private Integer count;  
   private String organizationUniqueShortName;
+  private Organization organization;
 
-  public OrganizationSecuredObjectsResource() {
+  public OrganizationSecuredObjectsResource(@PathParam("organizationUniqueShortName") String orgName) {
+    this.organizationUniqueShortName = orgName;
+    organization = getOrganization();
   }
 
   @GET
@@ -108,6 +110,9 @@ public class OrganizationSecuredObjectsResource extends AbstractResource {
       count = 10;
     }
     ResponseBuilder responseBuilder = Response.ok();
+    if (organization == null) {
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     Feed atomFeed = getFeed(userName, new Date());
 
     Link parentLink = abderaFactory.newLink();
@@ -118,16 +123,6 @@ public class OrganizationSecuredObjectsResource extends AbstractResource {
 
     Collection<SecuredObject> securedObjects = Services.getInstance().getSecuredObjectService().getByOrganization(
         uniqueOrganizationName);
-
-    System.out.println("--------------------------------------------------------Start");
-    if(securedObjects == null)
-      System.out.println("null");
-    else{
-      System.out.println("not null");
-      System.out.println(securedObjects.size());
-    }
-    System.out.println("--------------------------------------------------------End");
-
 
     if (securedObjects != null && !securedObjects.isEmpty()) {
 
@@ -190,13 +185,16 @@ public class OrganizationSecuredObjectsResource extends AbstractResource {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   public Response post(SecuredObject securedObject) {
-
-    ResponseBuilder responseBuilder;
+    ResponseBuilder responseBuilder = Response.ok();
+    if(organization==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     try {
-      securedObject.setOrganization(getOrganization());
+      securedObject.setOrganization(organization);
       Services.getInstance().getSecuredObjectService().save(securedObject);
       responseBuilder = Response.status(Status.CREATED);
-      responseBuilder.location(uriInfo.getBaseUriBuilder().path(OrganizationSecuredObjectResource.ORGANIZATION_SECURED_OBJECT_URI_BUILDER.clone().
+      responseBuilder.location(uriInfo.getBaseUriBuilder().path(OrganizationSecuredObjectResource.ORGANIZATION_SECURED_OBJECT_URI_BUILDER.
+          clone().
           build(organizationUniqueShortName, securedObject.getName()).toString()).build());
     }
     catch (Exception ex) {

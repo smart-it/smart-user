@@ -64,15 +64,20 @@ public class OrganizationUserGroupsResource extends AbstractResource {
   }
   @PathParam("count")
   private Integer count;
+  private Organization organization;
 
   public OrganizationUserGroupsResource(@PathParam("uniqueShortName") String organizationUniqueShortName) {
     this.organizationUniqueShortName = organizationUniqueShortName;
+    organization = getOrganization();
   }
 
   @GET
   @Produces(MediaType.TEXT_HTML)
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
+    if(organization==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     Collection<UserGroup> userGroups = Services.getInstance().getUserGroupService().getByOrganizationName(
         organizationUniqueShortName);
 
@@ -108,6 +113,9 @@ public class OrganizationUserGroupsResource extends AbstractResource {
       count = 10;
     }
     ResponseBuilder responseBuilder = Response.ok();
+    if(organization==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     Feed atomFeed = getFeed(userName, new Date());
 
     Link parentLink = abderaFactory.newLink();
@@ -182,9 +190,12 @@ public class OrganizationUserGroupsResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response post(UserGroup userGroup) {
 
-    ResponseBuilder responseBuilder;
+    ResponseBuilder responseBuilder = Response.ok();
+    if(organization==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     try {
-      userGroup.setOrganization(getOrganization());
+      userGroup.setOrganization(organization);
       Services.getInstance().getUserGroupService().save(userGroup);
       responseBuilder = Response.status(Status.CREATED);
     }

@@ -9,6 +9,7 @@ package com.smartitengineering.user.ws.resources;
  *
  * @author modhu7
  */
+import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.User;
 import javax.ws.rs.DELETE;
@@ -36,6 +37,9 @@ public class UserRoleResource extends AbstractResource {
   private String organizationUniqueShortName;
   private String username;
   private String roleName;
+  private Organization organization;
+  private User user;
+  private Role role;
   private static String REL_ROLE = "role";
 
   public UserRoleResource(@PathParam("organizationUniqueShortName") String organizationUniqueShortName, @PathParam(
@@ -43,6 +47,10 @@ public class UserRoleResource extends AbstractResource {
     this.organizationUniqueShortName = organizationUniqueShortName;
     this.username = username;
     this.roleName = roleName;
+    role = getRole();
+    user = getUser();
+    organization = getOrganization();
+
   }
 
   @GET
@@ -65,10 +73,8 @@ public class UserRoleResource extends AbstractResource {
   public Response delete() {
     ResponseBuilder responseBuilder;
     try {
-      responseBuilder = Response.status(Status.OK);
-      User user = Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationUniqueShortName,
-                                                                                           username);
-      user.getRoles().remove(getRole());
+      responseBuilder = Response.status(Status.OK);      
+      user.getRoles().remove(role);
       Services.getInstance().getUserService().update(user);
     }
     catch (Exception ex) {
@@ -104,5 +110,14 @@ public class UserRoleResource extends AbstractResource {
 
   private Role getRole() {
     return Services.getInstance().getRoleService().getRoleByName(roleName);
+  }
+
+  private User getUser() {
+    return Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationUniqueShortName,
+                                                                                    username);
+  }
+
+  private Organization getOrganization() {
+    return Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationUniqueShortName);
   }
 }
