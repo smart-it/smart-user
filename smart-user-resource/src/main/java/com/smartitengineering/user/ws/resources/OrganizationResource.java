@@ -46,6 +46,8 @@ public class OrganizationResource extends AbstractResource {
   private final String REL_USERS = "users";
   private final String REL_PRIVILEGES = "privileges";
   private final String REL_SECUREDOBJECTS = "securedobjects";
+  private final String REL_USER_GROUPS = "usergroups";
+  
   @Context
   private HttpServletRequest servletRequest;
 
@@ -319,6 +321,12 @@ public class OrganizationResource extends AbstractResource {
     securedObjectsLink.setRel(REL_SECUREDOBJECTS);
     securedObjectsLink.setMimeType(MediaType.APPLICATION_JSON);
     organizationFeed.addLink(securedObjectsLink);
+
+    Link userGroupsLink = abderaFactory.newLink();
+    userGroupsLink.setHref(OrganizationUserGroupsResource.ORGANIZATION_USER_GROUPS_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
+    userGroupsLink.setRel(REL_USER_GROUPS);
+    userGroupsLink.setMimeType(MediaType.APPLICATION_JSON);
+    organizationFeed.addLink(userGroupsLink);
 
     return organizationFeed;
   }

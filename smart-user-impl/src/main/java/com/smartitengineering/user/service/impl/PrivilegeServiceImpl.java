@@ -9,9 +9,7 @@ import com.smartitengineering.dao.common.queryparam.Order;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl;
-import com.smartitengineering.domain.PersistentDTO;
 import com.smartitengineering.user.domain.Privilege;
-import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.service.ExceptionMessage;
@@ -23,7 +21,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleStateException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -169,6 +166,10 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
   }
 
   public void validatePrivilege(Privilege privilege) {
+    if (StringUtils.isEmpty(privilege.getName())) {
+      throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.PRIVILEGE_NAME.
+          name());
+    }
     if (privilege.getId() == null) {
       Integer count = (Integer) super.getOther(
           QueryParameterFactory.getElementCountParam("name"), QueryParameterFactory.getConjunctionParam(
@@ -188,8 +189,7 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
           QueryParameterFactory.getNotEqualPropertyParam("id",
                                                          privilege.getId()), QueryParameterFactory.getEqualPropertyParam(
           "parentOrganization.id",
-                                                                                                                         privilege.
-          getParentOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
+          privilege.getParentOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
           "name", privilege.getName())));
       if (count.intValue() > 0) {
         throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.PRIVILEGE_NAME.

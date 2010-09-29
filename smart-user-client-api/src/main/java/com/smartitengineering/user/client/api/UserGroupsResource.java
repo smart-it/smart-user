@@ -12,9 +12,11 @@ import org.apache.abdera.model.Feed;
  *
  * @author modhu7
  */
-public interface UserRolesResource extends WritableResource<Feed>{
+public interface UserGroupsResource extends WritableResource<Feed> {
 
-  public List<UserRoleResource> getUserPrivilegeResources();
+  public List<UserGroupResource> getUserGroupResources();
 
-  public UserRoleResource add(Role role);
+  public UserGroupResource create(UserGroup userGroup);
+
+  public UserGroupsResource search(UserGroupFilter filter);
 }
