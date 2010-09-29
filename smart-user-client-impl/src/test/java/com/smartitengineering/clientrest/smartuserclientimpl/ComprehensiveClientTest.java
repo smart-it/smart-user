@@ -212,11 +212,20 @@ public class ComprehensiveClientTest {
     address.setCountry(BANGLADESH);
     address.setZip("1207");
     person.setAddress(address);
-    person.setPrimaryEmail("subrata@smartitengineering.com");
     UserPerson userPerson = new UserPerson();
     userPerson.setUser(user);
     userPerson.setPerson(person);
-    UserResource userResource = sitelUsersResource.create(userPerson);
+    UserResource userResource = null;
+    try {
+      userResource = sitelUsersResource.create(userPerson);
+      Assert.fail("Should not be created without primary Email ");
+    }
+    catch (UniformInterfaceException e) {
+      Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), e.getResponse().getStatus());
+    }
+    person.setPrimaryEmail("subrata@smartitengineering.com");    
+    userPerson.setPerson(person);
+    userResource = sitelUsersResource.create(userPerson);
     sitelUserResource = userResource;
     Assert.assertEquals(SITEL_ORG_USER_USERNAME, userResource.getUser().getUser().getUsername());
   }
