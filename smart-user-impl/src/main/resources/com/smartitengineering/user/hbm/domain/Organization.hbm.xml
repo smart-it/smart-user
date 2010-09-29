@@ -9,6 +9,16 @@
     <version column="version" name="version"/>
     <property column="name" length="255" name="name" type="java.lang.String"/>
     <property column="unique_short_name" length="255" name="uniqueShortName" type="java.lang.String" unique="true"/>
-    <many-to-one cascade="all" column="address_id" lazy="false" name="address"/>
+    <component name="address">
+      <property column="street_address" length="255" name="streetAddress" type="java.lang.String"/>
+      <property column="city" length="255" name="city" type="java.lang.String"/>
+      <property column="state" length="255" name="state" type="java.lang.String"/>
+      <property column="country" length="255" name="country" type="java.lang.String"/>
+      <property column="zip" length="255" name="zip" type="java.lang.String"/>
+      <component name="geoLocation">
+        <property column="longitude" length="255" name="longitude" type="java.lang.Double"/>
+        <property column="latitude" length="255" name="latitude" type="java.lang.Double"/>
+      </component>
+    </component>
   </class>
 </hibernate-mapping>
