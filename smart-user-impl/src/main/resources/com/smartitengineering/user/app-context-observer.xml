@@ -35,6 +35,7 @@
   <bean id="securedObjectServiceObserver" class="com.smartitengineering.user.service.impl.SecuredObjectServiceImpl" parent="abstractDaoObserver"/>
   <bean id="privilegeServiceObserver" class="com.smartitengineering.user.service.impl.PrivilegeServiceImpl" parent="abstractDaoObserver"/>
   <bean id="roleServiceObserver" class="com.smartitengineering.user.service.impl.RoleServiceImpl" parent="abstractDaoObserver"/>
+  <bean id="userGroupServiceObserver" class="com.smartitengineering.user.service.impl.UserGroupServiceImpl" parent= "abstractDaoObserver"/>
 
   <bean id="observer" class="com.smartitengineering.user.service.impl.ObserverImpl">
     <property name="personService">
@@ -54,6 +55,9 @@
     </property>
     <property name="organizationService">
       <ref local="organizationServiceObserver" />
+    </property>
+    <property name="userGroupService">
+      <ref local="userGroupServiceObserver" />
     </property>
   </bean>
   <bean id="observable" class="com.smartitengineering.user.service.impl.ObservableImpl">

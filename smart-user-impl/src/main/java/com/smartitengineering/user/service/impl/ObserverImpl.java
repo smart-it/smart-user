@@ -8,8 +8,10 @@ import com.smartitengineering.domain.PersistentDTO;
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.domain.Privilege;
+import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.SecuredObject;
 import com.smartitengineering.user.domain.User;
+import com.smartitengineering.user.domain.UserGroup;
 import com.smartitengineering.user.domain.UserPerson;
 import com.smartitengineering.user.observer.CRUDObserver;
 import com.smartitengineering.user.observer.ObserverNotification;
@@ -17,6 +19,7 @@ import com.smartitengineering.user.service.OrganizationService;
 import com.smartitengineering.user.service.PersonService;
 import com.smartitengineering.user.service.PrivilegeService;
 import com.smartitengineering.user.service.SecuredObjectService;
+import com.smartitengineering.user.service.UserGroupService;
 import com.smartitengineering.user.service.UserPersonService;
 import com.smartitengineering.user.service.UserService;
 import java.util.ArrayList;
@@ -54,6 +57,15 @@ public class ObserverImpl implements CRUDObserver {
   private SecuredObjectService securedObjectService;
   private OrganizationService organizationService;
   private PrivilegeService privilegeService;
+  private UserGroupService userGroupService;
+
+  public UserGroupService getUserGroupService() {
+    return userGroupService;
+  }
+
+  public void setUserGroupService(UserGroupService userGroupService) {
+    this.userGroupService = userGroupService;
+  }
 
   public OrganizationService getOrganizationService() {
     return organizationService;
@@ -118,6 +130,14 @@ public class ObserverImpl implements CRUDObserver {
     }else if(notification.equals(ObserverNotification.DELETE_USER_PERSON) && object instanceof UserPerson){
       UserPerson userPerson = (UserPerson) object;
       removeUserPerson(userPerson);
+    }
+    else if(notification.equals(ObserverNotification.DELETE_PRIVILEGE) && object instanceof Privilege){
+      Privilege privilege = (Privilege) object;
+      removePrivilege(privilege);
+    }
+    else if(notification.equals(ObserverNotification.DELETE_ROLE) && object instanceof Role){
+      Role role = (Role) object;
+      removeRole(role);
     }
   }
 
@@ -239,6 +259,15 @@ public class ObserverImpl implements CRUDObserver {
   }
 
   private void removeUserPerson(UserPerson userPerson) {
+    List<UserGroup> userGroups = new ArrayList<UserGroup>(userGroupService.getByOrganizationName(userPerson.getUser().getOrganization().getUniqueShortName()));
+    for(UserGroup userGroup: userGroups)
+    {
+      List<User> users = new ArrayList<User>(userGroup.getUsers());
+      if(users.contains(userPerson.getUser())){
+        userGroup.getUsers().remove(userPerson.getUser());
+        userGroupService.update(userGroup);
+      }
+    }
     String organizationShortName = userPerson.getUser().getOrganization().getUniqueShortName();
     String username = userPerson.getUser().getUsername();
     String orgUri = ORGS_OID + ORG_UNIQUE_FRAG + "/" + organizationShortName;
@@ -249,6 +278,28 @@ public class ObserverImpl implements CRUDObserver {
       privilegeService.delete(privilege);
     }
     securedObjectService.delete(securedObject);
+  }
+
+  private void removePrivilege(Privilege privilege) {
+    List<User> users = new ArrayList<User>(userService.getUserByOrganization(privilege.getParentOrganization().getUniqueShortName()));
+    for(User user : users){
+      List<Privilege> privileges = new ArrayList<Privilege>(user.getPrivileges());
+      if(privileges.contains(privilege)){
+        user.getPrivileges().remove(privilege);
+        userService.update(user);
+      }
+    }
+  }
+
+  private void removeRole(Role role) {
+    List<User> users = new ArrayList<User>(userService.getAllUser());
+    for(User user : users){
+      List<Role> roles = new ArrayList<Role>(user.getRoles());
+      if(roles.contains(role)){
+        user.getRoles().remove(role);
+        userService.update(user);
+      }
+    }
   }
 
 }
