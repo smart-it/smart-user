@@ -6,8 +6,9 @@ package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
@@ -19,8 +20,26 @@ public class UserGroup extends AbstractPersistentDTO<UserGroup> {
   private String name;
   private Set<User> users;
   private Set<Privilege> privileges;
+  private Set<Role> roles;
+  
   private Organization organization;
   private Date lastModifiedDate;
+
+  @JsonIgnore
+  public Set<Role> getRoles() {
+    if(roles==null){
+      roles = new HashSet<Role>();
+    }
+    return roles;
+  }
+
+  @JsonIgnore
+  public void setRoles(Set<Role> roles) {
+    if(roles==null){
+      return;
+    }
+    this.roles = roles;
+  }
 
   public String getName() {
     return name;
@@ -53,13 +72,18 @@ public class UserGroup extends AbstractPersistentDTO<UserGroup> {
   @Override
   @JsonIgnore
   public boolean isValid() {
+    if(StringUtils.isEmpty(name)){
+      return false;
+    }
     return true;
   }
 
+  @JsonIgnore
   public Organization getOrganization() {
     return organization;
   }
 
+  @JsonIgnore
   public void setOrganization(Organization organization) {
     this.organization = organization;
   }

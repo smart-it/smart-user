@@ -10,11 +10,11 @@ import org.apache.abdera.model.Feed;
 
 /**
  *
- * @author modhu7
+ * @author uzzal
  */
-public interface UserRolesResource extends WritableResource<Feed>{
+public interface UserGroupRolesResource extends WritableResource<Feed> {
 
-  public List<UserRoleResource> getUserRoleResources();
+  public List<UserGroupRoleResource> getUserGroupRoleResources();
 
-  public UserRoleResource add(Role role);
+  public UserGroupRoleResource add(Role role);
 }

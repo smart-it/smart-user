@@ -2,16 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.ws.resources;
 
-/**
- *
- * @author modhu7
- */
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Role;
-import com.smartitengineering.user.domain.User;
+import com.smartitengineering.user.domain.UserGroup;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -29,26 +24,26 @@ import org.apache.abdera.model.Link;
  *
  * @author modhu7
  */
-@Path("/orgs/sn/{organizationUniqueShortName}/users/un/{username}/roles/name/{roleName}")
-public class UserRoleResource extends AbstractResource {
+@Path("/orgs/sn/{organizationUniqueShortName}/usergroups/name/{groupName}/roles/name/{roleName}")
+public class UserGroupRoleResource extends AbstractResource {
 
-  static final UriBuilder USER_ROLE_URI_BUILDER = UriBuilder.fromResource(UserRoleResource.class);
+  static final UriBuilder USER_GROUP_ROLE_URI_BUILDER = UriBuilder.fromResource(UserGroupRoleResource.class);
   static final UriBuilder ROLE_URI_BUILDER = RoleResource.ROLE_URI_BUILDER.clone();
   private String organizationUniqueShortName;
-  private String username;
+  private String groupName;
   private String roleName;
   private Organization organization;
-  private User user;
+  private UserGroup userGroup;
   private Role role;
   private static String REL_ROLE = "role";
 
-  public UserRoleResource(@PathParam("organizationUniqueShortName") String organizationUniqueShortName, @PathParam(
-      "username") String username, @PathParam("roleName") String roleName) {
+  public UserGroupRoleResource(@PathParam("organizationUniqueShortName") String organizationUniqueShortName, @PathParam(
+      "groupName") String groupName, @PathParam("roleName") String roleName) {
     this.organizationUniqueShortName = organizationUniqueShortName;
-    this.username = username;
+    this.groupName = groupName;
     this.roleName = roleName;
     role = getRole();
-    user = getUser();
+    userGroup = getUserGroup();
     organization = getOrganization();
 
   }
@@ -59,7 +54,7 @@ public class UserRoleResource extends AbstractResource {
     ResponseBuilder responseBuilder;
     try {
       responseBuilder = Response.status(Status.OK);
-      Feed roleFeed = getUserRoleFeed();
+      Feed roleFeed = getUserGroupRoleFeed();
       responseBuilder = Response.ok(roleFeed);
     }
     catch (Exception ex) {
@@ -73,9 +68,9 @@ public class UserRoleResource extends AbstractResource {
   public Response delete() {
     ResponseBuilder responseBuilder;
     try {
-      responseBuilder = Response.status(Status.OK);      
-      user.getRoles().remove(role);
-      Services.getInstance().getUserService().update(user);
+      responseBuilder = Response.status(Status.OK);
+      userGroup.getRoles().remove(role);
+      Services.getInstance().getUserGroupService().update(userGroup);
     }
     catch (Exception ex) {
       ex.printStackTrace();
@@ -84,7 +79,7 @@ public class UserRoleResource extends AbstractResource {
     return responseBuilder.build();
   }
 
-  private Feed getUserRoleFeed() {
+  private Feed getUserGroupRoleFeed() {
 
     Feed roleFeed = abderaFactory.newFeed();
 
@@ -93,7 +88,7 @@ public class UserRoleResource extends AbstractResource {
     roleFeed.addLink(getSelfLink());
 
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(USER_ROLE_URI_BUILDER.clone().build(organizationUniqueShortName, username, roleName).
+    altLink.setHref(USER_GROUP_ROLE_URI_BUILDER.clone().build(organizationUniqueShortName, groupName, roleName).
         toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
@@ -112,9 +107,9 @@ public class UserRoleResource extends AbstractResource {
     return Services.getInstance().getRoleService().getRoleByName(roleName);
   }
 
-  private User getUser() {
-    return Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationUniqueShortName,
-                                                                                    username);
+  private UserGroup getUserGroup() {
+    return Services.getInstance().getUserGroupService().getByOrganizationAndUserGroupName(organizationUniqueShortName,
+                                                                                          groupName);
   }
 
   private Organization getOrganization() {

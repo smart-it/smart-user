@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author modhu7
  */
-public class UserGroup implements com.smartitengineering.user.client.api.UserGroup{
+public class UserGroup extends AbstractClientDomain implements com.smartitengineering.user.client.api.UserGroup{
 
   private String name;
   private Date lastModifiedDate;
