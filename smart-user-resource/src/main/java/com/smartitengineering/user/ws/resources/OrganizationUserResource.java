@@ -64,15 +64,15 @@ public class OrganizationUserResource extends AbstractResource {
 
     }
   }
-  
-  private String organizationUniqueShortName;  
+  private String organizationUniqueShortName;
   private String userName;
   private String REL_USER_PRIVILEGES = "privileges";
   private String REL_USER_ROLES = "roles";
   private Organization organization;
   private UserPerson userPerson;
 
-  public OrganizationUserResource(@PathParam("organizationShortName") String organizationShortName, @PathParam("userName") String userName) {
+  public OrganizationUserResource(@PathParam("organizationShortName") String organizationShortName, @PathParam(
+      "userName") String userName) {
     this.organizationUniqueShortName = organizationShortName;
     this.userName = userName;
     organization = getOrganization();
@@ -83,7 +83,7 @@ public class OrganizationUserResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization==null || userPerson==null){
+    if (organization == null || userPerson == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     Feed userFeed = getUserFeed();
@@ -96,7 +96,7 @@ public class OrganizationUserResource extends AbstractResource {
   @Path("/content")
   public Response getUser() {
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization==null || userPerson==null){
+    if (organization == null || userPerson == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     responseBuilder = Response.ok(userPerson);
@@ -107,7 +107,7 @@ public class OrganizationUserResource extends AbstractResource {
   @Produces(MediaType.TEXT_HTML)
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization==null || userPerson==null){
+    if (organization == null || userPerson == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
 
@@ -162,7 +162,8 @@ public class OrganizationUserResource extends AbstractResource {
     userFeed.addLink(altLink);
 
     Link privilegesLink = abderaFactory.newLink();
-    privilegesLink.setHref(UserPrivilegesResource.USER_PRIVILEGE_URIBUILDER.clone().build(organizationUniqueShortName, userName).toString());
+    privilegesLink.setHref(UserPrivilegesResource.USER_PRIVILEGE_URIBUILDER.clone().build(organizationUniqueShortName,
+                                                                                          userName).toString());
     privilegesLink.setRel(REL_USER_PRIVILEGES);
     privilegesLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(privilegesLink);
@@ -178,10 +179,7 @@ public class OrganizationUserResource extends AbstractResource {
 
   @DELETE
   public Response delete() {
-    UserPerson userPersonForDelete = userPerson;
-    Services.getInstance().getUserPersonService().delete(userPersonForDelete);
-    Services.getInstance().getUserService().delete(userPersonForDelete.getUser());
-    Services.getInstance().getPersonService().delete(userPersonForDelete.getPerson());
+    Services.getInstance().getUserPersonService().delete(userPerson);
     ResponseBuilder responseBuilder = Response.ok();
     return responseBuilder.build();
   }
@@ -229,7 +227,7 @@ public class OrganizationUserResource extends AbstractResource {
 
       }
     }
-    else {      
+    else {
       isHtmlPost = false;
     }
 
@@ -237,7 +235,7 @@ public class OrganizationUserResource extends AbstractResource {
       UserPerson userPersonForUpdate = userPerson;
       UserPerson newUserPerson = getUserFromContent(message);
       newUserPerson.getUser().setOrganization(organization);
-          newUserPerson.getUser().setPrivileges(userPersonForUpdate.getUser().getPrivileges());
+      newUserPerson.getUser().setPrivileges(userPersonForUpdate.getUser().getPrivileges());
       newUserPerson.getUser().setRoles(userPersonForUpdate.getUser().getRoles());
       try {
         Services.getInstance().getUserPersonService().update(newUserPerson);
