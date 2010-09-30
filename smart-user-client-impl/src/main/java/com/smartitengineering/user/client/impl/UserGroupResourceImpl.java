@@ -8,6 +8,7 @@ package com.smartitengineering.user.client.impl;
 import com.smartitengineering.user.client.api.UserGroup;
 import com.smartitengineering.user.client.api.UserGroupPrivilegesResource;
 import com.smartitengineering.user.client.api.UserGroupResource;
+import com.smartitengineering.user.client.api.UserGroupRolesResource;
 import com.smartitengineering.user.client.api.UserGroupUsersResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.client.Resource;
@@ -23,8 +24,11 @@ import org.apache.abdera.model.Link;
  */
 public class UserGroupResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements UserGroupResource{
 
-  public static final String REL_USER_GROUP = "usergroup";
-  public static final String REL_USERS = "users";
+  public final String REL_USER_GROUP = "usergroup";
+  public final String REL_USERS = "users";
+  public final String REL_ROLES = "roles";
+  public final String REL_PRIVILEGES = "privileges";
+
 
   public UserGroupResourceImpl(ResourceLink link, Resource referrer) {
     super(referrer, link);
@@ -55,7 +59,7 @@ public class UserGroupResourceImpl extends AbstractFeedClientResource<Resource<?
 
   @Override
   public UserGroupPrivilegesResource getUserGroupPrivilegesResource() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return new UserGroupPrivilegesResourceImpl(getRelatedResourceUris().getFirst(REL_PRIVILEGES), this);
   }
 
   protected UserGroup getUserGroup(boolean reload) {
@@ -66,6 +70,11 @@ public class UserGroupResourceImpl extends AbstractFeedClientResource<Resource<?
     else{
       return userGroup.getLastReadStateOfEntity();
     }
+  }
+
+  @Override
+  public UserGroupRolesResource getUserGroupRolesResource() {
+    return new UserGroupRolesResourceImpl(getRelatedResourceUris().getFirst(REL_ROLES), this);
   }
 
 }

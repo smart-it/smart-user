@@ -75,7 +75,7 @@ public class OrganizationUserGroupsResource extends AbstractResource {
   @Produces(MediaType.TEXT_HTML)
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization==null){
+    if (organization == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     Collection<UserGroup> userGroups = Services.getInstance().getUserGroupService().getByOrganizationName(
@@ -113,7 +113,7 @@ public class OrganizationUserGroupsResource extends AbstractResource {
       count = 10;
     }
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization==null){
+    if (organization == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     Feed atomFeed = getFeed(userName, new Date());
@@ -191,13 +191,15 @@ public class OrganizationUserGroupsResource extends AbstractResource {
   public Response post(UserGroup userGroup) {
 
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization==null){
+    if (organization == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     try {
       userGroup.setOrganization(organization);
       Services.getInstance().getUserGroupService().save(userGroup);
       responseBuilder = Response.status(Status.CREATED);
+      responseBuilder.location(uriInfo.getBaseUriBuilder().path(OrganizationUserGroupResource.ORGANIZATION_USER_GROUP_URI_BUILDER.
+          clone().build(organizationUniqueShortName, userGroup.getName()).toString()).build());
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);

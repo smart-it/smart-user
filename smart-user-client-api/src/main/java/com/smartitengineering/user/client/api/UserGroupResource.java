@@ -18,4 +18,6 @@ public interface UserGroupResource extends WritableResource<Feed> {
   public UserGroupUsersResource getUserGroupUsersResource();
 
   public UserGroupPrivilegesResource getUserGroupPrivilegesResource();
+
+  public UserGroupRolesResource getUserGroupRolesResource();
 }
