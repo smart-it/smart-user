@@ -8,6 +8,9 @@ import com.smartitengineering.user.client.api.PrivilegesResource;
 import com.smartitengineering.user.client.api.RootResource;
 import com.smartitengineering.user.client.api.SecuredObjectResource;
 import com.smartitengineering.user.client.api.SecuredObjectsResource;
+import com.smartitengineering.user.client.api.UserGroup;
+import com.smartitengineering.user.client.api.UserGroupResource;
+import com.smartitengineering.user.client.api.UserGroupsResource;
 import com.smartitengineering.user.client.api.UserPrivilegeResource;
 import com.smartitengineering.user.client.api.UserPrivilegesResource;
 import com.smartitengineering.user.client.api.UserResource;
@@ -49,6 +52,7 @@ public class ComprehensiveClientTest {
   public static final String SITEL_ORG_USER_USERNAME = "modhu";
   public static final String SITEL_ADMIN_USER_NAME = "admin";
   public static final String SITEL_ADMIN_USER_PASSWORD = "adminadmin";
+  public static final String SITEL_USER_GROUP_NAME = "End Users of Smart It Engineering";
   public static final int ORGANIZATION_NUM_AT_BEGINNING = 1;
   public static final int USER_NUM_AT_BEGINNING = 1;
   public static final int PRIVILEGES_NUM_AT_BEGINNING = 1;
@@ -66,6 +70,8 @@ public class ComprehensiveClientTest {
   private static UserResource sitelUserResource;
   private static PrivilegesResource sitelPrivsResources;
   private static UserPrivilegesResource sitelUserPrivsResource;
+  private static UserGroupsResource sitelUserGroupsResource;
+  private static UserGroupResource sitelUserGroupResource;
 
   @BeforeClass
   public static void setup()
@@ -127,14 +133,26 @@ public class ComprehensiveClientTest {
     address.setStreetAddress("23/B hazi chinu miah road, Mohammadpur");
     address.setZip("1207");
     org.setAddress(address);
-    OrganizationResource newOrgResource = orgsResource.create(org);
+    OrganizationResource newOrgResource = null;
+    try {
+      newOrgResource = orgsResource.create(org);
+    }
+    catch (Exception e) {
+      Assert.fail("Failed to create new organization");
+    }
     sitelOrgResource = newOrgResource;
     Assert.assertNotNull(newOrgResource);
     com.smartitengineering.user.client.api.Organization newlyCreatedOrg = newOrgResource.getOrganization();
     Assert.assertEquals(org.getName(), newlyCreatedOrg.getName());
     Assert.assertEquals(ORGANIZATION_NUM_AT_BEGINNING, orgsResource.getOrganizationResources().size());
-    orgsResource.get();
-    Assert.assertEquals(ORGANIZATION_NUM_AT_BEGINNING + 1, orgsResource.getOrganizationResources().size());
+    try {
+      orgsResource.get();
+      Assert.assertEquals(ORGANIZATION_NUM_AT_BEGINNING + 1, orgsResource.getOrganizationResources().size());
+    }
+    catch (Exception e) {
+      Assert.fail("Expected Organization number didn't match with the actual number");
+    }
+//    Assert.assertEquals(ORGANIZATION_NUM_AT_BEGINNING + 1, orgsResource.getOrganizationResources().size());
 
     Organization org1 = new Organization();
     org1.setName("Agoora Limited");
@@ -146,14 +164,23 @@ public class ComprehensiveClientTest {
     address1.setStreetAddress("15 Dhanmondi, Dhaka");
     address1.setZip("1201");
     org1.setAddress(address1);
-    newOrgResource = orgsResource.create(org1);
+    try {
+      newOrgResource = orgsResource.create(org1);
+    }
+    catch (Exception e) {
+      Assert.fail("Failed to create new organization");
+    }
     com.smartitengineering.user.client.api.Organization newlyCreatedOrg1 = newOrgResource.getOrganization();
     Assert.assertEquals(org1.getName(), newlyCreatedOrg1.getName());
     Assert.assertEquals(ORGANIZATION_NUM_AT_BEGINNING + 1, orgsResource.getOrganizationResources().size());
-    orgsResource.get();
-    Assert.assertEquals(org1.getName(), newlyCreatedOrg1.getName());
-    Assert.assertEquals(ORGANIZATION_NUM_AT_BEGINNING + 2, orgsResource.getOrganizationResources().size());
-
+    try {
+      orgsResource.get();
+      Assert.assertEquals(org1.getName(), newlyCreatedOrg1.getName());
+      Assert.assertEquals(ORGANIZATION_NUM_AT_BEGINNING + 2, orgsResource.getOrganizationResources().size());
+    }
+    catch (Exception e) {
+      Assert.fail("Expected organizations number and newly created organization name didn't match with the actual");
+    }
   }
 
   @Test
@@ -166,9 +193,19 @@ public class ComprehensiveClientTest {
         Assert.assertNotNull(organization.getAddress());
         Assert.assertFalse(CHITTAGONG.equals(organization.getAddress().getCity()));
         organization.getAddress().setCity(CHITTAGONG);
-        orgIterResource.update();
-        organization = orgIterResource.getOrganization();
-        Assert.assertEquals(CHITTAGONG, organization.getAddress().getCity());
+        try {
+          orgIterResource.update();
+        }
+        catch (Exception e) {
+          Assert.fail("Exception due to failure of updating particular orgnization");
+        }
+        try {
+          organization = orgIterResource.getOrganization();
+          Assert.assertEquals(CHITTAGONG, organization.getAddress().getCity());
+        }
+        catch (Exception e) {
+          Assert.fail("Expected city doesn't match with the actual");
+        }
       }
     }
   }
@@ -223,7 +260,7 @@ public class ComprehensiveClientTest {
     catch (UniformInterfaceException e) {
       Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), e.getResponse().getStatus());
     }
-    person.setPrimaryEmail("subrata@smartitengineering.com");    
+    person.setPrimaryEmail("subrata@smartitengineering.com");
     userPerson.setPerson(person);
     userResource = sitelUsersResource.create(userPerson);
     sitelUserResource = userResource;
@@ -257,7 +294,13 @@ public class ComprehensiveClientTest {
     UserPerson userPerson = new UserPerson();
     userPerson.setUser(user);
     userPerson.setPerson(person);
-    UserResource userResource = sitelUsersResource.create(userPerson);
+    UserResource userResource = null;
+    try {
+      userResource = sitelUsersResource.create(userPerson);
+    }
+    catch (Exception e) {
+      Assert.fail("Exception due to failure of creating an userperson");
+    }
     Assert.assertEquals("russel", userResource.getUser().getUser().getUsername());
   }
   //  @Test
@@ -274,9 +317,14 @@ public class ComprehensiveClientTest {
 
   @Test
   public void doTestUpdateUser() {
-    sitelUsersResource = sitelOrgResource.getUsersResource();
-    Assert.assertNotNull(sitelUsersResource);
-    Assert.assertEquals(USER_NUM_AT_BEGINNING + 2, sitelUsersResource.getUserResources().size());
+    try {
+      sitelUsersResource = sitelOrgResource.getUsersResource();
+      Assert.assertNotNull(sitelUsersResource);
+      Assert.assertEquals(USER_NUM_AT_BEGINNING + 2, sitelUsersResource.getUserResources().size());
+    }
+    catch (Exception e) {
+      Assert.fail("Expected number of users doesn't match with the actual");
+    }
     for (UserResource userIterResource : sitelUsersResource.getUserResources()) {
       if (userIterResource.getUser().getUser().getUsername().equals("modhu")) {
         com.smartitengineering.user.client.api.UserPerson userPerson = userIterResource.getUser();
@@ -298,8 +346,18 @@ public class ComprehensiveClientTest {
         userPerson.getPerson().getAddress().setStreetAddress("5 Hazi Chinu Miah Road, Mohammadpur");
         Assert.assertFalse("1261".equals(userPerson.getPerson().getAddress().getZip()));
         userPerson.getPerson().getAddress().setZip("1261");
-        userIterResource.update();
-        userPerson = userIterResource.getUser();
+        try {
+          userIterResource.update();
+        }
+        catch (Exception e) {
+          Assert.fail("Exception due to failure of updating particular user information");
+        }
+        try {
+          userPerson = userIterResource.getUser();
+        }
+        catch (Exception e) {
+          Assert.fail("Exception due to not getting the user");
+        }
         Assert.assertEquals("123modhu", userPerson.getUser().getPassword());
         Assert.assertEquals("Subrata", userPerson.getPerson().getSelf().getName().getFirstName());
         Assert.assertEquals("Gupta", userPerson.getPerson().getSelf().getName().getLastName());
@@ -312,9 +370,14 @@ public class ComprehensiveClientTest {
 
   @Test
   public void doTestCreatePrivilegesofOrganization() {
-    sitelPrivsResources = sitelOrgResource.getPrivilegesResource();
-    Assert.assertNotNull(sitelPrivsResources);
-    Assert.assertEquals(PRIVILEGES_NUM_AT_BEGINNING + 2, sitelPrivsResources.getPrivilegeResources().size());
+    try {
+      sitelPrivsResources = sitelOrgResource.getPrivilegesResource();
+      Assert.assertNotNull(sitelPrivsResources);
+      Assert.assertEquals(PRIVILEGES_NUM_AT_BEGINNING + 2, sitelPrivsResources.getPrivilegeResources().size());
+    }
+    catch (Exception e) {
+      Assert.fail("Expected number of privileges doesn't match with the actual number");
+    }
     SecuredObjectsResource securedObjectsResource = sitelOrgResource.getSecuredObjectsResource();
     //    List<SecuredObjectResource> securedObjectResources = securedObjectsResource.getSecuredObjectResources();
     SecuredObject securedObjectOrganization = new SecuredObject();
@@ -329,12 +392,23 @@ public class ComprehensiveClientTest {
     privilege.setPermissionMask(PRIVILEGE_PERMISSION_MASK);
     privilege.setShortDescription("This admin privilege contains the authority to do any of the CRUD options");
     privilege.setSecuredObject(securedObjectApi);
-    com.smartitengineering.user.client.api.PrivilegeResource orgPrivilegesResource = sitelPrivsResources.create(
-        privilege);
-    sitelPrivsResources.get();
-    Assert.assertEquals(PRIVILEGES_NUM_AT_BEGINNING + 3, sitelPrivsResources.getPrivilegeResources().size());
-    Assert.assertNotNull(orgPrivilegesResource);
-    Assert.assertEquals("Smart User Adminstration", privilege.getDisplayName());
+    com.smartitengineering.user.client.api.PrivilegeResource orgPrivilegesResource = null;
+    try {
+      orgPrivilegesResource = sitelPrivsResources.create(
+          privilege);
+    }
+    catch (Exception e) {
+      Assert.fail("Exception due to failure of creating organization privileges");
+    }
+    try {
+      sitelPrivsResources.get();
+      Assert.assertEquals(PRIVILEGES_NUM_AT_BEGINNING + 3, sitelPrivsResources.getPrivilegeResources().size());
+      Assert.assertNotNull(orgPrivilegesResource);
+      Assert.assertEquals("Smart User Adminstration", privilege.getDisplayName());
+    }
+    catch (Exception e) {
+      Assert.fail("Exception because number of expected privileges didn't match with the actual");
+    }
   }
 
   @Test
@@ -362,12 +436,33 @@ public class ComprehensiveClientTest {
     privilegeUser.setShortDescription(
         "This privilege contains the authority to change the password and profile of the organization admin.");
     privilegeUser.setSecuredObject(securedObjectUserApi);
-    PrivilegeResource privilegeResource = sitelPrivsResources.create(privilegeUser);
-    sitelUserPrivsResource.add(privilegeResource.getPrivilege());
+    PrivilegeResource privilegeResource = null;
+    try {
+      privilegeResource = sitelPrivsResources.create(privilegeUser);
+    }
+    catch (Exception e) {
+      Assert.fail("Exception due to failure of creating privileges for user");
+    }
+    try {
+      sitelUserPrivsResource.add(privilegeResource.getPrivilege());
+    }
+    catch (Exception e) {
+      Assert.fail("Exception due to failure of adding privileges to user");
+    }
     Assert.assertEquals(PRIVILEGES_NUM_AT_BEGINNING, sitelUserPrivsResource.getUserPrivilegeResources().size());
     Assert.assertEquals("Admin User Profile Privilege", privilegeUser.getDisplayName());
   }
 
+  @Test
+  public void doTestCreateUserGroup() {
+    sitelUserGroupsResource = sitelOrgResource.getUserGroupsResource();
+    UserGroupResource userGroupResource = null;
+    UserGroup userGroup = new com.smartitengineering.user.client.impl.domain.UserGroup();
+    userGroup.setName(SITEL_USER_GROUP_NAME);
+    userGroupResource = sitelUserGroupsResource.create(userGroup);
+    sitelUserGroupResource = userGroupResource;
+    Assert.assertNotNull(sitelUserGroupsResource);
+  }
   @Test
   public void doTestRemoveUserPrivilege() {
     sitelUserPrivsResource = sitelUserResource.getPrivilegesResource();
@@ -375,12 +470,22 @@ public class ComprehensiveClientTest {
     for (UserPrivilegeResource userPrivilegeResource : userPrivilegeResources) {
       if (userPrivilegeResource.getPrivilegeResource().getPrivilege().getName().equals(
           "organization-admin-user-privilege-test-2")) {
-        userPrivilegeResource.delete();
+        try {
+          userPrivilegeResource.delete();
+        }
+        catch (Exception e) {
+          Assert.fail("Exception due to failure of deleting the user privilege resource");
+        }
       }
     }
-    sitelUserPrivsResource.get();
-    Assert.assertEquals(PRIVILEGES_NUM_AT_BEGINNING, sitelUserPrivsResource.getUserPrivilegeResources().size());
-    Assert.assertNotNull(sitelUserPrivsResource);
+    try {
+      sitelUserPrivsResource.get();
+      Assert.assertEquals(PRIVILEGES_NUM_AT_BEGINNING, sitelUserPrivsResource.getUserPrivilegeResources().size());
+      Assert.assertNotNull(sitelUserPrivsResource);
+    }
+    catch (Exception e) {
+      Assert.fail("Exception because expected number of privileges doesn't match with the actual number");
+    }
   }
 
   @Test
@@ -390,12 +495,22 @@ public class ComprehensiveClientTest {
     Assert.assertEquals(USER_NUM_AT_BEGINNING + 2, sitelUsersResource.getUserResources().size());
     Assert.assertNotNull(sitelPrivsResources);
     Assert.assertEquals(PRIVILEGES_NUM_AT_BEGINNING + 3, sitelPrivsResources.getPrivilegeResources().size());
-    sitelUsersResource = sitelOrgResource.getUsersResource();
-    sitelPrivsResources = sitelOrgResource.getPrivilegesResource();
-    sitelUserPrivsResource = sitelUserResource.getPrivilegesResource();
+    try {
+      sitelUsersResource = sitelOrgResource.getUsersResource();
+      sitelPrivsResources = sitelOrgResource.getPrivilegesResource();
+      sitelUserPrivsResource = sitelUserResource.getPrivilegesResource();
+    }
+    catch (Exception e) {
+      Assert.fail("Exception due to failure to get userresource and privilegesresource");
+    }
     for (OrganizationResource orgIterResource : orgsResource.getOrganizationResources()) {
       if (orgIterResource.getOrganization().getUniqueShortName().equals("SITEL")) {
-        orgIterResource.delete();
+        try {
+          orgIterResource.delete();
+        }
+        catch (Exception e) {
+          Assert.fail("Exception due to failure of deleting the organization");
+        }
       }
     }
   }
@@ -425,15 +540,14 @@ public class ComprehensiveClientTest {
       Assert.fail("Should have thrown UniformInterface exception");
     }
 
-    try{
+    try {
       sitelUserPrivsResource.get();
       Assert.fail("Should have thrown exception");
     }
-    catch(UniformInterfaceException e){
+    catch (UniformInterfaceException e) {
       Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), e.getResponse().getStatus());
     }
-
-    catch(Exception e){
+    catch (Exception e) {
       Assert.fail("Should have thrown UniformInterface exception");
     }
   }
