@@ -45,7 +45,7 @@ public class OrganizationUserGroupResource extends AbstractResource {
   static {
     ORGANIZATION_USER_GROUP_CONTENT_URI_BUILDER = ORGANIZATION_USER_GROUP_URI_BUILDER.clone();
     try {
-      ORGANIZATION_USER_GROUP_CONTENT_URI_BUILDER.path(OrganizationUserGroupResource.class.getMethod("getUserGroup"));
+      ORGANIZATION_USER_GROUP_CONTENT_URI_BUILDER.path(OrganizationUserGroupResource.class.getMethod("getContent"));
     }
     catch (Exception ex) {
       ex.printStackTrace();
@@ -56,6 +56,9 @@ public class OrganizationUserGroupResource extends AbstractResource {
   private String name;
   private Organization organization;
   private UserGroup userGroup;
+  private final String REL_USER_GROUP_PRIVILEGES = "privileges";
+  private final String REL_USER_GROUP_ROLES = "roles";
+  private final String REL_USER_GROUP_USERS = "users";
 
   public OrganizationUserGroupResource(@PathParam("uniqueShortName") String orgName, @PathParam("name") String groupName) {
     this.orgShortName = orgName;
@@ -133,13 +136,34 @@ public class OrganizationUserGroupResource extends AbstractResource {
     editLink.setHref(uriInfo.getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
+    userFeed.addLink(editLink);
 
     // add a alternate link
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(ORGANIZATION_USER_GROUP_CONTENT_URI_BUILDER.clone().build(userGroupForFeed.getName()).toString());
+    altLink.setHref(ORGANIZATION_USER_GROUP_CONTENT_URI_BUILDER.clone().build(orgShortName, name).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(altLink);
+
+    Link privilegesLink = abderaFactory.newLink();
+    privilegesLink.setHref(UserGroupPrivilegesResource.USER_GROUP_PRIVILEGE_URIBUILDER.clone().build(orgShortName,
+                                                                                          name).toString());
+    privilegesLink.setRel(REL_USER_GROUP_PRIVILEGES);
+    privilegesLink.setMimeType(MediaType.APPLICATION_JSON);
+    userFeed.addLink(privilegesLink);
+
+    Link rolesLink = abderaFactory.newLink();
+    rolesLink.setHref(UserGroupRolesResource.ROLE_URI_BUILDER.clone().build(orgShortName, name).toString());
+    rolesLink.setRel(REL_USER_GROUP_ROLES);
+    rolesLink.setMimeType(MediaType.APPLICATION_JSON);
+    userFeed.addLink(rolesLink);
+
+    Link usersLink = abderaFactory.newLink();
+    usersLink.setHref(UserGroupUsersResource.USER_GROUP_USERS_URIBUILDER.clone().build(orgShortName, name).toString());
+    usersLink.setRel(REL_USER_GROUP_USERS);
+    usersLink.setMimeType(MediaType.APPLICATION_JSON);
+    userFeed.addLink(usersLink);
+
 
     return userFeed;
   }

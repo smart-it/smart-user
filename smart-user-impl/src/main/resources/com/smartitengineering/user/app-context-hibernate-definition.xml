@@ -19,6 +19,7 @@
         <value>com/smartitengineering/user/hbm/domain/Privilege.hbm.xml</value>
         <value>com/smartitengineering/user/hbm/domain/Organization.hbm.xml</value>        
         <value>com/smartitengineering/user/hbm/domain/securedObject.hbm.xml</value>
+        <value>com/smartitengineering/user/hbm/domain/UserGroup.hbm.xml</value>
       </list>
     </property>
     <property name="hibernateProperties">

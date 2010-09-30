@@ -14,7 +14,7 @@ import org.apache.abdera.model.Feed;
  */
 public interface UserRolesResource extends WritableResource<Feed>{
 
-  public List<UserRoleResource> getUserPrivilegeResources();
+  public List<UserRoleResource> getUserRoleResources();
 
   public UserRoleResource add(Role role);
 }

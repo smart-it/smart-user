@@ -29,7 +29,7 @@ import org.apache.abdera.model.Link;
  *
  * @author modhu7
  */
-@Path("/orgs/sn/{organizationUniqueShortName}/un/{username}/roles/name/{roleName}")
+@Path("/orgs/sn/{organizationUniqueShortName}/users/un/{username}/roles/name/{roleName}")
 public class UserRoleResource extends AbstractResource {
 
   static final UriBuilder USER_ROLE_URI_BUILDER = UriBuilder.fromResource(UserRoleResource.class);

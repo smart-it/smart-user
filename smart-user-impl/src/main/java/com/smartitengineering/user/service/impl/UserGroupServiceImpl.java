@@ -103,7 +103,7 @@ public class UserGroupServiceImpl extends AbstractCommonDaoImpl<UserGroup> imple
           QueryParameterFactory.getEqualPropertyParam("organization.id",
                                                       userGroup.getOrganization().getId()), QueryParameterFactory.
           getStringLikePropertyParam(
-          "username", userGroup.getName())));
+          "name", userGroup.getName())));
       if (count.intValue() > 0) {
         throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
             UniqueConstrainedField.USER_USERNAME.name());
@@ -118,7 +118,7 @@ public class UserGroupServiceImpl extends AbstractCommonDaoImpl<UserGroup> imple
           "organization.id",
                                                                                                                          userGroup.
           getOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
-          "username", userGroup.getName())));
+          "name", userGroup.getName())));
       if (count.intValue() > 0) {
         throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
             UniqueConstrainedField.USER_USERNAME.name());
