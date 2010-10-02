@@ -24,4 +24,6 @@ public interface UserGroupService {
 
     public UserGroup getByOrganizationAndUserGroupName(String organizationShortName, String userGroupName);
 
+    public Collection<UserGroup> getAllUserGroup();
+
 }

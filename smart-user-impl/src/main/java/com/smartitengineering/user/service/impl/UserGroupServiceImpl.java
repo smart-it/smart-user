@@ -126,4 +126,9 @@ public class UserGroupServiceImpl extends AbstractCommonDaoImpl<UserGroup> imple
 
     }
   }
+
+  @Override
+  public Collection<UserGroup> getAllUserGroup() {
+    return getAll();
+  }
 }
