@@ -45,16 +45,18 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     if (user == null) {
       return AccessDecisionVoter.ACCESS_DENIED;
     }
-    if(user!=null && oid==null){
+    if (user != null && oid == null) {
       return AccessDecisionVoter.ACCESS_ABSTAIN;
     }
     for (Privilege privilege : user.getPrivileges()) {
-      if (oid.startsWith(privilege.getSecuredObject().getObjectID()) && (permission.intValue() & privilege.getPermissionMask().intValue()) == permission.intValue()) {
+      if (oid.startsWith(privilege.getSecuredObject().getObjectID()) && (permission.intValue() & privilege.
+                                                                         getPermissionMask().intValue()) == permission.
+          intValue()) {
         return AccessDecisionVoter.ACCESS_GRANTED;
       }
     }
     SecuredObject securedObject = securedObjectService.getByOrganizationAndObjectID(organizationName, oid);
-    if(user!=null && securedObject==null){
+    if (user != null && securedObject == null) {
       return AccessDecisionVoter.ACCESS_ABSTAIN;
     }
     return authorize(user, securedObject, permission);
@@ -63,15 +65,17 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
   private Integer authorize(User user, SecuredObject securedObject, Integer permission) {
 
-    if (user == null || user.getPrivileges() == null || permission == null ) {
+    if (user == null || user.getPrivileges() == null || permission == null) {
       return AccessDecisionVoter.ACCESS_DENIED;
     }
-    if(user!=null && securedObject == null){
+    if (user != null && securedObject == null) {
       return AccessDecisionVoter.ACCESS_ABSTAIN;
     }
     for (Privilege privilege : user.getPrivileges()) {
-      if (privilege.getSecuredObject().getObjectID().equals(securedObject.getObjectID())
-          && (permission.intValue() & privilege.getPermissionMask().intValue()) == permission.intValue()) {
+      if (privilege.getSecuredObject().getObjectID().equals(securedObject.getObjectID()) && (permission.intValue() & privilege.
+                                                                                             getPermissionMask().
+                                                                                             intValue()) == permission.
+          intValue()) {
         return AccessDecisionVoter.ACCESS_GRANTED;
       }
     }
@@ -87,9 +91,11 @@ public class AuthorizationServiceImpl implements AuthorizationService {
   @Override
   public Boolean login(String username, String password) {
     User user = UserService.getUserByUsername(username);
-    if(user!=null && user.getPassword().equals(password))
+    if (user != null && user.getPassword().equals(password)) {
       return true;
-    else
+    }
+    else {
       return false;
+    }
   }
 }
