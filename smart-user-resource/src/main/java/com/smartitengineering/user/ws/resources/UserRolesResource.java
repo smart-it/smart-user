@@ -146,7 +146,7 @@ public class UserRolesResource extends AbstractResource {
         // setting link to each individual role
         Link roleLink = abderaFactory.newLink();
         roleLink.setRel(Link.REL_ALTERNATE);
-        roleLink.setHref(RolesResource.ROLE_URI_BUILDER.build(role.getName()).toString());
+        roleLink.setHref(RoleResource.ROLE_URI_BUILDER.build(role.getName()).toString());
         roleLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
         roleEntry.addLink(roleLink);
         atomFeed.addEntry(roleEntry);

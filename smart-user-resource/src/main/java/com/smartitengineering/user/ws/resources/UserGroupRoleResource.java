@@ -95,9 +95,9 @@ public class UserGroupRoleResource extends AbstractResource {
     roleFeed.addLink(altLink);
 
     Link roleLink = abderaFactory.newLink();
-    altLink.setHref(ROLE_URI_BUILDER.clone().build(organizationUniqueShortName, roleName).toString());
-    altLink.setRel(REL_ROLE);
-    altLink.setMimeType(MediaType.APPLICATION_JSON);
+    roleLink.setHref(ROLE_URI_BUILDER.clone().build(roleName).toString());
+    roleLink.setRel(REL_ROLE);
+    roleLink.setMimeType(MediaType.APPLICATION_JSON);
     roleFeed.addLink(roleLink);
 
     return roleFeed;

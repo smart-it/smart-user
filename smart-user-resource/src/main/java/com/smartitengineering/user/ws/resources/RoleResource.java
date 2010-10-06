@@ -67,7 +67,7 @@ public class RoleResource extends AbstractResource {
   }
 
   @GET
-  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Produces(MediaType.APPLICATION_JSON)
   @Path("/content")
   public Response getRole() {
     if (role == null) {
@@ -111,6 +111,7 @@ public class RoleResource extends AbstractResource {
     editLink.setHref(uriInfo.getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
+    roleFeed.addLink(editLink);
 
     // add alternate link
     Link altLink = abderaFactory.newLink();

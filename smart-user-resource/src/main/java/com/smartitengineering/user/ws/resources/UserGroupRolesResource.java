@@ -45,7 +45,7 @@ public class UserGroupRolesResource extends AbstractResource {
   private Integer count;
 
   static {
-    ROLE_URI_BUILDER = UriBuilder.fromResource(RoleResource.class);
+    ROLE_URI_BUILDER = UriBuilder.fromResource(UserGroupRolesResource.class);
 
     ROLE_AFTER_ROLE_NAME_URI_BUILDER = UriBuilder.fromResource(RolesResource.class);
     try {
@@ -117,7 +117,7 @@ public class UserGroupRolesResource extends AbstractResource {
       UriBuilder nextRoleUri = ROLE_AFTER_ROLE_NAME_URI_BUILDER.clone();
       UriBuilder previousRoleUri = ROLE_BEFORE_ROLE_NAME_URI_BUILDER.clone();
 
-      List<Role> roleList = new ArrayList<Role>();
+      List<Role> roleList = new ArrayList<Role>(roles);
 
       // link to the next uri according to the count value
       Link nextLink = abderaFactory.newLink();
