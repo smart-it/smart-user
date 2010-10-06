@@ -9,6 +9,8 @@ import com.smartitengineering.user.client.api.RootResource;
 import com.smartitengineering.user.client.api.SecuredObjectResource;
 import com.smartitengineering.user.client.api.SecuredObjectsResource;
 import com.smartitengineering.user.client.api.UserGroup;
+import com.smartitengineering.user.client.api.UserGroupPrivilegeResource;
+import com.smartitengineering.user.client.api.UserGroupPrivilegesResource;
 import com.smartitengineering.user.client.api.UserGroupResource;
 import com.smartitengineering.user.client.api.UserGroupUserResource;
 import com.smartitengineering.user.client.api.UserGroupUsersResource;
@@ -61,11 +63,14 @@ public class ComprehensiveClientTest {
   public final int USER_PRIVILEGES_NUM_AT_BEGINNING = 1;
   public final int NUM_OF_USER_GROUPS_AT_BEGINNING = 0;
   public final int ZERO = 0;
-  public String ORGS_OID = "test-oid";
-  public String ORGS_OID_NAME = "Smart User Organizations";
-  public Integer PRIVILEGE_PERMISSION_MASK = 31;
-  public String USERS_OID_NAME = "smart-user-users";
-  public String USERS_OID = "test-user-oid";
+  public final String ORGS_OID = "test-oid";
+  public final String ORGS_OID_NAME = "Smart User Organizations";
+  public final Integer PRIVILEGE_PERMISSION_MASK = 31;
+  public final String USERS_OID_NAME = "smart-user-users";
+  public final String USERS_OID = "test-user-oid";
+  private final String SITEL_ADMIN_USER_PRIVILEGE_TEST_1 = "organization-admin-user-privilege-test-1";
+  private final String SITEL_ADMIN_USER_PRIVILEGE_TEST_2 = "organization-admin-user-privilege-test-2";
+
   private static Server jettyServer;
   private static final int PORT = 9090;
   private static OrganizationsResource orgsResource;
@@ -78,6 +83,8 @@ public class ComprehensiveClientTest {
   private static UserGroupResource sitelUserGroupResource;
   private static UserGroupUsersResource sitelUserGroupUsersResource;
   private static UserGroupUserResource sitelUserGroupUserResource;
+  private static UserGroupPrivilegesResource sitelUserGroupPrivilegesResource;
+  private static UserGroupPrivilegeResource sitelUserGroupPrivilegeResource;
 
   @BeforeClass
   public static void setup()
@@ -112,6 +119,8 @@ public class ComprehensiveClientTest {
     System.out.println("::: Stopping server :::");
     jettyServer.stop();
   }
+
+
 
   @Test
   public void testBootstraping() {
@@ -393,7 +402,7 @@ public class ComprehensiveClientTest {
     Assert.assertEquals(ORGS_OID_NAME, securedObjectApi.getName());
     Privilege privilege = new Privilege();
     privilege.setDisplayName("Smart User Adminstration");
-    privilege.setName("Organization-admin-user-privilege-test-1");
+    privilege.setName(SITEL_ADMIN_USER_PRIVILEGE_TEST_1);
     privilege.setPermissionMask(PRIVILEGE_PERMISSION_MASK);
     privilege.setShortDescription("This admin privilege contains the authority to do any of the CRUD options");
     privilege.setSecuredObject(securedObjectApi);
@@ -436,7 +445,7 @@ public class ComprehensiveClientTest {
     Assert.assertEquals(securedObjectOrganization.getObjectID(), securedObjectUserApi.getParentObjectID());
     Privilege privilegeUser = new Privilege();
     privilegeUser.setDisplayName("Admin User Profile Privilege");
-    privilegeUser.setName("organization-admin-user-privilege-test-2");
+    privilegeUser.setName(SITEL_ADMIN_USER_PRIVILEGE_TEST_2);
     privilegeUser.setPermissionMask(PRIVILEGE_PERMISSION_MASK);
     privilegeUser.setShortDescription(
         "This privilege contains the authority to change the password and profile of the organization admin.");
@@ -465,7 +474,7 @@ public class ComprehensiveClientTest {
     List<UserPrivilegeResource> userPrivilegeResources = sitelUserPrivsResource.getUserPrivilegeResources();
     for (UserPrivilegeResource userPrivilegeResource : userPrivilegeResources) {
       if (userPrivilegeResource.getPrivilegeResource().getPrivilege().getName().equals(
-          "organization-admin-user-privilege-test-2")) {
+          SITEL_ADMIN_USER_PRIVILEGE_TEST_2)) {
         try {
           userPrivilegeResource.delete();
         }
@@ -508,7 +517,6 @@ public class ComprehensiveClientTest {
   public void doTestAddUsersToUserGroup() {
     sitelUserGroupUsersResource = sitelUserGroupResource.getUserGroupUsersResource();
     Assert.assertEquals(ZERO, sitelUserGroupUsersResource.getUserGroupUserResources().size());
-//    sitelUserGroupUserResource = sitelUserGroupUsersResource.getUserGroupUserResources();
     UsersResource usersResource = sitelOrgResource.getUsersResource();
     List<UserResource> userResources = usersResource.getUserResources();
 
@@ -537,6 +545,41 @@ public class ComprehensiveClientTest {
     }
     sitelUserGroupUsersResource.get();
     Assert.assertEquals(0, sitelUserGroupUsersResource.getUserGroupUserResources().size());
+  }
+
+  @Test
+  public void doTestAddPrivilegesToUserGroup() {
+    sitelUserGroupPrivilegesResource = sitelUserGroupResource.getUserGroupPrivilegesResource();
+    Assert.assertEquals(ZERO, sitelUserGroupPrivilegesResource.getUserGroupPrivilegeResources().size());
+
+    PrivilegesResource privilegesResource = sitelOrgResource.getPrivilegesResource();
+    List<PrivilegeResource> privilegeResources = privilegesResource.getPrivilegeResources();
+
+    for (UserGroupResource userGroupResource : sitelUserGroupsResource.getUserGroupResources()) {
+      if (userGroupResource.getUserGroup().getName().equals(SITEL_USER_GROUP_NAME)) {
+        for (PrivilegeResource privilegeResource : privilegeResources) {
+          com.smartitengineering.user.client.api.Privilege privilege = privilegeResource.getPrivilege();
+          if (privilege.getName().equals(SITEL_ADMIN_USER_PRIVILEGE_TEST_2)) {
+            sitelUserGroupPrivilegesResource.add(privilege);
+          }
+        }
+      }
+    }
+    sitelUserGroupPrivilegesResource.get();
+    Assert.assertEquals(1, sitelUserGroupPrivilegesResource.getUserGroupPrivilegeResources().size());
+  }
+
+  @Test
+  public void doTestRemovePrivilegeFromUserGroup(){
+    List<UserGroupPrivilegeResource> userGroupPrivilegeResources = sitelUserGroupPrivilegesResource.getUserGroupPrivilegeResources();
+    for(UserGroupPrivilegeResource userGroupPrivilegeResource : userGroupPrivilegeResources){
+      com.smartitengineering.user.client.api.Privilege privilege = userGroupPrivilegeResource.getPrivilegeResource().getPrivilege();
+      if(privilege.getName().equals(SITEL_ADMIN_USER_PRIVILEGE_TEST_2)){
+        userGroupPrivilegeResource.delete();
+      }
+    }
+    sitelUserGroupPrivilegesResource.get();
+    Assert.assertEquals(0, sitelUserGroupPrivilegesResource.getUserGroupPrivilegeResources().size());
   }
 
   @Test
