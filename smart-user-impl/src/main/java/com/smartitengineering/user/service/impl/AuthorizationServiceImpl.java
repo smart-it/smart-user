@@ -7,10 +7,18 @@ package com.smartitengineering.user.service.impl;
 import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.domain.SecuredObject;
 import com.smartitengineering.user.domain.User;
+import com.smartitengineering.user.domain.UserGroup;
+import com.smartitengineering.user.parser.SmartUserStrings;
 import com.smartitengineering.user.service.AuthorizationService;
 import com.smartitengineering.user.service.SecuredObjectService;
+import com.smartitengineering.user.service.UserGroupService;
 import com.smartitengineering.user.service.UserService;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.security.AccessDecisionManager;
+import org.springframework.security.providers.encoding.BasePasswordEncoder;
 import org.springframework.security.vote.AccessDecisionVoter;
 
 /**
@@ -19,8 +27,9 @@ import org.springframework.security.vote.AccessDecisionVoter;
  */
 public class AuthorizationServiceImpl implements AuthorizationService {
 
-  private UserService UserService;
+  private UserService userService;
   private SecuredObjectService securedObjectService;
+  private UserGroupService userGroupService;
 
   public SecuredObjectService getSecuredObjectService() {
     return securedObjectService;
@@ -31,22 +40,26 @@ public class AuthorizationServiceImpl implements AuthorizationService {
   }
 
   public UserService getUserService() {
-    return UserService;
+    return userService;
   }
 
-  public void setUserService(UserService UserService) {
-    this.UserService = UserService;
+  public void setUserService(UserService userService) {
+    this.userService = userService;
   }
 
   @Override
   public Integer authorize(String username, String organizationName, String oid, Integer permission) {
 
-    User user = UserService.getUserByOrganizationAndUserName(organizationName, username);
+    User user = userService.getUserByOrganizationAndUserName(organizationName, username);
     if (user == null) {
       return AccessDecisionVoter.ACCESS_DENIED;
     }
     if (user != null && oid == null) {
       return AccessDecisionVoter.ACCESS_ABSTAIN;
+    }
+    if (oid.contains(SmartUserStrings.PRIVILEGES_URL)) {
+      return authorize(username, organizationName, SmartUserStrings.ORGANIZATIONS_URL +
+          SmartUserStrings.ORGANIZATION_UNIQUE_URL_FRAGMENT + "/" + organizationName, permission);
     }
     for (Privilege privilege : user.getPrivileges()) {
       if (oid.startsWith(privilege.getSecuredObject().getObjectID()) && (permission.intValue() & privilege.
@@ -59,19 +72,46 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     if (user != null && securedObject == null) {
       return AccessDecisionVoter.ACCESS_ABSTAIN;
     }
-    return authorize(user, securedObject, permission);
-
-  }
-
-  private Integer authorize(User user, SecuredObject securedObject, Integer permission) {
-
-    if (user == null || user.getPrivileges() == null || permission == null) {
-      return AccessDecisionVoter.ACCESS_DENIED;
+    else if (authorize(user.getPrivileges(), securedObject, permission) == AccessDecisionVoter.ACCESS_GRANTED) {
+      return AccessDecisionVoter.ACCESS_GRANTED;
     }
-    if (user != null && securedObject == null) {
+    else {
+      List<UserGroup> userGroups = new ArrayList<UserGroup>(userGroupService.getUserGroupsByUser(user));
+      for (UserGroup userGroup : userGroups){
+        if(authorize(userGroup.getPrivileges(), securedObject, permission)==AccessDecisionVoter.ACCESS_GRANTED)
+          return AccessDecisionVoter.ACCESS_GRANTED;
+      }
       return AccessDecisionVoter.ACCESS_ABSTAIN;
     }
-    for (Privilege privilege : user.getPrivileges()) {
+  }
+
+//  private Integer authorize(User user, SecuredObject securedObject, Integer permission) {
+//
+//    if (user == null || user.getPrivileges() == null || permission == null) {
+//      return AccessDecisionVoter.ACCESS_DENIED;
+//    }
+//    if (user != null && securedObject == null) {
+//      return AccessDecisionVoter.ACCESS_ABSTAIN;
+//    }
+//    for (Privilege privilege : user.getPrivileges()) {
+//      if (privilege.getSecuredObject().getObjectID().equals(securedObject.getObjectID()) && (permission.intValue() & privilege.
+//                                                                                             getPermissionMask().
+//                                                                                             intValue()) == permission.
+//          intValue()) {
+//        return AccessDecisionVoter.ACCESS_GRANTED;
+//      }
+//    }
+//    if (StringUtils.isNotBlank(securedObject.getParentObjectID())) {
+//      return authorize(user, securedObjectService.getByOrganizationAndObjectID(securedObject.getOrganization().
+//          getUniqueShortName(), securedObject.getParentObjectID()), permission);
+//    }
+//    else {
+//      return AccessDecisionVoter.ACCESS_DENIED;
+//    }
+//  }
+  private Integer authorize(Collection<Privilege> privileges, SecuredObject securedObject, Integer permission) {
+
+    for (Privilege privilege : privileges) {
       if (privilege.getSecuredObject().getObjectID().equals(securedObject.getObjectID()) && (permission.intValue() & privilege.
                                                                                              getPermissionMask().
                                                                                              intValue()) == permission.
@@ -80,7 +120,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
       }
     }
     if (StringUtils.isNotBlank(securedObject.getParentObjectID())) {
-      return authorize(user, securedObjectService.getByOrganizationAndObjectID(securedObject.getOrganization().
+      return authorize(privileges, securedObjectService.getByOrganizationAndObjectID(securedObject.getOrganization().
           getUniqueShortName(), securedObject.getParentObjectID()), permission);
     }
     else {
@@ -90,7 +130,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
   @Override
   public Boolean login(String username, String password) {
-    User user = UserService.getUserByUsername(username);
+    User user = userService.getUserByUsername(username);
     if (user != null && user.getPassword().equals(password)) {
       return true;
     }

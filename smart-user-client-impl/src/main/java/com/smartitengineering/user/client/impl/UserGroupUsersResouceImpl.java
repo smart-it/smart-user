@@ -5,16 +5,18 @@
 package com.smartitengineering.user.client.impl;
 
 import com.smartitengineering.user.client.api.User;
-import com.smartitengineering.user.client.api.UserGroupResource;
 import com.smartitengineering.user.client.api.UserGroupUserResource;
 import com.smartitengineering.user.client.api.UserGroupUsersResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.atom.AtomClientUtil;
+import com.smartitengineering.util.rest.client.ClientUtil;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.config.ClientConfig;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ws.rs.core.MediaType;
 import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 
@@ -26,6 +28,7 @@ public class UserGroupUsersResouceImpl extends AbstractFeedClientResource<Resour
     UserGroupUsersResource {
 
   public static final String REL_ALT = "alternate";
+  public static final String REL_USER_GROUP_USER = "user";
 
   public UserGroupUsersResouceImpl(ResourceLink link, Resource referrer) {
     super(referrer, link);
@@ -52,6 +55,9 @@ public class UserGroupUsersResouceImpl extends AbstractFeedClientResource<Resour
 
   @Override
   public UserGroupUserResource add(User user) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    ClientResponse response = post(MediaType.APPLICATION_JSON, user, ClientResponse.Status.CREATED);
+    final ResourceLink userLink = ClientUtil.createResourceLink(REL_USER_GROUP_USER, response.getLocation(),
+                                                               MediaType.APPLICATION_ATOM_XML);
+    return new UserGroupUserResourceImpl(userLink, this);
   }
 }
