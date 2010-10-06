@@ -59,7 +59,7 @@ public class ComprehensiveClientTest {
   public final int USER_NUM_AT_BEGINNING = 1;
   public final int ORG_PRIVILEGES_NUM_AT_BEGINNING = 2;
   public final int USER_PRIVILEGES_NUM_AT_BEGINNING = 1;
-  public final int NUM_OF_USER_GROUPS_AT_BEGINNING = 1;
+  public final int NUM_OF_USER_GROUPS_AT_BEGINNING = 0;
   public final int ZERO = 0;
   public String ORGS_OID = "test-oid";
   public String ORGS_OID_NAME = "Smart User Organizations";
@@ -454,51 +454,13 @@ public class ComprehensiveClientTest {
     catch (Exception e) {
       Assert.fail("Exception due to failure of adding privileges to user");
     }
-//    Assert.assertEquals(USER_PRIVILEGES_NUM_AT_BEGINNING + 1, sitelUserPrivsResource.getUserPrivilegeResources().size());
+    sitelUserPrivsResource.get();
+    Assert.assertEquals(USER_PRIVILEGES_NUM_AT_BEGINNING + 1, sitelUserPrivsResource.getUserPrivilegeResources().size());
     Assert.assertEquals("Admin User Profile Privilege", privilegeUser.getDisplayName());
   }
 
-//  @Test
-//  public void doTestCreateUserGroup() {
-//    sitelUserGroupsResource = sitelOrgResource.getUserGroupsResource();
-//    Assert.assertNotNull(sitelUserGroupsResource);
-//    UserGroupResource userGroupResource = null;
-//    UserGroup userGroup = new com.smartitengineering.user.client.impl.domain.UserGroup();
-//    userGroup.setName(SITEL_USER_GROUP_NAME);
-//    try {
-//      userGroupResource = sitelUserGroupsResource.create(userGroup);
-//    }
-//    catch (Exception e) {
-//      Assert.fail("Exception due to failure of creation user group");
-//    }
-//    sitelUserGroupResource = userGroupResource;
-//    sitelUserGroupsResource.get();
-//    Assert.assertNotNull(sitelUserGroupsResource);
-//    Assert.assertEquals(NUM_OF_USER_GROUPS_AT_BEGINNING, sitelUserGroupsResource.getUserGroupResources().size());
-//    Assert.assertEquals(SITEL_USER_GROUP_NAME, sitelUserGroupResource.getUserGroup().getName());
-//  }
-//
-//  @Test
-//  public void doTestAddUsersToUserGroup() {
-//    sitelUserGroupUsersResource = sitelUserGroupResource.getUserGroupUsersResource();
-//    Assert.assertEquals(ZERO, sitelUserGroupUsersResource.getUserGroupUserResources().size());
-////    sitelUserGroupUserResource = sitelUserGroupUsersResource.getUserGroupUserResources();
-//    UsersResource usersResource = sitelOrgResource.getUsersResource();
-//    List<UserResource> userResources = usersResource.getUserResources();
-//
-//    for (UserGroupResource userGroupResource : sitelUserGroupsResource.getUserGroupResources()) {
-//      if (userGroupResource.getUserGroup().getName().equals("SITEL_USER_GROUP_NAME")) {
-//        for (UserResource user : userResources) {
-//          if (user.getUser().getUser().getUsername().equals("modhu")) {
-//            sitelUserGroupUsersResource.add(user.getUser().getUser());
-//          }
-//        }
-//      }
-//    }
-//    Assert.assertEquals(1, sitelUserGroupUsersResource.getUserGroupUserResources().size());
-//  }
   @Test
-  public void doTestRemoveUserPrivilege() {
+  public void doTestRemoveUserPrivilegeFromUser() {
     sitelUserPrivsResource = sitelUserResource.getPrivilegesResource();
     List<UserPrivilegeResource> userPrivilegeResources = sitelUserPrivsResource.getUserPrivilegeResources();
     for (UserPrivilegeResource userPrivilegeResource : userPrivilegeResources) {
@@ -520,6 +482,61 @@ public class ComprehensiveClientTest {
     catch (Exception e) {
       Assert.fail("Exception because expected number of privileges doesn't match with the actual number");
     }
+  }
+
+  @Test
+  public void doTestCreateUserGroup() {
+    sitelUserGroupsResource = sitelOrgResource.getUserGroupsResource();
+    Assert.assertNotNull(sitelUserGroupsResource);
+    UserGroupResource userGroupResource = null;
+    UserGroup userGroup = new com.smartitengineering.user.client.impl.domain.UserGroup();
+    userGroup.setName(SITEL_USER_GROUP_NAME);
+    try {
+      userGroupResource = sitelUserGroupsResource.create(userGroup);
+    }
+    catch (Exception e) {
+      Assert.fail("Exception due to failure of creation user group");
+    }
+    sitelUserGroupResource = userGroupResource;
+    sitelUserGroupsResource.get();
+    Assert.assertNotNull(sitelUserGroupsResource);
+    Assert.assertEquals(NUM_OF_USER_GROUPS_AT_BEGINNING + 1, sitelUserGroupsResource.getUserGroupResources().size());
+    Assert.assertEquals(SITEL_USER_GROUP_NAME, sitelUserGroupResource.getUserGroup().getName());
+  }
+
+  @Test
+  public void doTestAddUsersToUserGroup() {
+    sitelUserGroupUsersResource = sitelUserGroupResource.getUserGroupUsersResource();
+    Assert.assertEquals(ZERO, sitelUserGroupUsersResource.getUserGroupUserResources().size());
+//    sitelUserGroupUserResource = sitelUserGroupUsersResource.getUserGroupUserResources();
+    UsersResource usersResource = sitelOrgResource.getUsersResource();
+    List<UserResource> userResources = usersResource.getUserResources();
+
+    for (UserGroupResource userGroupResource : sitelUserGroupsResource.getUserGroupResources()) {
+      if (userGroupResource.getUserGroup().getName().equals(SITEL_USER_GROUP_NAME)) {
+        for (UserResource userResource : userResources) {
+          com.smartitengineering.user.client.api.User user = userResource.getUser().getUser();          
+          if (user.getUsername().equals(SITEL_ORG_USER_USERNAME)) {            
+            sitelUserGroupUsersResource.add(user);
+          }
+        }
+      }
+    }
+    sitelUserGroupUsersResource.get();
+    Assert.assertEquals(1, sitelUserGroupUsersResource.getUserGroupUserResources().size());
+  }
+
+  @Test
+  public void doTestRemoveUserFromUserGroup(){
+    List<UserGroupUserResource> userGroupUserResources = sitelUserGroupUsersResource.getUserGroupUserResources();
+    for(UserGroupUserResource userGroupUserResource : userGroupUserResources){
+      com.smartitengineering.user.client.api.UserPerson user = userGroupUserResource.getUserResource().getUser();
+      if(user.getUser().getUsername().equals(SITEL_ORG_USER_USERNAME)){
+        userGroupUserResource.delete();
+      }
+    }
+    sitelUserGroupUsersResource.get();
+    Assert.assertEquals(0, sitelUserGroupUsersResource.getUserGroupUserResources().size());
   }
 
   @Test
