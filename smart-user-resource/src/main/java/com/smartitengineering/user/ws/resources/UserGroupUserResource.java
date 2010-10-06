@@ -95,9 +95,9 @@ public class UserGroupUserResource extends AbstractResource{
     userFeed.addLink(altLink);
 
     Link userLink = abderaFactory.newLink();
-    altLink.setHref(USER_URI_BUILDER.clone().build(organizationUniqueShortName, username).toString());
-    altLink.setRel(REL_USER);
-    altLink.setMimeType(MediaType.APPLICATION_JSON);
+    userLink.setHref(USER_URI_BUILDER.clone().build(organizationUniqueShortName, username).toString());
+    userLink.setRel(REL_USER);
+    userLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(userLink);
 
     return userFeed;

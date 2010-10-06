@@ -9,6 +9,7 @@ import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
+import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.domain.UserGroup;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.UserGroupService;
@@ -99,11 +100,9 @@ public class UserGroupServiceImpl extends AbstractCommonDaoImpl<UserGroup> imple
     }
     if (userGroup.getId() == null) {
       Integer count = (Integer) super.getOther(
-          QueryParameterFactory.getElementCountParam("name"), QueryParameterFactory.getConjunctionParam(
-          QueryParameterFactory.getEqualPropertyParam("organization.id",
-                                                      userGroup.getOrganization().getId()), QueryParameterFactory.
-          getStringLikePropertyParam(
-          "name", userGroup.getName())));
+          QueryParameterFactory.getElementCountParam("name"), QueryParameterFactory.getConjunctionParam(QueryParameterFactory.
+          getEqualPropertyParam("organization.id", userGroup.getOrganization().getId()), QueryParameterFactory.
+          getStringLikePropertyParam("name", userGroup.getName())));
       if (count.intValue() > 0) {
         throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
             UniqueConstrainedField.USER_USERNAME.name());
@@ -113,12 +112,9 @@ public class UserGroupServiceImpl extends AbstractCommonDaoImpl<UserGroup> imple
       Integer count = (Integer) super.getOther(
           QueryParameterFactory.getElementCountParam("name"),
           QueryParameterFactory.getConjunctionParam(
-          QueryParameterFactory.getNotEqualPropertyParam("id",
-                                                         userGroup.getId()), QueryParameterFactory.getEqualPropertyParam(
-          "organization.id",
-                                                                                                                         userGroup.
-          getOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
-          "name", userGroup.getName())));
+          QueryParameterFactory.getNotEqualPropertyParam("id", userGroup.getId()), QueryParameterFactory.
+          getEqualPropertyParam("organization.id", userGroup.getOrganization().getId()), QueryParameterFactory.
+          getStringLikePropertyParam("name", userGroup.getName())));
       if (count.intValue() > 0) {
         throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
             UniqueConstrainedField.USER_USERNAME.name());
@@ -130,5 +126,11 @@ public class UserGroupServiceImpl extends AbstractCommonDaoImpl<UserGroup> imple
   @Override
   public Collection<UserGroup> getAllUserGroup() {
     return getAll();
+  }
+
+  @Override
+  public Collection<UserGroup> getUserGroupsByUser(User user) {
+    return getList(QueryParameterFactory.getNestedParametersParam("users", FetchMode.DEFAULT, QueryParameterFactory.
+        getEqualPropertyParam("user.id", user.getId())));
   }
 }

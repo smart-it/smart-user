@@ -66,21 +66,25 @@ public class UserGroupUsersResource extends AbstractResource {
     this.groupName = groupName;
     userGroup = Services.getInstance().getUserGroupService().getByOrganizationAndUserGroupName(organizationName,
                                                                                                groupName);
+    System.out.println("--------------------------------------Start From service impl");
+    System.out.println(userGroup.getName());
+    System.out.println(userGroup.getUsers().size());
+    System.out.println("--------------------------------------End from service impl");
     organization = getOrganization();
   }
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
-  @Path("/before/{groupName}")
-  public Response getBefore(@PathParam("groupName") String beforeGroupName) {
-    return get(beforeGroupName, true);
+  @Path("/before/{username}")
+  public Response getBefore(@PathParam("username") String beforeUsername) {
+    return get(beforeUsername, true);
   }
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
-  @Path("/after/{groupName}")
-  public Response getAfter(@PathParam("groupName") String afterGroupName) {
-    return get(afterGroupName, false);
+  @Path("/after/{username}")
+  public Response getAfter(@PathParam("username") String afterUsername) {
+    return get(afterUsername, false);
   }
 
   @GET
@@ -89,9 +93,9 @@ public class UserGroupUsersResource extends AbstractResource {
     return get(null, true);
   }
 
-  public Response get(String groupName, boolean isBefore) {
+  public Response get(String userName, boolean isBefore) {
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization == null || userGroup == null){
+    if (organization == null || userGroup == null) {
       return Response.status(Status.NOT_FOUND).build();
     }
 
@@ -148,7 +152,7 @@ public class UserGroupUsersResource extends AbstractResource {
         userGroupUserEntry.setUpdated(user.getLastModifiedDate());
 
         Link userGroupUserLink = abderaFactory.newLink();
-        userGroupUserLink.setHref(UriBuilder.fromResource(OrganizationUserResource.class).build(organizationName, user.
+        userGroupUserLink.setHref(UriBuilder.fromResource(UserGroupUserResource.class).build(organizationName, groupName, user.
             getUsername()).toString());
         userGroupUserLink.setRel(Link.REL_ALTERNATE);
         userGroupUserLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
@@ -165,7 +169,7 @@ public class UserGroupUsersResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response post(User user) {
     ResponseBuilder responseBuilder;
-    if(organization == null || userGroup == null){
+    if (organization == null || userGroup == null) {
       return Response.status(Status.NOT_FOUND).build();
     }
     try {
@@ -175,9 +179,10 @@ public class UserGroupUsersResource extends AbstractResource {
       else {
         user.setOrganization(organization);
         userGroup.getUsers().add(user);
-        Services.getInstance().getUserService().update(user);
+        Services.getInstance().getUserGroupService().update(userGroup);
         responseBuilder = Response.status(Status.CREATED);
-        responseBuilder.location(uriInfo.getBaseUriBuilder().path(UserGroupUserResource.USER_GROUP_USER_URI_BUILDER.clone().
+        responseBuilder.location(uriInfo.getBaseUriBuilder().path(UserGroupUserResource.USER_GROUP_USER_URI_BUILDER.
+            clone().
             build(organizationName, groupName, user.getUsername()).toString()).build());
       }
     }
