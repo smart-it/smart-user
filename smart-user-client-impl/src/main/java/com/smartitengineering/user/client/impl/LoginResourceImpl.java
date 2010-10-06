@@ -8,6 +8,7 @@ import com.smartitengineering.user.client.api.AuthorizationResource;
 import com.smartitengineering.user.client.api.LoginResource;
 import com.smartitengineering.user.client.api.OrganizationResource;
 import com.smartitengineering.user.client.api.OrganizationsResource;
+import com.smartitengineering.user.client.api.RolesResource;
 import com.smartitengineering.user.client.api.UserResource;
 import com.smartitengineering.user.client.api.UsersResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
@@ -32,6 +33,7 @@ class LoginResourceImpl
   private static final String REL_ORG = "Organization";
   private static final String REL_USERS = "Users";
   private static final String REL_USER = "User";
+  private static final String REL_ROLES = "Roles";
   private static final String REL_ACL_AUTH = "aclAuth";
   private static final String REL_ROLE_AUTH = "roleAuth";
   private String userName;
@@ -50,11 +52,6 @@ class LoginResourceImpl
   @Override
   public OrganizationsResource getOrganizationsResource() {
     return new OrganizationsResourceImpl(getRelatedResourceUris().getFirst(REL_ORGS), this);
-  }
-
-  @Override
-  public UsersResource getUsersResource(String OrganizationShortName) {
-    return new UsersResourceImpl(getRelatedResourceUris().getFirst(REL_USERS), this);
   }
 
   @Override
@@ -100,5 +97,10 @@ class LoginResourceImpl
   @Override
   protected Resource<? extends Feed> instantiatePageableResource(ResourceLink link) {
     return null;
+  }
+
+  @Override
+  public RolesResource getRolesResource() {
+    return new RolesResourceImpl(getRelatedResourceUris().getFirst(REL_ROLES), this);
   }
 }
