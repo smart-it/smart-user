@@ -45,12 +45,13 @@ public class UserGroupPrivilegeResource extends AbstractResource {
     this.privilegeName = privilegeName;
     organization = getOrganization();
     userGroup = getUserGroup();
+    privilege = getPrivilege();
   }
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
-    ResponseBuilder responseBuilder;
+    ResponseBuilder responseBuilder;   
     if(organization ==null || userGroup == null || privilege == null){
       return  Response.status(Status.NOT_FOUND).build();
     }
@@ -100,9 +101,9 @@ public class UserGroupPrivilegeResource extends AbstractResource {
     privilegeFeed.addLink(altLink);
 
     Link privLink = abderaFactory.newLink();
-    altLink.setHref(PRIVILEGE_URI_BUILDER.clone().build(organizationUniqueShortName, privilegeName).toString());
-    altLink.setRel(REL_PRIV);
-    altLink.setMimeType(MediaType.APPLICATION_JSON);
+    privLink.setHref(PRIVILEGE_URI_BUILDER.clone().build(organizationUniqueShortName, privilegeName).toString());
+    privLink.setRel(REL_PRIV);
+    privLink.setMimeType(MediaType.APPLICATION_JSON);
     privilegeFeed.addLink(privLink);
 
     return privilegeFeed;

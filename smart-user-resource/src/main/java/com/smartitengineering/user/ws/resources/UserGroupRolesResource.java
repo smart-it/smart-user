@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Organization;
@@ -33,7 +32,8 @@ import org.apache.abdera.model.Link;
  * @author uzzal
  */
 @Path("/orgs/sn/{organizationName}/usergroups/name/{groupName}/roles")
-public class UserGroupRolesResource extends AbstractResource{
+public class UserGroupRolesResource extends AbstractResource {
+
   private String organizationName;
   private String groupName;
   private Organization organization;
@@ -65,10 +65,11 @@ public class UserGroupRolesResource extends AbstractResource{
   }
 
   public UserGroupRolesResource(@PathParam("organizationName") String organizationName,
-                           @PathParam("groupName") String groupName) {
+                                @PathParam("groupName") String groupName) {
     this.organizationName = organizationName;
     this.groupName = groupName;
-    userGroup = Services.getInstance().getUserGroupService().getByOrganizationAndUserGroupName(organizationName, groupName);
+    userGroup = Services.getInstance().getUserGroupService().getByOrganizationAndUserGroupName(organizationName,
+                                                                                               groupName);
     organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationName);
   }
 
@@ -96,7 +97,7 @@ public class UserGroupRolesResource extends AbstractResource{
     if (count == null) {
       count = 10;
     }
-    if(organization==null || userGroup==null){
+    if (organization == null || userGroup == null) {
       ResponseBuilder responseBuilder = Response.status(Status.NOT_FOUND);
       return responseBuilder.build();
     }
@@ -146,7 +147,8 @@ public class UserGroupRolesResource extends AbstractResource{
         // setting link to each individual role
         Link roleLink = abderaFactory.newLink();
         roleLink.setRel(Link.REL_ALTERNATE);
-        roleLink.setHref(RolesResource.ROLE_URI_BUILDER.build(role.getName()).toString());
+        roleLink.setHref(UserGroupRoleResource.USER_GROUP_ROLE_URI_BUILDER.build(organizationName, groupName, role.
+            getName()).toString());
         roleLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
         roleEntry.addLink(roleLink);
         atomFeed.addEntry(roleEntry);
@@ -161,7 +163,7 @@ public class UserGroupRolesResource extends AbstractResource{
   @Consumes(MediaType.APPLICATION_JSON)
   public Response post(Role role) {
     ResponseBuilder responseBuilder;
-     if(organization==null || userGroup==null){
+    if (organization == null || userGroup == null) {
       responseBuilder = Response.status(Status.NOT_FOUND);
       return responseBuilder.build();
     }
@@ -174,8 +176,10 @@ public class UserGroupRolesResource extends AbstractResource{
         userGroup.getRoles().add(role);
         Services.getInstance().getUserGroupService().update(userGroup);
         responseBuilder = Response.status(Status.CREATED);
-        responseBuilder.location(uriInfo.getBaseUriBuilder().path(UserGroupRoleResource.ROLE_URI_BUILDER.clone().build(organizationName, groupName, role.getName()).toString()).
-              build());
+        responseBuilder.location(uriInfo.getBaseUriBuilder().path(UserGroupRoleResource.USER_GROUP_ROLE_URI_BUILDER.
+            clone().build(
+            organizationName, groupName, role.getName()).toString()).
+            build());
       }
     }
     catch (Exception ex) {
@@ -184,5 +188,4 @@ public class UserGroupRolesResource extends AbstractResource{
     }
     return responseBuilder.build();
   }
-
 }

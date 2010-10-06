@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Organization;
@@ -47,14 +46,16 @@ public class UserGroupPrivilegesResource extends AbstractResource {
     USER_GROUP_PRIVILEGE_BEFORE_NAME_URIBUILDER = UriBuilder.fromResource(UserGroupPrivilegesResource.class);
 
     try {
-      USER_GROUP_PRIVILEGE_BEFORE_NAME_URIBUILDER.path(UserGroupPrivilegesResource.class.getMethod("getBefore", String.class));
+      USER_GROUP_PRIVILEGE_BEFORE_NAME_URIBUILDER.path(UserGroupPrivilegesResource.class.getMethod("getBefore",
+                                                                                                   String.class));
     }
     catch (Exception ex) {
       ex.printStackTrace();
     }
     USER_GROUP_PRIVILEGE_AFTER_NAME_URIBUILDER = UriBuilder.fromResource(UserGroupPrivilegesResource.class);
     try {
-      USER_GROUP_PRIVILEGE_AFTER_NAME_URIBUILDER.path(UserGroupPrivilegesResource.class.getMethod("getAfter", String.class));
+      USER_GROUP_PRIVILEGE_AFTER_NAME_URIBUILDER.path(UserGroupPrivilegesResource.class.getMethod("getAfter",
+                                                                                                  String.class));
     }
     catch (Exception ex) {
       ex.printStackTrace();
@@ -62,10 +63,11 @@ public class UserGroupPrivilegesResource extends AbstractResource {
   }
 
   public UserGroupPrivilegesResource(@PathParam("organizationName") String organizationName,
-                                @PathParam("groupName") String groupName) {
+                                     @PathParam("groupName") String groupName) {
     this.organizationName = organizationName;
     this.groupName = groupName;
-    userGroup = Services.getInstance().getUserGroupService().getByOrganizationAndUserGroupName(organizationName, groupName);
+    userGroup = Services.getInstance().getUserGroupService().getByOrganizationAndUserGroupName(organizationName,
+                                                                                               groupName);
     organization = getOrganization();
   }
 
@@ -91,8 +93,8 @@ public class UserGroupPrivilegesResource extends AbstractResource {
 
   public Response get(String privilegeName, boolean isBefore) {
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization ==null || userGroup == null ){
-      return  Response.status(Status.NOT_FOUND).build();
+    if (organization == null || userGroup == null) {
+      return Response.status(Status.NOT_FOUND).build();
     }
 
     // create a new atom feed
@@ -147,7 +149,8 @@ public class UserGroupPrivilegesResource extends AbstractResource {
         userPrivilegeEntry.setSummary(privilege.getShortDescription());
 
         Link userPrivilegeLink = abderaFactory.newLink();
-        userPrivilegeLink.setHref(UriBuilder.fromResource(OrganizationPrivilegeResource.class).build(organizationName, privilege.
+        userPrivilegeLink.setHref(UriBuilder.fromResource(UserGroupPrivilegeResource.class).build(organizationName,
+                                                                                                  groupName, privilege.
             getName()).toString());
         userPrivilegeLink.setRel(Link.REL_ALTERNATE);
         userPrivilegeLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
@@ -164,8 +167,16 @@ public class UserGroupPrivilegesResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response post(Privilege privilege) {
     ResponseBuilder responseBuilder;
-    if(organization ==null || userGroup == null ){
-      return  Response.status(Status.NOT_FOUND).build();
+    System.out.println("---------------------Start form resource ");
+    if (organization == null) {
+      System.out.println("Organization null");
+    }
+    if (userGroup == null) {
+      System.out.println("User Group null");
+    }
+    System.out.println("---------------------End form resource ");
+    if (organization == null || userGroup == null) {
+      return Response.status(Status.NOT_FOUND).build();
     }
     try {
       if (privilege.getId() == null || privilege.getVersion() == null) {
@@ -176,7 +187,8 @@ public class UserGroupPrivilegesResource extends AbstractResource {
         userGroup.getPrivileges().add(privilege);
         Services.getInstance().getUserGroupService().update(userGroup);
         responseBuilder = Response.status(Status.CREATED);
-        responseBuilder.location(uriInfo.getBaseUriBuilder().path(UserPrivilegeResource.PRIVILEGE_URI_BUILDER.clone().
+        responseBuilder.location(uriInfo.getBaseUriBuilder().path(UserGroupPrivilegeResource.USER_GROUP_PRIVILEGE_URI_BUILDER.
+            clone().
             build(organizationName, groupName, privilege.getName()).toString()).build());
       }
     }
