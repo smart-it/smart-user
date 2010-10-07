@@ -35,16 +35,16 @@ public class RootResourceImpl
   }
 
   @Override
-  public LoginResource performAuthentication(String userName,
-                                             String password) {
+  public LoginResource getLoginResource() {
     try {
-      return new LoginResourceImpl(userName, password, getLoginLink(), this);
+      return new LoginResourceImpl(LoginCenter.getUsername(), LoginCenter.getPassword(), getLoginLink(), this);
     }
     catch (URISyntaxException ex) {
       throw new RuntimeException(ex);
     }
   }
 
+  @Override
   public ResourceLink getLoginLink() {
     return  getRelatedResourceUris().getFirst(REL_LOGIN);
   }

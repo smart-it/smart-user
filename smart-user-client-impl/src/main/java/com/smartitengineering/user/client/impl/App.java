@@ -34,7 +34,7 @@ public class App {
 
 
 
-    LoginResource loginResource = rootResource.performAuthentication("smartadmin@smart-user", "russel");
+    LoginResource loginResource = rootResource.getLoginResource();
 
     loginResource.getAclAuthorizationResource("smartadmin", "smart-user", "/orgs", 4);
 
