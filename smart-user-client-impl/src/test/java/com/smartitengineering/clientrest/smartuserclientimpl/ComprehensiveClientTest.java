@@ -5,6 +5,8 @@ import com.smartitengineering.user.client.api.OrganizationResource;
 import com.smartitengineering.user.client.api.OrganizationsResource;
 import com.smartitengineering.user.client.api.PrivilegeResource;
 import com.smartitengineering.user.client.api.PrivilegesResource;
+import com.smartitengineering.user.client.api.RoleResource;
+import com.smartitengineering.user.client.api.RolesResource;
 import com.smartitengineering.user.client.api.RootResource;
 import com.smartitengineering.user.client.api.SecuredObjectResource;
 import com.smartitengineering.user.client.api.SecuredObjectsResource;
@@ -12,6 +14,8 @@ import com.smartitengineering.user.client.api.UserGroup;
 import com.smartitengineering.user.client.api.UserGroupPrivilegeResource;
 import com.smartitengineering.user.client.api.UserGroupPrivilegesResource;
 import com.smartitengineering.user.client.api.UserGroupResource;
+import com.smartitengineering.user.client.api.UserGroupRoleResource;
+import com.smartitengineering.user.client.api.UserGroupRolesResource;
 import com.smartitengineering.user.client.api.UserGroupUserResource;
 import com.smartitengineering.user.client.api.UserGroupUsersResource;
 import com.smartitengineering.user.client.api.UserGroupsResource;
@@ -29,7 +33,7 @@ import com.smartitengineering.user.client.impl.domain.Privilege;
 import com.smartitengineering.user.client.impl.domain.SecuredObject;
 import com.smartitengineering.user.client.impl.domain.User;
 import com.smartitengineering.user.client.impl.domain.UserPerson;
-import com.smartitengineering.user.client.impl.login.LoginCenter;
+import com.smartitengineering.user.domain.GlobalRole;
 import com.smartitengineering.util.rest.client.ApplicationWideClientFactoryImpl;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import java.io.File;
@@ -47,6 +51,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class ComprehensiveClientTest {
 
+  public static final String PASSWORD = "02040250204039";
+  public static final String USERNAME = "smartadmin@smart-user";
   public final String CHITTAGONG = "Chittagong";
   public final String DHAKA = "Dhaka";
   public final String BANGLADESH = "Bangladesh";
@@ -61,6 +67,7 @@ public class ComprehensiveClientTest {
   public final int USER_NUM_AT_BEGINNING = 1;
   public final int ORG_PRIVILEGES_NUM_AT_BEGINNING = 2;
   public final int USER_PRIVILEGES_NUM_AT_BEGINNING = 1;
+  public final int ADMIN_USER_PRIVILEGES_NUM_AT_BEGINNING = 2;
   public final int NUM_OF_USER_GROUPS_AT_BEGINNING = 0;
   public final int ZERO = 0;
   public final String ORGS_OID = "test-oid";
@@ -70,21 +77,23 @@ public class ComprehensiveClientTest {
   public final String USERS_OID = "test-user-oid";
   private final String SITEL_ADMIN_USER_PRIVILEGE_TEST_1 = "organization-admin-user-privilege-test-1";
   private final String SITEL_ADMIN_USER_PRIVILEGE_TEST_2 = "organization-admin-user-privilege-test-2";
-
   private static Server jettyServer;
   private static final int PORT = 9090;
   private static OrganizationsResource orgsResource;
+  private static RootResource rootResource;
+  private static RolesResource rolesResource;
   private static OrganizationResource sitelOrgResource;
   private static UsersResource sitelUsersResource;
   private static UserResource sitelUserResource;
-  private static PrivilegesResource sitelPrivsResources;
+  private static PrivilegesResource sitelPrivsResource;
   private static UserPrivilegesResource sitelUserPrivsResource;
   private static UserGroupsResource sitelUserGroupsResource;
   private static UserGroupResource sitelUserGroupResource;
   private static UserGroupUsersResource sitelUserGroupUsersResource;
-  private static UserGroupUserResource sitelUserGroupUserResource;
+  private static UserGroupRolesResource sitelUserGroupRolesResource;
   private static UserGroupPrivilegesResource sitelUserGroupPrivilegesResource;
-  private static UserGroupPrivilegeResource sitelUserGroupPrivilegeResource;
+  private LoginResource sitelAdminUserLoginResource;
+  private RootResource sitelAdminRootResource;
 
   @BeforeClass
   public static void setup()
@@ -109,8 +118,6 @@ public class ComprehensiveClientTest {
     ClassPathXmlApplicationContext classPathXmlApplicationContext =
                                    new ClassPathXmlApplicationContext("config-context.xml");
     System.setProperty(ApplicationWideClientFactoryImpl.TRACE, Boolean.TRUE.toString());
-    LoginCenter.setUsername("smartadmin@smart-user");
-    LoginCenter.setPassword("02040250204039");
   }
 
   @AfterClass
@@ -120,14 +127,14 @@ public class ComprehensiveClientTest {
     jettyServer.stop();
   }
 
-
-
   @Test
   public void testBootstraping() {
-    RootResource rootResource = RootResourceImpl.getInstance();
+    rootResource = login(USERNAME, PASSWORD);
     Assert.assertNotNull(rootResource);
-    LoginResource loginResource = rootResource.performAuthentication("smartadmin@smart-user", "02040250204039");
+    LoginResource loginResource = rootResource.getLoginResource();
     Assert.assertNotNull(loginResource);
+    rolesResource = loginResource.getRolesResource();
+    Assert.assertNotNull(rolesResource);
     OrganizationResource orgResource = loginResource.getOrganizationResource();
     Assert.assertNotNull(orgResource);
     orgsResource = loginResource.getOrganizationsResource();
@@ -235,9 +242,9 @@ public class ComprehensiveClientTest {
     Assert.assertEquals(USER_NUM_AT_BEGINNING, sitelUsersResource.getUserResources().size());
     Assert.assertEquals(SITEL_ADMIN_USER_NAME, userResources.get(0).getUser().getUser().getUsername());
     Assert.assertEquals(SITEL_ADMIN_USER_PASSWORD, userResources.get(0).getUser().getUser().getPassword());
-    sitelPrivsResources = sitelOrgResource.getPrivilegesResource();
-    Assert.assertNotNull(sitelPrivsResources);
-    Assert.assertEquals(ORG_PRIVILEGES_NUM_AT_BEGINNING, sitelPrivsResources.getPrivilegeResources().size());
+    sitelPrivsResource = sitelOrgResource.getPrivilegesResource();
+    Assert.assertNotNull(sitelPrivsResource);
+    Assert.assertEquals(ORG_PRIVILEGES_NUM_AT_BEGINNING, sitelPrivsResource.getPrivilegeResources().size());
   }
 
   @Test
@@ -385,9 +392,9 @@ public class ComprehensiveClientTest {
   @Test
   public void doTestCreatePrivilegesofOrganization() {
     try {
-      sitelPrivsResources = sitelOrgResource.getPrivilegesResource();
-      Assert.assertNotNull(sitelPrivsResources);
-      Assert.assertEquals(ORG_PRIVILEGES_NUM_AT_BEGINNING + 2, sitelPrivsResources.getPrivilegeResources().size());
+      sitelPrivsResource = sitelOrgResource.getPrivilegesResource();
+      Assert.assertNotNull(sitelPrivsResource);
+      Assert.assertEquals(ORG_PRIVILEGES_NUM_AT_BEGINNING + 2, sitelPrivsResource.getPrivilegeResources().size());
     }
     catch (Exception e) {
       Assert.fail("Expected number of privileges doesn't match with the actual number");
@@ -408,15 +415,15 @@ public class ComprehensiveClientTest {
     privilege.setSecuredObject(securedObjectApi);
     com.smartitengineering.user.client.api.PrivilegeResource orgPrivilegesResource = null;
     try {
-      orgPrivilegesResource = sitelPrivsResources.create(
+      orgPrivilegesResource = sitelPrivsResource.create(
           privilege);
     }
     catch (Exception e) {
       Assert.fail("Exception due to failure of creating organization privileges");
     }
     try {
-      sitelPrivsResources.get();
-      Assert.assertEquals(ORG_PRIVILEGES_NUM_AT_BEGINNING + 3, sitelPrivsResources.getPrivilegeResources().size());
+      sitelPrivsResource.get();
+      Assert.assertEquals(ORG_PRIVILEGES_NUM_AT_BEGINNING + 3, sitelPrivsResource.getPrivilegeResources().size());
       Assert.assertNotNull(orgPrivilegesResource);
       Assert.assertEquals("Smart User Adminstration", privilege.getDisplayName());
     }
@@ -427,7 +434,7 @@ public class ComprehensiveClientTest {
 
   @Test
   public void doTestAddPrivilegesToUser() {
-    sitelPrivsResources = sitelOrgResource.getPrivilegesResource();
+    sitelPrivsResource = sitelOrgResource.getPrivilegesResource();
     sitelUserPrivsResource = sitelUserResource.getPrivilegesResource();
     Assert.assertNotNull(sitelUserPrivsResource);
     Assert.assertEquals(USER_PRIVILEGES_NUM_AT_BEGINNING, sitelUserPrivsResource.getUserPrivilegeResources().size());
@@ -452,7 +459,7 @@ public class ComprehensiveClientTest {
     privilegeUser.setSecuredObject(securedObjectUserApi);
     PrivilegeResource privilegeResource = null;
     try {
-      privilegeResource = sitelPrivsResources.create(privilegeUser);
+      privilegeResource = sitelPrivsResource.create(privilegeUser);
     }
     catch (Exception e) {
       Assert.fail("Exception due to failure of creating privileges for user");
@@ -464,8 +471,10 @@ public class ComprehensiveClientTest {
       Assert.fail("Exception due to failure of adding privileges to user");
     }
     sitelUserPrivsResource.get();
+    privilegeUser = (Privilege) privilegeResource.getPrivilege();
     Assert.assertEquals(USER_PRIVILEGES_NUM_AT_BEGINNING + 1, sitelUserPrivsResource.getUserPrivilegeResources().size());
     Assert.assertEquals("Admin User Profile Privilege", privilegeUser.getDisplayName());
+    Assert.assertEquals(USERS_OID, privilegeUser.getSecuredObject().getObjectID());
   }
 
   @Test
@@ -523,8 +532,8 @@ public class ComprehensiveClientTest {
     for (UserGroupResource userGroupResource : sitelUserGroupsResource.getUserGroupResources()) {
       if (userGroupResource.getUserGroup().getName().equals(SITEL_USER_GROUP_NAME)) {
         for (UserResource userResource : userResources) {
-          com.smartitengineering.user.client.api.User user = userResource.getUser().getUser();          
-          if (user.getUsername().equals(SITEL_ORG_USER_USERNAME)) {            
+          com.smartitengineering.user.client.api.User user = userResource.getUser().getUser();
+          if (user.getUsername().equals(SITEL_ORG_USER_USERNAME)) {
             sitelUserGroupUsersResource.add(user);
           }
         }
@@ -535,11 +544,11 @@ public class ComprehensiveClientTest {
   }
 
   @Test
-  public void doTestRemoveUserFromUserGroup(){
+  public void doTestRemoveUserFromUserGroup() {
     List<UserGroupUserResource> userGroupUserResources = sitelUserGroupUsersResource.getUserGroupUserResources();
-    for(UserGroupUserResource userGroupUserResource : userGroupUserResources){
+    for (UserGroupUserResource userGroupUserResource : userGroupUserResources) {
       com.smartitengineering.user.client.api.UserPerson user = userGroupUserResource.getUserResource().getUser();
-      if(user.getUser().getUsername().equals(SITEL_ORG_USER_USERNAME)){
+      if (user.getUser().getUsername().equals(SITEL_ORG_USER_USERNAME)) {
         userGroupUserResource.delete();
       }
     }
@@ -570,11 +579,13 @@ public class ComprehensiveClientTest {
   }
 
   @Test
-  public void doTestRemovePrivilegeFromUserGroup(){
-    List<UserGroupPrivilegeResource> userGroupPrivilegeResources = sitelUserGroupPrivilegesResource.getUserGroupPrivilegeResources();
-    for(UserGroupPrivilegeResource userGroupPrivilegeResource : userGroupPrivilegeResources){
-      com.smartitengineering.user.client.api.Privilege privilege = userGroupPrivilegeResource.getPrivilegeResource().getPrivilege();
-      if(privilege.getName().equals(SITEL_ADMIN_USER_PRIVILEGE_TEST_2)){
+  public void doTestRemovePrivilegeFromUserGroup() {
+    List<UserGroupPrivilegeResource> userGroupPrivilegeResources = sitelUserGroupPrivilegesResource.
+        getUserGroupPrivilegeResources();
+    for (UserGroupPrivilegeResource userGroupPrivilegeResource : userGroupPrivilegeResources) {
+      com.smartitengineering.user.client.api.Privilege privilege = userGroupPrivilegeResource.getPrivilegeResource().
+          getPrivilege();
+      if (privilege.getName().equals(SITEL_ADMIN_USER_PRIVILEGE_TEST_2)) {
         userGroupPrivilegeResource.delete();
       }
     }
@@ -583,21 +594,223 @@ public class ComprehensiveClientTest {
   }
 
   @Test
-  public void doTestDeleteOrganization() {
-    Assert.assertEquals(ORGANIZATION_NUM_AT_BEGINNING + 2, orgsResource.getOrganizationResources().size());
-    Assert.assertNotNull(sitelUsersResource);
-    Assert.assertEquals(USER_NUM_AT_BEGINNING + 2, sitelUsersResource.getUserResources().size());
-    Assert.assertNotNull(sitelPrivsResources);
-    Assert.assertEquals(ORG_PRIVILEGES_NUM_AT_BEGINNING + 3, sitelPrivsResources.getPrivilegeResources().size());
+  public void doTestAddRoleToUserGroup() {
+    sitelUserGroupRolesResource = sitelUserGroupResource.getUserGroupRolesResource();
+    Assert.assertEquals(ZERO, sitelUserGroupRolesResource.getUserGroupRoleResources().size());
+
+
+    List<RoleResource> roleResources = rolesResource.getRoleResources();
+
+    for (UserGroupResource userGroupResource : sitelUserGroupsResource.getUserGroupResources()) {
+      if (userGroupResource.getUserGroup().getName().equals(SITEL_USER_GROUP_NAME)) {
+        for (RoleResource roleResource : roleResources) {
+          com.smartitengineering.user.client.api.Role role = roleResource.getRole();
+          if (role.getName().equals(GlobalRole.ROLE_READ.name())) {
+            sitelUserGroupRolesResource.add(role);
+          }
+        }
+      }
+    }
+    sitelUserGroupRolesResource.get();
+    Assert.assertEquals(1, sitelUserGroupRolesResource.getUserGroupRoleResources().size());
+  }
+
+  @Test
+  public void doTestRemoveRoleFromUserGroup() {
+    List<UserGroupRoleResource> userGroupRoleResources = sitelUserGroupRolesResource.getUserGroupRoleResources();
+    for (UserGroupRoleResource userGroupRoleResource : userGroupRoleResources) {
+      com.smartitengineering.user.client.api.Role role = userGroupRoleResource.getRoleResource().getRole();
+      if (role.getName().equals(GlobalRole.ROLE_READ.name())) {
+        userGroupRoleResource.delete();
+      }
+    }
+    sitelUserGroupRolesResource.get();
+    Assert.assertEquals(0, sitelUserGroupRolesResource.getUserGroupRoleResources().size());
+  }
+
+//  @Test
+//  public void doTestAuthorization() {
+//    doTestAuthoriztionForAdminUser();
+//    doTestAuthorizationForUser();
+//    doTestAuthorizationForUserGroup();
+//  }
+  @Test
+  public void doTestAuthoriztionForAdminUser() {
+    sitelAdminRootResource = login("admin@SITEL", "adminadmin");
+    sitelAdminUserLoginResource = sitelAdminRootResource.getLoginResource();
+    Assert.assertNotNull(sitelAdminUserLoginResource);
+    try {
+      sitelAdminUserLoginResource.getOrganizationsResource();
+      Assert.fail("Should not be able to get the resource");
+    }
+    catch (UniformInterfaceException e) {
+      Assert.assertEquals(Status.FORBIDDEN.getStatusCode(), e.getResponse().getStatus());
+    }
+    catch (Exception e) {
+      Assert.fail("Should not throw any other exception");
+    }
+    try {
+      sitelOrgResource = sitelAdminUserLoginResource.getOrganizationResource();
+      Assert.assertEquals(SITEL_ORG_SHORT_NAME, sitelOrgResource.getOrganization().getUniqueShortName());
+    }
+    catch (Exception e) {
+      Assert.fail("Should not throw any exception");
+    }
     try {
       sitelUsersResource = sitelOrgResource.getUsersResource();
-      sitelPrivsResources = sitelOrgResource.getPrivilegesResource();
+      Assert.assertEquals(USER_NUM_AT_BEGINNING + 2, sitelUsersResource.getUserResources().size());
+    }
+    catch (Exception e) {
+      Assert.fail("Should not throw any exception");
+    }
+    try {
+      sitelPrivsResource = sitelOrgResource.getPrivilegesResource();
+    }
+    catch (Exception e) {
+      Assert.fail("Should not throw any exception");
+    }
+    for (PrivilegeResource privilegeResource : sitelPrivsResource.getPrivilegeResources()) {
+      if (privilegeResource.getPrivilege().getName().equals(SITEL_ADMIN_USER_PRIVILEGE_TEST_2)) {
+        com.smartitengineering.user.client.api.Privilege privilege = privilegeResource.getPrivilege();
+        privilege.setDisplayName(privilege.getDisplayName() + "_updated");
+        privilegeResource.update();
+      }
+    }
+
+    UserResource sitelAdminUserResource = sitelAdminUserLoginResource.getUserResource();
+    UserPrivilegesResource sitelAdminUserPrivilegesResource = sitelAdminUserResource.getPrivilegesResource();
+    Assert.assertEquals(ADMIN_USER_PRIVILEGES_NUM_AT_BEGINNING, sitelAdminUserPrivilegesResource.
+        getUserPrivilegeResources().size());
+
+
+    List<PrivilegeResource> privilegeResources = sitelPrivsResource.getPrivilegeResources();
+    for (PrivilegeResource privilegeResource : privilegeResources) {
+      com.smartitengineering.user.client.api.Privilege privilege = privilegeResource.getPrivilege();
+      if (privilege.getName().equals(SITEL_ADMIN_USER_PRIVILEGE_TEST_2)) {
+        sitelAdminUserPrivilegesResource.add(privilege);
+      }
+    }
+    sitelAdminUserPrivilegesResource.get();
+    Assert.assertEquals(ADMIN_USER_PRIVILEGES_NUM_AT_BEGINNING + 1, sitelAdminUserPrivilegesResource.
+        getUserPrivilegeResources().size());
+
+    User user = new User();
+    user.setUsername("saumitra");
+    user.setPassword("saumitra123");
+    Person person = new Person();
+    person.setPrimaryEmail("saumitra@smartitengineering.com");
+    UserPerson userPerson = new UserPerson();
+    userPerson.setUser(user);
+    userPerson.setPerson(person);
+    UserResource saumitraUserResource = sitelUsersResource.create(userPerson);
+    Assert.assertEquals("saumitra", saumitraUserResource.getUser().getUser().getUsername());
+
+    UserPrivilegesResource saumitraPrivilegesResource = saumitraUserResource.getPrivilegesResource();
+    for (PrivilegeResource privilegeResource : privilegeResources) {
+      com.smartitengineering.user.client.api.Privilege privilege = privilegeResource.getPrivilege();
+      if (privilege.getName().contains("SITEL-admin")) {
+        saumitraPrivilegesResource.add(privilege);
+      }
+    }
+
+  }
+
+  @Test
+  public void doTestAuthorizationForUser() {
+    RootResource saumitraRootResource = login("saumitra@SITEL", "saumitra123");
+    verifyAdminPrivilege(saumitraRootResource);
+    sitelOrgResource = saumitraRootResource.getLoginResource().getOrganizationResource();
+
+    List<UserGroupResource> userGroupResources = sitelOrgResource.getUserGroupsResource().getUserGroupResources();
+    for (UserGroupResource userGroupResource : userGroupResources) {
+      if (userGroupResource.getUserGroup().getName().equals(SITEL_USER_GROUP_NAME)) {
+        sitelUserGroupUsersResource = userGroupResource.getUserGroupUsersResource();
+        sitelUserGroupPrivilegesResource = userGroupResource.getUserGroupPrivilegesResource();
+      }
+    }
+    Assert.assertEquals(ZERO, sitelUserGroupUsersResource.getUserGroupUserResources().size());
+    Assert.assertEquals(ZERO, sitelUserGroupPrivilegesResource.getUserGroupPrivilegeResources().size());
+    UsersResource usersResource = sitelOrgResource.getUsersResource();
+    List<UserResource> userResources = usersResource.getUserResources();
+    PrivilegesResource privilegesResource = sitelOrgResource.getPrivilegesResource();
+    List<PrivilegeResource> privilegeResources = privilegesResource.getPrivilegeResources();
+
+    UserGroupUserResource sitelUserGroupUserResource;
+    UserGroupPrivilegeResource sitelUserGroupPrivilegeResource;
+
+    for (UserGroupResource userGroupResource : sitelUserGroupsResource.getUserGroupResources()) {
+      if (userGroupResource.getUserGroup().getName().equals(SITEL_USER_GROUP_NAME)) {
+        for (UserResource userResource : userResources) {
+          com.smartitengineering.user.client.api.User user = userResource.getUser().getUser();
+          if (user.getUsername().equals(SITEL_ORG_USER_USERNAME)) {
+            try {
+              sitelUserGroupUserResource = sitelUserGroupUsersResource.add(user);
+            }
+            catch (Exception e) {
+              Assert.fail("should not throw any exception");
+            }
+
+          }
+        }
+        for (PrivilegeResource privilegeResource : privilegeResources) {
+          com.smartitengineering.user.client.api.Privilege privilege = privilegeResource.getPrivilege();
+          if (privilege.getName().contains("SITEL-admin")) {
+            try {
+              sitelUserGroupPrivilegeResource = sitelUserGroupPrivilegesResource.add(privilege);
+            }
+            catch (Exception e) {
+              Assert.fail("should not throw any exception");
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @Test
+  public void doTestAuthorizationForUserGroup() {
+    RootResource modhuRootResource = login("modhu@SITEL", "modhu123");
+    verifyAdminPrivilege(modhuRootResource);
+  }
+
+  @Test
+  public void doTestDeleteOrganization() {
+    rootResource = login(USERNAME, PASSWORD);
+    System.out.println("------------------------------------------------------------------Smart admin re login");
+    LoginResource loginResource = rootResource.getLoginResource();
+    orgsResource = loginResource.getOrganizationsResource();
+    UsersResource usersResource;
+    PrivilegesResource privsResource;
+    List<OrganizationResource> organizationResources =
+                               loginResource.getOrganizationsResource().getOrganizationResources();
+    for (OrganizationResource organizationResource : organizationResources) {
+      if (organizationResource.getOrganization().getUniqueShortName().equals("SITEL")) {
+        usersResource = organizationResource.getUsersResource();
+        Assert.assertNotNull(usersResource);
+        privsResource = organizationResource.getPrivilegesResource();
+        Assert.assertNotNull(privsResource);
+        sitelUsersResource = usersResource;
+        sitelPrivsResource = privsResource;
+      }
+    }
+
+    sitelUserPrivsResource.get();
+    Assert.assertEquals(ORGANIZATION_NUM_AT_BEGINNING + 2, orgsResource.getOrganizationResources().size());
+    Assert.assertNotNull(sitelUsersResource);
+    Assert.assertEquals(USER_NUM_AT_BEGINNING + 3, sitelUsersResource.getUserResources().size());
+    Assert.assertNotNull(sitelPrivsResource);
+    Assert.assertEquals(ORG_PRIVILEGES_NUM_AT_BEGINNING + 5, sitelPrivsResource.getPrivilegeResources().size());
+    try {
+      sitelUsersResource = sitelOrgResource.getUsersResource();
+      sitelPrivsResource = sitelOrgResource.getPrivilegesResource();
       sitelUserPrivsResource = sitelUserResource.getPrivilegesResource();
     }
     catch (Exception e) {
       Assert.fail("Exception due to failure to get userresource and privilegesresource");
     }
+    System.out.println("-------------------Start");
     for (OrganizationResource orgIterResource : orgsResource.getOrganizationResources()) {
+      System.out.println("------------------------ orgname " + orgIterResource.getOrganization().getUniqueShortName());
       if (orgIterResource.getOrganization().getUniqueShortName().equals("SITEL")) {
         try {
           orgIterResource.delete();
@@ -606,44 +819,57 @@ public class ComprehensiveClientTest {
           Assert.fail("Exception due to failure of deleting the organization");
         }
       }
-    }
+    }    
   }
 
   @Test
   public void doTestUsersAndPrivsAfterRemovingOrg() {
-    orgsResource.get();
-    Assert.assertEquals(ORGANIZATION_NUM_AT_BEGINNING + 1, orgsResource.getOrganizationResources().size());
+    RootResource adminRootResource = login(USERNAME, PASSWORD);
+    orgsResource = adminRootResource.getLoginResource().getOrganizationsResource();
+    List<OrganizationResource> organizationResources = orgsResource.getOrganizationResources();
+    for (OrganizationResource organizationResource : organizationResources) {
+      if (organizationResource.getOrganization().getUniqueShortName().equals("SITEL")) {
+        Assert.fail("SITEL organization should not exist");
+      }
+    }
+  }
+
+  public void verifyAdminPrivilege(RootResource adminPrivilegeTestRootResource) {
+
+    LoginResource loginResource = adminPrivilegeTestRootResource.getLoginResource();
+    Assert.assertNotNull(loginResource);
+    OrganizationResource orgResource;
+
+
     try {
-      sitelUsersResource.get();
-      Assert.fail("Should have thrown exception");
+      loginResource.getOrganizationsResource();
+      Assert.fail("Should not be able to get the resource");
     }
     catch (UniformInterfaceException e) {
-      Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), e.getResponse().getStatus());
+      Assert.assertEquals(Status.FORBIDDEN.getStatusCode(), e.getResponse().getStatus());
     }
     catch (Exception e) {
-      Assert.fail("Should have thrown UniformInterface exception");
-    }
-    try {
-      sitelPrivsResources.get();
-      Assert.fail("Exception Should be thrown");
-    }
-    catch (UniformInterfaceException e) {
-      Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), e.getResponse().getStatus());
-    }
-    catch (Exception e) {
-      Assert.fail("Should have thrown UniformInterface exception");
+      Assert.fail("Should not throw any other exception");
     }
 
     try {
-      sitelUserPrivsResource.get();
-      Assert.fail("Should have thrown exception");
-    }
-    catch (UniformInterfaceException e) {
-      Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), e.getResponse().getStatus());
+      loginResource.getOrganizationResource();
     }
     catch (Exception e) {
-      Assert.fail("Should have thrown UniformInterface exception");
+      Assert.fail("Should not throw any exception");
     }
+
+    try {
+      orgResource = loginResource.getOrganizationResource();
+    }
+    catch (Exception e) {
+      Assert.fail("Should not throw any exception");
+    }
+
   }
-  //Test Ended by Uzzal 
+
+  private RootResource login(String username, String password) {
+    return RootResourceImpl.getInstance(username, password);
+  }
+  //Test Ended by Uzzal {
 }
