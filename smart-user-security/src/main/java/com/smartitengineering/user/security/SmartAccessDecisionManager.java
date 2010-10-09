@@ -29,16 +29,15 @@ public class SmartAccessDecisionManager extends AbstractAccessDecisionManager {
 
     int grant = 0;
     int abstain = 0;
-
-    Iterator configIter = config.getConfigAttributes().iterator();
     Iterator voterList = getDecisionVoters().iterator();
     Set<VoterConfigTuple> roleVoterConfigTuple = new HashSet<VoterConfigTuple>();
     Set<VoterConfigTuple> aclVoterConfigTuple = new HashSet<VoterConfigTuple>();
     while (voterList.hasNext()) {
-      AccessDecisionVoter voter = (AccessDecisionVoter) voterList.next();
+      AccessDecisionVoter voter = (AccessDecisionVoter) voterList.next();      
+      Iterator configIter = config.getConfigAttributes().iterator();
       while (configIter.hasNext()) {
         ConfigAttribute configAttribute = (ConfigAttribute) configIter.next();
-        if (configAttribute.getAttribute().startsWith(ROLE_PREFIX)) {
+        if (configAttribute.getAttribute().startsWith(ROLE_PREFIX)) {          
           if (voter instanceof RoleVoter) {
             VoterConfigTuple tuple = new VoterConfigTuple();
             tuple.setConfigAttribute(configAttribute);
@@ -60,23 +59,23 @@ public class SmartAccessDecisionManager extends AbstractAccessDecisionManager {
         return;
       }
     }
-    for (VoterConfigTuple voterConfigTuple : aclVoterConfigTuple) {
+    for (VoterConfigTuple voterConfigTuple : aclVoterConfigTuple) {      
       int result = getVotingResult(authentication, object, voterConfigTuple);
 
       switch (result) {
-        case AccessDecisionVoter.ACCESS_GRANTED:
+        case AccessDecisionVoter.ACCESS_GRANTED: {
           grant++;
-
           break;
+        }
 
-        case AccessDecisionVoter.ACCESS_DENIED:
+        case AccessDecisionVoter.ACCESS_DENIED: {          
           throw new AccessDeniedException(messages.getMessage("AbstractAccessDecisionManager.accessDenied",
                                                               "Access is denied"));
-
-        default:
-          abstain++;
-
+        }
+        default: {
+          abstain++;          
           break;
+        }
       }
     }
     // To get this far, there were no deny votes
@@ -85,7 +84,7 @@ public class SmartAccessDecisionManager extends AbstractAccessDecisionManager {
     }
 
     // To get this far, every AccessDecisionVoter abstained
-    checkAllowIfAllAbstainDecisions();
+    checkAllowIfAllAbstainDecisions();    
   }
 
   private int getVotingResult(Authentication authentication, Object object, VoterConfigTuple voterConfigTuple) {

@@ -43,6 +43,9 @@
     <property name="userService">
       <ref bean="userService"/>
     </property>
+    <property name="userGroupService">
+      <ref bean="userGroupService"/>
+    </property>
   </bean>
 
   <!-- **************************************************************** -->

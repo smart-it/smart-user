@@ -42,8 +42,7 @@ public class LoginResource extends AbstractResource {
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
-
-    System.out.println("Inside Login Resource");
+    
     ResponseBuilder responseBuilder = Response.status(Status.OK);
 
     Feed atomFeed = getFeed("Login Resource", new Date());

@@ -131,6 +131,6 @@ public class UserGroupServiceImpl extends AbstractCommonDaoImpl<UserGroup> imple
   @Override
   public Collection<UserGroup> getUserGroupsByUser(User user) {
     return getList(QueryParameterFactory.getNestedParametersParam("users", FetchMode.DEFAULT, QueryParameterFactory.
-        getEqualPropertyParam("user.id", user.getId())));
+        getEqualPropertyParam("id", user.getId())));
   }
 }
