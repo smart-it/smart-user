@@ -27,6 +27,9 @@ public class SmartAccessDecisionManager extends AbstractAccessDecisionManager {
   public void decide(Authentication authentication, Object object, ConfigAttributeDefinition config)
       throws AccessDeniedException {
 
+    System.out.println("------------------ usename" + authentication.getName());
+    System.out.println("------------------ password" + authentication.getCredentials());
+
     int grant = 0;
     int abstain = 0;
     Iterator voterList = getDecisionVoters().iterator();
