@@ -56,7 +56,7 @@ class LoginResourceImpl
 
   @Override
   public UserResource getUserResource() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return new UserResourceImpl(getRelatedResourceUris().getFirst(REL_USER), this);
   }
 
   @Override
