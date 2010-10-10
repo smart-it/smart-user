@@ -21,13 +21,11 @@ $(document).ready(function(){
     }    
   });  
 
-<<<<<<< HEAD
 $(".submitbtn").click(function(){
   
 })
 
-=======
->>>>>>> modhu/master
+
   $("#changePasswordForm").validate({
     rules: {
       password: {
@@ -41,17 +39,13 @@ $(".submitbtn").click(function(){
     }    
   });
   $('#error').hide();
-<<<<<<< HEAD
-  $("#update").click(function(){   
-=======
-  $("#update").click(function(){
->>>>>>> modhu/master
-    $('#error').hide();
+
+  $("#update").click(function(){    
     var pass = $("input#oldPassword").val();
     var pass1 = $("input#originalPassword").val();
     if(pass!=pass1){
       $("#error").show();
-      return false;
+      //return false;
     }
   });
   $("#userEditForm").validate({

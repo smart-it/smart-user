@@ -19,7 +19,7 @@
   <div id="leftmenu_header_orglist_1" class="leftmenu_header"><label><fmt:message key="org.linklabel1" /></label></div>
   <div id="leftmenu_body_orglist_1" class="leftmenu_body">
     <ul>
-      <li><a href="javascript: Orgpageselect()"><fmt:message key="org.linklabel2"></a></li>
+      <li><a href="javascript: Orgpageselect()"><fmt:message key="org.linklabel2" /></a></li>
     </ul>
   </div>
 </div>

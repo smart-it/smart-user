@@ -20,11 +20,12 @@
   $(document).ready(function(){
     var url = "/orgs/sn/${orgInitial}/users/frags${qParam}";
     $("#tablecontentid").pagination(url,"linkcontainer");
+    
     $("#wrong").hide();
     $("#uname").blur(function(){
       var usn =$("#uname").val();
       $.ajax({
-        type: "GET",
+         type: "GET",
         url: "http://localhost:9090/orgs/sn/${orgInitial}/users/un/"+usn,
         dataType: "xml",
         success: function(xhr){
@@ -37,5 +38,5 @@
         }
       });
     });
-});
+  });
 </script>
