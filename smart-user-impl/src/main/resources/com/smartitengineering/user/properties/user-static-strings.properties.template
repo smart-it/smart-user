@@ -1,0 +1,21 @@
+organization_url=/orgs
+users_url=/users
+secured_objects_url=/so
+privileges_url=/privs
+roles_url=/roles
+content_uri_fragment=/content
+update_uri_fragment=/update
+delete_uri_fragment=/delete
+user_unique_uri_fragment=/un
+org_unique_uri_fragment=/sn
+privilege_unique_uri_fragment=/name
+role_unique_uri_fragment=/name
+secured_object_unique_uri_fragment=/name
+admin_username=admin
+admin_password=adminadmin
+super_admin_username=smartadmin
+super_admin_password=02040250204039
+first_organization_name=Smart User
+first_organization_short_name=smart-user
+email_domain=smartitengineering.com
+

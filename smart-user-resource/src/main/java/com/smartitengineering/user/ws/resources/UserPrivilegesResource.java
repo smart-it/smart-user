@@ -30,12 +30,13 @@ import org.apache.abdera.model.Link;
  *
  * @author russel
  */
-@Path("/orgs/sn/{organizationName}/users/username/{userName}/privileges")
+@Path("/orgs/sn/{organizationName}/users/un/{userName}/privs")
 public class UserPrivilegesResource extends AbstractResource {
 
   private String organizationName;
   private String userName;
   private User user;
+  private Organization organization;
   static UriBuilder USER_PRIVILEGE_URIBUILDER;
   static UriBuilder USER_PRIVILEGE_AFTER_NAME_URIBUILDER;
   static UriBuilder USER_PRIVILEGE_BEFORE_NAME_URIBUILDER;
@@ -64,6 +65,7 @@ public class UserPrivilegesResource extends AbstractResource {
     this.organizationName = organizationName;
     this.userName = userName;
     user = Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationName, userName);
+    organization = getOrganization();
   }
 
   @GET
@@ -85,9 +87,17 @@ public class UserPrivilegesResource extends AbstractResource {
   public Response get() {
     return get(null, true);
   }
-  
+
   public Response get(String privilegeName, boolean isBefore) {
     ResponseBuilder responseBuilder = Response.ok();
+    if(organization==null || user==null){
+      responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
+    
+    if (user == null) {
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
 
     // create a new atom feed
     Feed atomFeed = abderaFactory.newFeed();
@@ -102,7 +112,6 @@ public class UserPrivilegesResource extends AbstractResource {
     Collection<Privilege> privileges = user.getPrivileges();
 
     if (privileges != null && !privileges.isEmpty()) {
-
       MultivaluedMap<String, String> queryParam = uriInfo.getQueryParameters();
       List<Privilege> privilegeList = new ArrayList<Privilege>(privileges);
 
@@ -114,14 +123,12 @@ public class UserPrivilegesResource extends AbstractResource {
       Link nextLink = abderaFactory.newLink();
       nextLink.setRel(Link.REL_NEXT);
       Privilege lastPrivilege = privilegeList.get(0);
-
-
       for (String key : queryParam.keySet()) {
         final Object[] values = queryParam.get(key).toArray();
         nextUri.queryParam(key, values);
         previousUri.queryParam(key, values);
       }
-      nextLink.setHref(nextUri.build(organizationName, lastPrivilege.getName()).toString());
+      nextLink.setHref(nextUri.build(organizationName, userName, lastPrivilege.getName()).toString());
       //nextLink.setHref(UriBuilder.fromResource(OrganizationsResource.class).build(lastOrganization.getUniqueShortName()).toString());
 
       atomFeed.addLink(nextLink);
@@ -131,7 +138,7 @@ public class UserPrivilegesResource extends AbstractResource {
       prevLink.setRel(Link.REL_PREVIOUS);
       Privilege firstPrivilege = privilegeList.get(privileges.size() - 1);
 
-      prevLink.setHref(previousUri.build(organizationName, firstPrivilege.getName()).toString());
+      prevLink.setHref(previousUri.build(organizationName, userName, firstPrivilege.getName()).toString());
       //prevLink.setHref(nameLike)
       atomFeed.addLink(prevLink);
 
@@ -144,7 +151,7 @@ public class UserPrivilegesResource extends AbstractResource {
         userPrivilegeEntry.setSummary(privilege.getShortDescription());
 
         Link userPrivilegeLink = abderaFactory.newLink();
-        userPrivilegeLink.setHref(UriBuilder.fromResource(OrganizationPrivilegeResource.class).build(organizationName, privilege.
+        userPrivilegeLink.setHref(UriBuilder.fromResource(UserPrivilegeResource.class).build(organizationName, userName, privilege.
             getName()).toString());
         userPrivilegeLink.setRel(Link.REL_ALTERNATE);
         userPrivilegeLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
@@ -161,16 +168,21 @@ public class UserPrivilegesResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response post(Privilege privilege) {
     ResponseBuilder responseBuilder;
+    if(organization==null || user==null){
+      responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
     try {
       if (privilege.getId() == null || privilege.getVersion() == null) {
         responseBuilder = Response.status(Status.BAD_REQUEST);
       }
       else {
-        responseBuilder = Response.status(Status.CREATED);
-        
-        privilege.setParentOrganization(getOrganization());
+        privilege.setParentOrganization(organization);
         user.getPrivileges().add(privilege);
         Services.getInstance().getUserService().update(user);
+        responseBuilder = Response.status(Status.CREATED);
+        responseBuilder.location(uriInfo.getBaseUriBuilder().path(UserPrivilegeResource.USER_PRIVILEGE_URI_BUILDER.clone().
+            build(organizationName, userName, privilege.getName()).toString()).build());
       }
     }
     catch (Exception ex) {

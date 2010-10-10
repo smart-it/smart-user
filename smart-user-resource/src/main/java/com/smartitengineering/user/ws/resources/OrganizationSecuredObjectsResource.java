@@ -62,11 +62,13 @@ public class OrganizationSecuredObjectsResource extends AbstractResource {
     }
   }
   @PathParam("count")
-  private Integer count;
-  @PathParam("uniqueShortName")
+  private Integer count;  
   private String organizationUniqueShortName;
+  private Organization organization;
 
-  public OrganizationSecuredObjectsResource() {
+  public OrganizationSecuredObjectsResource(@PathParam("organizationUniqueShortName") String orgName) {
+    this.organizationUniqueShortName = orgName;
+    organization = getOrganization();
   }
 
   @GET
@@ -108,17 +110,19 @@ public class OrganizationSecuredObjectsResource extends AbstractResource {
       count = 10;
     }
     ResponseBuilder responseBuilder = Response.ok();
+    if (organization == null) {
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     Feed atomFeed = getFeed(userName, new Date());
 
     Link parentLink = abderaFactory.newLink();
-    parentLink.setHref(UriBuilder.fromResource(OrganizationResource.class).build().toString());
+    parentLink.setHref(UriBuilder.fromResource(OrganizationResource.class).build(uniqueOrganizationName).toString());
     parentLink.setRel("parent");
     atomFeed.addLink(parentLink);
 
 
     Collection<SecuredObject> securedObjects = Services.getInstance().getSecuredObjectService().getByOrganization(
         uniqueOrganizationName);
-
 
     if (securedObjects != null && !securedObjects.isEmpty()) {
 
@@ -165,7 +169,7 @@ public class OrganizationSecuredObjectsResource extends AbstractResource {
         // setting link to the each individual user
         Link securedObjectLink = abderaFactory.newLink();
         securedObjectLink.setHref(OrganizationSecuredObjectResource.ORGANIZATION_SECURED_OBJECT_URI_BUILDER.clone().
-            build(uniqueOrganizationName, securedObject.getObjectID()).toString());
+            build(uniqueOrganizationName, securedObject.getName()).toString());
         securedObjectLink.setRel(Link.REL_ALTERNATE);
         securedObjectLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
 
@@ -181,12 +185,17 @@ public class OrganizationSecuredObjectsResource extends AbstractResource {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   public Response post(SecuredObject securedObject) {
-
-    ResponseBuilder responseBuilder;
+    ResponseBuilder responseBuilder = Response.ok();
+    if(organization==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     try {
-      securedObject.setOrganization(getOrganization());
+      securedObject.setOrganization(organization);
       Services.getInstance().getSecuredObjectService().save(securedObject);
       responseBuilder = Response.status(Status.CREATED);
+      responseBuilder.location(uriInfo.getBaseUriBuilder().path(OrganizationSecuredObjectResource.ORGANIZATION_SECURED_OBJECT_URI_BUILDER.
+          clone().
+          build(organizationUniqueShortName, securedObject.getName()).toString()).build());
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);

@@ -7,15 +7,19 @@
             </generator>
     </id>
     <version column="version" name="version"/>
-    <property column="name" length="255" name="name" not-null="true" type="java.lang.String" unique-key="UK_ROLE_ORGANIZATION"/>
-    <many-to-one cascade="none" column="organization_id" lazy="false" name="parentOrganization" not-null="true" unique-key="UK_ROLE_ORGANIZATION"/>
+    <property column="name" length="255" name="name" not-null="true" type="java.lang.String" unique-key="UK_GROUP_ORGANIZATION"/>
+    <many-to-one cascade="none" column="organization_id" lazy="false" name="organization" not-null="true" unique-key="UK_GROUP_ORGANIZATION"/>
     <set cascade="none" inverse="false" lazy="false" name="privileges" outer-join="true" table="user_group_privileges">
       <key column="user_group_id"/>
       <many-to-many class="com.smartitengineering.user.domain.Privilege" column="privilege_id" lazy="false" outer-join="true"/>
     </set>
-    <set cascade="none" inverse="false" lazy="false" name="roles" outer-join="true" table="user_group_users">
+    <set cascade="none" inverse="false" lazy="false" name="users" outer-join="true" table="user_group_users">
       <key column="user_group_id"/>
       <many-to-many class="com.smartitengineering.user.domain.User" column="user_id" lazy="false" outer-join="true"/>
+    </set>
+    <set cascade="none" inverse="false" lazy="false" name="roles" outer-join="true" table="user_group_roles">
+      <key column="user_group_id"/>
+      <many-to-many class="com.smartitengineering.user.domain.Role" column="role_id" lazy="false" outer-join="true"/>
     </set>
     <property column="last_modified_date" name="lastModifiedDate" type="java.util.Date"/>
   </class>

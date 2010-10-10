@@ -24,7 +24,7 @@ import org.apache.abdera.model.Link;
 public class PrivilegeResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements
     PrivilegeResource {
 
-  public static final String REL_PRIV = "privilege";  
+  public static final String REL_PRIV = "privilege-content";
 
   public PrivilegeResourceImpl(ResourceLink privLink, Resource referrer) {
 

@@ -7,7 +7,7 @@
             </generator>
     </id>
     <version column="version" name="version"/>
-    <many-to-one cascade="save-update" column="user_id" lazy="false" name="user" unique="true"/>
-    <many-to-one cascade="save-update" column="person_id" lazy="false" name="person" unique="true"/>
+    <many-to-one cascade="all" column="user_id" lazy="false" name="user" unique="true"/>
+    <many-to-one cascade="all" column="person_id" lazy="false" name="person" unique="true"/>
   </class>
 </hibernate-mapping>

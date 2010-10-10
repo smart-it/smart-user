@@ -6,10 +6,10 @@
 package com.smartitengineering.user.client.impl;
 
 
-import com.smartitengineering.user.client.api.PrivilegesResource;
-import com.smartitengineering.user.client.api.RolesResource;
 import com.smartitengineering.user.client.api.UserPerson;
+import com.smartitengineering.user.client.api.UserPrivilegesResource;
 import com.smartitengineering.user.client.api.UserResource;
+import com.smartitengineering.user.client.api.UserRolesResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;
@@ -50,13 +50,13 @@ public class UserResourceImpl extends AbstractFeedClientResource<Resource<? exte
   }
 
    @Override
-  public PrivilegesResource getPrivilegesResource() {
-    return new PrivilegesResourceImpl(getRelatedResourceUris().getFirst(REL_USER_PRIVS), this);
+  public UserPrivilegesResource getPrivilegesResource() {
+    return new UserPrivilegesResourceImpl(getRelatedResourceUris().getFirst(REL_USER_PRIVS), this);
   }
 
   @Override
-  public RolesResource getRolesResource() {
-    return new RolesResourceImpl(getRelatedResourceUris().getFirst(REL_USER_ROLES), this);
+  public UserRolesResource getRolesResource() {
+    return new UserRolesResourceImpl(getRelatedResourceUris().getFirst(REL_USER_ROLES), this);
   }
 
   @Override

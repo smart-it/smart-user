@@ -34,11 +34,13 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author russel
  */
-@Path("/orgs/sn/{organizationUniqueShortName}/so/{oid}")
+@Path("/orgs/sn/{organizationUniqueShortName}/so/name/{name}")
 public class OrganizationSecuredObjectResource extends AbstractResource {
 
-  private String oid;
+  private String name;
   private String organizationUniqueName;
+  private Organization organization;
+  private SecuredObject securedObject;
   static final UriBuilder ORGANIZATION_SECURED_OBJECT_URI_BUILDER = UriBuilder.fromResource(
       OrganizationSecuredObjectResource.class);
   static final UriBuilder ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER;
@@ -47,7 +49,7 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
     ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER = ORGANIZATION_SECURED_OBJECT_URI_BUILDER.clone();
     try {
       ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.path(OrganizationSecuredObjectResource.class.getMethod(
-          "getSecuredObject"));
+          "getContent"));
     }
     catch (Exception ex) {
       ex.printStackTrace();
@@ -56,17 +58,22 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   }
 
   public OrganizationSecuredObjectResource(@PathParam("organizationUniqueShortName") String organizationUniqueShortName, @PathParam(
-      "oid") String oid) {
+      "name") String name) {
     this.organizationUniqueName = organizationUniqueShortName;
-    this.oid = oid;
-
+    this.name = name;
+    organization = getOrganization();
+    securedObject = getSecuredObject();
   }
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
+    ResponseBuilder responseBuilder = Response.ok();
+    if(organization==null || securedObject==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     Feed securedObjectFeed = getSecuredObjectFeed();
-    ResponseBuilder responseBuilder = Response.ok(securedObjectFeed);
+    responseBuilder = Response.ok(securedObjectFeed);
     return responseBuilder.build();
   }
 
@@ -74,7 +81,11 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/content")
   public Response getContent() {
-    ResponseBuilder responseBuilder = Response.ok(getSecuredObject());
+    ResponseBuilder responseBuilder = Response.ok();
+    if(organization==null || securedObject==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
+    responseBuilder = Response.ok(securedObject);
     return responseBuilder.build();
   }
 
@@ -83,8 +94,11 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response update(SecuredObject newSecuredObject) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+    if(organization==null || securedObject==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     try {      
-      newSecuredObject.setOrganization(getOrganization());
+      newSecuredObject.setOrganization(organization);
       Services.getInstance().getSecuredObjectService().save(newSecuredObject);
       responseBuilder = Response.ok(getSecuredObjectFeed());
     }
@@ -97,8 +111,11 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   @DELETE
   public Response delete() {
     ResponseBuilder responseBuilder = Response.ok();
+    if(organization==null || securedObject==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     try {
-      Services.getInstance().getSecuredObjectService().delete(getSecuredObject());
+      Services.getInstance().getSecuredObjectService().delete(securedObject);
     }
     catch (Exception ex) {
       ex.printStackTrace();
@@ -109,8 +126,8 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
 
   private Feed getSecuredObjectFeed() throws UriBuilderException, IllegalArgumentException {
 
-    Feed securedObjectFeed = getFeed(oid, new Date());
-    securedObjectFeed.setTitle(oid);
+    Feed securedObjectFeed = getFeed(name, new Date());
+    securedObjectFeed.setTitle(name);
 
     // add a self link
     securedObjectFeed.addLink(getSelfLink());
@@ -124,7 +141,7 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
     // add a alternate link
     Link altLink = abderaFactory.newLink();
     altLink.setHref(
-        ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.clone().build(organizationUniqueName, oid).toString());
+        ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.clone().build(organizationUniqueName, name).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     securedObjectFeed.addLink(altLink);
@@ -136,8 +153,11 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   @Path("/delete")
   public Response deletePost() {
     ResponseBuilder responseBuilder = Response.ok();
+    if(organization==null || securedObject==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     try {
-      Services.getInstance().getSecuredObjectService().delete(getSecuredObject());
+      Services.getInstance().getSecuredObjectService().delete(securedObject);
     }
     catch (Exception ex) {
       ex.printStackTrace();
@@ -151,7 +171,9 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   public Response updatePost(@HeaderParam("Content-type") String contentType, String message) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-
+    if(organization==null || securedObject==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     if (StringUtils.isBlank(message)) {
       responseBuilder = Response.status(Status.BAD_REQUEST);
       responseBuilder.build();
@@ -177,14 +199,13 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
         ex.printStackTrace();
       }
     }
-    else {
-      contentType = contentType;
+    else {      
       isHtmlPost = false;
     }
 
     if (isHtmlPost) {
       SecuredObject newSecuredObject = getSecuredObjectFromContent(message);
-      newSecuredObject.setOrganization(getOrganization());
+      newSecuredObject.setOrganization(organization);
       try {
         Services.getInstance().getSecuredObjectService().update(newSecuredObject);
         responseBuilder = Response.ok(getSecuredObjectFeed());
@@ -227,6 +248,6 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   }
 
   private SecuredObject getSecuredObject() {
-    return Services.getInstance().getSecuredObjectService().getByOrganizationAndObjectID(organizationUniqueName, oid);
+    return Services.getInstance().getSecuredObjectService().getByOrganizationAndName(organizationUniqueName, name);
   }
 }

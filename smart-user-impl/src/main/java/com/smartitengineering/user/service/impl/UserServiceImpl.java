@@ -9,12 +9,10 @@ import com.smartitengineering.dao.common.queryparam.Order;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl;
-import com.smartitengineering.domain.PersistentDTO;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.filter.UserFilter;
 import com.smartitengineering.user.service.ExceptionMessage;
-import com.smartitengineering.user.service.OrganizationService;
 import com.smartitengineering.user.service.UserService;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,98 +35,106 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
     setEntityClass(User.class);
   }
 
-    @Override
-    public void save(User user) {
-        validateUser(user);
-        try {
-            super.save(user);
-        } catch (ConstraintViolationException e) {
-            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
-            throw new RuntimeException(message, e);
-        } catch (StaleStateException e) {
-            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
-            throw new RuntimeException(message, e);
-        }
+  @Override
+  public void save(User user) {
+    validateUser(user);
+    try {
+      super.save(user);
     }
-
-    @Override
-    public void update(User user) {
-        validateUser(user);
-        try {
-            super.update(user);
-        } catch (ConstraintViolationException e) {
-            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
-            throw new RuntimeException(message, e);
-        } catch (StaleStateException e) {
-            String message =
-                    ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-"
-                    + UniqueConstrainedField.OTHER;
-            throw new RuntimeException(message, e);
-        }
+    catch (ConstraintViolationException e) {
+      String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
+      throw new RuntimeException(message, e);
     }
-
-    @Override
-    public void delete(User user) {
-        try {
-            super.delete(user);
-        } catch (Exception e) {
-            String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.PERSON;
-            throw new RuntimeException(message, e);
-        }
+    catch (StaleStateException e) {
+      String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
+      throw new RuntimeException(message, e);
     }
+  }
 
-    @Override
-    public Collection<User> search(UserFilter filter) {
-        QueryParameter qp;
-        List<QueryParameter> queryParameters = new ArrayList<QueryParameter>();
-        if (!StringUtils.isEmpty(filter.getUsername())) {
-            qp = QueryParameterFactory.getEqualPropertyParam("username",
-                    filter.getUsername());
-            queryParameters.add(qp);
-        }
-        Collection<User> users = new HashSet<User>();
-        if (queryParameters.isEmpty()) {
-            try {
-                users = super.getAll();
-            } catch (Exception e) {
-            }
-        } else {
-            users = super.getList(queryParameters);
-        }
-        return users;
+  @Override
+  public void update(User user) {
+    validateUser(user);
+    try {
+      super.update(user);
     }
+    catch (ConstraintViolationException e) {
+      String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
+      throw new RuntimeException(message, e);
+    }
+    catch (StaleStateException e) {
+      String message =
+             ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
+      throw new RuntimeException(message, e);
+    }
+  }
 
-    public Collection<User> getUsers(String userNameLike, String userName, boolean isSmallerThan, int count){
+  @Override
+  public void delete(User user) {
+    try {
+      super.delete(user);
+    }
+    catch (Exception e) {
+      String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.PERSON;
+      throw new RuntimeException(message, e);
+    }
+  }
 
-      List<QueryParameter> params = new ArrayList<QueryParameter>();
-
-      if(StringUtils.isNotBlank(userNameLike)){
-        final QueryParameter orgNameLikeParam =   QueryParameterFactory.getNestedParametersParam("username",
-                                                                                               FetchMode.EAGER,
-                                                                                               QueryParameterFactory.getStringLikePropertyParam("username", userNameLike));
-        params.add(orgNameLikeParam);
+  @Override
+  public Collection<User> search(UserFilter filter) {
+    QueryParameter qp;
+    List<QueryParameter> queryParameters = new ArrayList<QueryParameter>();
+    if (!StringUtils.isEmpty(filter.getUsername())) {
+      qp = QueryParameterFactory.getEqualPropertyParam("username",
+                                                       filter.getUsername());
+      queryParameters.add(qp);
+    }
+    Collection<User> users = new HashSet<User>();
+    if (queryParameters.isEmpty()) {
+      try {
+        users = super.getAll();
       }
-      else{
-        params.add(QueryParameterFactory.getNestedParametersParam("username", FetchMode.EAGER));
+      catch (Exception e) {
       }
+    }
+    else {
+      users = super.getList(queryParameters);
+    }
+    return users;
+  }
 
-      if(StringUtils.isNotBlank(userName)){
-        if(isSmallerThan){
-          params.add(QueryParameterFactory.getLesserThanPropertyParam("username", userName));
-        }else{
-          params.add(QueryParameterFactory.getGreaterThanPropertyParam("username", userName));
-        }
+  public Collection<User> getUsers(String userNameLike, String userName, boolean isSmallerThan, int count) {
+
+    List<QueryParameter> params = new ArrayList<QueryParameter>();
+
+    if (StringUtils.isNotBlank(userNameLike)) {
+      final QueryParameter orgNameLikeParam = QueryParameterFactory.getNestedParametersParam("username",
+                                                                                             FetchMode.EAGER,
+                                                                                             QueryParameterFactory.
+          getStringLikePropertyParam("username", userNameLike));
+      params.add(orgNameLikeParam);
+    }
+    else {
+      params.add(QueryParameterFactory.getNestedParametersParam("username", FetchMode.EAGER));
+    }
+
+    if (StringUtils.isNotBlank(userName)) {
+      if (isSmallerThan) {
+        params.add(QueryParameterFactory.getLesserThanPropertyParam("username", userName));
       }
+      else {
+        params.add(QueryParameterFactory.getGreaterThanPropertyParam("username", userName));
+      }
+    }
 
-      params.add(QueryParameterFactory.getMaxResultsParam(count));
-      params.add(QueryParameterFactory.getOrderByParam("id", Order.DESC));
-      params.add(QueryParameterFactory.getDistinctPropProjectionParam("id"));
+    params.add(QueryParameterFactory.getMaxResultsParam(count));
+    params.add(QueryParameterFactory.getOrderByParam("id", Order.DESC));
+    params.add(QueryParameterFactory.getDistinctPropProjectionParam("id"));
 
-      List<Integer> userIDs = getOtherList(params);
+    List<Integer> userIDs = getOtherList(params);
 
-      if (userIDs != null && !userIDs.isEmpty()) {
+    if (userIDs != null && !userIDs.isEmpty()) {
       List<User> users = new ArrayList<User>(super.getByIds(userIDs));
-      Collections.sort(users, new Comparator<User>(){
+      Collections.sort(users, new Comparator<User>() {
 
         @Override
         public int compare(User o1, User o2) {
@@ -136,80 +142,87 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
         }
       });
       if (isSmallerThan) {
-                Collections.reverse(users);
-            }
+        Collections.reverse(users);
+      }
 
       return users;
     }
     else {
       return Collections.emptySet();
     }
+  }
+
+  @Override
+  public Collection<User> getAllUser() {
+    Collection<User> users = new HashSet<User>();
+    try {
+      users = super.getAll();
+    }
+    catch (Exception e) {
+    }
+    return users;
+  }
+
+  public Collection<User> getUserByOrganization(String organizationShortName) {
+    Collection<User> users = new HashSet<User>();
+
+    QueryParameter qp = QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT, QueryParameterFactory.
+        getEqualPropertyParam("uniqueShortName", organizationShortName));
+    return super.getList(qp);
+  }
+
+  public Collection<User> getUserByOrganization(String organizationName, String userName, boolean isSmallerThan,
+                                                int count) {
+    List<QueryParameter> params = new ArrayList<QueryParameter>();
+
+
+    if (StringUtils.isNotBlank(organizationName)) {
+      final QueryParameter orgNameParam = QueryParameterFactory.getNestedParametersParam("organization",
+                                                                                         FetchMode.DEFAULT,
+                                                                                         QueryParameterFactory.
+          getEqualPropertyParam("uniqueShortName", organizationName));
+      params.add(orgNameParam);
+    }
+    else {
+      return Collections.emptyList();
     }
 
-    @Override
-    public Collection<User> getAllUser() {
-        Collection<User> users = new HashSet<User>();
-        try {
-            users = super.getAll();
-        } catch (Exception e) {
-        }
-        return users;
+    if (StringUtils.isNotBlank(userName)) {
+      if (isSmallerThan) {
+        params.add(QueryParameterFactory.getLesserThanPropertyParam("username", userName));
+      }
+      else {
+        params.add(QueryParameterFactory.getGreaterThanPropertyParam("username", userName));
+      }
     }
 
-    public Collection<User> getUserByOrganization(String organizationShortName) {
-        Collection<User> users = new HashSet<User>();
+    params.add(QueryParameterFactory.getMaxResultsParam(count));
+    params.add(QueryParameterFactory.getOrderByParam("username", isSmallerThan ? Order.DESC : Order.ASC));
+    params.add(QueryParameterFactory.getDistinctPropProjectionParam("username"));
 
-        QueryParameter qp = QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationShortName));
-        return super.getList(qp);
-    }
+    List<String> userNames = getOtherList(params);
 
-    public Collection<User> getUserByOrganization(String organizationName, String userName, boolean isSmallerThan, int count){
-      List<QueryParameter> params = new ArrayList<QueryParameter>();
-
-
-      if(StringUtils.isNotBlank(organizationName)){
-        final QueryParameter orgNameParam = QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT,
-                                                                                           QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationName));
-        params.add(orgNameParam);
-      }
-      else{
-        return Collections.emptyList();
-      }
-
-      if(StringUtils.isNotBlank(userName)){
-        if(isSmallerThan){
-          params.add(QueryParameterFactory.getLesserThanPropertyParam("username", userName));
-        }else{
-          params.add(QueryParameterFactory.getGreaterThanPropertyParam("username", userName));
-        }
-      }
-
-      params.add(QueryParameterFactory.getMaxResultsParam(count));      
-      params.add(QueryParameterFactory.getOrderByParam("username", isSmallerThan? Order.DESC : Order.ASC));
-      params.add(QueryParameterFactory.getDistinctPropProjectionParam("username"));
-
-      List<String> userNames = getOtherList(params);
-
-      if (userNames != null && !userNames.isEmpty()) {
+    if (userNames != null && !userNames.isEmpty()) {
       List<User> users = new ArrayList<User>(getByUserNames(userNames));
-      Collections.sort(users, new Comparator<User>(){
+      Collections.sort(users, new Comparator<User>() {
 
         @Override
         public int compare(User o1, User o2) {
           //return o1.getId().compareTo(o2.getId()) * -1;
           return o1.getUsername().toUpperCase().compareTo(o2.getUsername().toUpperCase());
         }
-      });      
+      });
       return users;
     }
     else {
       return Collections.emptySet();
     }
-    }
+  }
 
-    public List<User> getByUserNames(List<String> userNames) {
+  public List<User> getByUserNames(List<String> userNames) {
 
-    QueryParameter<String> param = QueryParameterFactory.<String>getIsInPropertyParam("username", userNames.toArray(new String[0]));
+    QueryParameter<String> param = QueryParameterFactory.<String>getIsInPropertyParam("username", userNames.toArray(
+        new String[0]));
 
     Collection<User> result;
     try {
@@ -223,57 +236,67 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
 
   }
 
-    @Override
-    public User getUserByUsername(String usernameWithOrganizationName) {
-        String username;
-        String organizationName;
-        StringTokenizer tokenizer = new StringTokenizer(usernameWithOrganizationName, "@");
-        if (tokenizer.hasMoreTokens()) {
-            username = tokenizer.nextToken();
-        } else {
-            username = "";
-        }
-        if (tokenizer.hasMoreTokens()) {
-            organizationName = tokenizer.nextToken();
-        } else {
-            organizationName = "";
-        }
-        User user = getUserByOrganizationAndUserName(organizationName, username);
-        return user;
+  @Override
+  public User getUserByUsername(String usernameWithOrganizationName) {
+    String username;
+    String organizationName;
+    StringTokenizer tokenizer = new StringTokenizer(usernameWithOrganizationName, "@");
+    if (tokenizer.hasMoreTokens()) {
+      username = tokenizer.nextToken();
     }
-
-    @Override
-    public void validateUser(User user) {
-        if (user.getId() == null) {
-            Integer count = (Integer) super.getOther(
-                    QueryParameterFactory.getElementCountParam("username"), QueryParameterFactory.getConjunctionParam(
-                    QueryParameterFactory.getEqualPropertyParam("organization.id",
-                    user.getOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
-                    "username", user.getUsername())));
-            if (count.intValue() > 0) {
-                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-"
-                        + UniqueConstrainedField.USER_USERNAME.name());
-            }
-        } else {
-            Integer count = (Integer) super.getOther(
-                    QueryParameterFactory.getElementCountParam("username"),
-                    QueryParameterFactory.getConjunctionParam(
-                    QueryParameterFactory.getNotEqualPropertyParam("id",
-                    user.getId()), QueryParameterFactory.getEqualPropertyParam("organization.id",
-                    user.getOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
-                    "username", user.getUsername())));
-            if (count.intValue() > 0) {
-                throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-"
-                        + UniqueConstrainedField.USER_USERNAME.name());
-            }
-
-        }
+    else {
+      username = "";
     }
-
-    @Override
-    public User getUserByOrganizationAndUserName(String organizationShortName, String userName) {
-        return super.getSingle(QueryParameterFactory.getStringLikePropertyParam("username", userName),
-                QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT,
-                QueryParameterFactory.getEqualPropertyParam("uniqueShortName", organizationShortName)));
+    if (tokenizer.hasMoreTokens()) {
+      organizationName = tokenizer.nextToken();
     }
+    else {
+      organizationName = "";
+    }
+    User user = getUserByOrganizationAndUserName(organizationName, username);
+    return user;
+  }
+
+  @Override
+  public void validateUser(User user) {
+    if (StringUtils.isEmpty(user.getUsername())) {
+      throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.USER_USERNAME.
+          name());
+    }
+    if (user.getId() == null) {
+      Integer count = (Integer) super.getOther(
+          QueryParameterFactory.getElementCountParam("username"), QueryParameterFactory.getConjunctionParam(
+          QueryParameterFactory.getEqualPropertyParam("organization.id",
+                                                      user.getOrganization().getId()), QueryParameterFactory.
+          getStringLikePropertyParam(
+          "username", user.getUsername())));
+      if (count.intValue() > 0) {
+        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.USER_USERNAME.
+            name());
+      }
+    }
+    else {
+      Integer count = (Integer) super.getOther(
+          QueryParameterFactory.getElementCountParam("username"),
+          QueryParameterFactory.getConjunctionParam(
+          QueryParameterFactory.getNotEqualPropertyParam("id",
+                                                         user.getId()), QueryParameterFactory.getEqualPropertyParam(
+          "organization.id",
+          user.getOrganization().getId()), QueryParameterFactory.getStringLikePropertyParam(
+          "username", user.getUsername())));
+      if (count.intValue() > 0) {
+        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.USER_USERNAME.
+            name());
+      }
+
+    }
+  }
+
+  @Override
+  public User getUserByOrganizationAndUserName(String organizationShortName, String userName) {
+    return super.getSingle(QueryParameterFactory.getStringLikePropertyParam("username", userName),
+                           QueryParameterFactory.getNestedParametersParam("organization", FetchMode.DEFAULT,
+                                                                          QueryParameterFactory.getEqualPropertyParam(
+        "uniqueShortName", organizationShortName)));
+  }
 }

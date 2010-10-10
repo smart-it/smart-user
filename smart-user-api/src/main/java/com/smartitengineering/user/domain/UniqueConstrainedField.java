@@ -27,5 +27,6 @@ public enum UniqueConstrainedField {
     ORGANIZATION,
     ORGANIZATION_UNIQUE_SHORT_NAME,    
     SECURED_OBJECT_OBJECT_ID,
+    USER_GROUP_NAME,
     OTHER;
 }

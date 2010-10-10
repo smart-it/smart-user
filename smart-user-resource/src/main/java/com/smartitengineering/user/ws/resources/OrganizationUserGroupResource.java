@@ -38,32 +38,44 @@ import org.apache.commons.lang.StringUtils;
 @Path("/orgs/sn/{uniqueShortName}/usergroups/name/{name}")
 public class OrganizationUserGroupResource extends AbstractResource {
 
-  
-  static final UriBuilder ORGANIZATION_USER_GROUP_URI_BUILDER = UriBuilder.fromResource(OrganizationUserGroupResource.class);
+  static final UriBuilder ORGANIZATION_USER_GROUP_URI_BUILDER = UriBuilder.fromResource(
+      OrganizationUserGroupResource.class);
   static final UriBuilder ORGANIZATION_USER_GROUP_CONTENT_URI_BUILDER;
 
   static {
     ORGANIZATION_USER_GROUP_CONTENT_URI_BUILDER = ORGANIZATION_USER_GROUP_URI_BUILDER.clone();
     try {
-      ORGANIZATION_USER_GROUP_CONTENT_URI_BUILDER.path(OrganizationUserGroupResource.class.getMethod("getUserGroup"));
-    } catch (Exception ex) {
+      ORGANIZATION_USER_GROUP_CONTENT_URI_BUILDER.path(OrganizationUserGroupResource.class.getMethod("getContent"));
+    }
+    catch (Exception ex) {
       ex.printStackTrace();
       throw new InstantiationError();
     }
   }
-
-  @PathParam("uniqueShortName")
   private String orgShortName;
-  @PathParam("name")
   private String name;
-  public OrganizationUserGroupResource() {    
+  private Organization organization;
+  private UserGroup userGroup;
+  private final String REL_USER_GROUP_PRIVILEGES = "privileges";
+  private final String REL_USER_GROUP_ROLES = "roles";
+  private final String REL_USER_GROUP_USERS = "users";
+
+  public OrganizationUserGroupResource(@PathParam("uniqueShortName") String orgName, @PathParam("name") String groupName) {
+    this.orgShortName = orgName;
+    this.name = groupName;
+    organization = getOrganization();
+    userGroup = getUserGroup();
   }
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
+    ResponseBuilder responseBuilder = Response.ok();
+    if (organization == null || userGroup == null) {
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     Feed userFeed = getUserGroupFeed();
-    ResponseBuilder responseBuilder = Response.ok(userFeed);
+    responseBuilder = Response.ok(userFeed);
     return responseBuilder.build();
   }
 
@@ -71,7 +83,11 @@ public class OrganizationUserGroupResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/content")
   public Response getContent() {
-    ResponseBuilder responseBuilder = Response.ok(getUserGroup());
+    ResponseBuilder responseBuilder = Response.ok();
+    if (organization == null || userGroup == null) {
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
+    responseBuilder = Response.ok(userGroup);
     return responseBuilder.build();
   }
 
@@ -79,8 +95,10 @@ public class OrganizationUserGroupResource extends AbstractResource {
   @Produces(MediaType.TEXT_HTML)
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
-
-    Viewable view = new Viewable("OrganizationUserDetails", getUserGroup(), OrganizationResource.class);
+    if (organization == null || userGroup == null) {
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
+    Viewable view = new Viewable("OrganizationUserDetails", userGroup, OrganizationResource.class);
     responseBuilder.entity(view);
     return responseBuilder.build();
   }
@@ -90,11 +108,15 @@ public class OrganizationUserGroupResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response update(UserGroup newUserGroup) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-    try {      
-      newUserGroup.setOrganization(getOrganization());
+    if (organization == null || userGroup == null) {
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
+    try {
+      newUserGroup.setOrganization(organization);
       Services.getInstance().getUserGroupService().update(newUserGroup);
       responseBuilder = Response.ok(getUserGroupFeed());
-    } catch (Exception ex) {
+    }
+    catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
       ex.printStackTrace();
     }
@@ -102,9 +124,9 @@ public class OrganizationUserGroupResource extends AbstractResource {
   }
 
   private Feed getUserGroupFeed() throws UriBuilderException, IllegalArgumentException {
-    UserGroup userGroup = getUserGroup();
-    Feed userFeed = getFeed(userGroup.getName(), new Date());
-    userFeed.setTitle(userGroup.getName());
+    UserGroup userGroupForFeed = userGroup;
+    Feed userFeed = getFeed(userGroupForFeed.getName(), new Date());
+    userFeed.setTitle(userGroupForFeed.getName());
 
     // add a self link
     userFeed.addLink(getSelfLink());
@@ -114,21 +136,45 @@ public class OrganizationUserGroupResource extends AbstractResource {
     editLink.setHref(uriInfo.getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
+    userFeed.addLink(editLink);
 
     // add a alternate link
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(ORGANIZATION_USER_GROUP_CONTENT_URI_BUILDER.clone().build(userGroup.getName()).toString());
+    altLink.setHref(ORGANIZATION_USER_GROUP_CONTENT_URI_BUILDER.clone().build(orgShortName, name).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(altLink);
+
+    Link privilegesLink = abderaFactory.newLink();
+    privilegesLink.setHref(UserGroupPrivilegesResource.USER_GROUP_PRIVILEGE_URIBUILDER.clone().build(orgShortName,
+                                                                                          name).toString());
+    privilegesLink.setRel(REL_USER_GROUP_PRIVILEGES);
+    privilegesLink.setMimeType(MediaType.APPLICATION_JSON);
+    userFeed.addLink(privilegesLink);
+
+    Link rolesLink = abderaFactory.newLink();
+    rolesLink.setHref(UserGroupRolesResource.ROLE_URI_BUILDER.clone().build(orgShortName, name).toString());
+    rolesLink.setRel(REL_USER_GROUP_ROLES);
+    rolesLink.setMimeType(MediaType.APPLICATION_JSON);
+    userFeed.addLink(rolesLink);
+
+    Link usersLink = abderaFactory.newLink();
+    usersLink.setHref(UserGroupUsersResource.USER_GROUP_USERS_URIBUILDER.clone().build(orgShortName, name).toString());
+    usersLink.setRel(REL_USER_GROUP_USERS);
+    usersLink.setMimeType(MediaType.APPLICATION_JSON);
+    userFeed.addLink(usersLink);
+
 
     return userFeed;
   }
 
   @DELETE
   public Response delete() {
-    Services.getInstance().getUserGroupService().delete(getUserGroup());
     ResponseBuilder responseBuilder = Response.ok();
+    if (organization == null || userGroup == null) {
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
+    Services.getInstance().getUserGroupService().delete(userGroup);
     return responseBuilder.build();
   }
 
@@ -136,9 +182,13 @@ public class OrganizationUserGroupResource extends AbstractResource {
   @Path("/delete")
   public Response deletePost() {
     ResponseBuilder responseBuilder = Response.ok();
+    if (organization == null || userGroup == null) {
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     try {
-      Services.getInstance().getUserGroupService().delete(getUserGroup());
-    } catch (Exception ex) {
+      Services.getInstance().getUserGroupService().delete(userGroup);
+    }
+    catch (Exception ex) {
       ex.printStackTrace();
       responseBuilder = Response.ok(Status.INTERNAL_SERVER_ERROR);
     }
@@ -150,7 +200,9 @@ public class OrganizationUserGroupResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   public Response updatePost(@HeaderParam("Content-type") String contentType, String message) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-
+    if (organization == null || userGroup == null) {
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     if (StringUtils.isBlank(message)) {
       responseBuilder = Response.status(Status.BAD_REQUEST);
       responseBuilder.build();
@@ -160,7 +212,8 @@ public class OrganizationUserGroupResource extends AbstractResource {
     if (StringUtils.isBlank(contentType)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
       isHtmlPost = false;
-    } else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+    }
+    else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
       isHtmlPost = true;
       try {
@@ -170,21 +223,23 @@ public class OrganizationUserGroupResource extends AbstractResource {
         final String realMsg = message.substring(startIndex);
         //Decode the message to ignore the form encodings and make them human readable
         message = URLDecoder.decode(realMsg, "UTF-8");
-      } catch (UnsupportedEncodingException ex) {
+      }
+      catch (UnsupportedEncodingException ex) {
         ex.printStackTrace();
       }
-    } else {
-      contentType = contentType;
+    }
+    else {
       isHtmlPost = false;
     }
 
     if (isHtmlPost) {
       UserGroup newUserGroup = getUserGroupFromContent(message);
       try {
-        newUserGroup.setOrganization(getOrganization());
+        newUserGroup.setOrganization(organization);
         Services.getInstance().getUserGroupService().update(newUserGroup);
         responseBuilder = Response.ok(getUserGroupFeed());
-      } catch (Exception ex) {
+      }
+      catch (Exception ex) {
         responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
       }
     }
@@ -202,12 +257,12 @@ public class OrganizationUserGroupResource extends AbstractResource {
     }
 
     UserGroup newUserGroup = new UserGroup();
-    if (keyValueMap.get("id")!=null) {
+    if (keyValueMap.get("id") != null) {
       newUserGroup.setId(Integer.valueOf(keyValueMap.get("id")));
     }
-    if (keyValueMap.get("name")!=null) {
+    if (keyValueMap.get("name") != null) {
       newUserGroup.setName(keyValueMap.get("name"));
-    }    
+    }
     return newUserGroup;
   }
 

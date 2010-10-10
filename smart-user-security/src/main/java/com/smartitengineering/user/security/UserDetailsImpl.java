@@ -37,14 +37,12 @@ public class UserDetailsImpl implements UserDetails {
   }
 
   @Override
-  public String getPassword() {
-    System.out.println("--------------------- password " + user.getPassword());
+  public String getPassword() {    
     return user.getPassword();
   }
 
   @Override
-  public String getUsername() {
-    System.out.println("--------------------- username " + user.getUsername());
+  public String getUsername() {    
     return getUserNameWithOrganizationName();
   }
 

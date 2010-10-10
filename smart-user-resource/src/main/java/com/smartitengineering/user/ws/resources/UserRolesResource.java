@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.User;
 import java.util.ArrayList;
@@ -30,11 +31,12 @@ import org.apache.abdera.model.Link;
  *
  * @author modhu7
  */
-@Path("/orgs/sn/{organizationName}/users/username/{userName}/roles")
+@Path("/orgs/sn/{organizationName}/users/un/{userName}/roles")
 public class UserRolesResource extends AbstractResource {
 
   private String organizationName;
   private String userName;
+  private Organization organization;
   private User user;
   static final UriBuilder ROLE_URI_BUILDER;
   static final UriBuilder ROLE_AFTER_ROLE_NAME_URI_BUILDER;
@@ -67,6 +69,7 @@ public class UserRolesResource extends AbstractResource {
     this.organizationName = organizationName;
     this.userName = userName;
     user = Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationName, userName);
+    organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationName);
   }
 
   @GET
@@ -93,6 +96,10 @@ public class UserRolesResource extends AbstractResource {
     if (count == null) {
       count = 10;
     }
+    if(organization==null || user==null){
+      ResponseBuilder responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
 
     ResponseBuilder responseBuilder = Response.status(Status.OK);
     Feed atomFeed = getFeed("roles", new Date());
@@ -116,7 +123,7 @@ public class UserRolesResource extends AbstractResource {
       nextLink.setRel(Link.REL_NEXT);
 
       Role firstRole = roleList.get(0);
-      nextLink.setHref(nextRoleUri.build(firstRole.getName()).toString());
+      nextLink.setHref(nextRoleUri.build(organizationName, userName, firstRole.getName()).toString());
       atomFeed.addLink(nextLink);
 
       Role lastRole = roleList.get(roleList.size() - 1);
@@ -124,7 +131,7 @@ public class UserRolesResource extends AbstractResource {
       // link to the previous uri according to the count value
       Link previousLink = abderaFactory.newLink();
       previousLink.setRel(Link.REL_PREVIOUS);
-      previousLink.setHref(previousRoleUri.build(lastRole.getName()).toString());
+      previousLink.setHref(previousRoleUri.build(organizationName, userName, lastRole.getName()).toString());
 
       atomFeed.addLink(previousLink);
 
@@ -139,7 +146,7 @@ public class UserRolesResource extends AbstractResource {
         // setting link to each individual role
         Link roleLink = abderaFactory.newLink();
         roleLink.setRel(Link.REL_ALTERNATE);
-        roleLink.setHref(RolesResource.ROLE_URI_BUILDER.build(role.getName()).toString());
+        roleLink.setHref(RoleResource.ROLE_URI_BUILDER.build(role.getName()).toString());
         roleLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
         roleEntry.addLink(roleLink);
         atomFeed.addEntry(roleEntry);
@@ -154,6 +161,10 @@ public class UserRolesResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response post(Role role) {
     ResponseBuilder responseBuilder;
+     if(organization==null || user==null){
+      responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
 
     try {
       if (role.getId() == null || role.getVersion() == null) {
@@ -163,6 +174,8 @@ public class UserRolesResource extends AbstractResource {
         user.getRoles().add(role);
         Services.getInstance().getUserService().update(user);
         responseBuilder = Response.status(Status.CREATED);
+        responseBuilder.location(uriInfo.getBaseUriBuilder().path(UserRoleResource.ROLE_URI_BUILDER.clone().build(organizationName, userName, role.getName()).toString()).
+              build());
       }
     }
     catch (Exception ex) {

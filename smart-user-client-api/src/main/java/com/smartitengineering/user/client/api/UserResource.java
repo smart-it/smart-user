@@ -15,9 +15,9 @@ public interface UserResource extends WritableResource<Feed> {
 
   public UserPerson getUser();  
 
-  public PrivilegesResource getPrivilegesResource();
+  public UserPrivilegesResource getPrivilegesResource();
 
-  public RolesResource getRolesResource();
+  public UserRolesResource getRolesResource();
 
   public void update();
 }

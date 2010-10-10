@@ -43,7 +43,8 @@ public class RoleResource extends AbstractResource {
     ROLE_CONTENT_URI_BUILDER = ROLE_URI_BUILDER.clone();
     try {
       ROLE_CONTENT_URI_BUILDER.path(RoleResource.class.getMethod("getRole"));
-    } catch (Exception ex) {
+    }
+    catch (Exception ex) {
       throw new InstantiationError();
     }
   }
@@ -56,16 +57,23 @@ public class RoleResource extends AbstractResource {
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
-
+    if (role == null) {
+      ResponseBuilder responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
     Feed roleFeed = getRoleFeed();
     ResponseBuilder responseBuilder = Response.ok(roleFeed);
     return responseBuilder.build();
   }
 
   @GET
-  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Produces(MediaType.APPLICATION_JSON)
   @Path("/content")
   public Response getRole() {
+    if (role == null) {
+      ResponseBuilder responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
     ResponseBuilder responseBuilder = Response.ok(role);
     return responseBuilder.build();
   }
@@ -74,12 +82,17 @@ public class RoleResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Consumes(MediaType.APPLICATION_JSON)
   public Response update(Role newRole) {
+    if (role == null) {
+      ResponseBuilder responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
     try {
 
       Services.getInstance().getRoleService().update(role);
       responseBuilder = Response.ok(getRoleFeed());
-    } catch (Exception ex) {
+    }
+    catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -98,6 +111,7 @@ public class RoleResource extends AbstractResource {
     editLink.setHref(uriInfo.getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
+    roleFeed.addLink(editLink);
 
     // add alternate link
     Link altLink = abderaFactory.newLink();
@@ -111,6 +125,10 @@ public class RoleResource extends AbstractResource {
 
   @DELETE
   public Response delete() {
+    if (role == null) {
+      ResponseBuilder responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
     Services.getInstance().getRoleService().delete(role);
     ResponseBuilder responseBuilder = Response.ok();
     return responseBuilder.build();
@@ -118,6 +136,10 @@ public class RoleResource extends AbstractResource {
 
   @POST
   public Response updatePost(@HeaderParam("Content-type") String contentType, String message) {
+    if (role == null) {
+      ResponseBuilder responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
 
     if (StringUtils.isBlank(message)) {
@@ -129,7 +151,8 @@ public class RoleResource extends AbstractResource {
     if (StringUtils.isBlank(contentType)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
       isHtmlPost = false;
-    } else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+    }
+    else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
       isHtmlPost = true;
       try {
@@ -139,11 +162,12 @@ public class RoleResource extends AbstractResource {
         final String realMsg = message.substring(startIndex);
         //Decode the message to ignore the form encodings and make them human readable
         message = URLDecoder.decode(realMsg, "UTF-8");
-      } catch (UnsupportedEncodingException ex) {
+      }
+      catch (UnsupportedEncodingException ex) {
         ex.printStackTrace();
       }
-    } else {
-      contentType = contentType;
+    }
+    else {      
       isHtmlPost = false;
     }
 
@@ -156,7 +180,8 @@ public class RoleResource extends AbstractResource {
         oldRole.setShortDescription(newRole.getShortDescription());
         oldRole.setLastModifiedDate(new Date());
         Services.getInstance().getRoleService().update(oldRole);
-      } catch (Exception ex) {
+      }
+      catch (Exception ex) {
         responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
         ex.printStackTrace();
       }
@@ -167,10 +192,15 @@ public class RoleResource extends AbstractResource {
   @POST
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response postDelete() {
+    if(role==null){
+      ResponseBuilder responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
     ResponseBuilder responseBuilder = Response.ok();
     try {
       Services.getInstance().getRoleService().delete(role);
-    } catch (Exception ex) {
+    }
+    catch (Exception ex) {
       ex.printStackTrace();
     }
     return responseBuilder.build();
@@ -187,10 +217,10 @@ public class RoleResource extends AbstractResource {
       String[] keyValuePair = keyValuePairs[i].split("=");
       keyValueMap.put(keyValuePair[0], keyValuePair[1]);
     }
-    if (keyValueMap.get("shortDescription")!=null) {
+    if (keyValueMap.get("shortDescription") != null) {
       newRole.setShortDescription(keyValueMap.get("shortDescription"));
     }
-    if (keyValueMap.get("displayName")!=null) {
+    if (keyValueMap.get("displayName") != null) {
       newRole.setDisplayName(keyValueMap.get("displayName"));
     }
     return newRole;

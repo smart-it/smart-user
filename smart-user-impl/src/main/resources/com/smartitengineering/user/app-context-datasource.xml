@@ -15,7 +15,7 @@
     <bean id="propertyConfigurer" class="com.smartitengineering.util.bean.spring.PropertiesLocatorConfigurer">
         <property name="smartLocations">
             <list>
-                <value>db-config.properties</value>
+                <value>com/smartitengineering/user/properties/db-config.properties</value>
             </list>
         </property>
         <property name="properties" >

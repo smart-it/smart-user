@@ -43,18 +43,18 @@ public class OrganizationResource extends AbstractResource {
 
   static final UriBuilder ORGANIZATION_URI_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
   static final UriBuilder ORGANIZATION_CONTENT_URI_BUILDER;
-
   private final String REL_USERS = "users";
   private final String REL_PRIVILEGES = "privileges";
   private final String REL_SECUREDOBJECTS = "securedobjects";
-
+  private final String REL_USER_GROUPS = "usergroups";
+  
   @Context
   private HttpServletRequest servletRequest;
 
   static {
     ORGANIZATION_CONTENT_URI_BUILDER = ORGANIZATION_URI_BUILDER.clone();
     try {
-      ORGANIZATION_CONTENT_URI_BUILDER.path(OrganizationResource.class.getMethod("getOrganization"));
+      ORGANIZATION_CONTENT_URI_BUILDER.path(OrganizationResource.class.getMethod("getContent"));
 
     }
     catch (Exception ex) {
@@ -63,28 +63,34 @@ public class OrganizationResource extends AbstractResource {
     }
   }
   private Organization organization;
-  @PathParam("uniqueShortName")
   private String uniqueShortName;
 
   public OrganizationResource(@PathParam("uniqueShortName") String uniqueShortName) {
     this.uniqueShortName = uniqueShortName;
-    organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(uniqueShortName);
-
+    organization = getOrganization();
   }
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
+    ResponseBuilder responseBuilder = Response.ok();
+    if(organization==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     Feed organizationFeed = getOrganizationFeed();
-    ResponseBuilder responseBuilder = Response.ok(organizationFeed);
+    responseBuilder = Response.ok(organizationFeed);
     return responseBuilder.build();
   }
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/content")
-  public Response getOrganization() {
-    ResponseBuilder responseBuilder = Response.ok(organization);
+  public Response getContent() {
+    ResponseBuilder responseBuilder = Response.ok();
+    if(organization==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
+    responseBuilder = Response.ok(organization);
     return responseBuilder.build();
   }
 
@@ -92,18 +98,12 @@ public class OrganizationResource extends AbstractResource {
   @Produces(MediaType.TEXT_HTML)
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
-
-
-
-
-    
-
+    if (organization == null) {
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/user/ws/resources/OrganizationResource/OrganizationDetails.jsp");
     Viewable view = new Viewable("/template/template.jsp", organization);
-
-    //Viewable view = new Viewable("OrganizationDetails", organization, OrganizationResource.class);
-
     responseBuilder.entity(view);
     return responseBuilder.build();
   }
@@ -113,6 +113,9 @@ public class OrganizationResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response update(Organization newOrganization) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+    if(organization==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     try {
 
       organization.getAddress().setCity(newOrganization.getAddress().getCity());
@@ -143,14 +146,13 @@ public class OrganizationResource extends AbstractResource {
   //@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   public Response updatePost(@HeaderParam("Content-type") String contentType, String message) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-
-
+    if(organization==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     if (StringUtils.isBlank(message)) {
       responseBuilder = Response.status(Status.BAD_REQUEST);
       responseBuilder.build();
-
     }
-
     final boolean isHtmlPost;
     if (StringUtils.isBlank(contentType)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
@@ -171,8 +173,7 @@ public class OrganizationResource extends AbstractResource {
         ex.printStackTrace();
       }
     }
-    else {
-      contentType = contentType;
+    else {      
       isHtmlPost = false;
     }
 
@@ -254,15 +255,20 @@ public class OrganizationResource extends AbstractResource {
   @Path("/delete")
   //@Produces(MediaType.APPLICATION_ATOM_XML)
   public Response deletePost() {
-    Services.getInstance().getOrganizationService().delete(organization);
     ResponseBuilder responseBuilder = Response.ok();
+    if(organization==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
+    Services.getInstance().getOrganizationService().delete(organization);    
     return responseBuilder.build();
   }
 
   @DELETE
   public Response delete() {
     ResponseBuilder responseBuilder = Response.ok();
-
+    if(organization==null){
+      return responseBuilder.status(Status.NOT_FOUND).build();
+    }
     try {
       Services.getInstance().getOrganizationService().delete(organization);
     }
@@ -270,7 +276,6 @@ public class OrganizationResource extends AbstractResource {
       ex.printStackTrace();
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
-
     return responseBuilder.build();
   }
 
@@ -297,23 +302,36 @@ public class OrganizationResource extends AbstractResource {
     organizationFeed.addLink(altLink);
 
     Link usersLink = abderaFactory.newLink();
-    usersLink.setHref(OrganizationUsersResource.ORGANIZATION_USERS_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
+    usersLink.setHref(OrganizationUsersResource.ORGANIZATION_USERS_URI_BUILDER.clone().build(organization.
+        getUniqueShortName()).toString());
     usersLink.setRel(REL_USERS);
     usersLink.setMimeType(MediaType.APPLICATION_JSON);
     organizationFeed.addLink(usersLink);
 
     Link privilegesLink = abderaFactory.newLink();
-    privilegesLink.setHref(OrganizationUsersResource.ORGANIZATION_USERS_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
+    privilegesLink.setHref(OrganizationPrivilegesResource.ORGANIZATION_PRIVILEGES_URIBUILDER.clone().build(organization.
+        getUniqueShortName()).toString());
     privilegesLink.setRel(REL_PRIVILEGES);
     privilegesLink.setMimeType(MediaType.APPLICATION_JSON);
     organizationFeed.addLink(privilegesLink);
 
     Link securedObjectsLink = abderaFactory.newLink();
-    securedObjectsLink.setHref(OrganizationUsersResource.ORGANIZATION_USERS_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
+    securedObjectsLink.setHref(OrganizationSecuredObjectsResource.ORGANIZATION_SECURED_OBJECTS_URI_BUILDER.clone().build(organization.
+        getUniqueShortName()).toString());
     securedObjectsLink.setRel(REL_SECUREDOBJECTS);
     securedObjectsLink.setMimeType(MediaType.APPLICATION_JSON);
     organizationFeed.addLink(securedObjectsLink);
 
+    Link userGroupsLink = abderaFactory.newLink();
+    userGroupsLink.setHref(OrganizationUserGroupsResource.ORGANIZATION_USER_GROUPS_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
+    userGroupsLink.setRel(REL_USER_GROUPS);
+    userGroupsLink.setMimeType(MediaType.APPLICATION_JSON);
+    organizationFeed.addLink(userGroupsLink);
+
     return organizationFeed;
+  }
+
+  private Organization getOrganization() {
+    return Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(uniqueShortName);
   }
 }

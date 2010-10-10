@@ -9,14 +9,9 @@ import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl;
 import com.smartitengineering.user.domain.Organization;
-import com.smartitengineering.user.domain.Privilege;
-import com.smartitengineering.user.domain.SecuredObject;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
-import com.smartitengineering.user.domain.User;
-import com.smartitengineering.user.domain.UserGroup;
 import com.smartitengineering.user.filter.OrganizationFilter;
 import com.smartitengineering.user.observer.CRUDObservable;
-import com.smartitengineering.user.observer.CRUDObserver;
 import com.smartitengineering.user.observer.ObserverNotification;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.OrganizationService;
@@ -26,7 +21,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleStateException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -35,7 +29,7 @@ import org.hibernate.exception.ConstraintViolationException;
  *
  * @author modhu7
  */
-public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization> implements OrganizationService{
+public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization> implements OrganizationService {
 
   private CRUDObservable observable;
 
@@ -121,7 +115,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
     }
 
     params.add(QueryParameterFactory.getMaxResultsParam(count));
-    params.add(QueryParameterFactory.getOrderByParam("uniqueShortName", isSmallerThan?Order.DESC: Order.ASC));
+    params.add(QueryParameterFactory.getOrderByParam("uniqueShortName", isSmallerThan ? Order.DESC : Order.ASC));
     params.add(QueryParameterFactory.getDistinctPropProjectionParam("uniqueShortName"));
 
     List<String> organizationShortNames = getOtherList(params);
@@ -131,7 +125,7 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
       Collections.sort(organizations, new Comparator<Organization>() {
 
         @Override
-        public int compare(Organization o1, Organization o2) {          
+        public int compare(Organization o1, Organization o2) {
           return o1.getUniqueShortName().toUpperCase().compareTo(o2.getUniqueShortName().toUpperCase());
         }
       });
@@ -159,7 +153,8 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
 
   public List<Organization> getByUniqueShortNames(List<String> shortNames) {
 
-    QueryParameter<String> param = QueryParameterFactory.<String>getIsInPropertyParam("uniqueShortName", shortNames.toArray(new String[0]));
+    QueryParameter<String> param = QueryParameterFactory.<String>getIsInPropertyParam("uniqueShortName", shortNames.
+        toArray(new String[0]));
 
     Collection<Organization> result;
     try {
@@ -175,6 +170,12 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
 
   @Override
   public void validateOrganization(Organization organization) {
+
+    if (StringUtils.isEmpty(organization.getUniqueShortName())) {
+      throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.ORGANIZATION_UNIQUE_SHORT_NAME.
+          name());
+    }
+
     if (organization.getId() == null) {
       Integer count = (Integer) super.getOther(
           QueryParameterFactory.getElementCountParam("uniqueShortName"), QueryParameterFactory.
@@ -235,5 +236,5 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
       organizations = super.getList(queryParameters);
     }
     return organizations;
-  }  
+  }
 }
