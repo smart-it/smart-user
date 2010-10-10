@@ -6,7 +6,6 @@ package com.smartitengineering.user.client.impl;
 
 import com.smartitengineering.user.client.api.LoginResource;
 import com.smartitengineering.user.client.api.RootResource;
-import com.smartitengineering.user.client.impl.login.LoginCenter;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;
@@ -14,6 +13,8 @@ import com.smartitengineering.util.rest.client.jersey.cache.CacheableClientConfi
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.atom.abdera.impl.provider.entity.FeedProvider;
 import java.net.URISyntaxException;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Map.Entry;
 import org.apache.abdera.model.Feed;
 
 /**
@@ -25,34 +26,39 @@ public class RootResourceImpl
     implements RootResource {
 
   public static final String REL_LOGIN = "Login";
-  public static RootResource getInstance() {
+  private final String username, password;
+  private final static ThreadLocal<Entry<String, String>> usernamePass = new ThreadLocal<Entry<String, String>>();
 
-    return new RootResourceImpl();
+  public static RootResource getInstance(String username, String password) {
+    usernamePass.set(new SimpleEntry<String, String>(username, password));
+    return new RootResourceImpl(username, password);
   }
 
-  public RootResourceImpl() {
+  private RootResourceImpl(String username, String password) {
     super(null, BASE_URI);
+    this.username = username;
+    this.password = password;
   }
 
   @Override
-  public LoginResource performAuthentication(String userName,
-                                             String password) {
+  public LoginResource getLoginResource() {
     try {
-      return new LoginResourceImpl(userName, password, getLoginLink(), this);
+      return new LoginResourceImpl(username, password, getLoginLink(), this);
     }
     catch (URISyntaxException ex) {
       throw new RuntimeException(ex);
     }
   }
 
+  @Override
   public ResourceLink getLoginLink() {
-    return  getRelatedResourceUris().getFirst(REL_LOGIN);
+    return getRelatedResourceUris().getFirst(REL_LOGIN);
   }
 
   @Override
   protected void processClientConfig(ClientConfig clientConfig) {
-    clientConfig.getProperties().put(CacheableClientConfigProps.USERNAME, LoginCenter.getUsername());
-    clientConfig.getProperties().put(CacheableClientConfigProps.PASSWORD, LoginCenter.getPassword());
+    clientConfig.getProperties().put(CacheableClientConfigProps.USERNAME, usernamePass.get().getKey());
+    clientConfig.getProperties().put(CacheableClientConfigProps.PASSWORD, usernamePass.get().getValue());
     clientConfig.getClasses().add(JacksonJsonProvider.class);
     clientConfig.getClasses().add(FeedProvider.class);
   }

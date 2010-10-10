@@ -4,15 +4,11 @@
  */
 package com.smartitengineering.user.service.impl;
 
-import com.smartitengineering.dao.common.CommonReadDao;
-import com.smartitengineering.dao.common.CommonWriteDao;
 import com.smartitengineering.dao.common.queryparam.FetchMode;
 import com.smartitengineering.dao.common.queryparam.MatchMode;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl;
-import com.smartitengineering.domain.PersistentDTO;
-import com.smartitengineering.user.domain.BasicIdentity;
 import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.filter.PersonFilter;
@@ -187,6 +183,11 @@ public class PersonServiceImpl extends AbstractCommonDaoImpl<Person> implements 
 
   @Override
   public void validatePerson(Person person) {
+
+    if (StringUtils.isEmpty(person.getPrimaryEmail())) {
+      throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.PERSON_EMAIL.
+          name());
+    }
 
     if (person.getId() != null) {
       Integer count = (Integer) super.getOther(QueryParameterFactory.getElementCountParam(

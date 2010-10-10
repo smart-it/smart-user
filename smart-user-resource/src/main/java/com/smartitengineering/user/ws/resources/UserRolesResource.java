@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.User;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class UserRolesResource extends AbstractResource {
 
   private String organizationName;
   private String userName;
+  private Organization organization;
   private User user;
   static final UriBuilder ROLE_URI_BUILDER;
   static final UriBuilder ROLE_AFTER_ROLE_NAME_URI_BUILDER;
@@ -67,6 +69,7 @@ public class UserRolesResource extends AbstractResource {
     this.organizationName = organizationName;
     this.userName = userName;
     user = Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationName, userName);
+    organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationName);
   }
 
   @GET
@@ -92,6 +95,10 @@ public class UserRolesResource extends AbstractResource {
   public Response get(String roleName, boolean isBefore) {
     if (count == null) {
       count = 10;
+    }
+    if(organization==null || user==null){
+      ResponseBuilder responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
     }
 
     ResponseBuilder responseBuilder = Response.status(Status.OK);
@@ -139,7 +146,7 @@ public class UserRolesResource extends AbstractResource {
         // setting link to each individual role
         Link roleLink = abderaFactory.newLink();
         roleLink.setRel(Link.REL_ALTERNATE);
-        roleLink.setHref(RolesResource.ROLE_URI_BUILDER.build(role.getName()).toString());
+        roleLink.setHref(RoleResource.ROLE_URI_BUILDER.build(role.getName()).toString());
         roleLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
         roleEntry.addLink(roleLink);
         atomFeed.addEntry(roleEntry);
@@ -154,6 +161,10 @@ public class UserRolesResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response post(Role role) {
     ResponseBuilder responseBuilder;
+     if(organization==null || user==null){
+      responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
 
     try {
       if (role.getId() == null || role.getVersion() == null) {

@@ -16,7 +16,7 @@ public interface LoginResource extends Resource<Feed> {
 
   public OrganizationsResource getOrganizationsResource();
 
-  public UsersResource getUsersResource(String OrganizationShortName);
+  public RolesResource getRolesResource(); 
 
   public UserResource getUserResource();
 

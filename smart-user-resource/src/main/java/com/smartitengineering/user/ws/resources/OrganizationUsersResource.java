@@ -20,10 +20,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -57,9 +55,6 @@ public class OrganizationUsersResource extends AbstractResource {
   static final UriBuilder ORGANIZATION_USERS_BEFORE_USERNAME_URI_BUILDER;
   static final UriBuilder ORGANIZATION_USERS_AFTER_USERNAME_URI_BUILDER;
 
-  public OrganizationUsersResource() {
-  }
-
   static {
     ORGANIZATION_USERS_URI_BUILDER = UriBuilder.fromResource(OrganizationUsersResource.class);
 
@@ -81,25 +76,28 @@ public class OrganizationUsersResource extends AbstractResource {
       ex.printStackTrace();
     }
   }
+  private Organization organization;
   @DefaultValue("10")
   @QueryParam("count")
   private Integer count;
-  @PathParam("uniqueShortName")
+  
   private String organizationUniqueShortName;
   @Context
   private HttpServletRequest servletRequest;
 
+  public OrganizationUsersResource(@PathParam("uniqueShortName") String orgUniqueShortName) {
+    this.organizationUniqueShortName = orgUniqueShortName;
+    organization = getOrganization();    
+  }
+
   @GET
   @Produces(MediaType.TEXT_HTML)
   public Response getHtml() {
-    ResponseBuilder responseBuilder = Response.ok();
-    Organization org = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(
-        organizationUniqueShortName);
-    if (org == null) {
+    ResponseBuilder responseBuilder = Response.ok();    
+    if (organization == null) {
       responseBuilder = Response.status(Status.NOT_FOUND);
       return responseBuilder.build();
     }
-
 
     Collection<UserPerson> users = Services.getInstance().getUserPersonService().getByOrganization(
         organizationUniqueShortName, null, false, count);
@@ -109,13 +107,9 @@ public class OrganizationUsersResource extends AbstractResource {
                                 "/com/smartitengineering/user/ws/resources/OrganizationUsersResource/userListHeader.jsp");
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/user/ws/resources/OrganizationUsersResource/userList.jsp");
-
     Viewable view = new Viewable("/template/template.jsp", users);
-
-
     responseBuilder.entity(view);
     return responseBuilder.build();
-
   }
 
   @GET
@@ -123,6 +117,10 @@ public class OrganizationUsersResource extends AbstractResource {
   @Path("/frags")
   public Response getHtmlFrags() {
     ResponseBuilder responseBuilder = Response.ok();
+    if (organization == null) {
+      responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
     Collection<UserPerson> userPersons = Services.getInstance().getUserPersonService().getByOrganization(
         organizationUniqueShortName, null, false, count);
     Viewable view = new Viewable("userFrags.jsp", userPersons, OrganizationUsersResource.class);
@@ -143,6 +141,10 @@ public class OrganizationUsersResource extends AbstractResource {
   @Path("/before/{beforeUserName}")
   public Response getBeforeHtml(@PathParam("beforeUserName") String beforeUserName) {
     ResponseBuilder responseBuilder = Response.ok();
+    if (organization == null) {
+      responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
     Collection<UserPerson> userPersons = Services.getInstance().getUserPersonService().getByOrganization(
         organizationUniqueShortName, beforeUserName, true, count);
 
@@ -158,6 +160,10 @@ public class OrganizationUsersResource extends AbstractResource {
   @Path("/before/{beforeUserName}/frags")
   public Response getBeforeHtmlFrags(@PathParam("beforeUserName") String beforeUserName) {
     ResponseBuilder responseBuilder = Response.ok();
+    if (organization == null) {
+      responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
     Collection<UserPerson> userPersons = Services.getInstance().getUserPersonService().getByOrganization(
         organizationUniqueShortName, beforeUserName, true, count);
     Viewable view = new Viewable("userFrags.jsp", userPersons);
@@ -177,6 +183,10 @@ public class OrganizationUsersResource extends AbstractResource {
   @Path("/after/{afterUserName}")
   public Response getAfterHtml(@PathParam("afterUserName") String afterUserName) {
     ResponseBuilder responseBuilder = Response.ok();
+    if (organization == null) {
+      responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
     Collection<UserPerson> userPersons = Services.getInstance().getUserPersonService().getByOrganization(
         organizationUniqueShortName, afterUserName, false, count);
     servletRequest.setAttribute("templateContent",
@@ -191,9 +201,12 @@ public class OrganizationUsersResource extends AbstractResource {
   @Path("/after/{afterUserName}/frags")
   public Response getAfterHtmlFrags(@PathParam("afterUserName") String afterUserName) {
     ResponseBuilder responseBuilder = Response.ok();
+    if (organization == null) {
+      responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
     Collection<UserPerson> userPersons = Services.getInstance().getUserPersonService().getByOrganization(
         organizationUniqueShortName, afterUserName, false, count);
-
     Viewable view = new Viewable("userFrags.jsp", userPersons);
     responseBuilder.entity(view);
     return responseBuilder.build();
@@ -205,16 +218,19 @@ public class OrganizationUsersResource extends AbstractResource {
     return get(organizationUniqueShortName, null, true);
   }
 
-  private Response get(String uniqueOrganizationName, String userName, boolean isBefore) {
+  private Response get(String uniqueOrganizationName, String userNameOption, boolean isBefore) {
     ResponseBuilder responseBuilder = Response.ok();
-    Feed atomFeed = getFeed(userName, new Date());
-
+    if (organization == null) {
+      responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
+    Feed atomFeed = getFeed(userNameOption, new Date());
     Link parentLink = abderaFactory.newLink();
     parentLink.setHref(UriBuilder.fromResource(RootResource.class).build().toString());
     parentLink.setRel("parent");
     atomFeed.addLink(parentLink);
     Collection<UserPerson> userPersons = Services.getInstance().getUserPersonService().getByOrganization(
-        organizationUniqueShortName, userName, isBefore, count);
+        organizationUniqueShortName, userNameOption, isBefore, count);
 
     if (userPersons != null && !userPersons.isEmpty()) {
 
@@ -282,9 +298,13 @@ public class OrganizationUsersResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response post(UserPerson userPerson) {
     ResponseBuilder responseBuilder;
-    userPerson.getUser().setOrganization(getOrganization());
+    if (organization == null) {
+      responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
+    userPerson.getUser().setOrganization(organization);
 
-    try {      
+    try {
       Services.getInstance().getUserPersonService().create(userPerson);
       responseBuilder = Response.status(Status.CREATED);
       responseBuilder.location(uriInfo.getBaseUriBuilder().path(OrganizationUserResource.USER_URI_BUILDER.clone().
@@ -322,7 +342,7 @@ public class OrganizationUsersResource extends AbstractResource {
     if (keyValueMap.get("password") != null) {
       newUser.setPassword(keyValueMap.get("password"));
     }
-    
+
     Person person = new Person();
     BasicIdentity self = new BasicIdentity();
     Name selfName = new Name();
@@ -500,6 +520,10 @@ public class OrganizationUsersResource extends AbstractResource {
   public Response post(
       @HeaderParam("Content-type") String contentType, String message) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+    if (organization == null) {
+      responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
 
     if (StringUtils.isBlank(message)) {
       responseBuilder = Response.status(Status.BAD_REQUEST);
@@ -530,7 +554,6 @@ public class OrganizationUsersResource extends AbstractResource {
       }
     }
     else {
-      contentType = contentType;
       isHtmlPost = false;
     }
 

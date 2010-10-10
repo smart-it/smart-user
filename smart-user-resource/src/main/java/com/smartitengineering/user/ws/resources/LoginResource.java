@@ -42,8 +42,7 @@ public class LoginResource extends AbstractResource {
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
-
-    System.out.println("Inside Login Resource");
+    
     ResponseBuilder responseBuilder = Response.status(Status.OK);
 
     Feed atomFeed = getFeed("Login Resource", new Date());
@@ -52,6 +51,11 @@ public class LoginResource extends AbstractResource {
     organizationsLink.setHref(OrganizationsResource.ORGANIZATION_URI_BUILDER.build().toString());
     organizationsLink.setRel("Organizations");
     atomFeed.addLink(organizationsLink);
+
+    Link rolesLink = Abdera.getNewFactory().newLink();
+    rolesLink.setHref(RolesResource.ROLES_URI_BUILDER.build().toString());
+    rolesLink.setRel("Roles");
+    atomFeed.addLink(rolesLink);
 
     User user = Services.getInstance().getUserService().getUserByUsername(userNameWithOrganizationName);
     String userName = user.getUsername();
@@ -67,11 +71,7 @@ public class LoginResource extends AbstractResource {
     organizationLink.setHref(OrganizationResource.ORGANIZATION_URI_BUILDER.build(shortName).toString());
     organizationLink.setRel("Organization");
     atomFeed.addLink(organizationLink);
-
-    Link usersLink = Abdera.getNewFactory().newLink();
-    usersLink.setHref(OrganizationUsersResource.ORGANIZATION_USERS_URI_BUILDER.build(shortName).toString());
-    usersLink.setRel("Users");
-    atomFeed.addLink(usersLink);
+   
 
     Link aclAuthLink = Abdera.getNewFactory().newLink();
     aclAuthLink.setHref(AuthorizationResource.ACL_AUTHORIZATION_URI_BUILDER.build().toString());
@@ -86,75 +86,5 @@ public class LoginResource extends AbstractResource {
     responseBuilder.entity(atomFeed);
 
     return responseBuilder.build();
-//    if (StringUtils.isBlank(message)) {
-//      responseBuilder = Response.status(Status.BAD_REQUEST);
-//      return responseBuilder.build();
-//    }
-
-//    final boolean isHtmlPost;
-//    if (StringUtils.isBlank(contentType)) {
-//      contentType = MediaType.APPLICATION_OCTET_STREAM;
-//      isHtmlPost = false;
-//    }
-//    else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
-//      contentType = MediaType.APPLICATION_OCTET_STREAM;
-//      isHtmlPost = true;
-////      try {
-////        //Will search for the first '=' if not found will take the whole string
-////        final int startIndex = 0;//message.indexOf("=") + 1;
-////        //Consider the first '=' as the start of a value point and take rest as value
-////        final String realMsg = message.substring(startIndex);
-////        //Decode the message to ignore the form encodings and make them human readable
-//
-////        message = URLDecoder.decode(realMsg, "UTF-8");
-//
-////      }
-////      catch (UnsupportedEncodingException ex) {
-////        ex.printStackTrace();
-////      }
-//    }
-//    else {
-//      contentType = contentType;
-//      isHtmlPost = false;
-//    }
-
-    //if (isHtmlPost) {
-
-//      String username;
-//      String password;
-//
-//      Map<String, String> keyValueMap = new HashMap<String, String>();
-//      String[] keyValuePairs = message.split("&");
-//
-//      for (int i = 0; i < keyValuePairs.length; i++) {
-//        String[] keyValuePair = keyValuePairs[i].split("=");
-//        keyValueMap.put(keyValuePair[0], keyValuePair[1]);
-//      }
-//
-//      if (keyValueMap.get("username") != null) {
-//        username = keyValueMap.get("username");
-//      }
-//      else {
-//        username = "";
-//      }
-//      if (keyValueMap.get("password") != null) {
-//        password = keyValueMap.get("password");
-//      }
-//      else {
-//        password = "";
-//      }
-
-//      if (Services.getInstance().getAuthorizationService().login(userName, password)) {
-//      if (true) {
-//
-//        return responseBuilder.status(Status.OK).build();
-//      }
-//      else {
-//        return responseBuilder.status(Status.UNAUTHORIZED).build();
-//      }
-//
-//    }
-//    return responseBuilder.build();
-
   }
 }

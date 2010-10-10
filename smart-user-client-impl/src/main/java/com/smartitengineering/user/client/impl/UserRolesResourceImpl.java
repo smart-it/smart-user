@@ -44,7 +44,7 @@ public class UserRolesResourceImpl extends AbstractFeedClientResource<Resource<?
   }
 
   @Override
-  public List<UserRoleResource> getUserPrivilegeResources() {
+  public List<UserRoleResource> getUserRoleResources() {
     List<UserRoleResource> roleResources = new ArrayList<UserRoleResource>();
     for (Entry entry : getLastReadStateOfEntity().getEntries()) {
       roleResources.add(new UserRoleResourceImpl(AtomClientUtil.convertFromAtomLinkToResourceLink(

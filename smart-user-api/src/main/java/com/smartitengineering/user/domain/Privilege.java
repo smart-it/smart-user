@@ -23,17 +23,14 @@ public class Privilege extends AbstractPersistentDTO<Privilege> {
   private Integer permissionMask;
   private Date lastModifiedDate;
 
-  @JsonIgnore
   public SecuredObject getSecuredObject() {
     return securedObject;
   }
 
-  @JsonIgnore
   public void setSecuredObject(SecuredObject securedObject) {
     this.securedObject = securedObject;
   }
 
-  
   @JsonIgnore
   public Organization getParentOrganization() {
     return parentOrganization;

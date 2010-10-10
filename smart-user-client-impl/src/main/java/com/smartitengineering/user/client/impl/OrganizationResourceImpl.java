@@ -4,10 +4,12 @@
  */
 package com.smartitengineering.user.client.impl;
 
+
 import com.smartitengineering.user.client.api.Organization;
 import com.smartitengineering.user.client.api.OrganizationResource;
 import com.smartitengineering.user.client.api.PrivilegesResource;
 import com.smartitengineering.user.client.api.SecuredObjectsResource;
+import com.smartitengineering.user.client.api.UserGroupsResource;
 import com.smartitengineering.user.client.api.UsersResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.atom.AtomClientUtil;
@@ -27,12 +29,14 @@ import org.apache.abdera.model.Link;
 class OrganizationResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements
     OrganizationResource {
 
+  public static final String REL_USER_GROUPS = "usergroups";
   public static final String REL_ORGS = "organizations";
   public static final String REL_ORG = "Organization";
   public static final String REL_ALT = "alternate";
   public static final String REL_USERS = "users";
   public static final String REL_PRIVILEGES = "privileges";
   public static final String REL_SECUREDOBJECTS = "securedobjects";
+
 
   public OrganizationResourceImpl(ResourceLink orgLink, Resource referrer) {
     super(referrer, orgLink);
@@ -85,5 +89,10 @@ class OrganizationResourceImpl extends AbstractFeedClientResource<Resource<? ext
   public void update() {
     put(MediaType.APPLICATION_JSON, getOrganization(), ClientResponse.Status.OK, ClientResponse.Status.SEE_OTHER,
         ClientResponse.Status.FOUND);
+  }
+
+  @Override
+  public UserGroupsResource getUserGroupsResource() {
+    return new UserGroupsResourceImpl(getRelatedResourceUris().getFirst(REL_USER_GROUPS), this);
   }
 }

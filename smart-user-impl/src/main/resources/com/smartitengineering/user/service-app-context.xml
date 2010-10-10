@@ -9,7 +9,7 @@
       <ref local="basicIdentityService" />
     </property>
   </bean>
-    
+
   <bean id="userPersonService" class="com.smartitengineering.user.service.impl.UserPersonServiceImpl" parent="abstractDao">
     <property name="observable">
       <ref bean="observable"/>
@@ -35,6 +35,7 @@
   <bean id="securedObjectService" class="com.smartitengineering.user.service.impl.SecuredObjectServiceImpl" parent="abstractDao"/>
   <bean id="privilegeService" class="com.smartitengineering.user.service.impl.PrivilegeServiceImpl" parent="abstractDao"/>
   <bean id="roleService" class="com.smartitengineering.user.service.impl.RoleServiceImpl" parent="abstractDao"/>
+  <bean id="userGroupService" class="com.smartitengineering.user.service.impl.UserGroupServiceImpl" parent ="abstractDao"/>
   <bean id="authorizationService" class="com.smartitengineering.user.service.impl.AuthorizationServiceImpl">
     <property name="securedObjectService">
       <ref bean="securedObjectService"/>
@@ -42,15 +43,18 @@
     <property name="userService">
       <ref bean="userService"/>
     </property>
+    <property name="userGroupService">
+      <ref bean="userGroupService"/>
+    </property>
   </bean>
-    
-    <!-- **************************************************************** -->
+
+  <!-- **************************************************************** -->
     <!-- ********************* Smart Util Reg *************************** -->
-    <!-- **************************************************************** -->
+  <!-- **************************************************************** -->
   <bean id="beanRegistrar" class="com.smartitengineering.util.bean.spring.SpringBeanRegistrar">
     <property name="beanFactoryContextName">
       <value>com.smartitengineering.user.service</value>
     </property>
   </bean>
-    
+
 </beans>
