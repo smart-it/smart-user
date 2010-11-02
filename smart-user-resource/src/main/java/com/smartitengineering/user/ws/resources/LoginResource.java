@@ -83,6 +83,14 @@ public class LoginResource extends AbstractResource {
     roleAuthLink.setRel("roleAuth");
     atomFeed.addLink(roleAuthLink);
 
+
+    Link userGetterLink = Abdera.getNewFactory().newLink();
+    userGetterLink.setHref(UserLinkResource.USER_LINK_GETTER_URI_BUILDER.build().toString());
+    userGetterLink.setRel("userGetter");
+    atomFeed.addLink(userGetterLink);
+
+
+
     responseBuilder.entity(atomFeed);
 
     return responseBuilder.build();

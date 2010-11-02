@@ -9,6 +9,7 @@ import com.smartitengineering.user.client.api.LoginResource;
 import com.smartitengineering.user.client.api.OrganizationResource;
 import com.smartitengineering.user.client.api.OrganizationsResource;
 import com.smartitengineering.user.client.api.RolesResource;
+import com.smartitengineering.user.client.api.UserLinkResource;
 import com.smartitengineering.user.client.api.UserResource;
 import com.smartitengineering.user.client.api.UsersResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
@@ -36,6 +37,7 @@ class LoginResourceImpl
   private static final String REL_ROLES = "Roles";
   private static final String REL_ACL_AUTH = "aclAuth";
   private static final String REL_ROLE_AUTH = "roleAuth";
+  private static final String REL_USER_GETTER_LINK = "userGetter";
   private String userName;
   private String password;
 
@@ -102,5 +104,10 @@ class LoginResourceImpl
   @Override
   public RolesResource getRolesResource() {
     return new RolesResourceImpl(getRelatedResourceUris().getFirst(REL_ROLES), this);
+  }
+
+  @Override
+  public UserLinkResource getUserLinkResource(String username) {
+    return new UserLinkResourceImpl(getRelatedResourceUris().getFirst(REL_USER_GETTER_LINK), username, this);
   }
 }

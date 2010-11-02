@@ -25,4 +25,6 @@ public interface LoginResource extends Resource<Feed> {
   public AuthorizationResource getAclAuthorizationResource(String username, String organizationName, String oid, Integer permission);
 
   public AuthorizationResource getRoleAuthorizationResource(String username, String organizationName, String configAttribute);
+
+  public UserLinkResource getUserLinkResource(String userame);
 }
