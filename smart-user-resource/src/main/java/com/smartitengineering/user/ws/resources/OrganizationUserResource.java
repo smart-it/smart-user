@@ -174,6 +174,12 @@ public class OrganizationUserResource extends AbstractResource {
     rolesLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(rolesLink);
 
+    Link organizationLink = abderaFactory.newLink();
+    organizationLink.setHref(OrganizationResource.ORGANIZATION_URI_BUILDER.build(organizationUniqueShortName).toString());
+    organizationLink.setRel("organization");
+    organizationLink.setMimeType(MediaType.APPLICATION_JSON);
+    userFeed.addLink(organizationLink);
+
     return userFeed;
   }
 

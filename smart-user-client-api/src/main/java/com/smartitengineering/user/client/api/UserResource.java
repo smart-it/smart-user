@@ -19,5 +19,7 @@ public interface UserResource extends WritableResource<Feed> {
 
   public UserRolesResource getRolesResource();
 
+  public OrganizationResource getOrganizationResource();
+
   public void update();
 }
