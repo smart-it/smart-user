@@ -19,6 +19,7 @@ import com.smartitengineering.user.client.api.UserGroupRolesResource;
 import com.smartitengineering.user.client.api.UserGroupUserResource;
 import com.smartitengineering.user.client.api.UserGroupUsersResource;
 import com.smartitengineering.user.client.api.UserGroupsResource;
+import com.smartitengineering.user.client.api.UserLinkResource;
 import com.smartitengineering.user.client.api.UserPrivilegeResource;
 import com.smartitengineering.user.client.api.UserPrivilegesResource;
 import com.smartitengineering.user.client.api.UserResource;
@@ -286,6 +287,9 @@ public class ComprehensiveClientTest {
     userResource = sitelUsersResource.create(userPerson);
     sitelUserResource = userResource;
     Assert.assertEquals(SITEL_ORG_USER_USERNAME, userResource.getUser().getUser().getUsername());
+    OrganizationResource organizationResource = sitelUserResource.getOrganizationResource();
+    Assert.assertNotNull(organizationResource);
+    Assert.assertTrue(organizationResource.getOrganization().getUniqueShortName().equals(sitelOrgResource.getOrganization().getUniqueShortName()));
   }
 
   @Test
@@ -712,7 +716,19 @@ public class ComprehensiveClientTest {
         saumitraPrivilegesResource.add(privilege);
       }
     }
+  }
 
+  @Test
+  public void doTestGetUser(){
+    rootResource = login("smartadmin@smart-user", "02040250204039");
+    Assert.assertNotNull(rootResource);
+    LoginResource loginResource = rootResource.getLoginResource();
+    Assert.assertNotNull(loginResource);
+    UserLinkResource userLinkResource = loginResource.getUserLinkResource("saumitra@SITEL");
+    Assert.assertNotNull(loginResource);
+    com.smartitengineering.user.client.api.User user = userLinkResource.getUserResource().getUser().getUser();
+    Assert.assertTrue(user.getUsername().equals("saumitra"));
+    Assert.assertTrue(user.getPassword().equals("saumitra123"));
   }
 
   @Test
