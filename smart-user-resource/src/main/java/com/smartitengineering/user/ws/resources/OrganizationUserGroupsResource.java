@@ -6,7 +6,9 @@ package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.UserGroup;
+import com.smartitengineering.util.rest.atom.server.AbstractResource;
 import com.sun.jersey.api.view.Viewable;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -35,30 +37,22 @@ import org.apache.abdera.model.Link;
 public class OrganizationUserGroupsResource extends AbstractResource {
 
   private String organizationUniqueShortName;
-  static final UriBuilder ORGANIZATION_USER_GROUPS_URI_BUILDER;
-  static final UriBuilder ORGANIZATIONS_USER_GROUPS_BEFORE_NAME_URI_BUILDER;
-  static final UriBuilder ORGANIZATIONS_USER_GROUPS_AFTER_NAME_URI_BUILDER;
+  static final Method ORGANIZATIONS_USER_GROUPS_BEFORE_NAME_METHOD;
+  static final Method ORGANIZATIONS_USER_GROUPS_AFTER_NAME_METHOD;
 
   static {
-
-    ORGANIZATION_USER_GROUPS_URI_BUILDER = UriBuilder.fromResource(OrganizationUserGroupsResource.class);
-
-    ORGANIZATIONS_USER_GROUPS_AFTER_NAME_URI_BUILDER = UriBuilder.fromResource(OrganizationUserGroupsResource.class);
     try {
-      ORGANIZATIONS_USER_GROUPS_AFTER_NAME_URI_BUILDER.path(OrganizationUsersResource.class.getMethod("getAfter",
-                                                                                                      String.class));
+      ORGANIZATIONS_USER_GROUPS_AFTER_NAME_METHOD = OrganizationUsersResource.class.getMethod("getAfter", String.class);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
+      throw new InstantiationError();
     }
-
-    ORGANIZATIONS_USER_GROUPS_BEFORE_NAME_URI_BUILDER = UriBuilder.fromResource(OrganizationUserGroupsResource.class);
     try {
-      ORGANIZATIONS_USER_GROUPS_BEFORE_NAME_URI_BUILDER.path(OrganizationUsersResource.class.getMethod("getBefore",
-                                                                                                       String.class));
+      ORGANIZATIONS_USER_GROUPS_BEFORE_NAME_METHOD =
+      OrganizationUsersResource.class.getMethod("getBefore", String.class);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
+      throw new InstantiationError();
     }
 
   }
@@ -118,7 +112,7 @@ public class OrganizationUserGroupsResource extends AbstractResource {
     }
     Feed atomFeed = getFeed(userName, new Date());
 
-    Link parentLink = abderaFactory.newLink();
+    Link parentLink = getAbderaFactory().newLink();
     parentLink.setHref(UriBuilder.fromResource(RootResource.class).build().toString());
     parentLink.setRel("parent");
     atomFeed.addLink(parentLink);
@@ -130,15 +124,15 @@ public class OrganizationUserGroupsResource extends AbstractResource {
 
     if (userGroups != null && !userGroups.isEmpty()) {
 
-      MultivaluedMap<String, String> queryParam = uriInfo.getQueryParameters();
+      MultivaluedMap<String, String> queryParam = getUriInfo().getQueryParameters();
       List<UserGroup> userGroupList = new ArrayList<UserGroup>(userGroups);
 
       // uri builder for next and previous organizations according to count
-      final UriBuilder nextUri = ORGANIZATIONS_USER_GROUPS_AFTER_NAME_URI_BUILDER.clone();
-      final UriBuilder previousUri = ORGANIZATIONS_USER_GROUPS_BEFORE_NAME_URI_BUILDER.clone();
+      final UriBuilder nextUri = getRelativeURIBuilder().path(OrganizationUserGroupsResource.class).path(ORGANIZATIONS_USER_GROUPS_AFTER_NAME_METHOD);
+      final UriBuilder previousUri = getRelativeURIBuilder().path(OrganizationUserGroupsResource.class).path(ORGANIZATIONS_USER_GROUPS_BEFORE_NAME_METHOD);
 
       // link to the next organizations based on count
-      Link nextLink = abderaFactory.newLink();
+      Link nextLink = getAbderaFactory().newLink();
       nextLink.setRel(Link.REL_NEXT);
       UserGroup lastUserGroup = userGroupList.get(0);
 
@@ -154,7 +148,7 @@ public class OrganizationUserGroupsResource extends AbstractResource {
       atomFeed.addLink(nextLink);
 
       /* link to the previous organizations based on count */
-      Link prevLink = abderaFactory.newLink();
+      Link prevLink = getAbderaFactory().newLink();
       prevLink.setRel(Link.REL_PREVIOUS);
       UserGroup firstUser = userGroupList.get(userGroups.size() - 1);
 
@@ -163,7 +157,7 @@ public class OrganizationUserGroupsResource extends AbstractResource {
 
       for (UserGroup userGroup : userGroups) {
 
-        Entry userEntry = abderaFactory.newEntry();
+        Entry userEntry = getAbderaFactory().newEntry();
 
         userEntry.setId(userGroup.getName());
         userEntry.setTitle(userGroup.getName());
@@ -171,9 +165,8 @@ public class OrganizationUserGroupsResource extends AbstractResource {
         userEntry.setUpdated(userGroup.getLastModifiedDate());
 
         // setting link to the each individual user
-        Link userLink = abderaFactory.newLink();
-        userLink.setHref(OrganizationUserGroupResource.ORGANIZATION_USER_GROUP_URI_BUILDER.build(
-            organizationUniqueShortName, userGroup.getName()).toString());
+        Link userLink = getAbderaFactory().newLink();
+        userLink.setHref(getRelativeURIBuilder().path(OrganizationUserGroupResource.class).build(organizationUniqueShortName, userGroup.getName()).toString());
         userLink.setRel(Link.REL_ALTERNATE);
         userLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
 
@@ -198,17 +191,20 @@ public class OrganizationUserGroupsResource extends AbstractResource {
       userGroup.setOrganization(organization);
       Services.getInstance().getUserGroupService().save(userGroup);
       responseBuilder = Response.status(Status.CREATED);
-      responseBuilder.location(uriInfo.getBaseUriBuilder().path(OrganizationUserGroupResource.ORGANIZATION_USER_GROUP_URI_BUILDER.
-          clone().build(organizationUniqueShortName, userGroup.getName()).toString()).build());
+      responseBuilder.location(getAbsoluteURIBuilder().path(OrganizationUserGroupResource.class).build(organizationUniqueShortName, userGroup.getName().toString()));
     }
     catch (Exception ex) {
-      responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
-      ex.printStackTrace();
+      responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);      
     }
     return responseBuilder.build();
   }
 
   private Organization getOrganization() {
     return Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationUniqueShortName);
+  }
+
+  @Override
+  protected String getAuthor() {
+    return "Smart User";
   }
 }

@@ -6,10 +6,11 @@ package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Address;
 import com.smartitengineering.user.domain.Organization;
+import com.smartitengineering.util.rest.atom.server.AbstractResource;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.net.URLDecoder;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +29,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
@@ -41,24 +41,19 @@ import org.apache.commons.lang.StringUtils;
 @Path("/orgs/sn/{uniqueShortName}")
 public class OrganizationResource extends AbstractResource {
 
-  static final UriBuilder ORGANIZATION_URI_BUILDER = UriBuilder.fromResource(OrganizationResource.class);
-  static final UriBuilder ORGANIZATION_CONTENT_URI_BUILDER;
+  static final Method ORGANIZATION_CONTENT_METHOD;
   private final String REL_USERS = "users";
   private final String REL_PRIVILEGES = "privileges";
   private final String REL_SECUREDOBJECTS = "securedobjects";
   private final String REL_USER_GROUPS = "usergroups";
-  
   @Context
   private HttpServletRequest servletRequest;
 
   static {
-    ORGANIZATION_CONTENT_URI_BUILDER = ORGANIZATION_URI_BUILDER.clone();
     try {
-      ORGANIZATION_CONTENT_URI_BUILDER.path(OrganizationResource.class.getMethod("getContent"));
-
+      ORGANIZATION_CONTENT_METHOD = OrganizationResource.class.getMethod("getContent");
     }
     catch (Exception ex) {
-      ex.printStackTrace();
       throw new InstantiationError();
     }
   }
@@ -74,7 +69,7 @@ public class OrganizationResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization==null){
+    if (organization == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     Feed organizationFeed = getOrganizationFeed();
@@ -87,7 +82,7 @@ public class OrganizationResource extends AbstractResource {
   @Path("/content")
   public Response getContent() {
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization==null){
+    if (organization == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     responseBuilder = Response.ok(organization);
@@ -113,7 +108,7 @@ public class OrganizationResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response update(Organization newOrganization) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-    if(organization==null){
+    if (organization == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     try {
@@ -146,7 +141,7 @@ public class OrganizationResource extends AbstractResource {
   //@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   public Response updatePost(@HeaderParam("Content-type") String contentType, String message) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-    if(organization==null){
+    if (organization == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     if (StringUtils.isBlank(message)) {
@@ -170,10 +165,9 @@ public class OrganizationResource extends AbstractResource {
         message = URLDecoder.decode(realMsg, "UTF-8");
       }
       catch (UnsupportedEncodingException ex) {
-        ex.printStackTrace();
       }
     }
-    else {      
+    else {
       isHtmlPost = false;
     }
 
@@ -256,24 +250,23 @@ public class OrganizationResource extends AbstractResource {
   //@Produces(MediaType.APPLICATION_ATOM_XML)
   public Response deletePost() {
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization==null){
+    if (organization == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
-    Services.getInstance().getOrganizationService().delete(organization);    
+    Services.getInstance().getOrganizationService().delete(organization);
     return responseBuilder.build();
   }
 
   @DELETE
   public Response delete() {
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization==null){
+    if (organization == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     try {
       Services.getInstance().getOrganizationService().delete(organization);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -289,41 +282,43 @@ public class OrganizationResource extends AbstractResource {
 
 
     // add a edit link
-    Link editLink = abderaFactory.newLink();
-    editLink.setHref(uriInfo.getRequestUri().toString());
+    Link editLink = getAbderaFactory().newLink();
+    editLink.setHref(getUriInfo().getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
 
     // add a alternate link
-    Link altLink = abderaFactory.newLink();
-    altLink.setHref(ORGANIZATION_CONTENT_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
+    Link altLink = getAbderaFactory().newLink();
+    altLink.setHref(getRelativeURIBuilder().path(OrganizationResource.class).path(ORGANIZATION_CONTENT_METHOD).build(organization.
+        getUniqueShortName()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     organizationFeed.addLink(altLink);
 
-    Link usersLink = abderaFactory.newLink();
-    usersLink.setHref(OrganizationUsersResource.ORGANIZATION_USERS_URI_BUILDER.clone().build(organization.
+    Link usersLink = getAbderaFactory().newLink();
+    usersLink.setHref(getRelativeURIBuilder().path(OrganizationUsersResource.class).build(organization.
         getUniqueShortName()).toString());
     usersLink.setRel(REL_USERS);
     usersLink.setMimeType(MediaType.APPLICATION_JSON);
     organizationFeed.addLink(usersLink);
 
-    Link privilegesLink = abderaFactory.newLink();
-    privilegesLink.setHref(OrganizationPrivilegesResource.ORGANIZATION_PRIVILEGES_URIBUILDER.clone().build(organization.
+    Link privilegesLink = getAbderaFactory().newLink();
+    privilegesLink.setHref(getRelativeURIBuilder().path(OrganizationPrivilegesResource.class).build(organization.
         getUniqueShortName()).toString());
     privilegesLink.setRel(REL_PRIVILEGES);
     privilegesLink.setMimeType(MediaType.APPLICATION_JSON);
     organizationFeed.addLink(privilegesLink);
 
-    Link securedObjectsLink = abderaFactory.newLink();
-    securedObjectsLink.setHref(OrganizationSecuredObjectsResource.ORGANIZATION_SECURED_OBJECTS_URI_BUILDER.clone().build(organization.
+    Link securedObjectsLink = getAbderaFactory().newLink();
+    securedObjectsLink.setHref(getRelativeURIBuilder().path(OrganizationSecuredObjectsResource.class).build(organization.
         getUniqueShortName()).toString());
     securedObjectsLink.setRel(REL_SECUREDOBJECTS);
     securedObjectsLink.setMimeType(MediaType.APPLICATION_JSON);
     organizationFeed.addLink(securedObjectsLink);
 
-    Link userGroupsLink = abderaFactory.newLink();
-    userGroupsLink.setHref(OrganizationUserGroupsResource.ORGANIZATION_USER_GROUPS_URI_BUILDER.clone().build(organization.getUniqueShortName()).toString());
+    Link userGroupsLink = getAbderaFactory().newLink();
+    userGroupsLink.setHref(getRelativeURIBuilder().path(OrganizationUserGroupsResource.class).build(organization.
+        getUniqueShortName()).toString());
     userGroupsLink.setRel(REL_USER_GROUPS);
     userGroupsLink.setMimeType(MediaType.APPLICATION_JSON);
     organizationFeed.addLink(userGroupsLink);
@@ -333,5 +328,10 @@ public class OrganizationResource extends AbstractResource {
 
   private Organization getOrganization() {
     return Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(uniqueShortName);
+  }
+
+  @Override
+  protected String getAuthor() {
+    return "Smart User";
   }
 }

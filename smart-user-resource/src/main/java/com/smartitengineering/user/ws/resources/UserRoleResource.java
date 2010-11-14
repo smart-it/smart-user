@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.ws.resources;
 
 /**
@@ -12,6 +11,7 @@ package com.smartitengineering.user.ws.resources;
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.User;
+import com.smartitengineering.util.rest.atom.server.AbstractResource;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -21,7 +21,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriBuilder;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 
@@ -32,8 +31,6 @@ import org.apache.abdera.model.Link;
 @Path("/orgs/sn/{organizationUniqueShortName}/users/un/{username}/roles/name/{roleName}")
 public class UserRoleResource extends AbstractResource {
 
-  static final UriBuilder USER_ROLE_URI_BUILDER = UriBuilder.fromResource(UserRoleResource.class);
-  static final UriBuilder ROLE_URI_BUILDER = RoleResource.ROLE_URI_BUILDER.clone();
   private String organizationUniqueShortName;
   private String username;
   private String roleName;
@@ -62,8 +59,7 @@ public class UserRoleResource extends AbstractResource {
       Feed roleFeed = getUserRoleFeed();
       responseBuilder = Response.ok(roleFeed);
     }
-    catch (Exception ex) {
-      ex.printStackTrace();
+    catch (Exception ex) {      
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -73,12 +69,11 @@ public class UserRoleResource extends AbstractResource {
   public Response delete() {
     ResponseBuilder responseBuilder;
     try {
-      responseBuilder = Response.status(Status.OK);      
+      responseBuilder = Response.status(Status.OK);
       user.getRoles().remove(role);
       Services.getInstance().getUserService().update(user);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -86,23 +81,23 @@ public class UserRoleResource extends AbstractResource {
 
   private Feed getUserRoleFeed() {
 
-    Feed roleFeed = abderaFactory.newFeed();
+    Feed roleFeed = getAbderaFactory().newFeed();
 
     roleFeed.setId(roleName);
     roleFeed.setTitle(roleName);
     roleFeed.addLink(getSelfLink());
 
-    Link altLink = abderaFactory.newLink();
-    altLink.setHref(USER_ROLE_URI_BUILDER.clone().build(organizationUniqueShortName, username, roleName).
-        toString());
+    Link altLink = getAbderaFactory().newLink();
+    altLink.setHref(getRelativeURIBuilder().path(UserRoleResource.class).build(organizationUniqueShortName, username,
+                                                                               roleName).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     roleFeed.addLink(altLink);
 
-    Link roleLink = abderaFactory.newLink();
-    altLink.setHref(ROLE_URI_BUILDER.clone().build(organizationUniqueShortName, roleName).toString());
-    altLink.setRel(REL_ROLE);
-    altLink.setMimeType(MediaType.APPLICATION_JSON);
+    Link roleLink = getAbderaFactory().newLink();
+    roleLink.setHref(getRelativeURIBuilder().path(RoleResource.class).build(roleName).toString());
+    roleLink.setRel(REL_ROLE);
+    roleLink.setMimeType(MediaType.APPLICATION_JSON);
     roleFeed.addLink(roleLink);
 
     return roleFeed;
@@ -119,5 +114,10 @@ public class UserRoleResource extends AbstractResource {
 
   private Organization getOrganization() {
     return Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationUniqueShortName);
+  }
+
+  @Override
+  protected String getAuthor() {
+    return "Smart User";
   }
 }

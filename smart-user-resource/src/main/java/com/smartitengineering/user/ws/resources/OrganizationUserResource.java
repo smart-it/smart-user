@@ -12,8 +12,10 @@ import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.domain.UserPerson;
+import com.smartitengineering.util.rest.atom.server.AbstractResource;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,7 +36,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
@@ -47,19 +48,15 @@ import org.apache.commons.lang.StringUtils;
 @Path("/orgs/sn/{organizationShortName}/users/un/{userName}")
 public class OrganizationUserResource extends AbstractResource {
 
-  //private User user;  
-  static final UriBuilder USER_URI_BUILDER = UriBuilder.fromResource(OrganizationUserResource.class);
-  static final UriBuilder USER_CONTENT_URI_BUILDER;
+  static final Method USER_CONTENT_METHOD;
   @Context
   private HttpServletRequest servletRequest;
 
   static {
-    USER_CONTENT_URI_BUILDER = USER_URI_BUILDER.clone();
     try {
-      USER_CONTENT_URI_BUILDER.path(OrganizationUserResource.class.getMethod("getUser"));
+      USER_CONTENT_METHOD = OrganizationUserResource.class.getMethod("getUser");
     }
     catch (Exception ex) {
-      ex.printStackTrace();
       throw new InstantiationError();
 
     }
@@ -135,7 +132,6 @@ public class OrganizationUserResource extends AbstractResource {
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
-      ex.printStackTrace();
     }
     return responseBuilder.build();
   }
@@ -148,34 +144,36 @@ public class OrganizationUserResource extends AbstractResource {
     userFeed.addLink(getSelfLink());
 
     // add a edit link
-    Link editLink = abderaFactory.newLink();
-    editLink.setHref(uriInfo.getRequestUri().toString());
+    Link editLink = getAbderaFactory().newLink();
+    editLink.setHref(getUriInfo().getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(editLink);
 
     // add a alternate link
-    Link altLink = abderaFactory.newLink();
-    altLink.setHref(USER_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName, userName).toString());
+    Link altLink = getAbderaFactory().newLink();
+    altLink.setHref(getRelativeURIBuilder().path(OrganizationUserResource.class).path(USER_CONTENT_METHOD).build(
+        organizationUniqueShortName, userName).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(altLink);
 
-    Link privilegesLink = abderaFactory.newLink();
-    privilegesLink.setHref(UserPrivilegesResource.USER_PRIVILEGE_URIBUILDER.clone().build(organizationUniqueShortName,
-                                                                                          userName).toString());
+    Link privilegesLink = getAbderaFactory().newLink();
+    privilegesLink.setHref(getRelativeURIBuilder().path(UserPrivilegesResource.class).build(organizationUniqueShortName,
+                                                                                            userName).toString());
     privilegesLink.setRel(REL_USER_PRIVILEGES);
     privilegesLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(privilegesLink);
 
-    Link rolesLink = abderaFactory.newLink();
-    rolesLink.setHref(UserRolesResource.ROLE_URI_BUILDER.clone().build(organizationUniqueShortName, userName).toString());
+    Link rolesLink = getAbderaFactory().newLink();
+    rolesLink.setHref(getRelativeURIBuilder().path(UserRolesResource.class).build(organizationUniqueShortName, userName).toString());
     rolesLink.setRel(REL_USER_ROLES);
     rolesLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(rolesLink);
 
-    Link organizationLink = abderaFactory.newLink();
-    organizationLink.setHref(OrganizationResource.ORGANIZATION_URI_BUILDER.build(organizationUniqueShortName).toString());
+    Link organizationLink = getAbderaFactory().newLink();
+    organizationLink.setHref(getRelativeURIBuilder().path(OrganizationResource.class).build(organizationUniqueShortName).
+        toString());
     organizationLink.setRel("organization");
     organizationLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(organizationLink);
@@ -229,8 +227,6 @@ public class OrganizationUserResource extends AbstractResource {
         message = URLDecoder.decode(realMsg, "UTF-8");
       }
       catch (UnsupportedEncodingException ex) {
-        ex.printStackTrace();
-
       }
     }
     else {
@@ -508,5 +504,10 @@ public class OrganizationUserResource extends AbstractResource {
   private UserPerson getUserPerson() {
     return Services.getInstance().getUserPersonService().getUserPersonByUsernameAndOrgName(userName,
                                                                                            organizationUniqueShortName);
+  }
+
+  @Override
+  protected String getAuthor() {
+    return "Smart User";
   }
 }

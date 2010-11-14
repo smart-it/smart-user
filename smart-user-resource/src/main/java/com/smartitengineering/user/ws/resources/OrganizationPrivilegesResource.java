@@ -6,7 +6,9 @@ package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Privilege;
+import com.smartitengineering.util.rest.atom.server.AbstractResource;
 import com.sun.jersey.api.view.Viewable;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -38,30 +40,25 @@ public class OrganizationPrivilegesResource extends AbstractResource {
 
   private String organizationUniqueShortName;
   private Organization organization;
-  static UriBuilder ORGANIZATION_PRIVILEGES_URIBUILDER;
-  static UriBuilder ORGANIZATION_PRIVILEGE_AFTER_NAME_URIBUILDER;
-  static UriBuilder ORGANIZATION_PRIVILEGE_BEFORE_NAME_URIBUILDER;
+  
+  static Method ORGANIZATION_PRIVILEGE_AFTER_NAME_METHOD;
+  static Method ORGANIZATION_PRIVILEGE_BEFORE_NAME_METHOD;
   @Context
   private HttpServletRequest servletRequest;
 
-  static {
-    ORGANIZATION_PRIVILEGES_URIBUILDER = UriBuilder.fromResource(OrganizationPrivilegesResource.class);
-    ORGANIZATION_PRIVILEGE_BEFORE_NAME_URIBUILDER = UriBuilder.fromResource(OrganizationPrivilegesResource.class);
+  static {        
 
     try {
-      ORGANIZATION_PRIVILEGE_BEFORE_NAME_URIBUILDER.path(OrganizationPrivilegesResource.class.getMethod("getBefore",
-                                                                                                        String.class));
+      ORGANIZATION_PRIVILEGE_BEFORE_NAME_METHOD = OrganizationPrivilegesResource.class.getMethod("getBefore", String.class);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
-    }
-    ORGANIZATION_PRIVILEGE_AFTER_NAME_URIBUILDER = UriBuilder.fromResource(OrganizationPrivilegesResource.class);
+      throw new InstantiationError();
+    }    
     try {
-      ORGANIZATION_PRIVILEGE_AFTER_NAME_URIBUILDER.path(OrganizationPrivilegesResource.class.getMethod("getAfter",
-                                                                                                       String.class));
+      ORGANIZATION_PRIVILEGE_AFTER_NAME_METHOD = OrganizationPrivilegesResource.class.getMethod("getAfter", String.class);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
+      throw new InstantiationError();
     }
   }
 
@@ -112,10 +109,10 @@ public class OrganizationPrivilegesResource extends AbstractResource {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     // create a new atom feed
-    Feed atomFeed = abderaFactory.newFeed();
+    Feed atomFeed = getAbderaFactory().newFeed();
 
     // create a link to parent resource, in this case now it is linked to root resource
-    Link parentResourceLink = abderaFactory.newLink();
+    Link parentResourceLink = getAbderaFactory().newLink();
     parentResourceLink.setHref(UriBuilder.fromResource(OrganizationResource.class).build(organizationUniqueShortName).
         toString());
     parentResourceLink.setRel("organization");
@@ -127,15 +124,15 @@ public class OrganizationPrivilegesResource extends AbstractResource {
 
     if (privileges != null && !privileges.isEmpty()) {
 
-      MultivaluedMap<String, String> queryParam = uriInfo.getQueryParameters();
+      MultivaluedMap<String, String> queryParam = getUriInfo().getQueryParameters();
       List<Privilege> privilegeList = new ArrayList<Privilege>(privileges);
 
       // uri builder for next and previous organizations according to count
-      final UriBuilder nextUri = ORGANIZATION_PRIVILEGE_AFTER_NAME_URIBUILDER.clone();
-      final UriBuilder previousUri = ORGANIZATION_PRIVILEGE_BEFORE_NAME_URIBUILDER.clone();
+      final UriBuilder nextUri = getRelativeURIBuilder().path(OrganizationPrivilegeResource.class).path(ORGANIZATION_PRIVILEGE_AFTER_NAME_METHOD);
+      final UriBuilder previousUri = getRelativeURIBuilder().path(OrganizationPrivilegeResource.class).path(ORGANIZATION_PRIVILEGE_BEFORE_NAME_METHOD);
 
       // link to the next organizations based on count
-      Link nextLink = abderaFactory.newLink();
+      Link nextLink = getAbderaFactory().newLink();
       nextLink.setRel(Link.REL_NEXT);
       Privilege lastPrivilege = privilegeList.get(0);
 
@@ -151,7 +148,7 @@ public class OrganizationPrivilegesResource extends AbstractResource {
       atomFeed.addLink(nextLink);
 
       /* link to the previous organizations based on count */
-      Link prevLink = abderaFactory.newLink();
+      Link prevLink = getAbderaFactory().newLink();
       prevLink.setRel(Link.REL_PREVIOUS);
       Privilege firstPrivilege = privilegeList.get(privileges.size() - 1);
 
@@ -161,7 +158,7 @@ public class OrganizationPrivilegesResource extends AbstractResource {
 
       // add entry of individual organization
       for (Privilege privilege : privileges) {
-        Entry organizationPrivilegeEntry = abderaFactory.newEntry();       
+        Entry organizationPrivilegeEntry = getAbderaFactory().newEntry();
 
         organizationPrivilegeEntry.setId(privilege.getName());
         organizationPrivilegeEntry.setTitle(privilege.getDisplayName());
@@ -170,7 +167,7 @@ public class OrganizationPrivilegesResource extends AbstractResource {
 
         /* setting link to the individual organization resource*/
 
-        Link organizationPrivilegeLink = abderaFactory.newLink();
+        Link organizationPrivilegeLink = getAbderaFactory().newLink();
         //organizationLink.setHref(OrganizationResource.ORGANIZATION_URI_BUILDER.clone().build(organizationUniqueShortName,privilege.getName()).toString());
         organizationPrivilegeLink.setHref(UriBuilder.fromResource(OrganizationPrivilegeResource.class).build(
             organizationUniqueShortName, privilege.getName()).toString());
@@ -196,12 +193,10 @@ public class OrganizationPrivilegesResource extends AbstractResource {
       privilege.setParentOrganization(organization);
       Services.getInstance().getPrivilegeService().create(privilege);
       responseBuilder = Response.status(Status.CREATED);
-      responseBuilder.location(uriInfo.getBaseUriBuilder().path(OrganizationPrivilegeResource.PRIVILEGE_URI_BUILDER.clone().
-          build(organizationUniqueShortName, privilege.getName()).toString()).build());
+      responseBuilder.location(getAbsoluteURIBuilder().path(OrganizationPrivilegeResource.class).build(organizationUniqueShortName, privilege.getName()));
 
     }
-    catch (Exception ex) {
-      ex.printStackTrace();
+    catch (Exception ex) {      
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -209,5 +204,10 @@ public class OrganizationPrivilegesResource extends AbstractResource {
 
   private Organization getOrganization() {
     return Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationUniqueShortName);
+  }
+
+  @Override
+  protected String getAuthor() {
+    return "Smart User";
   }
 }

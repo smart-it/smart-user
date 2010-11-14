@@ -24,7 +24,7 @@ import org.apache.abdera.model.Link;
  * @author modhu7
  */
 @Path("/ulg")
-public class UserLinkResource extends AbstractResource {
+public class UserLinkResource extends com.smartitengineering.util.rest.atom.server.AbstractResource {
 
   static final UriBuilder USER_LINK_GETTER_URI_BUILDER = UriBuilder.fromResource(UserLinkResource.class);
 
@@ -34,7 +34,7 @@ public class UserLinkResource extends AbstractResource {
 
     ResponseBuilder responseBuilder = Response.status(Status.OK);
     Feed atomFeed = getFeed("User Link Getter Resource", new Date());
-    
+
     String username;
     String organizationName;
 
@@ -53,12 +53,17 @@ public class UserLinkResource extends AbstractResource {
     }
 
     Link userGetterLink = Abdera.getNewFactory().newLink();
-    userGetterLink.setHref(OrganizationUserResource.USER_URI_BUILDER.build(organizationName, username).toString());
+    userGetterLink.setHref(getRelativeURIBuilder().path(OrganizationUserResource.class).build(organizationName, username).toString());
     userGetterLink.setRel("userLink");
     atomFeed.addLink(userGetterLink);
 
     responseBuilder.entity(atomFeed);
-    
+
     return responseBuilder.build();
+  }
+
+  @Override
+  protected String getAuthor() {
+    return "Smart User";
   }
 }

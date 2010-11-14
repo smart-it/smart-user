@@ -7,6 +7,7 @@ package com.smartitengineering.user.ws.resources;
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.domain.User;
+import com.smartitengineering.util.rest.atom.server.AbstractResource;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -16,7 +17,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriBuilder;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 
@@ -27,8 +27,6 @@ import org.apache.abdera.model.Link;
 @Path("/orgs/sn/{organizationUniqueShortName}/un/{username}/privs/name/{privilegeName}")
 public class UserPrivilegeResource extends AbstractResource {
 
-  static final UriBuilder USER_PRIVILEGE_URI_BUILDER = UriBuilder.fromResource(UserPrivilegeResource.class);
-  static final UriBuilder PRIVILEGE_URI_BUILDER = OrganizationPrivilegeResource.PRIVILEGE_URI_BUILDER.clone();
   private String organizationUniqueShortName;
   private String username;
   private String privilegeName;
@@ -51,7 +49,7 @@ public class UserPrivilegeResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
     ResponseBuilder responseBuilder;
-    if(organization==null || user==null || privilege==null){
+    if (organization == null || user == null || privilege == null) {
       responseBuilder = Response.status(Status.NOT_FOUND);
       return responseBuilder.build();
     }
@@ -61,7 +59,6 @@ public class UserPrivilegeResource extends AbstractResource {
       responseBuilder = Response.ok(privilegeFeed);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -70,19 +67,18 @@ public class UserPrivilegeResource extends AbstractResource {
   @DELETE
   public Response delete() {
     ResponseBuilder responseBuilder;
-    if(organization==null || user==null || privilege==null){
+    if (organization == null || user == null || privilege == null) {
       responseBuilder = Response.status(Status.NOT_FOUND);
       return responseBuilder.build();
     }
     try {
       responseBuilder = Response.status(Status.OK);
-      User user = Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationUniqueShortName,
+      User newUser = Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationUniqueShortName,
                                                                                            username);
-      user.getPrivileges().remove(privilege);
-      Services.getInstance().getUserService().update(user);
+      newUser.getPrivileges().remove(privilege);
+      Services.getInstance().getUserService().update(newUser);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -90,21 +86,22 @@ public class UserPrivilegeResource extends AbstractResource {
 
   private Feed getUserPrivilegeFeed() {
 
-    Feed privilegeFeed = abderaFactory.newFeed();
+    Feed privilegeFeed = getAbderaFactory().newFeed();
 
     privilegeFeed.setId(privilegeName);
     privilegeFeed.setTitle(privilegeName);
     privilegeFeed.addLink(getSelfLink());
 
-    Link altLink = abderaFactory.newLink();
-    altLink.setHref(USER_PRIVILEGE_URI_BUILDER.clone().build(organizationUniqueShortName, username, privilegeName).
-        toString());
+    Link altLink = getAbderaFactory().newLink();
+    altLink.setHref(getRelativeURIBuilder().path(UserPrivilegeResource.class).build(organizationUniqueShortName,
+                                                                                    username, privilegeName).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     privilegeFeed.addLink(altLink);
-    
-    Link privLink = abderaFactory.newLink();
-    privLink.setHref(PRIVILEGE_URI_BUILDER.clone().build(organizationUniqueShortName, privilegeName).toString());
+
+    Link privLink = getAbderaFactory().newLink();
+    privLink.setHref(getRelativeURIBuilder().path(OrganizationPrivilegeResource.class).build(organizationUniqueShortName,
+                                                                                             privilegeName).toString());
     privLink.setRel(REL_PRIV);
     privLink.setMimeType(MediaType.APPLICATION_JSON);
     privilegeFeed.addLink(privLink);
@@ -124,5 +121,10 @@ public class UserPrivilegeResource extends AbstractResource {
   private User getUser() {
     return Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationUniqueShortName,
                                                                                     username);
+  }
+
+  @Override
+  protected String getAuthor() {
+    return "Smart User";
   }
 }

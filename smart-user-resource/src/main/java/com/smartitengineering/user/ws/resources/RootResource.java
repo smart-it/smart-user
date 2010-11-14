@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.util.rest.atom.server.AbstractResource;
 import com.sun.jersey.api.view.Viewable;
 import java.util.Date;
 import javax.ws.rs.GET;
@@ -12,7 +13,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
-import javax.ws.rs.core.UriBuilder;
 import org.apache.abdera.Abdera;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
@@ -38,7 +38,7 @@ public class RootResource extends AbstractResource {
     loginLink.setRel("Login");
     atomFeed.addLink(loginLink);
     Link organizationsLink = Abdera.getNewFactory().newLink();    
-    organizationsLink.setHref(OrganizationsResource.ORGANIZATION_URI_BUILDER.build().toString());
+    organizationsLink.setHref(getRelativeURIBuilder().path(OrganizationsResource.class).build().toString());
     organizationsLink.setRel("Organizations");
     atomFeed.addLink(organizationsLink);
     responseBuilder.entity(atomFeed);
@@ -56,5 +56,10 @@ public class RootResource extends AbstractResource {
 
     responseBuilder.entity(view);
     return responseBuilder.build();
+  }
+
+  @Override
+  protected String getAuthor() {
+    return "Smart User";
   }
 }

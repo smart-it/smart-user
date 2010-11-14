@@ -10,8 +10,10 @@ import com.smartitengineering.user.domain.GeoLocation;
 import com.smartitengineering.user.domain.Name;
 import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.domain.User;
+import com.smartitengineering.util.rest.atom.server.AbstractResource;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,7 +32,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriBuilder;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
@@ -44,25 +45,21 @@ public class ProfileResource extends AbstractResource {
 
   private Person person;
   private User user;
-  static final UriBuilder PROFILE_URI_BUILDER = UriBuilder.fromResource(ProfileResource.class);
-  static final UriBuilder PROFILE_CONTENT_URI_BUILDER;
+  static final Method PROFILE_CONTENT_METHOD;
 
   static {
-    PROFILE_CONTENT_URI_BUILDER = PROFILE_URI_BUILDER.clone();
     try {
-      PROFILE_CONTENT_URI_BUILDER.path(OrganizationUserResource.class.getMethod("getProfile"));
+      PROFILE_CONTENT_METHOD = OrganizationUserResource.class.getMethod("getProfile");
     }
     catch (Exception ex) {
-      ex.printStackTrace();
       throw new InstantiationError();
     }
   }
 
-  public ProfileResource(@PathParam("organizationShortName") String organizationShortName, @PathParam("userName") String userName) {
+  public ProfileResource(@PathParam("organizationShortName") String organizationShortName,
+                         @PathParam("userName") String userName) {
     user = Services.getInstance().getUserService().getUserByOrganizationAndUserName(organizationShortName, userName);
   }
-
-
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
@@ -80,15 +77,16 @@ public class ProfileResource extends AbstractResource {
     profileFeed.addLink(getSelfLink());
 
     // add a edit link
-    Link editLink = abderaFactory.newLink();
-    editLink.setHref(uriInfo.getRequestUri().toString());
+    Link editLink = getAbderaFactory().newLink();
+    editLink.setHref(getUriInfo().getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
     profileFeed.addLink(editLink);
 
     // add a alternate link
-    Link altLink = abderaFactory.newLink();
-    altLink.setHref(PROFILE_CONTENT_URI_BUILDER.clone().build(user.getOrganization().getUniqueShortName(), user.getUsername()).toString());
+    Link altLink = getAbderaFactory().newLink();
+    altLink.setHref(getRelativeURIBuilder().path(ProfileResource.class).path(PROFILE_CONTENT_METHOD).build(user.
+        getOrganization().getUniqueShortName(), user.getUsername()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     profileFeed.addLink(altLink);
@@ -129,9 +127,9 @@ public class ProfileResource extends AbstractResource {
       Services.getInstance().getPersonService().update(newPerson);
 
       responseBuilder = Response.ok(getProfileFeed());
-    } catch (Exception ex) {
+    }
+    catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
-      ex.printStackTrace();
     }
     return responseBuilder.build();
   }
@@ -151,7 +149,6 @@ public class ProfileResource extends AbstractResource {
     return responseBuilder.build();
   }
 
-
   @POST
   @Path("/update")
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -167,7 +164,8 @@ public class ProfileResource extends AbstractResource {
     if (StringUtils.isBlank(contentType)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
       isHtmlPost = false;
-    } else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+    }
+    else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
       contentType = MediaType.APPLICATION_OCTET_STREAM;
       isHtmlPost = true;
       try {
@@ -177,11 +175,11 @@ public class ProfileResource extends AbstractResource {
         final String realMsg = message.substring(startIndex);
         //Decode the message to ignore the form encodings and make them human readable
         message = URLDecoder.decode(realMsg, "UTF-8");
-      } catch (UnsupportedEncodingException ex) {
-        ex.printStackTrace();
       }
-    } else {
-      contentType = contentType;
+      catch (UnsupportedEncodingException ex) {        
+      }
+    }
+    else {      
       isHtmlPost = false;
     }
 
@@ -190,7 +188,8 @@ public class ProfileResource extends AbstractResource {
       try {
         Services.getInstance().getPersonService().update(newPerson);
         responseBuilder = Response.ok(getProfileFeed());
-      } catch (Exception ex) {
+      }
+      catch (Exception ex) {
         responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
       }
     }
@@ -345,5 +344,10 @@ public class ProfileResource extends AbstractResource {
       newPerson.setCellPhoneNumber(keyValueMap.get("cellPhoneNumber"));
     }
     return newPerson;
+  }
+
+  @Override
+  protected String getAuthor() {
+    return "Smart User";
   }
 }
