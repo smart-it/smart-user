@@ -16,10 +16,10 @@
 <%--Uzzal--%>
 
 <div id="leftmenu_orglist_1" class="leftmenu">
-  <div id="leftmenu_header_orglist_1" class="leftmenu_header"><label>Organization-Creation</label></div>
+  <div id="leftmenu_header_orglist_1" class="leftmenu_header"><label><fmt:message key="org.manuTitle"/></label></div>
   <div id="leftmenu_body_orglist_1" class="leftmenu_body">
     <ul>
-      <li><a href="javascript: Orgpageselect()">Create</a></li>
+      <li><a href="javascript: Orgpageselect()"><fmt:message key="org.SoCreate" /></a></li>
     </ul>
   </div>
 </div>
@@ -72,7 +72,7 @@
       <div class="form_label"><label><fmt:message key="org.inputlabel7"/></label></div>
       <div class="form_textField"><input type="text" name="zip" class="textField"></div>
       <div class="clear"></div>
-      <div class="btnfield"><input type="submit" value="<fmt:message key="submitBtn"/>" name="submitbtn" onclick="isEmpty()" onmouseover="onmouse_over()" id="submit" class="submitbtn"></div>
+      <div class="btnfield"><input type="submit" value="<fmt:message key="org.submitBtn"/>" name="submitbtn" onclick="isEmpty()" onmouseover="onmouse_over()" id="submit" class="submitbtn"></div>
       <div class="clear"></div>
     </form>
   </div>

@@ -4,12 +4,13 @@
     Author     : uzzal
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
   "http://www.w3.org/TR/html4/loose.dtd">
 
 <div id="inloginform" class="loginSection">
-  <div id="loginheader" class="loginHeader"><label>sitel secured login!</label></div>
+  <div id="loginheader" class="loginHeader"><label><fmt:message key="org.lebel" /></label></div>
   <div class="clear"></div>
   <form action="" method="post">
 
@@ -25,11 +26,11 @@
     </div>
 
     <div class="btnLinkCheckDiv">
-      <div class="btnlinkcheck"><input type="checkbox"> Keep me signed in</div>
+      <div class="btnlinkcheck"><input type="checkbox"><fmt:message key="org.kepSignMsg" /></div>
       <div class="btnDiv"><input type="submit" value="Sign In" name="btnSubmit" id="loginBtn"></div>
       <%--<div class="btnlinkcheck"><input type="image" src="more_btn.jpg" name="btnSubmit" id="loginBtn" alt="SUBMIT"></div>--%>
 
-      <div class="btnlinkcheck"><a href="#">Can't access your account?</a></div>
+      <div class="btnlinkcheck"><a href="#"><fmt:message key="org.accessDenied" /></a></div>
     </div>
 
   </form>

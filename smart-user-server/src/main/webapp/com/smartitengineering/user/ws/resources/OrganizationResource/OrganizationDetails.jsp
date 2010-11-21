@@ -16,7 +16,7 @@
     <ul>
       <li><a href="javascript: Orgpageselect()"><fmt:message key="org.editlink"/></a></li>
       <li><a href="#"><fmt:message key="org.deletelink"/></a></li>
-      <li><a href="/orgs/sn/${it.uniqueShortName}/users"><fmt:message key="org.userlistlink"/></a></li>
+      <li><a href="<c:url value="/orgs/sn/${it.uniqueShortName}/users" />"><fmt:message key="org.userlistlink"/></a></li>
     </ul>
   </div>
 </div>
