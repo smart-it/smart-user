@@ -18,7 +18,8 @@
 
   $(document).ready(function(){
 
-    var url = "http://localhost:9090/orgs/frags${qParam}";
+    var url = "orgs/frags${qParam}";
+    alert(url);
     $("#tablecontentid").pagination(url, "paginationLinks");
     $("#wrong").hide();
 

@@ -29,17 +29,17 @@
         <c:set var="last" value="${organization.uniqueShortName}"></c:set>
       </c:if>
       <div id="row${status.index}" class="row_of_list">
-        <div id="orgName${status.index}" class="orgName_column"><a href="/orgs/sn/${organization.uniqueShortName}">${organization.name}</a></div>
-        <div id="orgShortName${status.index}" class="orgShortName_column"><a href="/orgs/sn/${organization.uniqueShortName}">${organization.uniqueShortName}</a></div>
+        <div id="orgName${status.index}" class="orgName_column"><a href="<c:url value="/orgs/sn/${organization.uniqueShortName}"/>">${organization.name}</a></div>
+        <div id="orgShortName${status.index}" class="orgShortName_column"><a href="<c:url value="/orgs/sn/${organization.uniqueShortName}"/>">${organization.uniqueShortName}</a></div>
       </div>
     </c:forEach>
   </div>
   <div class="navigation_container" id="paginationLinks">
     <div id="nextLinkContainer"  class="list_navigation_links">
-      <a id="next" href="/orgs/after/${last}/frags${qParam}" class="nxt">next >><%--<img src="/images/31_64x64.png" alt="next" class="list_nav">--%></a>
+      <a id="next" href="<c:url value="/orgs/after/${last}/frags${qParam}"/>" class="nxt">next >><%--<img src="/images/31_64x64.png" alt="next" class="list_nav">--%></a>
     </div>
     <div id="previousLinkContainer"  class="list_navigation_links">
-      <a id="previous" href="/orgs/before/${first}/frags${qParam}" class="prev"><< previous<%--<img src="/images/30_64x64.png" alt="previous" class="list_nav">--%></a>
+      <a id="previous" href="<c:url value="/orgs/before/${first}/frags${qParam}"/>" class="prev"><< previous<%--<img src="/images/30_64x64.png" alt="previous" class="list_nav">--%></a>
     </div>
   </div>
 </div>
