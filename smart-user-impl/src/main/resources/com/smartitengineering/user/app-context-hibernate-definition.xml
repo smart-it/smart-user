@@ -30,7 +30,7 @@
         </prop>
         <prop key="hibernate.show_sql">${hibernate.show_sql}
         </prop>
-        <prop key="hibernate.hbm2ddl.auto">create-drop
+        <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}
         </prop>
         <prop key="hibernate.query.substitutions">true 'T', false 'F'
         </prop>

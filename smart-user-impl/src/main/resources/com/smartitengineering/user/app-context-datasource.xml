@@ -32,6 +32,8 @@
                 </prop>
                 <prop key="hibernate.show_sql">${com.smartitengineering.dao.show_sql}
                 </prop>
+                <prop key="hibernate.hbm2ddl.auto">${com.smartitengineering.dao.hbm2ddl.auto}
+                </prop>
             </props>
         </property>
     </bean>
