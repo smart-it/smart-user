@@ -48,7 +48,6 @@ import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
 
 @Path("/orgs")
-//@Path("/privs")
 public class OrganizationsResource extends AbstractResource {
 
   static final Method ORGANIZATION_AFTER_SHORTNAME_METHOD;
@@ -313,7 +312,8 @@ public class OrganizationsResource extends AbstractResource {
       //Services.getInstance().getOrganizationService().populateAuthor(organization);
       Services.getInstance().getOrganizationService().save(organization);
       responseBuilder = Response.status(Response.Status.CREATED);
-      responseBuilder.location(getAbsoluteURIBuilder().path(OrganizationResource.class).build(organization.getUniqueShortName()));
+      responseBuilder.location(getAbsoluteURIBuilder().path(OrganizationResource.class).build(organization.
+          getUniqueShortName()));
 
     }
     catch (Exception ex) {
@@ -397,7 +397,7 @@ public class OrganizationsResource extends AbstractResource {
         //Decode the message to ignore the form encodings and make them human readable
         message = URLDecoder.decode(realMsg, "UTF-8");
       }
-      catch (UnsupportedEncodingException ex) {        
+      catch (UnsupportedEncodingException ex) {
       }
     }
     else {
@@ -405,8 +405,26 @@ public class OrganizationsResource extends AbstractResource {
     }
 
     if (isHtmlPost) {
-      Organization newOrganization = getObjectFromContent(message);
-      Services.getInstance().getOrganizationService().save(newOrganization);
+      Organization newOrganization = new Organization();
+      try {
+        newOrganization = getObjectFromContent(message);
+        Services.getInstance().getOrganizationService().save(newOrganization);
+        responseBuilder.status(Status.SEE_OTHER);
+        responseBuilder.location(getAbsoluteURIBuilder().path(OrganizationResource.class).build(newOrganization.
+            getUniqueShortName()));
+      }
+      catch (Exception ex) {
+        servletRequest.setAttribute("error", ex.getMessage());
+        servletRequest.setAttribute("errorOrganization", newOrganization);
+        Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
+            uniqueShortName, uniqueShortName, false, count);
+        servletRequest.setAttribute("templateHeadContent",
+                                    "/com/smartitengineering/user/ws/resources/OrganizationsResource/OrganizationHeader.jsp");
+        servletRequest.setAttribute("templateContent",
+                                    "/com/smartitengineering/user/ws/resources/OrganizationsResource/organizationList.jsp");
+        Viewable view = new Viewable("/template/template.jsp", organizations);
+        responseBuilder.entity(view);
+      }
     }
     return responseBuilder.build();
   }
