@@ -49,7 +49,7 @@
         <div id="sitel_slogan" class="sitel_slogan_container"><label><fmt:message key="org.thene" /></label></div>
       </div>
       <div id="options" class="main_template_options">
-        <div class="optionsSignout"><a href="#"><fmt:message key="org.manuLink6"/></a></div>
+        <div class="optionsSignout"><a href="<c:url value="/j_spring_security_logout"/>"><fmt:message key="org.manuLink6"/></a></div>
       </div>
       <div class="clear"></div>
       <div id="content" class="template_content">
