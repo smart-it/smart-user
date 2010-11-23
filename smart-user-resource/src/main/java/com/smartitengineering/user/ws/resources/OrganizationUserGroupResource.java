@@ -6,8 +6,10 @@ package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.UserGroup;
+import com.smartitengineering.util.rest.atom.server.AbstractResource;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,7 +27,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
@@ -38,17 +39,13 @@ import org.apache.commons.lang.StringUtils;
 @Path("/orgs/sn/{uniqueShortName}/usergroups/name/{name}")
 public class OrganizationUserGroupResource extends AbstractResource {
 
-  static final UriBuilder ORGANIZATION_USER_GROUP_URI_BUILDER = UriBuilder.fromResource(
-      OrganizationUserGroupResource.class);
-  static final UriBuilder ORGANIZATION_USER_GROUP_CONTENT_URI_BUILDER;
+  static final Method ORGANIZATION_USER_GROUP_CONTENT_METHOD;
 
   static {
-    ORGANIZATION_USER_GROUP_CONTENT_URI_BUILDER = ORGANIZATION_USER_GROUP_URI_BUILDER.clone();
     try {
-      ORGANIZATION_USER_GROUP_CONTENT_URI_BUILDER.path(OrganizationUserGroupResource.class.getMethod("getContent"));
+      ORGANIZATION_USER_GROUP_CONTENT_METHOD = OrganizationUserGroupResource.class.getMethod("getContent");
     }
     catch (Exception ex) {
-      ex.printStackTrace();
       throw new InstantiationError();
     }
   }
@@ -118,7 +115,7 @@ public class OrganizationUserGroupResource extends AbstractResource {
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
-      ex.printStackTrace();
+
     }
     return responseBuilder.build();
   }
@@ -132,34 +129,35 @@ public class OrganizationUserGroupResource extends AbstractResource {
     userFeed.addLink(getSelfLink());
 
     // add a edit link
-    Link editLink = abderaFactory.newLink();
-    editLink.setHref(uriInfo.getRequestUri().toString());
+    Link editLink = getAbderaFactory().newLink();
+    editLink.setHref(getUriInfo().getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(editLink);
 
     // add a alternate link
-    Link altLink = abderaFactory.newLink();
-    altLink.setHref(ORGANIZATION_USER_GROUP_CONTENT_URI_BUILDER.clone().build(orgShortName, name).toString());
+    Link altLink = getAbderaFactory().newLink();
+    altLink.setHref(getRelativeURIBuilder().path(OrganizationUserGroupResource.class).path(
+        ORGANIZATION_USER_GROUP_CONTENT_METHOD).build(orgShortName, userGroup.getName()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(altLink);
 
-    Link privilegesLink = abderaFactory.newLink();
-    privilegesLink.setHref(UserGroupPrivilegesResource.USER_GROUP_PRIVILEGE_URIBUILDER.clone().build(orgShortName,
-                                                                                          name).toString());
+    Link privilegesLink = getAbderaFactory().newLink();
+    privilegesLink.setHref(getRelativeURIBuilder().path(UserGroupPrivilegesResource.class).build(orgShortName, name).
+        toString());
     privilegesLink.setRel(REL_USER_GROUP_PRIVILEGES);
     privilegesLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(privilegesLink);
 
-    Link rolesLink = abderaFactory.newLink();
-    rolesLink.setHref(UserGroupRolesResource.ROLE_URI_BUILDER.clone().build(orgShortName, name).toString());
+    Link rolesLink = getAbderaFactory().newLink();
+    rolesLink.setHref(getRelativeURIBuilder().path(UserGroupRolesResource.class).build(orgShortName, name).toString());
     rolesLink.setRel(REL_USER_GROUP_ROLES);
     rolesLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(rolesLink);
 
-    Link usersLink = abderaFactory.newLink();
-    usersLink.setHref(UserGroupUsersResource.USER_GROUP_USERS_URIBUILDER.clone().build(orgShortName, name).toString());
+    Link usersLink = getAbderaFactory().newLink();
+    usersLink.setHref(getRelativeURIBuilder().path(UserGroupUsersResource.class).build(orgShortName, name).toString());
     usersLink.setRel(REL_USER_GROUP_USERS);
     usersLink.setMimeType(MediaType.APPLICATION_JSON);
     userFeed.addLink(usersLink);
@@ -189,7 +187,6 @@ public class OrganizationUserGroupResource extends AbstractResource {
       Services.getInstance().getUserGroupService().delete(userGroup);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
       responseBuilder = Response.ok(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -225,7 +222,6 @@ public class OrganizationUserGroupResource extends AbstractResource {
         message = URLDecoder.decode(realMsg, "UTF-8");
       }
       catch (UnsupportedEncodingException ex) {
-        ex.printStackTrace();
       }
     }
     else {
@@ -272,5 +268,10 @@ public class OrganizationUserGroupResource extends AbstractResource {
 
   private Organization getOrganization() {
     return Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(orgShortName);
+  }
+
+  @Override
+  protected String getAuthor() {
+    return "Smart User";
   }
 }

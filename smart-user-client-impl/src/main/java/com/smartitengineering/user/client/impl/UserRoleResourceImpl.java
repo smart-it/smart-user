@@ -25,10 +25,10 @@ public class UserRoleResourceImpl extends AbstractFeedClientResource<Resource<? 
 
   public UserRoleResourceImpl(ResourceLink roleLink, Resource referrer) {
     super(referrer, roleLink);
-    final ResourceLink altLink = getRelatedResourceUris().getFirst(Link.REL_ALTERNATE);
-    addNestedResource(REL_ROLE, new SimpleResourceImpl<com.smartitengineering.user.client.impl.domain.Role>(
-        this, altLink.getUri(), altLink.getMimeType(), com.smartitengineering.user.client.impl.domain.Role.class,
-        null, false, null, null));
+//    final ResourceLink altLink = getRelatedResourceUris().getFirst(Link.REL_ALTERNATE);
+//    addNestedResource(REL_ROLE, new SimpleResourceImpl<com.smartitengineering.user.client.impl.domain.Role>(
+//        this, altLink.getUri(), altLink.getMimeType(), com.smartitengineering.user.client.impl.domain.Role.class,
+//        null, false, null, null));
   }
 
   @Override
@@ -42,6 +42,7 @@ public class UserRoleResourceImpl extends AbstractFeedClientResource<Resource<? 
 
   @Override
   public RoleResource getRoleResource() {
+    System.out.println("----------------------------Role Link " + getRelatedResourceUris().getFirst(REL_ROLE));
     return new RoleResourceImpl(getRelatedResourceUris().getFirst(REL_ROLE), this);
   }
 }

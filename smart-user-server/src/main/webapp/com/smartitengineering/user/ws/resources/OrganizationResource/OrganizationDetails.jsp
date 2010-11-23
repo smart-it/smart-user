@@ -16,7 +16,7 @@
     <ul>
       <li><a href="javascript: Orgpageselect()"><fmt:message key="org.editlink"/></a></li>
       <li><a href="#"><fmt:message key="org.deletelink"/></a></li>
-      <li><a href="/orgs/sn/${it.uniqueShortName}/users"><fmt:message key="org.userlistlink"/></a></li>
+      <li><a href="<c:url value="/orgs/sn/${it.uniqueShortName}/users" />"><fmt:message key="org.userlistlink"/></a></li>
     </ul>
   </div>
 </div>
@@ -50,7 +50,7 @@
     <div class="individual_details_data"><label>${it.address.zip}</label></div>
     <div class="clear"></div>
 
-    <form method="POST" action ="http://localhost:9090/orgs/sn/${it.uniqueShortName}/delete" accept="application/json" id="organizationform">
+    <form method="POST" action ="<c:url value="/orgs/sn/${it.uniqueShortName}/delete"/>" accept="application/json" id="organizationform">
       <input type="hidden" name="name" value="${it.name}" class="textField">
       <input type="hidden" name="uniqueShortName" value="${it.uniqueShortName}" class="textField">
       <input type="hidden" name="streetAddress" value="${it.address.streetAddress}" class="textField">
@@ -60,7 +60,7 @@
       <input type="hidden" name="zip"  class="textField" value="${it.address.zip}">
       <input type="hidden" name="id" value="${it.id}">
       <input type="hidden" name="version" value="${it.version}">
-      <div class="btnfield"><input type="submit" value="DELETE" name="submitbtn" class="submitbtn"></div>
+      <div class="btnfield"><input type="submit" value="<fmt:message key="org.deleteLevel"/>" name="submitbtn" class="submitbtn"></div>
       <div class="clear"></div>
     </form>
   </div>
@@ -70,7 +70,7 @@
   <div id="header_organization" class="header_entry_form"><label id="headerogorganization"><c:out value="${it.name}"></c:out></label></div>
   <fmt:message key="org.usrinput6" var="submitbtn"/>
   <div id="form_organizationentry" class="entry_form">
-    <form method="POST" action ="http://localhost:9090/orgs/sn/${it.uniqueShortName}/update" accept="application/json" id="organizationform">
+    <form method="POST" action ="<c:url value="/orgs/sn/${it.uniqueShortName}/update"/>" accept="application/json" id="organizationform">
       <div class="form_label"><label><fmt:message key="org.tablehead2"/></label></div>
       <div class="form_textField"><input type="text" name="name" value="${it.name}" class="textField"></div>
       <div class="clear"></div>
@@ -98,7 +98,7 @@
       <div></div>
       <div><input type="hidden" name="version" value="${it.version}"></div>
       <div class="clear"></div>
-      <div class="btnfield"><input type="submit" value="UPDATE" name="submitbtn" class="submitbtn"></div>
+      <div class="btnfield"><input type="submit" value="<fmt:message key="org.updateLevel"/>" name="submitbtn" class="submitbtn"></div>
       <div class="clear"></div>
     </form>
   </div>

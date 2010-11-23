@@ -6,7 +6,9 @@ package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.SecuredObject;
+import com.smartitengineering.util.rest.atom.server.AbstractResource;
 import com.sun.jersey.api.view.Viewable;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -34,35 +36,27 @@ import org.apache.abdera.model.Link;
 @Path("/orgs/sn/{organizationUniqueShortName}/so")
 public class OrganizationSecuredObjectsResource extends AbstractResource {
 
-  static final UriBuilder ORGANIZATION_SECURED_OBJECTS_URI_BUILDER;
-  static final UriBuilder ORGANIZATION_SECURED_OBJECTS_BEFORE_OBJECTID_URI_BUILDER;
-  static final UriBuilder ORGANIZATION_SECURED_OBJECTS_AFTER_OBJECTID_URI_BUILDER;
+  static final Method ORGANIZATION_SECURED_OBJECTS_BEFORE_OBJECTID_METHOD;
+  static final Method ORGANIZATION_SECURED_OBJECTS_AFTER_OBJECTID_METHOD;
 
   static {
-    ORGANIZATION_SECURED_OBJECTS_URI_BUILDER = UriBuilder.fromResource(OrganizationSecuredObjectsResource.class);
-
-    ORGANIZATION_SECURED_OBJECTS_AFTER_OBJECTID_URI_BUILDER = UriBuilder.fromResource(
-        OrganizationSecuredObjectsResource.class);
     try {
-      ORGANIZATION_SECURED_OBJECTS_AFTER_OBJECTID_URI_BUILDER.path(OrganizationSecuredObjectsResource.class.getMethod(
-          "getAfter", String.class));
+      ORGANIZATION_SECURED_OBJECTS_AFTER_OBJECTID_METHOD =
+      OrganizationSecuredObjectsResource.class.getMethod("getAfter", String.class);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
+      throw new InstantiationError();
     }
-
-    ORGANIZATION_SECURED_OBJECTS_BEFORE_OBJECTID_URI_BUILDER = UriBuilder.fromResource(
-        OrganizationSecuredObjectsResource.class);
     try {
-      ORGANIZATION_SECURED_OBJECTS_BEFORE_OBJECTID_URI_BUILDER.path(OrganizationSecuredObjectsResource.class.getMethod(
-          "getBefore", String.class));
+      ORGANIZATION_SECURED_OBJECTS_BEFORE_OBJECTID_METHOD = OrganizationSecuredObjectsResource.class.getMethod(
+          "getBefore", String.class);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
+      throw new InstantiationError();
     }
   }
   @PathParam("count")
-  private Integer count;  
+  private Integer count;
   private String organizationUniqueShortName;
   private Organization organization;
 
@@ -115,7 +109,7 @@ public class OrganizationSecuredObjectsResource extends AbstractResource {
     }
     Feed atomFeed = getFeed(userName, new Date());
 
-    Link parentLink = abderaFactory.newLink();
+    Link parentLink = getAbderaFactory().newLink();
     parentLink.setHref(UriBuilder.fromResource(OrganizationResource.class).build(uniqueOrganizationName).toString());
     parentLink.setRel("parent");
     atomFeed.addLink(parentLink);
@@ -126,15 +120,17 @@ public class OrganizationSecuredObjectsResource extends AbstractResource {
 
     if (securedObjects != null && !securedObjects.isEmpty()) {
 
-      MultivaluedMap<String, String> queryParam = uriInfo.getQueryParameters();
+      MultivaluedMap<String, String> queryParam = getUriInfo().getQueryParameters();
       List<SecuredObject> securedObjectList = new ArrayList<SecuredObject>(securedObjects);
 
       // uri builder for next and previous organizations according to count
-      final UriBuilder nextUri = ORGANIZATION_SECURED_OBJECTS_AFTER_OBJECTID_URI_BUILDER.clone();
-      final UriBuilder previousUri = ORGANIZATION_SECURED_OBJECTS_BEFORE_OBJECTID_URI_BUILDER.clone();
+      final UriBuilder nextUri = getRelativeURIBuilder().path(OrganizationSecuredObjectsResource.class).path(
+          ORGANIZATION_SECURED_OBJECTS_AFTER_OBJECTID_METHOD);
+      final UriBuilder previousUri = getRelativeURIBuilder().path(OrganizationSecuredObjectsResource.class).path(
+          ORGANIZATION_SECURED_OBJECTS_BEFORE_OBJECTID_METHOD);
 
       // link to the next organizations based on count
-      Link nextLink = abderaFactory.newLink();
+      Link nextLink = getAbderaFactory().newLink();
       nextLink.setRel(Link.REL_NEXT);
       SecuredObject lastSecuredObject = securedObjectList.get(0);
 
@@ -150,7 +146,7 @@ public class OrganizationSecuredObjectsResource extends AbstractResource {
       atomFeed.addLink(nextLink);
 
       /* link to the previous organizations based on count */
-      Link prevLink = abderaFactory.newLink();
+      Link prevLink = getAbderaFactory().newLink();
       prevLink.setRel(Link.REL_PREVIOUS);
       SecuredObject firstSecuredObject = securedObjectList.get(securedObjects.size() - 1);
 
@@ -159,7 +155,7 @@ public class OrganizationSecuredObjectsResource extends AbstractResource {
 
       for (SecuredObject securedObject : securedObjects) {
 
-        Entry securedObjectEntry = abderaFactory.newEntry();
+        Entry securedObjectEntry = getAbderaFactory().newEntry();
 
         securedObjectEntry.setId(securedObject.getObjectID());
         securedObjectEntry.setTitle(securedObject.getObjectID());
@@ -167,9 +163,9 @@ public class OrganizationSecuredObjectsResource extends AbstractResource {
         //userEntry.setUpdated("Not available");
 
         // setting link to the each individual user
-        Link securedObjectLink = abderaFactory.newLink();
-        securedObjectLink.setHref(OrganizationSecuredObjectResource.ORGANIZATION_SECURED_OBJECT_URI_BUILDER.clone().
-            build(uniqueOrganizationName, securedObject.getName()).toString());
+        Link securedObjectLink = getAbderaFactory().newLink();
+        securedObjectLink.setHref(getRelativeURIBuilder().path(OrganizationSecuredObjectResource.class).build(
+            uniqueOrganizationName, securedObject.getName()).toString());
         securedObjectLink.setRel(Link.REL_ALTERNATE);
         securedObjectLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
 
@@ -186,25 +182,27 @@ public class OrganizationSecuredObjectsResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response post(SecuredObject securedObject) {
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization==null){
+    if (organization == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     try {
       securedObject.setOrganization(organization);
       Services.getInstance().getSecuredObjectService().save(securedObject);
       responseBuilder = Response.status(Status.CREATED);
-      responseBuilder.location(uriInfo.getBaseUriBuilder().path(OrganizationSecuredObjectResource.ORGANIZATION_SECURED_OBJECT_URI_BUILDER.
-          clone().
-          build(organizationUniqueShortName, securedObject.getName()).toString()).build());
+      responseBuilder.location(getAbsoluteURIBuilder().path(OrganizationSecuredObjectResource.class).build(organizationUniqueShortName, securedObject.getName()));
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
-      ex.printStackTrace();
     }
     return responseBuilder.build();
   }
 
   private Organization getOrganization() {
     return Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationUniqueShortName);
+  }
+
+  @Override
+  protected String getAuthor() {
+    return "Smart User";
   }
 }

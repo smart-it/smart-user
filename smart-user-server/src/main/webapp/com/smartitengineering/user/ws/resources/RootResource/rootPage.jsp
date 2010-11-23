@@ -4,20 +4,25 @@
     Author     : uzzal
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
+<c:if test="${param['lang']!=null}">
+  <fmt:setLocale scope="session" value="${param['lang']}"/>
+</c:if>
 
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>home page</title>
-    <link rel="Stylesheet" href="css/default.css">
-    <link rel="Stylesheet" href="css/login.css">
+    <title><fmt:message key="org.rootTitle"/></title>
+    <link rel="Stylesheet" href="<c:url value="css/default.css"/>" >
+    <link rel="Stylesheet" href="<c:url value="css/login.css"/>">
   </head>
 
   <body>
-
+    
     <%--This is Header portion--%>
 
     <div id="header" class="homepageHeader">

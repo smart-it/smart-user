@@ -7,7 +7,9 @@ package com.smartitengineering.user.ws.resources;
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.domain.SecuredObject;
+import com.smartitengineering.util.rest.atom.server.AbstractResource;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +26,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
@@ -37,16 +38,13 @@ import org.apache.commons.lang.StringUtils;
 @Path("/orgs/sn/{organizationUniqueShortName}/privs/name/{privilegeName}")
 public class OrganizationPrivilegeResource extends AbstractResource {
 
-  static final UriBuilder PRIVILEGE_URI_BUILDER = UriBuilder.fromResource(OrganizationPrivilegeResource.class);
-  static final UriBuilder PRIVILEGE_CONTENT_URI_BUILDER;
+  static final Method CONTENT_METHOD;
 
   static {
-    PRIVILEGE_CONTENT_URI_BUILDER = PRIVILEGE_URI_BUILDER.clone();
     try {
-      PRIVILEGE_CONTENT_URI_BUILDER.path(OrganizationPrivilegeResource.class.getMethod("getContent"));
+      CONTENT_METHOD = (OrganizationPrivilegeResource.class.getMethod("getContent"));
     }
     catch (Exception ex) {
-      ex.printStackTrace();
       throw new InstantiationError();
 
     }
@@ -69,7 +67,7 @@ public class OrganizationPrivilegeResource extends AbstractResource {
   @Path("/content")
   public Response getContent() {
     ResponseBuilder responseBuilder = Response.ok();
-    if (organization==null || privilege == null) {
+    if (organization == null || privilege == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     responseBuilder = Response.ok(getPrivilege());
@@ -80,7 +78,7 @@ public class OrganizationPrivilegeResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
     ResponseBuilder responseBuilder = Response.ok();
-    if (organization==null || privilege== null) {
+    if (organization == null || privilege == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     try {
@@ -89,7 +87,7 @@ public class OrganizationPrivilegeResource extends AbstractResource {
       responseBuilder = Response.ok(privilegeFeed);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
+
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -98,7 +96,7 @@ public class OrganizationPrivilegeResource extends AbstractResource {
   @DELETE
   public Response delete() {
     ResponseBuilder responseBuilder = Response.ok();
-    if (organization==null || privilege == null) {
+    if (organization == null || privilege == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     try {
@@ -106,7 +104,6 @@ public class OrganizationPrivilegeResource extends AbstractResource {
       Services.getInstance().getPrivilegeService().delete(getPrivilege());
     }
     catch (Exception ex) {
-      ex.printStackTrace();
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -117,7 +114,7 @@ public class OrganizationPrivilegeResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response update(Privilege newPrivilege) {
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization==null || privilege==null){
+    if (organization == null || privilege == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     try {
@@ -126,7 +123,6 @@ public class OrganizationPrivilegeResource extends AbstractResource {
       Services.getInstance().getPrivilegeService().update(newPrivilege);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -134,20 +130,21 @@ public class OrganizationPrivilegeResource extends AbstractResource {
 
   private Feed getPrivilegeFeed() throws UriBuilderException, IllegalArgumentException {
 
-    Feed privilegeFeed = abderaFactory.newFeed();
+    Feed privilegeFeed = getAbderaFactory().newFeed();
 
     privilegeFeed.setId(privilegeName);
     privilegeFeed.setTitle(privilegeName);
     privilegeFeed.addLink(getSelfLink());
 
-    Link editLink = abderaFactory.newLink();
-    editLink.setHref(uriInfo.getRequestUri().toString());
+    Link editLink = getAbderaFactory().newLink();
+    editLink.setHref(getUriInfo().getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
 
 
-    Link altLink = abderaFactory.newLink();
-    altLink.setHref(PRIVILEGE_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName, privilegeName).toString());
+    Link altLink = getAbderaFactory().newLink();
+    altLink.setHref(getRelativeURIBuilder().path(OrganizationPrivilegeResource.class).path(CONTENT_METHOD).build(
+        organizationUniqueShortName, privilegeName).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     privilegeFeed.addLink(altLink);
@@ -161,14 +158,13 @@ public class OrganizationPrivilegeResource extends AbstractResource {
   @Path("/delete")
   public Response deletePost() {
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization==null || privilege==null){
+    if (organization == null || privilege == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     try {
       Services.getInstance().getPrivilegeService().delete(getPrivilege());
     }
     catch (Exception ex) {
-      ex.printStackTrace();
       responseBuilder = Response.ok(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -179,7 +175,7 @@ public class OrganizationPrivilegeResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   public Response updatePost(@HeaderParam("Content-type") String contentType, String message) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-    if(organization==null || privilege==null){
+    if (organization == null || privilege == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
 
@@ -205,10 +201,9 @@ public class OrganizationPrivilegeResource extends AbstractResource {
         message = URLDecoder.decode(realMsg, "UTF-8");
       }
       catch (UnsupportedEncodingException ex) {
-        ex.printStackTrace();
       }
     }
-    else {      
+    else {
       isHtmlPost = false;
     }
 
@@ -273,5 +268,10 @@ public class OrganizationPrivilegeResource extends AbstractResource {
 
   private Organization getOrganization() {
     return Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationUniqueShortName);
+  }
+
+  @Override
+  protected String getAuthor() {
+    return "Smart User";
   }
 }

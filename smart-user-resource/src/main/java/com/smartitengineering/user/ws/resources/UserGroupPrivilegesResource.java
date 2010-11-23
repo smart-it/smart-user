@@ -7,6 +7,8 @@ package com.smartitengineering.user.ws.resources;
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.domain.UserGroup;
+import com.smartitengineering.util.rest.atom.server.AbstractResource;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -37,28 +39,22 @@ public class UserGroupPrivilegesResource extends AbstractResource {
   private String groupName;
   private Organization organization;
   private UserGroup userGroup;
-  static UriBuilder USER_GROUP_PRIVILEGE_URIBUILDER;
-  static UriBuilder USER_GROUP_PRIVILEGE_AFTER_NAME_URIBUILDER;
-  static UriBuilder USER_GROUP_PRIVILEGE_BEFORE_NAME_URIBUILDER;
+  
+  static Method USER_GROUP_PRIVILEGE_AFTER_NAME_METHOD;
+  static Method USER_GROUP_PRIVILEGE_BEFORE_NAME_METHOD;
 
   static {
-    USER_GROUP_PRIVILEGE_URIBUILDER = UriBuilder.fromResource(UserGroupPrivilegesResource.class);
-    USER_GROUP_PRIVILEGE_BEFORE_NAME_URIBUILDER = UriBuilder.fromResource(UserGroupPrivilegesResource.class);
-
     try {
-      USER_GROUP_PRIVILEGE_BEFORE_NAME_URIBUILDER.path(UserGroupPrivilegesResource.class.getMethod("getBefore",
-                                                                                                   String.class));
+      USER_GROUP_PRIVILEGE_BEFORE_NAME_METHOD = UserGroupPrivilegesResource.class.getMethod("getBefore",String.class);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
+      throw new InstantiationError();
     }
-    USER_GROUP_PRIVILEGE_AFTER_NAME_URIBUILDER = UriBuilder.fromResource(UserGroupPrivilegesResource.class);
     try {
-      USER_GROUP_PRIVILEGE_AFTER_NAME_URIBUILDER.path(UserGroupPrivilegesResource.class.getMethod("getAfter",
-                                                                                                  String.class));
+      USER_GROUP_PRIVILEGE_AFTER_NAME_METHOD = UserGroupPrivilegesResource.class.getMethod("getAfter",String.class);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
+      throw new InstantiationError();
     }
   }
 
@@ -98,10 +94,10 @@ public class UserGroupPrivilegesResource extends AbstractResource {
     }
 
     // create a new atom feed
-    Feed atomFeed = abderaFactory.newFeed();
+    Feed atomFeed = getAbderaFactory().newFeed();
 
     // create a link to parent resource, in this case now it is linked to root resource
-    Link parentResourceLink = abderaFactory.newLink();
+    Link parentResourceLink = getAbderaFactory().newLink();
     parentResourceLink.setHref(UriBuilder.fromResource(OrganizationResource.class).build(organizationName).toString());
     parentResourceLink.setRel("organization");
     atomFeed.addLink(parentResourceLink);
@@ -110,15 +106,15 @@ public class UserGroupPrivilegesResource extends AbstractResource {
     Collection<Privilege> privileges = userGroup.getPrivileges();
 
     if (privileges != null && !privileges.isEmpty()) {
-      MultivaluedMap<String, String> queryParam = uriInfo.getQueryParameters();
+      MultivaluedMap<String, String> queryParam = getUriInfo().getQueryParameters();
       List<Privilege> privilegeList = new ArrayList<Privilege>(privileges);
 
       // uri builder for next and previous organizations according to count
-      final UriBuilder nextUri = USER_GROUP_PRIVILEGE_AFTER_NAME_URIBUILDER.clone();
-      final UriBuilder previousUri = USER_GROUP_PRIVILEGE_BEFORE_NAME_URIBUILDER.clone();
+      final UriBuilder nextUri = getRelativeURIBuilder().path(UserGroupPrivilegesResource.class).path(USER_GROUP_PRIVILEGE_AFTER_NAME_METHOD);
+      final UriBuilder previousUri = getRelativeURIBuilder().path(UserGroupPrivilegesResource.class).path(USER_GROUP_PRIVILEGE_BEFORE_NAME_METHOD);
 
       // link to the next organizations based on count
-      Link nextLink = abderaFactory.newLink();
+      Link nextLink = getAbderaFactory().newLink();
       nextLink.setRel(Link.REL_NEXT);
       Privilege lastPrivilege = privilegeList.get(0);
       for (String key : queryParam.keySet()) {
@@ -132,7 +128,7 @@ public class UserGroupPrivilegesResource extends AbstractResource {
       atomFeed.addLink(nextLink);
 
       /* link to the previous organizations based on count */
-      Link prevLink = abderaFactory.newLink();
+      Link prevLink = getAbderaFactory().newLink();
       prevLink.setRel(Link.REL_PREVIOUS);
       Privilege firstPrivilege = privilegeList.get(privileges.size() - 1);
 
@@ -142,13 +138,13 @@ public class UserGroupPrivilegesResource extends AbstractResource {
 
       // add entry of individual organization
       for (Privilege privilege : privileges) {
-        Entry userPrivilegeEntry = abderaFactory.newEntry();
+        Entry userPrivilegeEntry = getAbderaFactory().newEntry();
 
         userPrivilegeEntry.setId(privilege.getName().toString());
         userPrivilegeEntry.setTitle(privilege.getDisplayName());
         userPrivilegeEntry.setSummary(privilege.getShortDescription());
 
-        Link userPrivilegeLink = abderaFactory.newLink();
+        Link userPrivilegeLink = getAbderaFactory().newLink();
         userPrivilegeLink.setHref(UriBuilder.fromResource(UserGroupPrivilegeResource.class).build(organizationName,
                                                                                                   groupName, privilege.
             getName()).toString());
@@ -187,13 +183,10 @@ public class UserGroupPrivilegesResource extends AbstractResource {
         userGroup.getPrivileges().add(privilege);
         Services.getInstance().getUserGroupService().update(userGroup);
         responseBuilder = Response.status(Status.CREATED);
-        responseBuilder.location(uriInfo.getBaseUriBuilder().path(UserGroupPrivilegeResource.USER_GROUP_PRIVILEGE_URI_BUILDER.
-            clone().
-            build(organizationName, groupName, privilege.getName()).toString()).build());
+        responseBuilder.location(getAbsoluteURIBuilder().path(UserGroupPrivilegeResource.class).build(organizationName, groupName, privilege.getName()));
       }
     }
-    catch (Exception ex) {
-      ex.printStackTrace();
+    catch (Exception ex) {      
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -201,5 +194,10 @@ public class UserGroupPrivilegesResource extends AbstractResource {
 
   private Organization getOrganization() {
     return Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationName);
+  }
+
+  @Override
+  protected String getAuthor() {
+    return "Smart User";
   }
 }

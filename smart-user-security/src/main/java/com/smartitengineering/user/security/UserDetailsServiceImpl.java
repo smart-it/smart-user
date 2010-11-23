@@ -30,17 +30,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
-        SecurityContext context = SecurityContextHolder.getContext();
-        if (context == null) {
-            System.out.println("context null");
-            return loadUserFromDB(username);
-        } else {
-            System.out.println("context not null");
-            System.out.println(context.toString());
-            return loadUserFromDB(username);
-        }
-
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {        
+        return loadUserFromDB(username);        
     }
 
     private UserDetails loadUserFromDB(String username) {

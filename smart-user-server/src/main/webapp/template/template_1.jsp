@@ -4,6 +4,8 @@
     Author     : uzzal
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%--<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -12,13 +14,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>aponn for you</title>
-        <link rel="Stylesheet" href="../css/style.css">
-        <link rel="Stylesheet" href="../css/dashboardstyle.css">
-        <link rel="Stylesheet" href="../css/organization-style.css">
+        <title><fmt:message key="templeteTitle" /></title>
+        <link rel="Stylesheet" href="<c:url value="/css/style.css" />">
+        <link rel="Stylesheet" href="<c:url value="/css/dashboardstyle.css" />">
+        <link rel="Stylesheet" href="<c:url value="../css/organization-style.css"/>">
         <%--<link rel="Stylesheet" href="../css/organizationlist.css">--%>
 
-        <script type="text/javascript" src="/script/javascript_1.js"></script>
+        <script type="text/javascript" src="<c:url value="/script/javascript_1.js"/>"></script>
     </head>
     <body>
         <div id="main" >
@@ -41,15 +43,15 @@
                 </form>--%>
 <div id="topmenu">
     <ul>
-    <a href="#">Home</a>
+      <a href="#"><fmt:message key="manuLink1"/></a>
 
-    <a href="#">User List</a>
+      <a href="#"><fmt:message key="manuLink2"/></a>
 
-    <a href="#">Edit</a>
+      <a href="#"><fmt:message key="manuLink3" /></a>
 
-    <a href="#">Delete</a>
+      <a href="#"><fmt:message key="manuLink4"/></a>
 
-    <a href="#">Logout</a>
+      <a href="#"><fmt:message key="manuLink5"/></a>
     </ul>
 
 

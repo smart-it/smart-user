@@ -6,7 +6,9 @@ package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.SecuredObject;
+import com.smartitengineering.util.rest.atom.server.AbstractResource;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,7 +26,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
@@ -41,18 +42,13 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   private String organizationUniqueName;
   private Organization organization;
   private SecuredObject securedObject;
-  static final UriBuilder ORGANIZATION_SECURED_OBJECT_URI_BUILDER = UriBuilder.fromResource(
-      OrganizationSecuredObjectResource.class);
-  static final UriBuilder ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER;
+  static final Method ORGANIZATION_SECURED_OBJECT_CONTENT_METHOD;
 
   static {
-    ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER = ORGANIZATION_SECURED_OBJECT_URI_BUILDER.clone();
     try {
-      ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.path(OrganizationSecuredObjectResource.class.getMethod(
-          "getContent"));
+      ORGANIZATION_SECURED_OBJECT_CONTENT_METHOD = OrganizationSecuredObjectResource.class.getMethod("getContent");
     }
     catch (Exception ex) {
-      ex.printStackTrace();
       throw new InstantiationError();
     }
   }
@@ -69,7 +65,7 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization==null || securedObject==null){
+    if (organization == null || securedObject == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     Feed securedObjectFeed = getSecuredObjectFeed();
@@ -82,7 +78,7 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   @Path("/content")
   public Response getContent() {
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization==null || securedObject==null){
+    if (organization == null || securedObject == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     responseBuilder = Response.ok(securedObject);
@@ -94,10 +90,10 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response update(SecuredObject newSecuredObject) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-    if(organization==null || securedObject==null){
+    if (organization == null || securedObject == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
-    try {      
+    try {
       newSecuredObject.setOrganization(organization);
       Services.getInstance().getSecuredObjectService().save(newSecuredObject);
       responseBuilder = Response.ok(getSecuredObjectFeed());
@@ -111,14 +107,13 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   @DELETE
   public Response delete() {
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization==null || securedObject==null){
+    if (organization == null || securedObject == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     try {
       Services.getInstance().getSecuredObjectService().delete(securedObject);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
       responseBuilder = Response.ok(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -133,15 +128,15 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
     securedObjectFeed.addLink(getSelfLink());
 
     // add a edit link
-    Link editLink = abderaFactory.newLink();
-    editLink.setHref(uriInfo.getRequestUri().toString());
+    Link editLink = getAbderaFactory().newLink();
+    editLink.setHref(getUriInfo().getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
 
     // add a alternate link
-    Link altLink = abderaFactory.newLink();
-    altLink.setHref(
-        ORGANIZATION_SECURED_OBJECT_CONTENT_URI_BUILDER.clone().build(organizationUniqueName, name).toString());
+    Link altLink = getAbderaFactory().newLink();
+    altLink.setHref(getRelativeURIBuilder().path(OrganizationSecuredObjectResource.class).path(
+        ORGANIZATION_SECURED_OBJECT_CONTENT_METHOD).build(organizationUniqueName, name).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     securedObjectFeed.addLink(altLink);
@@ -153,14 +148,13 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   @Path("/delete")
   public Response deletePost() {
     ResponseBuilder responseBuilder = Response.ok();
-    if(organization==null || securedObject==null){
+    if (organization == null || securedObject == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     try {
       Services.getInstance().getSecuredObjectService().delete(securedObject);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
       responseBuilder = Response.ok(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -171,7 +165,7 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   public Response updatePost(@HeaderParam("Content-type") String contentType, String message) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-    if(organization==null || securedObject==null){
+    if (organization == null || securedObject == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
     if (StringUtils.isBlank(message)) {
@@ -196,10 +190,9 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
         message = URLDecoder.decode(realMsg, "UTF-8");
       }
       catch (UnsupportedEncodingException ex) {
-        ex.printStackTrace();
       }
     }
-    else {      
+    else {
       isHtmlPost = false;
     }
 
@@ -249,5 +242,10 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
 
   private SecuredObject getSecuredObject() {
     return Services.getInstance().getSecuredObjectService().getByOrganizationAndName(organizationUniqueName, name);
+  }
+
+  @Override
+  protected String getAuthor() {
+    return "Smart User";
   }
 }

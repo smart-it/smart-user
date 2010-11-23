@@ -7,6 +7,7 @@ package com.smartitengineering.user.ws.resources;
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.UserGroup;
+import com.smartitengineering.util.rest.atom.server.AbstractResource;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -16,7 +17,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriBuilder;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 
@@ -27,8 +27,6 @@ import org.apache.abdera.model.Link;
 @Path("/orgs/sn/{organizationUniqueShortName}/usergroups/name/{groupName}/roles/name/{roleName}")
 public class UserGroupRoleResource extends AbstractResource {
 
-  static final UriBuilder USER_GROUP_ROLE_URI_BUILDER = UriBuilder.fromResource(UserGroupRoleResource.class);
-  static final UriBuilder ROLE_URI_BUILDER = RoleResource.ROLE_URI_BUILDER.clone();
   private String organizationUniqueShortName;
   private String groupName;
   private String roleName;
@@ -57,8 +55,7 @@ public class UserGroupRoleResource extends AbstractResource {
       Feed roleFeed = getUserGroupRoleFeed();
       responseBuilder = Response.ok(roleFeed);
     }
-    catch (Exception ex) {
-      ex.printStackTrace();
+    catch (Exception ex) {      
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -73,7 +70,6 @@ public class UserGroupRoleResource extends AbstractResource {
       Services.getInstance().getUserGroupService().update(userGroup);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -81,21 +77,20 @@ public class UserGroupRoleResource extends AbstractResource {
 
   private Feed getUserGroupRoleFeed() {
 
-    Feed roleFeed = abderaFactory.newFeed();
+    Feed roleFeed = getAbderaFactory().newFeed();
 
     roleFeed.setId(roleName);
     roleFeed.setTitle(roleName);
     roleFeed.addLink(getSelfLink());
 
-    Link altLink = abderaFactory.newLink();
-    altLink.setHref(USER_GROUP_ROLE_URI_BUILDER.clone().build(organizationUniqueShortName, groupName, roleName).
-        toString());
+    Link altLink = getAbderaFactory().newLink();
+    altLink.setHref(getRelativeURIBuilder().path(UserGroupRoleResource.class).build(organizationUniqueShortName, groupName, roleName).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     roleFeed.addLink(altLink);
 
-    Link roleLink = abderaFactory.newLink();
-    roleLink.setHref(ROLE_URI_BUILDER.clone().build(roleName).toString());
+    Link roleLink = getAbderaFactory().newLink();
+    roleLink.setHref(getRelativeURIBuilder().path(RoleResource.class).build(roleName).toString());
     roleLink.setRel(REL_ROLE);
     roleLink.setMimeType(MediaType.APPLICATION_JSON);
     roleFeed.addLink(roleLink);
@@ -114,5 +109,10 @@ public class UserGroupRoleResource extends AbstractResource {
 
   private Organization getOrganization() {
     return Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationUniqueShortName);
+  }
+
+  @Override
+  protected String getAuthor() {
+    return "Smart User";
   }
 }

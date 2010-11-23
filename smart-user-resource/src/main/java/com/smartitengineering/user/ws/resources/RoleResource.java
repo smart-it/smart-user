@@ -5,7 +5,9 @@
 package com.smartitengineering.user.ws.resources;
 
 import com.smartitengineering.user.domain.Role;
+import com.smartitengineering.util.rest.atom.server.AbstractResource;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,7 +25,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response.ResponseBuilder;
-import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
@@ -36,13 +37,12 @@ import org.apache.commons.lang.StringUtils;
 @Path("/roles/name/{roleName}")
 public class RoleResource extends AbstractResource {
 
-  static final UriBuilder ROLE_URI_BUILDER = UriBuilder.fromResource(RoleResource.class);
-  static final UriBuilder ROLE_CONTENT_URI_BUILDER;
+  
+  static final Method ROLE_CONTENT__METHOD;
 
-  static {
-    ROLE_CONTENT_URI_BUILDER = ROLE_URI_BUILDER.clone();
+  static {    
     try {
-      ROLE_CONTENT_URI_BUILDER.path(RoleResource.class.getMethod("getRole"));
+      ROLE_CONTENT__METHOD = RoleResource.class.getMethod("getRole");
     }
     catch (Exception ex) {
       throw new InstantiationError();
@@ -107,15 +107,15 @@ public class RoleResource extends AbstractResource {
     roleFeed.addLink(getSelfLink());
 
     // add a edit link
-    Link editLink = abderaFactory.newLink();
-    editLink.setHref(uriInfo.getRequestUri().toString());
+    Link editLink = getAbderaFactory().newLink();
+    editLink.setHref(getUriInfo().getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
     roleFeed.addLink(editLink);
 
     // add alternate link
-    Link altLink = abderaFactory.newLink();
-    altLink.setHref(ROLE_CONTENT_URI_BUILDER.clone().build(role.getName()).toString());
+    Link altLink = getAbderaFactory().newLink();
+    altLink.setHref(getRelativeURIBuilder().path(RoleResource.class).path(ROLE_CONTENT__METHOD).build(role.getName()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     roleFeed.addLink(altLink);
@@ -163,8 +163,7 @@ public class RoleResource extends AbstractResource {
         //Decode the message to ignore the form encodings and make them human readable
         message = URLDecoder.decode(realMsg, "UTF-8");
       }
-      catch (UnsupportedEncodingException ex) {
-        ex.printStackTrace();
+      catch (UnsupportedEncodingException ex) {        
       }
     }
     else {      
@@ -183,7 +182,6 @@ public class RoleResource extends AbstractResource {
       }
       catch (Exception ex) {
         responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
-        ex.printStackTrace();
       }
     }
     return responseBuilder.build();
@@ -201,7 +199,6 @@ public class RoleResource extends AbstractResource {
       Services.getInstance().getRoleService().delete(role);
     }
     catch (Exception ex) {
-      ex.printStackTrace();
     }
     return responseBuilder.build();
   }
@@ -224,5 +221,10 @@ public class RoleResource extends AbstractResource {
       newRole.setDisplayName(keyValueMap.get("displayName"));
     }
     return newRole;
+  }
+
+  @Override
+  protected String getAuthor() {
+    return "Smart User";
   }
 }

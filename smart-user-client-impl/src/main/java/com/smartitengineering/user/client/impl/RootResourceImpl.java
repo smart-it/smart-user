@@ -30,12 +30,13 @@ public class RootResourceImpl
   private final static ThreadLocal<Entry<String, String>> usernamePass = new ThreadLocal<Entry<String, String>>();
 
   public static RootResource getInstance(String username, String password) {
+    System.out.println("--------------------Base Uri--------------------------" + BASE_URI.toString());
     usernamePass.set(new SimpleEntry<String, String>(username, password));
     return new RootResourceImpl(username, password);
   }
 
   private RootResourceImpl(String username, String password) {
-    super(null, BASE_URI);
+    super(null, BASE_URI);    
     this.username = username;
     this.password = password;
   }

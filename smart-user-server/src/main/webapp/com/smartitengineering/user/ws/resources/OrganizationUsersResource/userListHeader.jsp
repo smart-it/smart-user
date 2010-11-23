@@ -6,6 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<link id="usrUrl"href="<c:url value="/orgs/sn/${orgInitial}/users/frags${qParam}"/>">
+<link id="usrNameCheck" href="<c:url value="/orgs/sn/${orgInitial}/users/un/"/>">
 
 <c:choose>
   <c:when test="${empty param.count}">
@@ -15,24 +17,27 @@
     <c:set var="qParam" value="?count=${param.count}" />
   </c:otherwise>
 </c:choose>
-<script type="text/javascript" src="/script/user-validation.js"></script>
+<script type="text/javascript" src="<c:url value="/script/user-validation.js"/>"></script>
 <script type="text/javascript">
   $(document).ready(function(){
-    var url = "/orgs/sn/${orgInitial}/users/frags${qParam}";
-    $("#tablecontentid").pagination(url,"linkcontainer");
-    
+    var usrUri = $("#usrUrl").attr('href');
+    $("#tablecontentid").pagination(usrUri,"linkcontainer");
     $("#wrong").hide();
     $("#uname").blur(function(){
       var usn =$("#uname").val();
+      var ajaxUrl =$("#usrNameCheck").attr('href')+usn ;
+      alert(ajaxUrl);
       $.ajax({
-         type: "GET",
-        url: "http://localhost:9090/orgs/sn/${orgInitial}/users/un/"+usn,
+        type: "GET",
+        url: ajaxUrl,
         dataType: "xml",
         success: function(xhr){
+          alert(1);
           $("#wrong").show();
           $("#alertlabel").html('User Name is not unique: try another');
         },
         error: function(xhr){
+          alert(2);
           $("#wrong").hide();
           $("#alertlabel").html('');
         }

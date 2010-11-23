@@ -8,10 +8,14 @@
 <%@page import="java.util.Collection"%>
 <%@page import="com.smartitengineering.user.domain.Privilege"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
+
+<c:if test="${param['lang']!=null}">
+  <fmt:setLocale scope="session" value="${param['lang']}"/>
+</c:if>
 
             <div class="show" id="showList">
 
@@ -79,33 +83,33 @@
           
             <div id="create" class="hide">
 
-                <form action="http://russel:9090/orgs/privs" method="post" accept="application/json" enctype="" id="privilegeform">
+                <form action="<c:url value="/orgs/prives"/>" method="post" accept="application/json" enctype="" id="privilegeform">
 
-                    <div class="inner-left"><label>Name:</label></div>
+                    <div class="inner-left"><label><fmt:message key="org.privLevel1" /></label></div>
                     <div class="inner-right"><input type="text" name="name"></div>
 
-                    <div class="inner-left"><label>Display Name:</label></div>
+                    <div class="inner-left"><label><fmt:message key="org.privLevel2" /></label></div>
                     <div class="inner-right"><input type="text" name="displayName"></div>
 
-                    <div class="inner-left"><label>Short Description:</label></div>
+                    <div class="inner-left"><label><fmt:message key="org.privLevel3" /></label></div>
                     <div class="inner-right"><input type="text" name="shortdes"></div>
 
-                    <div class="inner-left"><label>Secure Object:</label></div>
+                    <div class="inner-left"><label><fmt:message key="org.privLevel4" /></label></div>
                     <div class="inner-right"><input type="text" name="secureObject"></div>
 
-                    <div class="inner-left"><label>Permission Mask:</label></div>
+                    <div class="inner-left"><label><fmt:message key="org.privLevel5" /></label></div>
                     <div class="inner-right"><input type="text" name="permissionMask"></div>
 
-                    <div class="inner-left"><label>Parent Organization Id:</label></div>
+                    <div class="inner-left"><label><fmt:message key="org.privLevel6" /></label></div>
                     <div class="inner-right"><input type="text" name="parentOrganizationId"></div>
 
-                    <div class="inner-left"><label>Secure Object Id:</label></div>
+                    <div class="inner-left"><label><fmt:message key="org.privLevel7" /></label></div>
                     <div class="inner-right"><input type="text" name="secureObjectId"></div>
 
-                    <div class="inner-left"><label>Last Modified Date:</label></div>
+                    <div class="inner-left"><label><fmt:message key="org.privLevel8" /></label></div>
                     <div class="inner-right"><input type="text" name="lastModified"></div>
 
-                    <div><input type="submit" value="submit" name="submitBtn"></div>
+                    <div><input type="submit" value= "<fmt:message key="org.privSubmitBtn"/>" name="submitBtn"></div>
                 </form>
 
             </div>

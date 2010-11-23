@@ -19,9 +19,11 @@ import com.smartitengineering.user.client.api.UserGroupRolesResource;
 import com.smartitengineering.user.client.api.UserGroupUserResource;
 import com.smartitengineering.user.client.api.UserGroupUsersResource;
 import com.smartitengineering.user.client.api.UserGroupsResource;
+import com.smartitengineering.user.client.api.UserLinkResource;
 import com.smartitengineering.user.client.api.UserPrivilegeResource;
 import com.smartitengineering.user.client.api.UserPrivilegesResource;
 import com.smartitengineering.user.client.api.UserResource;
+import com.smartitengineering.user.client.api.UserRolesResource;
 import com.smartitengineering.user.client.api.UsersResource;
 import com.smartitengineering.user.client.impl.RootResourceImpl;
 import com.smartitengineering.user.client.impl.domain.Address;
@@ -140,6 +142,16 @@ public class ComprehensiveClientTest {
     Assert.assertNotNull(orgResource);
     orgsResource = loginResource.getOrganizationsResource();
     Assert.assertNotNull(orgsResource);
+
+    UserResource userResource = loginResource.getUserResource();
+    Assert.assertNotNull(userResource);
+    UserRolesResource userRolesResource = userResource.getRolesResource();
+    Assert.assertNotNull(userRolesResource);
+    Assert.assertNotNull(userRolesResource.getUserRoleResources());
+    Assert.assertEquals(1, userRolesResource.getUserRoleResources().size());
+    Assert.assertEquals(userRolesResource.getUserRoleResources().get(0).getRoleResource().getRole().getName(), GlobalRole.ROLE_ADMIN.
+        toString());
+
 
   }
 
@@ -290,6 +302,13 @@ public class ComprehensiveClientTest {
     userResource = sitelUsersResource.create(userPerson);
     sitelUserResource = userResource;
     Assert.assertEquals(SITEL_ORG_USER_USERNAME, userResource.getUser().getUser().getUsername());
+
+
+    OrganizationResource organizationResource = sitelUserResource.getOrganizationResource();
+    Assert.assertNotNull(organizationResource);
+    Assert.assertTrue(organizationResource.getOrganization().getUniqueShortName().equals(sitelOrgResource.
+        getOrganization().getUniqueShortName()));
+
 
   }
 
@@ -717,7 +736,19 @@ public class ComprehensiveClientTest {
         saumitraPrivilegesResource.add(privilege);
       }
     }
+  }
 
+  @Test
+  public void doTestGetUser() {
+    rootResource = login("smartadmin@smart-user", "02040250204039");
+    Assert.assertNotNull(rootResource);
+    LoginResource loginResource = rootResource.getLoginResource();
+    Assert.assertNotNull(loginResource);
+    UserLinkResource userLinkResource = loginResource.getUserLinkResource("smartadmin@smart-user");
+    Assert.assertNotNull(loginResource);
+    com.smartitengineering.user.client.api.User user = userLinkResource.getUserResource().getUser().getUser();
+    Assert.assertTrue(user.getUsername().equals("smartadmin"));
+    Assert.assertTrue(user.getPassword().equals("02040250204039"));
   }
 
   @Test
@@ -824,7 +855,7 @@ public class ComprehensiveClientTest {
           Assert.fail("Exception due to failure of deleting the organization");
         }
       }
-    }    
+    }
   }
 
   @Test

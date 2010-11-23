@@ -6,6 +6,7 @@
 package com.smartitengineering.user.client.impl;
 
 
+import com.smartitengineering.user.client.api.OrganizationResource;
 import com.smartitengineering.user.client.api.UserPerson;
 import com.smartitengineering.user.client.api.UserPrivilegesResource;
 import com.smartitengineering.user.client.api.UserResource;
@@ -30,6 +31,7 @@ public class UserResourceImpl extends AbstractFeedClientResource<Resource<? exte
   public static final String REL_ALT = "alternate";
   public static final String REL_USER_PRIVS = "privileges";
   public static final String REL_USER_ROLES = "roles";
+  public static final String REL_ORGANIZATION = "organization";
   
 
   public UserResourceImpl(ResourceLink userLink, Resource referrer) {
@@ -77,5 +79,10 @@ public class UserResourceImpl extends AbstractFeedClientResource<Resource<? exte
     else{
       return user.getLastReadStateOfEntity();
     }
+  }
+
+  @Override
+  public OrganizationResource getOrganizationResource() {
+    return new OrganizationResourceImpl(getRelatedResourceUris().getFirst(REL_ORGANIZATION), this);
   }
 }
