@@ -47,7 +47,7 @@ root {
 .leftmenu_body{
   background-color:#736F6E;
   /*background-image: url(/images/top.jpg);*/
-  background-image: url(/images/l.gif);
+  background-image: url(../images/l.gif);
   background-repeat: repeat;
   /*background-position:bottom left;*/
   background-position: top left;

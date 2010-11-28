@@ -23,6 +23,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <sec:intercept-url method="POST" pattern='/**/*' access="ACL_CREATE, ROLE_ADMIN"/>
     <sec:intercept-url method="DELETE" pattern='/**/*' access="ACL_DELETE, ROLE_ADMIN"/>
     <sec:intercept-url method="PUT" pattern='/**/*'  access="ACL_UPDATE, ROLE_ADMIN"/>
+<!--    <sec:form-login login-page='/' authentication-failure-url="/?login_error=1" default-target-url="/orgs"/>-->
     <sec:http-basic />
   </sec:http>
     

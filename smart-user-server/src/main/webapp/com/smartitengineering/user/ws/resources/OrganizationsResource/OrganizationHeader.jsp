@@ -6,6 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<link id="orgUrl" href="<c:url value="/orgs/frags${qParam}"/>">
+<link id="shortNameCheck" href="<c:url value="/orgs/sn/"/>">
 <c:choose>
   <c:when test="${empty param.count}">
     <c:set var="qParam" value="" />
@@ -18,15 +20,15 @@
 
   $(document).ready(function(){
 
-    var url = "http://localhost:9090/orgs/frags${qParam}";
-    $("#tablecontentid").pagination(url, "paginationLinks");
+    var orgUri = $("#orgUrl").attr('href');
+    $("#tablecontentid").pagination(orgUri, "paginationLinks");
     $("#wrong").hide();
 
   $("#uniqueShortName").blur(function(){    
-      var usn =$("#uniqueShortName").val();
+      var usn =$("#shortNameCheck").attr('href')+$("#uniqueShortName").val();
       $.ajax({
         type: "GET",
-        url: "http://localhost:9090/orgs/sn/"+usn,
+        url: usn,
         dataType: "xml",
         success: function(xhr){
           $("#wrong").show();

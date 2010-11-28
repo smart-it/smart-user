@@ -35,15 +35,15 @@
         <c:set var="firstName" value="${userPerson.person.self.name.firstName}"></c:set>
         <c:set var="middleInitial" value="${userPerson.person.self.name.middleInitial}"></c:set>
         <c:set var="lastName" value="${userPerson.person.self.name.lastName}"></c:set>
-        <div id="userId${status.index}" class="userId_column"><a href="users/un/${userPerson.user.username}">${status.count}</a></div>
-        <div id="username${status.index}" class="userName_column"><a href="users/un/${userPerson.user.username}">${userPerson.user.username}</a></div>
-        <div id="userFullName${status.index}" class="userFullName_column"><a href="users/un/${userPerson.user.username}">${firstName} ${middleInitial} ${lastName}</a></div>
+        <div id="userId${status.index}" class="userId_column"><a href="<c:url value="users/un/${userPerson.user.username}"/>">${status.count}</a></div>
+        <div id="username${status.index}" class="userName_column"><a href="<c:url value="users/un/${userPerson.user.username}"/>">${userPerson.user.username}</a></div>
+        <div id="userFullName${status.index}" class="userFullName_column"><a href="<c:url value="users/un/${userPerson.user.username}"/>">${firstName} ${middleInitial} ${lastName}</a></div>
       </div>
     </c:forEach>
   </div>
 
   <div class="navigation_container" id="linkcontainer">
-    <div id="nextUsersLinkCont" class="list_navigation_links"><a id="next" href="users/after/${last}/frags${qParam}">next >></a> </div>
-    <div id="previousUsersLinkCont" class="list_navigation_links"><a id="previous" href="users/before/${first}/frags${qParam}"><< previous</a></div>
+    <div id="nextUsersLinkCont" class="list_navigation_links"><a id="next" href="<c:url value="users/after/${last}/frags${qParam}"/>">next >></a> </div>
+    <div id="previousUsersLinkCont" class="list_navigation_links"><a id="previous" href="<c:url value="users/before/${first}/frags${qParam}"/>"><< previous</a></div>
   </div>
 </div>

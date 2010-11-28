@@ -18,7 +18,7 @@
   <div id="leftmenu_header_userdeatils_1" class="leftmenu_header"><label>Individual-User</label></div>
   <div id="leftmenu_body_userdeatils_1" class="leftmenu_body">
     <ul>
-      <li><a href="/orgs/sn/${it.user.organization.uniqueShortName}/users"><fmt:message key="org.userlistlink"/></a></li>
+      <li><a href="<c:url value="/orgs/sn/${it.user.organization.uniqueShortName}/users"/>" ><fmt:message key="org.userlistlink"/></a></li>
       <li><a href="javascript: showonlyone('newboxes1')"><fmt:message key="org.tablehead7"/></a></li>
       <li><a href="javascript: showonlyone('newboxes2')"><fmt:message key="org.tablehead4"/></a></li>
       <li><a href="javascript: showonlyone('newboxes3')"><fmt:message key="org.tablehead6"/></a></li>
@@ -36,7 +36,7 @@
     <div class="individual_details_data"><label>${it.user.password}</label></div>
     <div class="clear"></div>
 
-    <form method="POST" action ="http://localhost:9090/orgs/sn/${it.user.organization.uniqueShortName}/users/un/${it.user.username}/delete" accept="application/json" id="organizationform">
+    <form method="POST" action ="<c:url value="/orgs/sn/${it.user.organization.uniqueShortName}/users/un/${it.user.username}/delete"/>" accept="application/json" id="organizationform">
       <input type="hidden" name="id" value="${it.id}" class="textField" id="id">
       <input type="hidden" name="version" value="${it.version}" class="textField" id="version">
       <input type="hidden" name="userId" value="${it.user.id}" class="textField" id="id">
@@ -64,7 +64,7 @@
   <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out>-Edit Information</label></div>
   <fmt:message key="org.usrinput6" var="submitbtn"/>
   <div id="form_organizationentry" class="entry_form">
-    <form method="POST" action ="http://localhost:9090/orgs/sn/${it.user.organization.uniqueShortName}/users/un/${it.user.username}/update" accept="application/json" id="userEditForm">
+    <form method="POST" action ="<c:url value="/orgs/sn/${it.user.organization.uniqueShortName}/users/un/${it.user.username}/update"/>" accept="application/json" id="userEditForm">
       <input type="hidden" name="id" value="${it.id}" class="textField" id="id">
       <input type="hidden" name="version" value="${it.version}" class="textField" id="version">
       <input type="hidden" name="userId" value="${it.user.id}" class="textField" id="id">
@@ -110,7 +110,7 @@
   <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out>-Change your password</label></div>
   <fmt:message key="org.usrinput6" var="submitbtn"/>
   <div id="form_organizationentry" class="entry_form">
-    <form method="POST" action ="http://localhost:9090/orgs/sn/${it.user.organization.uniqueShortName}/users/un/${it.user.username}/update" accept="application/json" id="changePasswordForm">      
+    <form method="POST" action ="<c:url value="/orgs/sn/${it.user.organization.uniqueShortName}/users/un/${it.user.username}/update" />" accept="application/json" id="changePasswordForm">
       <input type="hidden" name="id" value="${it.id}" class="textField" id="id">
       <input type="hidden" name="version" value="${it.version}" class="textField" id="version">
       <input type="hidden" name="userId" value="${it.user.id}" class="textField" id="id">
@@ -137,16 +137,16 @@
       <div class="form_label"><label><fmt:message key="org.usrtablehead2"/></label></div>
       <div class="form_textField"><label class="unLabel"><c:out value="${it.user.username}"/></label></div>
       <div class="clear"></div>
-      <div class="form_label"><label>Old Password:</label></div>
+      <div class="form_label"><label><fmt:message key="org.oldpassword"/>"</label></div>
       <div class="form_textField"><input type="password" name="oldPassword" class="textField" id="oldPassword"><label id="error" class="errorAlert"><img id="wrong" src="/css/images/wrong.png" alt="error!!!">&nbsp;Wrong Password</label></div>
       <div class="clear"></div>
-      <div class="form_label"><label>New Password:</label></div>
+      <div class="form_label"><label><fmt:message key="org.newpassword"/>"</label></div>
       <div class="form_textField"><input type="password" name="password" class="textField" id="newPassword"></div>
       <div class="clear"></div>
-      <div class="form_label"><label>Confirm Password:</label></div>
+      <div class="form_label"><label><fmt:message key="org.confirmpassword" />"</label></div>
       <div class="form_textField"><input type="password" name="confirmPassword" class="textField" id="confirmPassword"></div>
       <div class="clear"></div>
-      <div class="btnfield"><input type="submit" value="CHANGE" name="submitbtn" class="submitbtn" id="update"></div>
+      <div class="btnfield"><input type="submit" value="<fmt:message key="org.changeBtn"/>" name="submitbtn" class="submitbtn" id="update"></div>
       <div class="clear"></div>
     </form>
   </div>
