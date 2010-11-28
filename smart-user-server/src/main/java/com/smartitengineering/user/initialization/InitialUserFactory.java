@@ -95,6 +95,12 @@ public class InitialUserFactory {
   }
 
   public void initializeInformation() {
+    if(organizationService.getAllOrganization().isEmpty()){
+      initialize();
+    }
+ }
+
+  public void initialize() {
 
     intializeRoles();
 
