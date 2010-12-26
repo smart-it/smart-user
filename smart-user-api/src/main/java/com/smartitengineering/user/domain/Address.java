@@ -4,14 +4,14 @@
  */
 package com.smartitengineering.user.domain;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
  * @author modhu7
  */
-public class Address extends AbstractPersistentDTO<Address> {
+public class Address extends AbstractGenericPersistentDTO<Address, Long, Integer> {
 
   private String streetAddress;
   private String city;

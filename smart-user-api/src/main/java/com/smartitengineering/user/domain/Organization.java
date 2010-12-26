@@ -5,7 +5,7 @@
 
 package com.smartitengineering.user.domain;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -16,7 +16,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author russel
  */
 
-public class Organization extends AbstractPersistentDTO<Organization> {
+public class Organization extends AbstractGenericPersistentDTO<Organization, Long, Integer> {
 
 
     private String name;

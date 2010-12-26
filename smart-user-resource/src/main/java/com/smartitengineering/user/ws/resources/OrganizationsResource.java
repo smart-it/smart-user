@@ -46,6 +46,7 @@ import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 @Path("/orgs")
 public class OrganizationsResource extends AbstractResource {
@@ -337,7 +338,7 @@ public class OrganizationsResource extends AbstractResource {
     Organization newOrganization = new Organization();
 
     if (keyValueMap.get("id") != null) {
-      newOrganization.setId(Integer.valueOf(keyValueMap.get("id")));
+      newOrganization.setId(NumberUtils.toLong(keyValueMap.get("id")));
     }
 
     if (keyValueMap.get("name") != null) {

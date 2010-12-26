@@ -4,7 +4,7 @@
  */
 package com.smartitengineering.user.domain;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -13,7 +13,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author modhu7
  */
-public class Person extends AbstractPersistentDTO<Person> {
+public class Person extends AbstractGenericPersistentDTO<Person, Long, Integer> {
 
     private BasicIdentity father;
     private BasicIdentity mother;

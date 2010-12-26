@@ -30,6 +30,8 @@ import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+
 
 /**
  *
@@ -232,7 +234,7 @@ public class OrganizationPrivilegeResource extends AbstractResource {
 
     Privilege newPrivilege = new Privilege();
     if (keyValueMap.get("id") != null) {
-      newPrivilege.setId(Integer.valueOf(keyValueMap.get("id")));
+      newPrivilege.setId(NumberUtils.toLong((keyValueMap.get("id"))));
     }
     if (keyValueMap.get("name") != null) {
       newPrivilege.setName(keyValueMap.get("name"));

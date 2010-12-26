@@ -4,7 +4,7 @@
  */
 package com.smartitengineering.user.domain;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -12,7 +12,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author modhu7
  */
-public class Name extends AbstractPersistentDTO<Name> {
+public class Name extends AbstractGenericPersistentDTO<Name, Long, Integer> {
 
   private String firstName;
   private String lastName;

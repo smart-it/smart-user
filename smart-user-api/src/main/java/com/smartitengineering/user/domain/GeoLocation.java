@@ -4,14 +4,14 @@
  */
 package com.smartitengineering.user.domain;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
  * @author modhu7
  */
-public class GeoLocation extends AbstractPersistentDTO<GeoLocation> {
+public class GeoLocation extends AbstractGenericPersistentDTO<GeoLocation, Long, Integer>{
 
   private Double longitude;
   private Double latitude;

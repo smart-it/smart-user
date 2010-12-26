@@ -4,7 +4,7 @@
  */
 package com.smartitengineering.user.domain;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +15,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author russel
  */
-public class UserGroup extends AbstractPersistentDTO<UserGroup> {
+public class UserGroup extends AbstractGenericPersistentDTO<UserGroup, Long, Integer> {
 
   private String name;
   private Set<User> users;

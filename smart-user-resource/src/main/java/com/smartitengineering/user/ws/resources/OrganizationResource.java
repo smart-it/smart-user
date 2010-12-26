@@ -33,6 +33,7 @@ import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 /**
  *
@@ -203,7 +204,7 @@ public class OrganizationResource extends AbstractResource {
 
 
     if (keyValueMap.get("id") != null) {
-      newOrganization.setId(Integer.valueOf(keyValueMap.get("id")));
+      newOrganization.setId(NumberUtils.toLong(keyValueMap.get("id")));
     }
 
     if (keyValueMap.get("version") != null) {

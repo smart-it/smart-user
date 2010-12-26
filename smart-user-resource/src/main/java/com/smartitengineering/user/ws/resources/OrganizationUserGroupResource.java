@@ -31,6 +31,7 @@ import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 /**
  *
@@ -254,7 +255,7 @@ public class OrganizationUserGroupResource extends AbstractResource {
 
     UserGroup newUserGroup = new UserGroup();
     if (keyValueMap.get("id") != null) {
-      newUserGroup.setId(Integer.valueOf(keyValueMap.get("id")));
+      newUserGroup.setId(NumberUtils.toLong(keyValueMap.get("id")));
     }
     if (keyValueMap.get("name") != null) {
       newUserGroup.setName(keyValueMap.get("name"));

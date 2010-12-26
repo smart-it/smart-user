@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
   <class dynamic-insert="false" dynamic-update="false" name="com.smartitengineering.user.domain.BasicIdentity" table="basic_identity">
-    <id column="id" name="id" type="java.lang.Integer">
+    <id column="id" name="id" type="java.lang.Long">
       <generator class="increment">
             </generator>
     </id>

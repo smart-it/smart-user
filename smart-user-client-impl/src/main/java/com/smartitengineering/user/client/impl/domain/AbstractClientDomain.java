@@ -10,14 +10,14 @@ package com.smartitengineering.user.client.impl.domain;
  */
 public abstract class AbstractClientDomain {
 
-  private Integer id;
+  private Long id;
   private Integer version;
 
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     if (id == null) {
       return;
     }

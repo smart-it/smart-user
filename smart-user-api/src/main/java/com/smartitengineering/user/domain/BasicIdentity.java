@@ -4,15 +4,14 @@
  */
 package com.smartitengineering.user.domain;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
-import org.apache.commons.lang.StringUtils;
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
  * @author modhu7
  */
-public class BasicIdentity extends AbstractPersistentDTO<BasicIdentity> {
+public class BasicIdentity extends AbstractGenericPersistentDTO<BasicIdentity, Long, Integer> {
 
   private String nationalID;
   private Name name;
