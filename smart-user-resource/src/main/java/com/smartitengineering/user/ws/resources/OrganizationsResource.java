@@ -338,7 +338,7 @@ public class OrganizationsResource extends AbstractResource {
     Organization newOrganization = new Organization();
 
     if (keyValueMap.get("id") != null) {
-      newOrganization.setId(NumberUtils.toLong(keyValueMap.get("id")));
+      newOrganization.setId(keyValueMap.get("id"));
     }
 
     if (keyValueMap.get("name") != null) {

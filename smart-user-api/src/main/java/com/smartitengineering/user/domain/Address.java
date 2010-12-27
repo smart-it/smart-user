@@ -4,14 +4,11 @@
  */
 package com.smartitengineering.user.domain;
 
-import com.smartitengineering.domain.AbstractGenericPersistentDTO;
-import org.codehaus.jackson.annotate.JsonIgnore;
-
 /**
  *
  * @author modhu7
  */
-public class Address extends AbstractGenericPersistentDTO<Address, Long, Integer> {
+public class Address{
 
   private String streetAddress;
   private String city;
@@ -96,15 +93,5 @@ public class Address extends AbstractGenericPersistentDTO<Address, Long, Integer
       return;
     }
     this.zip = zip;
-  }
-
-  @Override
-  @JsonIgnore
-  public boolean isValid() {
-    if (streetAddress == null || zip == null || country == null ||
-        city == null || state == null) {
-      return false;
-    }
-    return true;
-  }
+  } 
 }

@@ -47,10 +47,8 @@ public class BasicIdentity extends AbstractGenericPersistentDTO<BasicIdentity, L
   @JsonIgnore
   @Override
   public boolean isValid() {
-    if (name != null) {
-      if (name.isValid()) {
-        return true;
-      }
+    if (name != null && nationalID != null) {      
+        return true;      
     }
     return false;
   }

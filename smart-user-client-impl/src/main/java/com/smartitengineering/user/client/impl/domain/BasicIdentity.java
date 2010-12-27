@@ -10,7 +10,7 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
  *
  * @author modhu7
  */
-public class BasicIdentity extends AbstractClientDomain implements
+public class BasicIdentity extends AbstractClientDomain<Long> implements
     com.smartitengineering.user.client.api.BasicIdentity {
 
   private com.smartitengineering.user.client.api.Name name;

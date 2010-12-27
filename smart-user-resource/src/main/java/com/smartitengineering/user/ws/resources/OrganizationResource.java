@@ -204,7 +204,7 @@ public class OrganizationResource extends AbstractResource {
 
 
     if (keyValueMap.get("id") != null) {
-      newOrganization.setId(NumberUtils.toLong(keyValueMap.get("id")));
+      newOrganization.setId(keyValueMap.get("id"));
     }
 
     if (keyValueMap.get("version") != null) {

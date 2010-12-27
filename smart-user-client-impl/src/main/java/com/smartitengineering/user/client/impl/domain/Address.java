@@ -10,7 +10,7 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
  *
  * @author russel
  */
-public class Address extends AbstractClientDomain implements com.smartitengineering.user.client.api.Address {
+public class Address implements com.smartitengineering.user.client.api.Address {
 
   private String streetAddress;
   private String city;

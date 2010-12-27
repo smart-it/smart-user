@@ -11,7 +11,7 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
  *
  * @author russel
  */
-public class UserPerson extends AbstractClientDomain implements com.smartitengineering.user.client.api.UserPerson {
+public class UserPerson extends AbstractClientDomain<Long> implements com.smartitengineering.user.client.api.UserPerson {
 
   private com.smartitengineering.user.client.api.User user;
   private com.smartitengineering.user.client.api.Person person;

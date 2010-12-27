@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.domain;
 
 import com.smartitengineering.domain.AbstractGenericPersistentDTO;
@@ -10,75 +9,63 @@ import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
-
 /**
  *
  * @author russel
  */
+public class Organization extends AbstractGenericPersistentDTO<Organization, String, Integer> {
 
-public class Organization extends AbstractGenericPersistentDTO<Organization, Long, Integer> {
+  private String name;
+  private Address address;
+  //private String contactPerson;
+  private Date lastModifiedDate;
 
+  public Organization() {
+  }
 
-    private String name;
+  public Organization(String name, String uniqueShortName) {
+    this.name = name;
+    setUniqueShortName(uniqueShortName);
+  }
 
-    private String uniqueShortName;
-    
-    private Address address;
-    //private String contactPerson;
+  public String getName() {
+    return name;
+  }
 
-    private Date lastModifiedDate;
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public Organization() {
+  public String getUniqueShortName() {
+    return getId();
+  }
+
+  public final void setUniqueShortName(String uniqueShortName) {
+    setId(uniqueShortName);
+  }
+
+  @JsonIgnore
+  public Date getLastModifiedDate() {
+    return lastModifiedDate;
+  }
+
+  public void setLastModifiedDate(Date lastModifiedDate) {
+    this.lastModifiedDate = lastModifiedDate;
+  }
+
+  public Address getAddress() {
+    if (address == null) {
+      address = new Address();
     }
-    
-    public Organization(String name, String uniqueShortName) {
-        this.name = name;
-        this.uniqueShortName = uniqueShortName;
+    return address;
+  }
+
+  public void setAddress(Address address) {
+    if (address == null) {
+      return;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUniqueShortName() {
-        return uniqueShortName;
-    }
-
-    
-    public void setUniqueShortName(String uniqueShortName) {
-        this.uniqueShortName = uniqueShortName;
-    }
-
-    @JsonIgnore
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    public Address getAddress() {
-        if(address==null)
-            address = new Address();
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        if(address==null)
-            return;
-        this.address = address;
-    }
-
-
-   
-
+    this.address = address;
+  }
 
 //    public String getContactPerson() {
 //        if(contactPerson == null)
@@ -89,11 +76,9 @@ public class Organization extends AbstractGenericPersistentDTO<Organization, Lon
 //    public void setContactPerson(String contactPerson) {
 //        this.contactPerson = contactPerson;
 //    }
-
-    @JsonIgnore
-    public boolean isValid(){
-        return StringUtils.isNotBlank(name) && StringUtils.isNotBlank(uniqueShortName);
-    }
-
-
+  @JsonIgnore
+  @Override
+  public boolean isValid() {
+    return StringUtils.isNotBlank(name) && StringUtils.isNotBlank(getUniqueShortName());
+  }
 }

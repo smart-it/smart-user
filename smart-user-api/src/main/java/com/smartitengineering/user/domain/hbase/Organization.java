@@ -3,13 +3,12 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.user.client.impl;
+package com.smartitengineering.user.domain.hbase;
 
 /**
  *
- * @author russel
+ * @author modhu7
  */
-public class OrganizationServiceClientImpl{
+public class Organization {
 
-    
 }

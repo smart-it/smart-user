@@ -4,14 +4,11 @@
  */
 package com.smartitengineering.user.domain;
 
-import com.smartitengineering.domain.AbstractGenericPersistentDTO;
-import org.codehaus.jackson.annotate.JsonIgnore;
-
 /**
  *
  * @author modhu7
  */
-public class GeoLocation extends AbstractGenericPersistentDTO<GeoLocation, Long, Integer>{
+public class GeoLocation {
 
   private Double longitude;
   private Double latitude;
@@ -30,16 +27,5 @@ public class GeoLocation extends AbstractGenericPersistentDTO<GeoLocation, Long,
 
   public void setLongitude(Double longitude) {
     this.longitude = longitude;
-  }
-
-  @Override
-  @JsonIgnore
-  public boolean isValid() {
-    if (longitude == null || latitude == null) {
-      return false;
-    }
-    else {
-      return true;
-    }
-  }
+  }  
 }

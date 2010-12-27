@@ -11,12 +11,11 @@ package com.smartitengineering.user.client.impl.domain;
 import java.util.Date;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
-public class Organization extends AbstractClientDomain implements
+public class Organization extends AbstractClientDomain<String> implements
     com.smartitengineering.user.client.api.Organization {
 
   public static final String ADDRESS_TYPE = Address.class.getName();
-  private String name;
-  private String uniqueShortName;
+  private String name;  
   private com.smartitengineering.user.client.api.Address address;
   private Date lastModifiedDate;
 
@@ -38,12 +37,12 @@ public class Organization extends AbstractClientDomain implements
     if (uniqueShortName == null) {
       return;
     }
-    this.uniqueShortName = uniqueShortName;
+    setId(uniqueShortName);
   }
 
   @Override
   public String getUniqueShortName() {
-    return uniqueShortName;
+    return getId();
   }
 
   @Override

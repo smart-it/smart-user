@@ -4,15 +4,11 @@
  */
 package com.smartitengineering.user.domain;
 
-import com.smartitengineering.domain.AbstractGenericPersistentDTO;
-import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.annotate.JsonIgnore;
-
 /**
  *
  * @author modhu7
  */
-public class Name extends AbstractGenericPersistentDTO<Name, Long, Integer> {
+public class Name{
 
   private String firstName;
   private String lastName;
@@ -60,12 +56,4 @@ public class Name extends AbstractGenericPersistentDTO<Name, Long, Integer> {
     this.middleInitial = middleInitial;
   }
 
-  @Override
-  @JsonIgnore
-  public boolean isValid() {
-    if (StringUtils.isEmpty(lastName) || StringUtils.isEmpty(firstName)) {
-      return false;
-    }
-    return true;
-  }
 }
