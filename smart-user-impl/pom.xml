@@ -102,5 +102,10 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-acl</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.smartitengineering.smart-user</groupId>
+            <artifactId>smart-user-impl-generic</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
