@@ -47,7 +47,7 @@ public class UserLinkResourceImpl extends AbstractFeedClientResource<Resource<? 
       throws IllegalArgumentException,
              UriBuilderException {
     URI UserLinkResourUri =
-        UriBuilder.fromUri(BASE_URI.toString()).path(userGetterLink.getUri().toString()).queryParam("username", username).
+        UriBuilder.fromUri(userGetterLink.getUri().toString()).queryParam("username", username).
         build();
     return UserLinkResourUri;
   }

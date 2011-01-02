@@ -30,11 +30,10 @@ public class RootResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
     ResponseBuilder responseBuilder = Response.ok();
-    Feed atomFeed = getFeed("ROA Demo", INIT_DATE);
+    Feed atomFeed = getFeed("Smart User", INIT_DATE);
 
-    Link loginLink = Abdera.getNewFactory().newLink();
-    //loginLink.setHref(UriBuilder.fromResource(BooksResource.class).build().toString());
-    loginLink.setHref(LoginResource.LOGIN_URI_BUILDER.build().toString());
+    Link loginLink = Abdera.getNewFactory().newLink();    
+    loginLink.setHref(getRelativeURIBuilder().path(LoginResource.class).build().toString());
     loginLink.setRel("Login");
     atomFeed.addLink(loginLink);
     Link organizationsLink = Abdera.getNewFactory().newLink();    

@@ -84,7 +84,7 @@ public class LoginResource extends AbstractResource {
 
 
     Link userGetterLink = Abdera.getNewFactory().newLink();
-    userGetterLink.setHref(UserLinkResource.USER_LINK_GETTER_URI_BUILDER.build().toString());
+    userGetterLink.setHref(getRelativeURIBuilder().path(UserLinkResource.class).build().toString());
     userGetterLink.setRel("userGetter");
     atomFeed.addLink(userGetterLink);
 
