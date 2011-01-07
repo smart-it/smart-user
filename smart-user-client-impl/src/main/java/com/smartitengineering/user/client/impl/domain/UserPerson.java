@@ -5,6 +5,7 @@
 package com.smartitengineering.user.client.impl.domain;
 
 import java.util.Date;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
 /**
@@ -15,7 +16,17 @@ public class UserPerson extends AbstractClientDomain<Long> implements com.smarti
 
   private com.smartitengineering.user.client.api.User user;
   private com.smartitengineering.user.client.api.Person person;
-  private Date lastModifiedDate;
+  private Date lastModifiedDate, creationDate;
+
+  @Override
+  public Date getCreationDate() {
+    return creationDate;
+  }
+
+  @JsonIgnore
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
+  }
 
   @Override
   public com.smartitengineering.user.client.api.User getUser() {
@@ -50,6 +61,7 @@ public class UserPerson extends AbstractClientDomain<Long> implements com.smarti
     return lastModifiedDate;
   }
 
+  @JsonIgnore
   public void setLastModifiedDate(Date lastModifiedDate) {
     if (lastModifiedDate == null) {
       return;

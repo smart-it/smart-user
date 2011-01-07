@@ -17,6 +17,16 @@ public class UserPerson extends AbstractGenericPersistentDTO<UserPerson, Long, I
   User user;
   Person person;
   private Date lastModifiedDate;
+  private Date creationDate;
+
+  @JsonIgnore
+  public Date getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
+  }
 
   public Person getPerson() {
     if (person == null) {

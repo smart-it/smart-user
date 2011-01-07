@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
@@ -75,6 +76,9 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
       }
     }
     personService.validatePerson(userPerson.getPerson());
+    final Date date = new Date();
+    userPerson.setCreationDate(date);
+    userPerson.setLastModifiedDate(date);
     try {
       super.save(userPerson);
       observable.notifyObserver(ObserverNotification.CREATE_USER_PERSON, userPerson);
@@ -95,6 +99,8 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
   public void update(UserPerson userPerson) {
     getUserService().validateUser(userPerson.getUser());
     personService.validatePerson(userPerson.getPerson());
+    final Date date = new Date();
+    userPerson.setLastModifiedDate(date);
     try {
       super.update(userPerson);
     }

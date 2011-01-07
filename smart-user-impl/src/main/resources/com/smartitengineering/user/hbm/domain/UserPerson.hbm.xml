@@ -9,5 +9,7 @@
     <version column="version" name="version"/>
     <many-to-one cascade="all" column="user_id" lazy="false" name="user" unique="true"/>
     <many-to-one cascade="all" column="person_id" lazy="false" name="person" unique="true"/>
+    <property column="creation_date" length="255" name="creationDate" type="date"/>
+    <property column="last_modified_date" length="255" name="lastModifiedDate" type="date"/>
   </class>
 </hibernate-mapping>
