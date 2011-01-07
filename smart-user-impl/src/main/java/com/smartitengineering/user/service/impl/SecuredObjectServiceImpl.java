@@ -134,4 +134,9 @@ public class SecuredObjectServiceImpl extends AbstractCommonDaoImpl<SecuredObjec
         getNestedParametersParam("organization", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam(
         "uniqueShortName", organizationName)));
   }
+
+  @Override
+  public SecuredObject getById(Long id) {
+    return getById(id);
+  }
 }
