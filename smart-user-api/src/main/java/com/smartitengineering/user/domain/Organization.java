@@ -13,7 +13,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author russel
  */
-public class Organization extends AbstractGenericPersistentDTO<Organization, String, Integer> {
+public class Organization extends AbstractGenericPersistentDTO<Organization, String, Long> {
 
   private String name;
   private Address address;
