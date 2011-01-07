@@ -17,7 +17,7 @@ public class Organization extends AbstractClientDomain<String> implements
   public static final String ADDRESS_TYPE = Address.class.getName();
   private String name;  
   private com.smartitengineering.user.client.api.Address address;
-  private Date lastModifiedDate;
+  private Date lastModifiedDate, creationDate;
 
   @Override
   public String getName() {
@@ -60,6 +60,15 @@ public class Organization extends AbstractClientDomain<String> implements
       return;
     }
     this.lastModifiedDate = lastModifiedDate;
+  }
+
+  @Override
+  public Date getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
   }
 
   @Override
