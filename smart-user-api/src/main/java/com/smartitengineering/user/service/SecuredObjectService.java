@@ -19,6 +19,8 @@ public interface SecuredObjectService {
 
   public void delete(SecuredObject securedObject);
 
+  public SecuredObject getById(Long id);
+
   public Collection<SecuredObject> getByOrganization(String organizationName);
 
   public SecuredObject getByOrganizationAndObjectID(String organizationName, String objectID);

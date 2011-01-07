@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
@@ -48,6 +49,9 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
   public void create(Privilege privilege) {
 
     validatePrivilege(privilege);
+    final Date date = new Date();
+    privilege.setCreationDate(date);
+    privilege.setLastModifiedDate(date);
     try {
       super.save(privilege);
     }
@@ -73,6 +77,8 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
 
   @Override
   public void update(Privilege privilege) {
+    final Date date = new Date();
+    privilege.setLastModifiedDate(date);
     validatePrivilege(privilege);
     try {
       super.update(privilege);

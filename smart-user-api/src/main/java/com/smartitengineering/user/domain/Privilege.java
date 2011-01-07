@@ -22,6 +22,7 @@ public class Privilege extends AbstractGenericPersistentDTO<Privilege, Long, Lon
   private SecuredObject securedObject;
   private Integer permissionMask;
   private Date lastModifiedDate;
+  private Date creationDate;
 
   public SecuredObject getSecuredObject() {
     return securedObject;
@@ -80,6 +81,15 @@ public class Privilege extends AbstractGenericPersistentDTO<Privilege, Long, Lon
 
   public void setLastModifiedDate(Date lastModifiedDate) {
     this.lastModifiedDate = lastModifiedDate;
+  }
+
+  @JsonIgnore
+  public Date getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
   }
 
   @Override
