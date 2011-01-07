@@ -15,7 +15,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author modhu7
  */
-public class User extends AbstractGenericPersistentDTO<User, Long, Integer> {
+public class User extends AbstractGenericPersistentDTO<User, Long, Long> {
 
   //private Organization parentOrganization;
   private String username;

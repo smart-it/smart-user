@@ -13,7 +13,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author russel
  */
-public class SecuredObject extends AbstractGenericPersistentDTO<SecuredObject, Long, Integer> {
+public class SecuredObject extends AbstractGenericPersistentDTO<SecuredObject, Long, Long> {
 
   private String name;
   private String objectID;

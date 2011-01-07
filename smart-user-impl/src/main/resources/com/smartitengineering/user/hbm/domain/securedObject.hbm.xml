@@ -6,7 +6,7 @@
       <generator class="increment">
       </generator>
     </id>
-    <version column="version" name="version"/>
+    <version column="version" name="version" type="long"/>
     <property column="name" length="255" name="name" type="java.lang.String" unique-key="UK_ORG_SEC_OBJ"/>
     <property column="object_id" length="255" name="objectID" not-null="true" type="java.lang.String" unique="true"/>
     <many-to-one cascade="none" column="organization_id" lazy="false" name="organization" not-null="true" unique-key="UK_ORG_SEC_OBJ"/>

@@ -11,7 +11,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author modhu7
  */
-public class BasicIdentity extends AbstractGenericPersistentDTO<BasicIdentity, Long, Integer> {
+public class BasicIdentity extends AbstractGenericPersistentDTO<BasicIdentity, Long, Long> {
 
   private String nationalID;
   private Name name;

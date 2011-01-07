@@ -15,7 +15,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author russel
  */
-public class UserGroup extends AbstractGenericPersistentDTO<UserGroup, Long, Integer> {
+public class UserGroup extends AbstractGenericPersistentDTO<UserGroup, Long, Long> {
 
   private String name;
   private Set<User> users;

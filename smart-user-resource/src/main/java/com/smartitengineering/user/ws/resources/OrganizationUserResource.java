@@ -447,14 +447,14 @@ public class OrganizationUserResource extends AbstractResource {
       userPersonContent.setId(NumberUtils.toLong(keyValueMap.get("id")));
     }
     if (keyValueMap.get("version") != null) {
-      userPersonContent.setVersion(Integer.valueOf(keyValueMap.get("version")));
+      userPersonContent.setVersion(Long.valueOf(keyValueMap.get("version")));
     }
 
     if (keyValueMap.get("userId") != null) {
       newUser.setId(NumberUtils.toLong(keyValueMap.get("userId")));
     }
     if (keyValueMap.get("userVersion") != null) {
-      newUser.setVersion(Integer.valueOf(keyValueMap.get("userVersion")));
+      newUser.setVersion(Long.valueOf(keyValueMap.get("userVersion")));
     }
 
     if (keyValueMap.get("personId") != null) {
@@ -468,28 +468,28 @@ public class OrganizationUserResource extends AbstractResource {
       person.getSelf().setId(NumberUtils.toLong(keyValueMap.get("selfId")));
     }
     if (keyValueMap.get("selfVersion") != null) {
-      person.getSelf().setVersion(Integer.valueOf(keyValueMap.get("selfVersion")));
+      person.getSelf().setVersion(Long.valueOf(keyValueMap.get("selfVersion")));
     }
 
     if (keyValueMap.get("spouseId") != null) {
       person.getSpouse().setId(NumberUtils.toLong(keyValueMap.get("spouseId")));
     }
     if (keyValueMap.get("spouseVersion") != null) {
-      person.getSpouse().setVersion(Integer.valueOf(keyValueMap.get("spouseVersion")));
+      person.getSpouse().setVersion(Long.valueOf(keyValueMap.get("spouseVersion")));
     }
 
     if (keyValueMap.get("motherId") != null) {
       person.getMother().setId(NumberUtils.toLong(keyValueMap.get("motherId")));
     }
     if (keyValueMap.get("motherVersion") != null) {
-      person.getMother().setVersion(Integer.valueOf(keyValueMap.get("motherVersion")));
+      person.getMother().setVersion(Long.valueOf(keyValueMap.get("motherVersion")));
     }
 
     if (keyValueMap.get("fatherId") != null) {
       person.getFather().setId(NumberUtils.toLong(keyValueMap.get("fatherId")));
     }
     if (keyValueMap.get("fatherVersion") != null) {
-      person.getFather().setVersion(Integer.valueOf(keyValueMap.get("fatherVersion")));
+      person.getFather().setVersion(Long.valueOf(keyValueMap.get("fatherVersion")));
     }
 
     userPersonContent.setUser(newUser);
