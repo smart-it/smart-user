@@ -18,6 +18,11 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>com.smartitengineering.smart-user</groupId>
+      <artifactId>smart-user-impl-generic</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>com.smartitengineering.smart-dao</groupId>
       <artifactId>smart-hbase-dao</artifactId>
       <exclusions>
