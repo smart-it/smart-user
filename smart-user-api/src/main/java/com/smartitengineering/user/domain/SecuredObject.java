@@ -21,6 +21,16 @@ public class SecuredObject extends AbstractGenericPersistentDTO<SecuredObject, L
   private Organization organization;
   private Integer parentOrganizationID;
   private Date lastModifiedDate;
+  private Date creationDate;
+
+  @JsonIgnore
+  public Date getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
+  }
 
   @JsonIgnore
   public Date getLastModifiedDate() {

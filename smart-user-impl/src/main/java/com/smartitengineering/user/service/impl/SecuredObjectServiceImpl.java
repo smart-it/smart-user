@@ -13,6 +13,7 @@ import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.SecuredObjectService;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleStateException;
@@ -31,6 +32,9 @@ public class SecuredObjectServiceImpl extends AbstractCommonDaoImpl<SecuredObjec
   @Override
   public void save(SecuredObject securedObject) {
     validateSecuredObject(securedObject);
+    final Date date = new Date();
+    securedObject.setCreationDate(date);
+    securedObject.setLastModifiedDate(date);
     try {
       super.save(securedObject);
     }
@@ -48,6 +52,8 @@ public class SecuredObjectServiceImpl extends AbstractCommonDaoImpl<SecuredObjec
   @Override
   public void update(SecuredObject securedObject) {
     validateSecuredObject(securedObject);
+    final Date date = new Date();
+    securedObject.setLastModifiedDate(date);
     try {
       super.update(securedObject);
     }
