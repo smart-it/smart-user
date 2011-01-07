@@ -13,7 +13,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author modhu7
  */
-public class Role extends AbstractGenericPersistentDTO<Role, Long, Integer> {
+public class Role extends AbstractGenericPersistentDTO<Role, Long, Long> {
 
   private String name;
   private String displayName;

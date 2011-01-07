@@ -3,9 +3,11 @@
 <hibernate-mapping>
   <class dynamic-insert="false" dynamic-update="false" name="com.smartitengineering.user.domain.Organization" table="organization">
     <id column="id" name="id" type="java.lang.String" />
-    <version column="version" name="version"/>
+    <version column="version" name="version" type="long" />
     <property column="name" length="255" name="name" type="java.lang.String"/>
     <property column="unique_short_name" length="255" name="uniqueShortName" type="java.lang.String" unique="true"/>
+    <property column="creation_date" length="255" name="creationDate" type="date"/>
+    <property column="last_modified_date" length="255" name="lastModifiedDate" type="date"/>
     <component name="address">
       <property column="street_address" length="255" name="streetAddress" type="java.lang.String"/>
       <property column="city" length="255" name="city" type="java.lang.String"/>

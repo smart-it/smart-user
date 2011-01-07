@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
@@ -47,6 +48,9 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
 
   @Override
   public void save(Organization organization) {
+    final Date date = new Date();
+    organization.setCreationDate(date);
+    organization.setLastModifiedDate(date);
     validateOrganization(organization);
     try {
       super.save(organization);
@@ -65,6 +69,8 @@ public class OrganizationServiceImpl extends AbstractCommonDaoImpl<Organization>
 
   @Override
   public void update(Organization organization) {
+    final Date date = new Date();
+    organization.setLastModifiedDate(date);
     validateOrganization(organization);
     try {
       super.update(organization);

@@ -461,7 +461,7 @@ public class OrganizationUserResource extends AbstractResource {
       person.setId(NumberUtils.toLong(keyValueMap.get("personId")));
     }
     if (keyValueMap.get("personVersion") != null) {
-      person.setVersion(Integer.valueOf(keyValueMap.get("personVersion")));
+      person.setVersion(Long.valueOf(keyValueMap.get("personVersion")));
     }
 
     if (keyValueMap.get("selfId") != null) {

@@ -13,12 +13,13 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author russel
  */
-public class Organization extends AbstractGenericPersistentDTO<Organization, String, Integer> {
+public class Organization extends AbstractGenericPersistentDTO<Organization, String, Long> {
 
   private String name;
   private Address address;
   //private String contactPerson;
   private Date lastModifiedDate;
+  private Date creationDate;
 
   public Organization() {
   }
@@ -26,6 +27,14 @@ public class Organization extends AbstractGenericPersistentDTO<Organization, Str
   public Organization(String name, String uniqueShortName) {
     this.name = name;
     setUniqueShortName(uniqueShortName);
+  }
+
+  public Date getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
   }
 
   public String getName() {

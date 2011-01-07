@@ -6,7 +6,7 @@
       <generator class="increment">
             </generator>
     </id>
-    <version column="version" name="version"/>
+    <version column="version" name="version" type="long" />
     <property column="name" length="255" name="name" not-null="true" type="java.lang.String" unique-key="UK_PRIVILEGE_ORGANIZATION"/>
     <property column="display_name" length="255" name="displayName" type="java.lang.String"/>
     <property column="short_description" length="255" name="shortDescription" type="java.lang.String"/>
