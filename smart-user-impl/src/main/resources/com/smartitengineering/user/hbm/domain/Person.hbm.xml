@@ -6,7 +6,7 @@
       <generator class="increment">
       </generator>
     </id>
-    <version column="version" name="version"/>
+    <version column="version" name="version" type="long" />
     <many-to-one cascade="all" column="self_id" lazy="false" name="self"/>
     <many-to-one cascade="all" column="father_id" lazy="false" name="father"/>
     <many-to-one cascade="all" column="mother_id" lazy="false" name="mother"/>

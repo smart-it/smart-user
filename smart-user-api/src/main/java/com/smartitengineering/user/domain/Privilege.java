@@ -13,7 +13,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author modhu7
  */
-public class Privilege extends AbstractGenericPersistentDTO<Privilege, Long, Integer> {
+public class Privilege extends AbstractGenericPersistentDTO<Privilege, Long, Long> {
 
   private Organization parentOrganization;
   private String name;
