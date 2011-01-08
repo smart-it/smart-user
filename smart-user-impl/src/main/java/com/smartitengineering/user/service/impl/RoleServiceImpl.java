@@ -12,6 +12,7 @@ import com.smartitengineering.user.filter.RoleFilter;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.RoleService;
 import java.util.Collection;
+import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleStateException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -29,6 +30,9 @@ public class RoleServiceImpl extends AbstractCommonDaoImpl<Role> implements Role
   @Override
   public void create(Role role) {
     validateRole(role);
+    final Date date = new Date();
+    role.setCreationDate(date);
+    role.setLastModifiedDate(date);
     try {
       super.save(role);
     }
@@ -60,6 +64,8 @@ public class RoleServiceImpl extends AbstractCommonDaoImpl<Role> implements Role
   @Override
   public void update(Role role) {
     validateRole(role);
+    final Date date = new Date();
+    role.setLastModifiedDate(date);
     try {
       super.update(role);
     }

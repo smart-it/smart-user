@@ -18,6 +18,7 @@ public class Role extends AbstractGenericPersistentDTO<Role, Long, Long> {
   private String name;
   private String displayName;
   private String shortDescription;
+  private Date creationDate;
   private Date lastModifiedDate;
 
   public Role() {
@@ -69,6 +70,15 @@ public class Role extends AbstractGenericPersistentDTO<Role, Long, Long> {
       return;
     }
     this.shortDescription = shortDescription;
+  }
+
+  @JsonIgnore
+  public Date getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
   }
 
   @JsonIgnore
