@@ -26,12 +26,12 @@ import org.apache.hadoop.hbase.util.Bytes;
 public class PrivilegeObjectConverter extends AbstractObjectRowConverter<Privilege, Long> {
 
   private static final byte[] FAMILY_SELF = Bytes.toBytes("self");
-  private static final byte[] CELL_PARENT_ORG = Bytes.toBytes("primaryEmail");
-  private static final byte[] CELL_NAME = Bytes.toBytes("primaryEmail");
-  private static final byte[] CELL_DISPLAY_NAME = Bytes.toBytes("primaryEmail");
-  private static final byte[] CELL_SHORT_DESC = Bytes.toBytes("primaryEmail");
-  private static final byte[] CELL_SEC_OBJ = Bytes.toBytes("primaryEmail");
-  private static final byte[] CELL_PERMISSION_MASK = Bytes.toBytes("primaryEmail");
+  private static final byte[] CELL_PARENT_ORG = Bytes.toBytes("parentOrg");
+  private static final byte[] CELL_NAME = Bytes.toBytes("name");
+  private static final byte[] CELL_DISPLAY_NAME = Bytes.toBytes("displayName");
+  private static final byte[] CELL_SHORT_DESC = Bytes.toBytes("shortDescription");
+  private static final byte[] CELL_SEC_OBJ = Bytes.toBytes("securedObject");
+  private static final byte[] CELL_PERMISSION_MASK = Bytes.toBytes("permissionMask");
   private static final byte[] CELL_CREATION_DATE = Bytes.toBytes("creationDate");
   private static final byte[] CELL_LAST_MODIFIED_DATE = Bytes.toBytes("lastModifiedDate");
   @Inject
