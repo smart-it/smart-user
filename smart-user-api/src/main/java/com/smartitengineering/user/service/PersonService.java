@@ -20,6 +20,8 @@ public interface PersonService {
 
     public void delete(Person person);
 
+    public Person getById(Long personId);
+
     public Collection<Person> search(PersonFilter filter);
 
     public Collection<Person> getAllPerson();

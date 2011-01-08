@@ -137,6 +137,6 @@ public class SecuredObjectServiceImpl extends AbstractCommonDaoImpl<SecuredObjec
 
   @Override
   public SecuredObject getById(Long id) {
-    return getById(id);
+    return super.getById(id.intValue());
   }
 }

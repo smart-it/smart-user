@@ -20,6 +20,8 @@ public interface UserService {
 
     public void delete(User user);
 
+    public User getById(Long userId);
+
     public Collection<User> search(UserFilter filter);
 
     public Collection<User> getAllUser();
