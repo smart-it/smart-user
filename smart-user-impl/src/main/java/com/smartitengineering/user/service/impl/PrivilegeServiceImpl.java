@@ -16,6 +16,7 @@ import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.PrivilegeService;
 import com.smartitengineering.user.service.UserService;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -211,5 +212,18 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
         getEqualPropertyParam("objectID", objectID)), QueryParameterFactory.getNestedParametersParam(
         "parentOrganization", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam("uniqueShortName",
                                                                                              organizationName)));
+  }
+  @Override
+  public List<Privilege> getPrivilegesByIds(Long... ids) {
+    return getPrivilegesByIds(Arrays.<Long>asList(ids));
+  }
+
+  @Override
+  public List<Privilege> getPrivilegesByIds(List<Long> ids) {
+    List<Integer> ints = new ArrayList<Integer>(ids.size());
+    for (Long id : ids) {
+      ints.add(id.intValue());
+    }
+    return new ArrayList<Privilege>(getByIds(ints));
   }
 }

@@ -5,9 +5,9 @@
 package com.smartitengineering.user.service;
 
 import com.smartitengineering.user.domain.Role;
-import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.filter.RoleFilter;
 import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -18,6 +18,10 @@ public interface RoleService {
   void create(Role role);
 
   void delete(Role role);
+
+  List<Role> getRolesByIds(Long... ids);
+
+  List<Role> getRolesByIds(List<Long> ids);
 
   Role getRoleByName(String roleName);
 
