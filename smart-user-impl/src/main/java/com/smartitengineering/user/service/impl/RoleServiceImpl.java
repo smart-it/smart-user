@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleStateException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -125,16 +126,16 @@ public class RoleServiceImpl extends AbstractCommonDaoImpl<Role> implements Role
   }
 
   @Override
-  public List<Role> getRolesByIds(Long... ids) {
+  public Set<Role> getRolesByIds(Long... ids) {
     return getRolesByIds(Arrays.<Long>asList(ids));
   }
 
   @Override
-  public List<Role> getRolesByIds(List<Long> ids) {
+  public Set<Role> getRolesByIds(List<Long> ids) {
     List<Integer> ints = new ArrayList<Integer>(ids.size());
     for (Long id : ids) {
       ints.add(id.intValue());
     }
-    return new ArrayList<Role>(getByIds(ints));
+    return getByIds(ints);
   }
 }

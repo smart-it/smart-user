@@ -7,6 +7,7 @@ package com.smartitengineering.user.service;
 import com.smartitengineering.user.domain.Privilege;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -18,9 +19,9 @@ public interface PrivilegeService {
 
   void delete(Privilege privilege);
 
-  List<Privilege> getPrivilegesByIds(Long... ids);
+  Set<Privilege> getPrivilegesByIds(Long... ids);
 
-  List<Privilege> getPrivilegesByIds(List<Long> ids);
+  Set<Privilege> getPrivilegesByIds(List<Long> ids);
 
   Privilege getPrivilegeByName(String name);
 

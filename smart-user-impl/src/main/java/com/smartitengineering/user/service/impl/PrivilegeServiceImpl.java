@@ -23,6 +23,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleStateException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -214,16 +215,16 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
                                                                                              organizationName)));
   }
   @Override
-  public List<Privilege> getPrivilegesByIds(Long... ids) {
+  public Set<Privilege> getPrivilegesByIds(Long... ids) {
     return getPrivilegesByIds(Arrays.<Long>asList(ids));
   }
 
   @Override
-  public List<Privilege> getPrivilegesByIds(List<Long> ids) {
+  public Set<Privilege> getPrivilegesByIds(List<Long> ids) {
     List<Integer> ints = new ArrayList<Integer>(ids.size());
     for (Long id : ids) {
       ints.add(id.intValue());
     }
-    return new ArrayList<Privilege>(getByIds(ints));
+    return getByIds(ints);
   }
 }
