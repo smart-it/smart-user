@@ -15,12 +15,14 @@ import com.smartitengineering.user.filter.UserFilter;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.UserService;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleStateException;
@@ -309,5 +311,19 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
   @Override
   public User getById(Long userId) {
     return super.getById(userId.intValue());
+  }
+
+  @Override
+  public Set<User> getUsersByIds(Long... ids) {
+    return getUsersByIds(Arrays.<Long>asList(ids));
+  }
+
+  @Override
+  public Set<User> getUsersByIds(List<Long> ids) {
+    List<Integer> ints = new ArrayList<Integer>(ids.size());
+    for (Long id : ids) {
+      ints.add(id.intValue());
+    }
+    return getByIds(ints);
   }
 }

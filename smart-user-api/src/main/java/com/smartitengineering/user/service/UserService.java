@@ -7,6 +7,8 @@ package com.smartitengineering.user.service;
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.filter.UserFilter;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -21,6 +23,10 @@ public interface UserService {
     public void delete(User user);
 
     public User getById(Long userId);
+
+    public Set<User> getUsersByIds(Long... userId);
+
+    public Set<User> getUsersByIds(List<Long> userId);
 
     public Collection<User> search(UserFilter filter);
 
