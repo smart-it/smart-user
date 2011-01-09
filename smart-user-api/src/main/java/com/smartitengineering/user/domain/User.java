@@ -24,6 +24,16 @@ public class User extends AbstractGenericPersistentDTO<User, Long, Long> {
   private Set<Role> roles;
   private Set<Privilege> privileges;
   private Date lastModifiedDate;
+  private Date creationDate;
+
+  @JsonIgnore
+  public Date getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
+  }
 
   public String getPassword() {
     if (password == null) {

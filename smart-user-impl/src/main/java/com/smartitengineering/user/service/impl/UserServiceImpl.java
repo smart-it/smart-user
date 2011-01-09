@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -38,6 +39,9 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
   @Override
   public void save(User user) {
     validateUser(user);
+    final Date date = new Date();
+    user.setCreationDate(date);
+    user.setLastModifiedDate(date);
     try {
       super.save(user);
     }
@@ -53,6 +57,8 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
 
   @Override
   public void update(User user) {
+    final Date date = new Date();
+    user.setLastModifiedDate(date);
     validateUser(user);
     try {
       super.update(user);
