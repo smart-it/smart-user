@@ -25,19 +25,16 @@
     $("#wrong").hide();
     $("#uname").blur(function(){
       var usn =$("#uname").val();
-      var ajaxUrl =$("#usrNameCheck").attr('href')+usn ;
-      alert(ajaxUrl);
+      var ajaxUrl =$("#usrNameCheck").attr('href')+usn ;      
       $.ajax({
         type: "GET",
         url: ajaxUrl,
         dataType: "xml",
-        success: function(xhr){
-          alert(1);
+        success: function(xhr){          
           $("#wrong").show();
           $("#alertlabel").html('User Name is not unique: try another');
         },
-        error: function(xhr){
-          alert(2);
+        error: function(xhr){          
           $("#wrong").hide();
           $("#alertlabel").html('');
         }
