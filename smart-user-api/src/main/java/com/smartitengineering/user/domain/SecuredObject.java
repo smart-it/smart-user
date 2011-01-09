@@ -19,7 +19,7 @@ public class SecuredObject extends AbstractGenericPersistentDTO<SecuredObject, L
   private String objectID;
   private String parentObjectID;
   private Organization organization;
-  private Integer parentOrganizationID;
+  private String parentOrganizationID;
   private Date lastModifiedDate;
   private Date creationDate;
 
@@ -106,11 +106,11 @@ public class SecuredObject extends AbstractGenericPersistentDTO<SecuredObject, L
   }
 
   @JsonIgnore
-  public Integer getParentOrganizationID() {
+  public String getParentOrganizationID() {
     return parentOrganizationID;
   }
 
-  public void setParentOrganizationID(Integer parentOrganizationID) {
+  public void setParentOrganizationID(String parentOrganizationID) {
     this.parentOrganizationID = parentOrganizationID;
   }
 }
