@@ -21,6 +21,7 @@ import com.smartitengineering.user.service.impl.hbase.domain.UniqueKey;
 import com.smartitengineering.user.service.impl.hbase.domain.UniqueKeyIndex;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
@@ -95,6 +96,9 @@ public class RoleServiceImpl implements RoleService {
   public void create(Role role) {
     checkAndInitializeAutoId();
     validateRole(role);
+    final Date date = new Date();
+    role.setCreationDate(date);
+    role.setLastModifiedDate(date);
     try {
       long nextId = idIncrementor.incrementAndGet(KeyableObject.ROLE.name(), -1l);
       UniqueKey key = getUniqueKeyOfIndexForRole(role);
@@ -122,6 +126,8 @@ public class RoleServiceImpl implements RoleService {
     if (role.getId() == null) {
       throw new IllegalArgumentException("ID of role not set to be updated!");
     }
+    final Date date = new Date();
+    role.setLastModifiedDate(date);
     validateRole(role);
     Role oldRole = readDao.getById(role.getId());
     if (oldRole == null) {

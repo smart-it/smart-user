@@ -20,6 +20,7 @@ import com.smartitengineering.user.service.impl.hbase.domain.UniqueKey;
 import com.smartitengineering.user.service.impl.hbase.domain.UniqueKeyIndex;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
@@ -94,6 +95,9 @@ public class PrivilegeServiceImpl implements PrivilegeService {
   public void create(Privilege privilege) {
     checkAndInitializeAutoId();
     validatePrivilege(privilege);
+    final Date date = new Date();
+    privilege.setCreationDate(date);
+    privilege.setLastModifiedDate(date);
     try {
       long nextId = idIncrementor.incrementAndGet(KeyableObject.PRIVILEGE.name(), -1l);
       UniqueKey key = getUniqueKeyOfIndexForPrivilege(privilege);
@@ -121,6 +125,8 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     if (privilege.getId() == null) {
       throw new IllegalArgumentException("ID of privilege not set to be updated!");
     }
+    final Date date = new Date();
+    privilege.setLastModifiedDate(date);
     validatePrivilege(privilege);
     Privilege oldPrivilege = readDao.getById(privilege.getId());
     if (oldPrivilege == null) {
