@@ -155,7 +155,7 @@ public class PersonServiceImpl implements PersonService {
   public void delete(Person person) {
     try {
       writeDao.delete(person);
-      observable.notifyObserver(ObserverNotification.UPDATE_PERSON, person);
+      observable.notifyObserver(ObserverNotification.DELETE_PERSON, person);
       final UniqueKey indexKey = getUniqueKeyOfIndexForPersonPrimaryEmail(person);
       UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(indexKey);
       if (index != null) {
