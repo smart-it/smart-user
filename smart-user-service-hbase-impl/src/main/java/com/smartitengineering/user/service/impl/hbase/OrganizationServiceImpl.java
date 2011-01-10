@@ -54,6 +54,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     validateOrganization(organization);
     try {
       writeDao.update(organization);
+      observable.notifyObserver(ObserverNotification.UPDATE_ORGANIZATION, organization);
     }
     catch (Exception e) {
       String message = ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;

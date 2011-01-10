@@ -24,6 +24,16 @@ public class UserGroup extends AbstractGenericPersistentDTO<UserGroup, Long, Lon
   
   private Organization organization;
   private Date lastModifiedDate;
+  private Date creationDate;
+
+  @JsonIgnore
+  public Date getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
+  }
 
   @JsonIgnore
   public Set<Role> getRoles() {
