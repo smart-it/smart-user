@@ -6,6 +6,7 @@ package com.smartitengineering.user.service.impl.hbase.dao;
 
 import com.smartitengineering.dao.impl.hbase.spi.ExecutorService;
 import com.smartitengineering.dao.impl.hbase.spi.impl.AbstractObjectRowConverter;
+import com.smartitengineering.user.service.impl.hbase.domain.UniqueKey;
 import com.smartitengineering.user.service.impl.hbase.domain.UniqueKeyIndex;
 import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Put;
@@ -16,7 +17,7 @@ import org.apache.hadoop.hbase.util.Bytes;
  *
  * @author imyousuf
  */
-public class UniqueKeyIndexObjectConverter extends AbstractObjectRowConverter<UniqueKeyIndex, String> {
+public class UniqueKeyIndexObjectConverter extends AbstractObjectRowConverter<UniqueKeyIndex, UniqueKey> {
 
   private static final byte[] FAMILY_SELF = Bytes.toBytes("self");
   private static final byte[] CELL_OBJ_ID = Bytes.toBytes("personId");

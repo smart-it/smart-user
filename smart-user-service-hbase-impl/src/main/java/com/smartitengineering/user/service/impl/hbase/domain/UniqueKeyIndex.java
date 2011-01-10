@@ -11,7 +11,7 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author imyousuf
  */
-public class UniqueKeyIndex extends AbstractGenericPersistentDTO<UniqueKeyIndex, String, Long> {
+public class UniqueKeyIndex extends AbstractGenericPersistentDTO<UniqueKeyIndex, UniqueKey, Long> {
 
   private String objId;
 
