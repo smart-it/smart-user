@@ -35,4 +35,6 @@ public interface PrivilegeService {
   Collection<Privilege> getPrivilegesByOrganization(String organization);
 
   void update(Privilege privilege);
+
+  void validatePrivilege(Privilege privilege);
 }
