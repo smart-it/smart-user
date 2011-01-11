@@ -62,10 +62,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   </bean>
 
   <bean name="userDetailsService" class="com.smartitengineering.user.security.UserDetailsServiceImpl">
-    <property name="userService">
-      <ref bean = "userService"/>
-    </property>
-
   </bean>
   <sec:authentication-provider user-service-ref = "userDetailsService"/>
 

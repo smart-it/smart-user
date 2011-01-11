@@ -15,11 +15,7 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
-    <import resource="classpath:com/smartitengineering/user/service-app-context.xml" />
-    <import resource="classpath:com/smartitengineering/user/app-context-datasource.xml" />
-    <import resource="classpath:com/smartitengineering/user/app-context-hibernate-definition.xml" />    
     <import resource="classpath:com/smartitengineering/user/security/app-context-security.xml" />
-    <import resource="classpath:com/smartitengineering/user/app-context-observer.xml" />
 
 <!--    <context:component-scan base-package="com.smartitengineering.user.ws.resources"/>-->
 
