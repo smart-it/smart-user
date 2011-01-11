@@ -15,6 +15,7 @@ public enum KeyableObject {
   ROLE,
   PRIVILEGE,
   USER_GROUP,
+  USER_PERSON,
   USER,
   OTHER;
 }
