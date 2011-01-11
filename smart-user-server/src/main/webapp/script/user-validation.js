@@ -21,6 +21,11 @@ $(document).ready(function(){
     }    
   });  
 
+$(".submitbtn").click(function(){
+  
+})
+
+
   $("#changePasswordForm").validate({
     rules: {
       password: {
@@ -34,13 +39,13 @@ $(document).ready(function(){
     }    
   });
   $('#error').hide();
-  $("#update").click(function(){
-    $('#error').hide();
+
+  $("#update").click(function(){    
     var pass = $("input#oldPassword").val();
     var pass1 = $("input#originalPassword").val();
     if(pass!=pass1){
       $("#error").show();
-      return false;
+      //return false;
     }
   });
   $("#userEditForm").validate({

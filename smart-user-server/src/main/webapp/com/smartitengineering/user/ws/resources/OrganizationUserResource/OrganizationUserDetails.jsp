@@ -60,8 +60,12 @@
   </div>
 </div>
 
-<div name="newboxes" id="newboxes2" class="hide">
-  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out>-Edit Information</label></div>
+
+
+<div name="newboxes" id="newboxes3" class="hide">
+  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out><fmt:message key="org.usredittablehead1" /></label></div>
+
+
   <fmt:message key="org.usrinput6" var="submitbtn"/>
   <div id="form_organizationentry" class="entry_form">
     <form method="POST" action ="<c:url value="/orgs/sn/${it.user.organization.uniqueShortName}/users/un/${it.user.username}/update"/>" accept="application/json" id="userEditForm">
@@ -82,32 +86,33 @@
       <input type="hidden" name="nationalID" value="${it.person.self.nationalID}" class="textField" id="name">
       <input type="hidden" name="primaryEmail" value="${it.person.primaryEmail}" class="textField" id="name">
       <input type="hidden" name="userName" value="${it.user.username}" class="textField" id="userName">
-      <input type="hidden" name="password" value="${it.user.password}" class="textField" id="password">
 
-      <div class="clear"></div>
-      <div class="form_label"><label><fmt:message key="org.usrtablehead2"/></label></div>
-      <div class="form_textField"><label class="unLabel"><c:out value="${it.user.username}"/></label></div>
-      <div class="clear"></div>
-      <div class="form_label"><label><fmt:message key="org.usrinput1"/></label></div>
-      <div class="form_textField"><input type="text" name="firstName" value="${it.person.self.name.firstName}" class="textField" id="fname"></div>
-      <div class="clear"></div>
-      <div class="form_label"><label><fmt:message key="org.usrinput2"/></label></div>
-      <div class="form_textField"><input type="text" name="middleInitial" value="${it.person.self.name.middleInitial}" class="textField" id="mname"></div>
-      <div class="clear"></div>
-      <div class="form_label"><label><fmt:message key="org.usrinput3"/></label></div>
-      <div class="form_textField"><input type="text" name="lastName" value="${it.person.self.name.lastName}" class="textField" id="lname"></div>
-      <div class="clear"></div>
-      <div class="form_label"><label><fmt:message key="org.usrinput5"/></label></div>
-      <div class="form_textField"><input type="text" name="cellPhoneNumber" value="${it.person.cellPhoneNumber}" class="textField" id="phone"></div>
-      <div class="clear"></div>
-      <div class="btnfield"><input type="submit" value="UPDATE" name="submitbtn" class="submitbtn" id="edit"></div>
-      <div class="clear"></div>
+
+      <div style="clear: both"></div>      
+      <div class="form_textField"><input type="hidden" name="originalPassword" value="${it.user.password}" class="textField" id="originalPassword"></div>
+      <div style="clear: both"></div>
+      <div class="form_label"><label><fmt:message key="org.usreditinput1"/></label></div>
+      <div class="form_textField"><input type="password" name="oldPassword" class="textField" id="oldPassword"><label id="error"><img id="wrong" src="/css/images/wrong.png" /><fmt:message key="org.error1" /></label></div>
+      <div style="clear: both"></div>
+      <div class="form_label"><label><fmt:message key="org.usreditinput2"/></label></div>
+      <div class="form_textField"><input type="password" name="password" class="textField" id="newPassword"></div>
+      <div style="clear: both"></div>
+      <div class="form_label"><label><fmt:message key="org.usrinput7"/></label></div>
+      <div class="form_textField"><input type="password" name="confirmPassword" class="textField" id="confirmPassword"></div>
+      <div style="clear: both"></div>
+
+
+
+
+
     </form>
   </div>
 </div>
 
-<div name="newboxes" id="newboxes3" class="hide">
-  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out>-Change your password</label></div>
+
+<div name="newboxes" id="newboxes2" class="hide">
+  <div id="header_organization_users" class="header_entry_form"><label id="header_user_label"><c:out value="${it.user.username}"></c:out><fmt:message key="org.usredittablehead2" /></label></div>
+
   <fmt:message key="org.usrinput6" var="submitbtn"/>
   <div id="form_organizationentry" class="entry_form">
     <form method="POST" action ="<c:url value="/orgs/sn/${it.user.organization.uniqueShortName}/users/un/${it.user.username}/update" />" accept="application/json" id="changePasswordForm">
@@ -134,6 +139,7 @@
       <input type="hidden" name="userName" value="${it.user.username}" class="textField" id="userName">
       <input type="hidden" name="originalPassword" value="${it.user.password}" class="textField" id="originalPassword">
 
+      <div class="clear"></div>
       <div class="form_label"><label><fmt:message key="org.usrtablehead2"/></label></div>
       <div class="form_textField"><label class="unLabel"><c:out value="${it.user.username}"/></label></div>
       <div class="clear"></div>
