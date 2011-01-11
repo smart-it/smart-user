@@ -27,6 +27,8 @@ public interface UserGroupService {
 
     public Collection<UserGroup> getAllUserGroup();
 
+    public void validateUserGroup(UserGroup userGroup);
+
     public Collection<UserGroup> getUserGroupsByUser(User user);
 
 }
