@@ -64,18 +64,7 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
 
   @Override
   public void create(UserPerson userPerson) {
-    getUserService().validateUser(userPerson.getUser());
-    if (userPerson.getPerson().getId() != null) {
-      Integer count = (Integer) super.getOther(
-          QueryParameterFactory.getElementCountParam("person.id"),
-          QueryParameterFactory.getEqualPropertyParam(
-          "person.id", userPerson.getPerson().getId()));
-      if (count.intValue() > 0) {
-        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
-            UniqueConstrainedField.PERSON.name());
-      }
-    }
-    personService.validatePerson(userPerson.getPerson());
+    validateUserPerson(userPerson);
     final Date date = new Date();
     userPerson.setCreationDate(date);
     userPerson.setLastModifiedDate(date);
@@ -93,6 +82,22 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
           UniqueConstrainedField.OTHER;
       throw new RuntimeException(message, e);
     }
+  }
+
+  public void validateUserPerson(UserPerson userPerson) {
+    getUserService().validateUser(userPerson.getUser());
+    if (userPerson.getPerson().getId() != null) {
+      Integer count =
+              (Integer) super.getOther(
+          QueryParameterFactory.getElementCountParam("person.id"),
+          QueryParameterFactory.getEqualPropertyParam(
+          "person.id", userPerson.getPerson().getId()));
+      if (count.intValue() > 0) {
+        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
+            UniqueConstrainedField.PERSON.name());
+      }
+    }
+    personService.validatePerson(userPerson.getPerson());
   }
 
   @Override

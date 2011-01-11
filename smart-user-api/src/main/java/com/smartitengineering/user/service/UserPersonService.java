@@ -16,23 +16,26 @@ import java.util.Collection;
  */
 public interface UserPersonService {
 
-    void create(UserPerson userPerson);
+  void create(UserPerson userPerson);
 
-    void delete(UserPerson userPerson);
+  void delete(UserPerson userPerson);
 
-    void deleteByPerson(Person person);
+  void deleteByPerson(Person person);
 
-    void deleteByUser(User user);
+  void deleteByUser(User user);
 
-    Collection<UserPerson> getAllUserPerson();
+  Collection<UserPerson> getAllUserPerson();
 
-    Collection<UserPerson> getByOrganization(String organizationUniqueShortName, String userName, boolean isSmallerThan, int count);
+  Collection<UserPerson> getByOrganization(String organizationUniqueShortName, String userName, boolean isSmallerThan,
+                                           int count);
 
-    UserPerson getUserPersonByUsernameAndOrgName(String username, String orgName);
+  UserPerson getUserPersonByUsernameAndOrgName(String username, String orgName);
 
-    Collection<UserPerson> search(UserPersonFilter filter);
+  Collection<UserPerson> search(UserPersonFilter filter);
 
-    void update(UserPerson userPerson);
+  void update(UserPerson userPerson);
 
-    public Collection<UserPerson> getAllByOrganization(String organizationUniqueShortName);
+  Collection<UserPerson> getAllByOrganization(String organizationUniqueShortName);
+
+  void validateUserPerson(UserPerson userPerson);
 }
