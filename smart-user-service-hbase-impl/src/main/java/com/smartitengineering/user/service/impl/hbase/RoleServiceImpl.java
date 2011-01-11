@@ -65,7 +65,7 @@ public class RoleServiceImpl implements RoleService {
         return true;
       }
       catch (RuntimeException ex) {
-        logger.error("Could not initialize channel auto id!", ex);
+        logger.error("Could not initialize role auto id!", ex);
         throw ex;
       }
     }

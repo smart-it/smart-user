@@ -63,7 +63,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         return true;
       }
       catch (RuntimeException ex) {
-        logger.error("Could not initialize channel auto id!", ex);
+        logger.error("Could not initialize privilege auto id!", ex);
         throw ex;
       }
     }

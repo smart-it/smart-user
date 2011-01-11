@@ -62,7 +62,7 @@ public class UserGroupServiceImpl implements UserGroupService {
         return true;
       }
       catch (RuntimeException ex) {
-        logger.error("Could not initialize channel auto id!", ex);
+        logger.error("Could not initialize usergroup auto id!", ex);
         throw ex;
       }
     }

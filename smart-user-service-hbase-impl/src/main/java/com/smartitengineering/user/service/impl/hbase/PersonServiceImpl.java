@@ -61,7 +61,7 @@ public class PersonServiceImpl implements PersonService {
         return true;
       }
       catch (RuntimeException ex) {
-        logger.error("Could not initialize channel auto id!", ex);
+        logger.error("Could not initialize person auto id!", ex);
         throw ex;
       }
     }
