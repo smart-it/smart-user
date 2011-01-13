@@ -187,12 +187,6 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     return readDao.getByIds(ids);
   }
 
-  //WRONG API
-  @Override
-  public Privilege getPrivilegeByName(String name) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
   @Override
   public Collection<Privilege> getPrivilegesByOrganizationNameAndObjectID(String organizationName, String objectID) {
     throw new UnsupportedOperationException("Not supported yet.");

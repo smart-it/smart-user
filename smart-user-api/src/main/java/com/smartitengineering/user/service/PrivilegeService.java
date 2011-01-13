@@ -23,8 +23,6 @@ public interface PrivilegeService {
 
   Set<Privilege> getPrivilegesByIds(List<Long> ids);
 
-  Privilege getPrivilegeByName(String name);
-
   Collection<Privilege> getPrivilegesByOrganizationNameAndObjectID(String organizationName, String objectID);
   //Privilege getPrivilegesByObjectID(String objectID);
 
