@@ -95,6 +95,10 @@
       <artifactId>smart-bean-guice-util</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.smartitengineering</groupId>
+      <artifactId>smart-cache</artifactId>
+    </dependency>
+    <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
     </dependency>
