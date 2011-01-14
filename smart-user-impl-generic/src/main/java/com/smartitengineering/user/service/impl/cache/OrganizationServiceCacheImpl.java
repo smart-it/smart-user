@@ -7,6 +7,7 @@ package com.smartitengineering.user.service.impl.cache;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.smartitengineering.dao.common.cache.CacheServiceProvider;
+import com.smartitengineering.dao.common.cache.Lock;
 import com.smartitengineering.dao.common.cache.Mutex;
 import com.smartitengineering.dao.common.cache.impl.CacheAPIFactory;
 import com.smartitengineering.user.domain.Organization;
@@ -90,7 +91,7 @@ public class OrganizationServiceCacheImpl implements OrganizationService {
     }
     else {
       try {
-        mutex.acquire(uniqueShortName);
+        Lock<String> lock = mutex.acquire(uniqueShortName);
         organization = orgCacheProvider.retrieveFromCache(uniqueShortName);
         if (organization != null) {
           return organization;
@@ -99,7 +100,7 @@ public class OrganizationServiceCacheImpl implements OrganizationService {
         if (organization != null) {
           orgCacheProvider.putToCache(uniqueShortName, organization);
         }
-        mutex.release(mutex.getAttainedLockForCurrentThread());
+        mutex.release(lock);
       }
       catch (Exception ex) {
         logger.warn("Could not do cache lookup!", ex);
