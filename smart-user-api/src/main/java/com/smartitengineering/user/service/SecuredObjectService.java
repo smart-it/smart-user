@@ -26,4 +26,6 @@ public interface SecuredObjectService {
   public SecuredObject getByOrganizationAndObjectID(String organizationName, String objectID);
 
   public SecuredObject getByOrganizationAndName(String organizationName, String name);
+
+  public void validateSecuredObject(SecuredObject securedObject);
 }

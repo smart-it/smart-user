@@ -116,6 +116,7 @@
     <module>smart-user-client-api</module>
     <module>smart-user-service-hbase-impl</module>
     <module>smart-user-impl-generic</module>
+    <module>smart-user-server-hbase</module>
   </modules>
 
       

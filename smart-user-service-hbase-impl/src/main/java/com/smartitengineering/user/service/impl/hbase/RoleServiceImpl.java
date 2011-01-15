@@ -8,18 +8,22 @@ import com.google.inject.Inject;
 import com.smartitengineering.dao.common.CommonReadDao;
 import com.smartitengineering.dao.common.CommonWriteDao;
 import com.smartitengineering.dao.impl.hbase.spi.RowCellIncrementor;
-import com.smartitengineering.user.domain.Person;
+import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
-import com.smartitengineering.user.filter.PersonFilter;
+import com.smartitengineering.user.filter.RoleFilter;
 import com.smartitengineering.user.observer.CRUDObservable;
 import com.smartitengineering.user.observer.ObserverNotification;
 import com.smartitengineering.user.service.ExceptionMessage;
-import com.smartitengineering.user.service.PersonService;
+import com.smartitengineering.user.service.RoleService;
 import com.smartitengineering.user.service.impl.hbase.domain.AutoId;
 import com.smartitengineering.user.service.impl.hbase.domain.KeyableObject;
 import com.smartitengineering.user.service.impl.hbase.domain.UniqueKey;
 import com.smartitengineering.user.service.impl.hbase.domain.UniqueKeyIndex;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
@@ -29,12 +33,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author imyousuf
  */
-public class PersonServiceImpl implements PersonService {
+public class RoleServiceImpl implements RoleService {
 
   @Inject
-  private CommonWriteDao<Person> writeDao;
+  private CommonWriteDao<Role> writeDao;
   @Inject
-  private CommonReadDao<Person, Long> readDao;
+  private CommonReadDao<Role, Long> readDao;
   @Inject
   private CommonWriteDao<UniqueKeyIndex> uniqueKeyIndexWriteDao;
   @Inject
@@ -46,7 +50,7 @@ public class PersonServiceImpl implements PersonService {
   @Inject
   private CRUDObservable observable;
   @Inject
-  private RowCellIncrementor<Person, AutoId, String> idIncrementor;
+  private RowCellIncrementor<Role, AutoId, String> idIncrementor;
   private boolean autoIdInitialized = false;
   protected transient Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -61,7 +65,7 @@ public class PersonServiceImpl implements PersonService {
         return true;
       }
       catch (RuntimeException ex) {
-        logger.error("Could not initialize person auto id!", ex);
+        logger.error("Could not initialize role auto id!", ex);
         throw ex;
       }
     }
@@ -72,40 +76,43 @@ public class PersonServiceImpl implements PersonService {
 
   protected void checkAndInitializeAutoId() {
     if (!autoIdInitialized) {
-      autoIdInitialized = checkAndInitializeAutoId(KeyableObject.PERSON.name());
+      autoIdInitialized = checkAndInitializeAutoId(KeyableObject.ROLE.name());
     }
   }
 
-  protected UniqueKey getUniqueKeyOfIndexForPersonPrimaryEmail(Person person) {
-    final String primaryEmail = person.getPrimaryEmail();
-    return getUniqueKeyOfIndexForPrimaryEmail(primaryEmail);
+  protected UniqueKey getUniqueKeyOfIndexForRole(Role role) {
+    final String name = role.getName();
+    return getUniqueKeyOfIndexForRoleName(name);
   }
 
-  protected UniqueKey getUniqueKeyOfIndexForPrimaryEmail(final String primaryEmail) {
+  protected UniqueKey getUniqueKeyOfIndexForRoleName(final String name) {
     UniqueKey key = new UniqueKey();
-    key.setKey(primaryEmail);
-    key.setObject(KeyableObject.PERSON);
+    key.setKey(name);
+    key.setObject(KeyableObject.ROLE);
     return key;
   }
 
   @Override
-  public void save(Person person) {
+  public void create(Role role) {
     checkAndInitializeAutoId();
-    validatePerson(person);
+    validateRole(role);
+    final Date date = new Date();
+    role.setCreationDate(date);
+    role.setLastModifiedDate(date);
     try {
-      long nextId = idIncrementor.incrementAndGet(KeyableObject.PERSON.name(), -1l);
-      UniqueKey key = getUniqueKeyOfIndexForPersonPrimaryEmail(person);
+      long nextId = idIncrementor.incrementAndGet(KeyableObject.ROLE.name(), -1l);
+      UniqueKey key = getUniqueKeyOfIndexForRole(role);
       UniqueKeyIndex index = new UniqueKeyIndex();
       index.setObjId(String.valueOf(nextId));
       index.setId(key);
-      person.setId(nextId);
+      role.setId(nextId);
       uniqueKeyIndexWriteDao.save(index);
-      writeDao.save(person);
-      observable.notifyObserver(ObserverNotification.CREATE_PERSON, person);
+      writeDao.save(role);
+      observable.notifyObserver(ObserverNotification.CREATE_ROLE, role);
     }
     catch (IllegalArgumentException e) {
       String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
-          UniqueConstrainedField.PERSON_EMAIL;
+          UniqueConstrainedField.ROLE_NAME;
       throw new RuntimeException(message, e);
     }
     catch (Exception e) {
@@ -115,34 +122,36 @@ public class PersonServiceImpl implements PersonService {
   }
 
   @Override
-  public void update(Person person) {
-    if (person.getId() == null) {
-      throw new IllegalArgumentException("ID of person not set to be updated!");
+  public void update(Role role) {
+    if (role.getId() == null) {
+      throw new IllegalArgumentException("ID of role not set to be updated!");
     }
-    validatePerson(person);
-    Person oldPerson = readDao.getById(person.getId());
-    if (oldPerson == null) {
-      throw new IllegalArgumentException("Trying to update non-existent person!");
+    final Date date = new Date();
+    role.setLastModifiedDate(date);
+    validateRole(role);
+    Role oldRole = readDao.getById(role.getId());
+    if (oldRole == null) {
+      throw new IllegalArgumentException("Trying to update non-existent role!");
     }
     try {
-      if (!person.getPrimaryEmail().equals(oldPerson.getPrimaryEmail())) {
-        final UniqueKey oldIndexKey = getUniqueKeyOfIndexForPersonPrimaryEmail(oldPerson);
+      if (!role.getName().equals(oldRole.getName())) {
+        final UniqueKey oldIndexKey = getUniqueKeyOfIndexForRole(oldRole);
         UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(oldIndexKey);
         if (index == null) {
           index = new UniqueKeyIndex();
           index.setId(oldIndexKey);
-          index.setObjId(String.valueOf(person.getId()));
+          index.setObjId(String.valueOf(role.getId()));
         }
         uniqueKeyIndexWriteDao.delete(index);
-        index.setId(getUniqueKeyOfIndexForPersonPrimaryEmail(person));
+        index.setId(getUniqueKeyOfIndexForRole(role));
         uniqueKeyIndexWriteDao.save(index);
       }
-      writeDao.update(person);
-      observable.notifyObserver(ObserverNotification.UPDATE_PERSON, person);
+      writeDao.update(role);
+      observable.notifyObserver(ObserverNotification.UPDATE_ROLE, role);
     }
     catch (IllegalArgumentException e) {
       String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
-          UniqueConstrainedField.PERSON_EMAIL;
+          UniqueConstrainedField.ROLE_NAME;
       throw new RuntimeException(message, e);
     }
     catch (Exception e) {
@@ -152,69 +161,74 @@ public class PersonServiceImpl implements PersonService {
   }
 
   @Override
-  public void delete(Person person) {
+  public void delete(Role role) {
     try {
-      writeDao.delete(person);
-      observable.notifyObserver(ObserverNotification.DELETE_PERSON, person);
-      final UniqueKey indexKey = getUniqueKeyOfIndexForPersonPrimaryEmail(person);
+      writeDao.delete(role);
+      observable.notifyObserver(ObserverNotification.DELETE_ROLE, role);
+      final UniqueKey indexKey = getUniqueKeyOfIndexForRole(role);
       UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(indexKey);
       if (index != null) {
         uniqueKeyIndexWriteDao.delete(index);
       }
     }
     catch (Exception e) {
-      String message = ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" + UniqueConstrainedField.PERSON;
+      String message = ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" + UniqueConstrainedField.OTHER;
       throw new RuntimeException(message, e);
     }
   }
 
   @Override
-  public Person getById(Long personId) {
-    return readDao.getById(personId);
+  public Set<Role> getRolesByIds(Long... ids) {
+    return getRolesByIds(Arrays.asList(ids));
   }
 
   @Override
-  public Collection<Person> search(PersonFilter filter) {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public Set<Role> getRolesByIds(List<Long> ids) {
+    return readDao.getByIds(ids);
   }
 
   @Override
-  public Collection<Person> getAllPerson() {
-    return readDao.getAll();
-  }
-
-  @Override
-  public Person getPersonByEmail(String email) {
-    UniqueKey uniqueKey = getUniqueKeyOfIndexForPrimaryEmail(email);
+  public Role getRoleByName(String roleName) {
+    UniqueKey uniqueKey = getUniqueKeyOfIndexForRoleName(roleName);
     UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(uniqueKey);
     if (index != null) {
-      long personId = NumberUtils.toLong(index.getObjId(), -1l);
-      if (personId > -1) {
-        return getById(personId);
+      long roleId = NumberUtils.toLong(index.getObjId(), -1l);
+      if (roleId > -1) {
+        return readDao.getById(roleId);
       }
     }
     return null;
   }
 
   @Override
-  public void validatePerson(Person person) {
-    if (StringUtils.isEmpty(person.getPrimaryEmail())) {
-      throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.PERSON_EMAIL.
+  public Collection<Role> getAllRoles() {
+    return readDao.getAll();
+  }
+
+  @Override
+  public Collection<Role> search(RoleFilter filter) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public void validateRole(Role role) {
+    if (StringUtils.isEmpty(role.getName())) {
+      throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.ROLE_NAME.
           name());
     }
-    UniqueKey key = getUniqueKeyOfIndexForPersonPrimaryEmail(person);
+    UniqueKey key = getUniqueKeyOfIndexForRole(role);
     UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(key);
     if (index == null) {
       return;
     }
-    if (person.getId() != null) {
-      if (!String.valueOf(person.getId()).equals(index.getObjId())) {
-        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.PERSON_EMAIL.
+    if (role.getId() != null) {
+      if (!String.valueOf(role.getId()).equals(index.getObjId())) {
+        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.ROLE_NAME.
             name());
       }
     }
     else {
-      throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.PERSON_EMAIL.
+      throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.ROLE_NAME.
           name());
     }
   }
