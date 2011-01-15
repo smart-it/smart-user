@@ -41,6 +41,8 @@ class OrganizationResourceImpl extends AbstractFeedClientResource<Resource<? ext
   public OrganizationResourceImpl(ResourceLink orgLink, Resource referrer) {
     super(referrer, orgLink);
     final ResourceLink altLink = getRelatedResourceUris().getFirst(Link.REL_ALTERNATE);
+    System.out.println("get Uri--------------------- " + altLink.getUri());
+    System.out.println("get mime type --------------" + altLink.getMimeType());
     addNestedResource(REL_ORG, new SimpleResourceImpl<com.smartitengineering.user.client.impl.domain.Organization>(
         this, altLink.getUri(), altLink.getMimeType(), com.smartitengineering.user.client.impl.domain.Organization.class,
         null, false, null, null));
