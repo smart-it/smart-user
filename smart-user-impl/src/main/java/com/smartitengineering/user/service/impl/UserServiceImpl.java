@@ -91,9 +91,9 @@ public class UserServiceImpl extends AbstractCommonDaoImpl<User> implements User
   public Collection<User> search(UserFilter filter) {
     QueryParameter qp;
     List<QueryParameter> queryParameters = new ArrayList<QueryParameter>();
-    if (!StringUtils.isEmpty(filter.getUsername())) {
+    if (!StringUtils.isEmpty(filter.getName())) {
       qp = QueryParameterFactory.getEqualPropertyParam("username",
-                                                       filter.getUsername());
+                                                       filter.getName());
       queryParameters.add(qp);
     }
     Collection<User> users = new HashSet<User>();
