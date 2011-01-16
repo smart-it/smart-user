@@ -13,6 +13,7 @@ public class UserFilter extends AbstractFilter{
   
   protected boolean disjunction;
   protected String organizationName;
+  protected String userName;
   
 
   public String getSeparator() {
@@ -29,5 +30,14 @@ public class UserFilter extends AbstractFilter{
 
   public void setOrganizationName(String organizationName) {
     this.organizationName = organizationName;
-  }  
+  }
+
+  public String getUserName() {
+    return userName;
+  }
+
+  public void setUserName(String userName) {
+    this.userName = userName;
+  }
+
 }

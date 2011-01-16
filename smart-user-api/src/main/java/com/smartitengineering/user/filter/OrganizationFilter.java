@@ -12,6 +12,7 @@ package com.smartitengineering.user.filter;
 public class OrganizationFilter extends AbstractFilter{
 
   private String organizationUniqueShortName;
+  private  String name;
 
   public String getOrganizationUniqueShortName() {
     if (organizationUniqueShortName == null) {
@@ -23,4 +24,12 @@ public class OrganizationFilter extends AbstractFilter{
   public void setOrganizationUniqueShortName(String organizationUniqueShortName) {
     this.organizationUniqueShortName = organizationUniqueShortName;
   }
-}
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+  }

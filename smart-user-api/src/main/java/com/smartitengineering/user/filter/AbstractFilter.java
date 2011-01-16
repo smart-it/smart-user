@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.user.filter;
 
 import java.util.Date;
@@ -13,8 +12,8 @@ import org.apache.commons.lang.time.DateFormatUtils;
  * @author saumitra
  */
 public class AbstractFilter {
+
   protected String id;
-  protected String name;
   protected String sortBy;
   protected Order sortOrder;
   protected Integer count;
@@ -52,17 +51,6 @@ public class AbstractFilter {
     this.sortBy = sortBy;
   }
 
-  public String getName() {
-    if(name == null){
-      name = "";
-    }
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
   public Order getSortOrder() {
     return sortOrder;
   }
@@ -70,7 +58,6 @@ public class AbstractFilter {
   public void setSortOrder(Order sortOrder) {
     this.sortOrder = sortOrder;
   }
-
 
   public static enum Order {
 
@@ -80,5 +67,4 @@ public class AbstractFilter {
   public static String formatDateForQuery(Date date) {
     return DateFormatUtils.ISO_DATETIME_FORMAT.format(date);
   }
-
 }
