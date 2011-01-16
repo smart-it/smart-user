@@ -5,11 +5,14 @@
 package com.smartitengineering.user.service.impl.hbase;
 
 import com.google.inject.Inject;
+import com.smartitengineering.common.dao.search.CommonFreeTextSearchDao;
 import com.smartitengineering.dao.common.CommonReadDao;
 import com.smartitengineering.dao.common.CommonWriteDao;
+import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hbase.spi.RowCellIncrementor;
 import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
+import com.smartitengineering.user.filter.AbstractFilter.Order;
 import com.smartitengineering.user.filter.PersonFilter;
 import com.smartitengineering.user.observer.CRUDObservable;
 import com.smartitengineering.user.observer.ObserverNotification;
@@ -22,6 +25,7 @@ import com.smartitengineering.user.service.impl.hbase.domain.UniqueKeyIndex;
 import java.util.Collection;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.solr.client.solrj.util.ClientUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +49,8 @@ public class PersonServiceImpl implements PersonService {
   private CommonReadDao<AutoId, String> autoIdReadDao;
   @Inject
   private CRUDObservable observable;
+  @Inject
+  protected CommonFreeTextSearchDao<Person> freeTextSearchDao;
   @Inject
   private RowCellIncrementor<Person, AutoId, String> idIncrementor;
   private boolean autoIdInitialized = false;
@@ -175,7 +181,56 @@ public class PersonServiceImpl implements PersonService {
 
   @Override
   public Collection<Person> search(PersonFilter filter) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    StringBuilder q = new StringBuilder();
+    final String id = filter.getId();
+    if (StringUtils.isNotBlank(id)) {
+      q.append("id: ").append(ClientUtils.escapeQueryChars(id)).append('*');
+    }
+    final String username = filter.getName().toString();
+    if (StringUtils.isNotBlank(username)) {
+      q.append("+name: ").append(username).append('*');
+    }
+    final String nationalId = filter.getNationalId();
+    if (StringUtils.isNotBlank(nationalId)) {
+      q.append("+nationalId: ").append(nationalId).append('*');
+    }
+    final String sposeName = filter.getSposeNmae();
+    if (StringUtils.isNotBlank(sposeName)) {
+      q.append("+sposeName: ").append(sposeName).append('*');
+    }
+    final String email = filter.getEmail();
+    if (StringUtils.isNotBlank(email)) {
+      q.append("+email: ").append(email).append('*');
+    }
+    final String cellNo = filter.getCellNo();
+    if (StringUtils.isNotBlank(cellNo)) {
+      q.append("+cellNo: ").append(cellNo).append('*');
+    }
+    if (filter.getSortBy() == null) {
+      filter.setSortBy("id");
+    }
+    if (filter.getSortOrder() == null) {
+      filter.setSortOrder(Order.ASC);
+    }
+    if (filter.getCount() == null) {
+      logger.info("count is null");
+    }
+    else {
+      logger.info("count is " + filter.getCount());
+    }
+    logger.info(">>>>>>>>>>>QUERY>>>>>>>>>>"+q.toString());
+    if (filter.getCount() != null && filter.getIndex() != null) {
+
+      return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
+          getMaxResultsParam(filter.getCount()), QueryParameterFactory.getFirstResultParam(filter.getIndex() * filter.
+          getCount()), QueryParameterFactory.getOrderByParam(filter.getSortBy(), com.smartitengineering.dao.common.queryparam.Order.
+          valueOf(filter.getSortOrder().name())));
+    }
+    else {
+      return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
+          getOrderByParam(filter.getSortBy(), com.smartitengineering.dao.common.queryparam.Order.valueOf(filter.
+          getSortOrder().name())));
+    }
   }
 
   @Override
