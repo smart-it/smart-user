@@ -4,25 +4,30 @@
  */
 package com.smartitengineering.user.filter;
 
+
 /**
  *
  * @author modhu7
  */
-public class UserFilter {
+public class UserFilter extends AbstractFilter{
+  
+  protected boolean disjunction;
+  protected String organizationName;
+  
 
-    private String username;
+  public String getSeparator() {
+    return (isDisjunction())? " OR " : " AND ";
+  }
 
-    public String getUsername() {
-        if (username == null) {
-            return "";
-        }
-        return username;
-    }
+  public boolean isDisjunction() {
+    return disjunction;
+  }
 
-    public void setUsername(String username) {
-        if (username == null) {
-            return;
-        }
-        this.username = username;
-    }
+  public String getOrganizationName() {
+    return organizationName;
+  }
+
+  public void setOrganizationName(String organizationName) {
+    this.organizationName = organizationName;
+  }  
 }
