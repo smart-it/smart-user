@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.smartitengineering.user.ws.resources;
+package com.smartitengineering.user.service;
 
 import com.smartitengineering.user.service.AuthorizationService;
 import com.smartitengineering.user.service.OrganizationService;

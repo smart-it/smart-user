@@ -8,6 +8,7 @@ package com.smartitengineering.user.ws.resources;
  *
  * @author russel
  */
+import com.smartitengineering.user.service.Services;
 import com.smartitengineering.user.domain.Address;
 
 import com.smartitengineering.user.domain.Organization;
