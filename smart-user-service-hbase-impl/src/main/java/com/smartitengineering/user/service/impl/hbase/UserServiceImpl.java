@@ -5,11 +5,14 @@
 package com.smartitengineering.user.service.impl.hbase;
 
 import com.google.inject.Inject;
+import com.smartitengineering.common.dao.search.CommonFreeTextSearchDao;
 import com.smartitengineering.dao.common.CommonReadDao;
 import com.smartitengineering.dao.common.CommonWriteDao;
+import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hbase.spi.RowCellIncrementor;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.domain.User;
+import com.smartitengineering.user.filter.AbstractFilter.Order;
 import com.smartitengineering.user.filter.UserFilter;
 import com.smartitengineering.user.observer.CRUDObservable;
 import com.smartitengineering.user.observer.ObserverNotification;
@@ -27,6 +30,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.solr.client.solrj.util.ClientUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +56,8 @@ public class UserServiceImpl implements UserService {
   private CRUDObservable observable;
   @Inject
   private RowCellIncrementor<User, AutoId, String> idIncrementor;
+  @Inject
+  protected CommonFreeTextSearchDao<User> freeTextSearchDao;
   private boolean autoIdInitialized = false;
   protected transient Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -241,12 +247,51 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Collection<User> search(UserFilter filter) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    StringBuilder q = new StringBuilder();
+    final String id = filter.getId();
+    if (StringUtils.isNotBlank(id)) {
+      q.append("id: ").append(ClientUtils.escapeQueryChars(id)).append('*');
+    }
+    final String username = filter.getName();
+    if (StringUtils.isNotBlank(username)) {
+      q.append("+username: ").append(username).append('*');
+    }
+    final String orgName = filter.getOrganizationName();
+    if (StringUtils.isNotBlank(orgName)) {
+      q.append("+organization: ").append(orgName);
+    }
+    if (filter.getSortBy() == null) {
+      filter.setSortBy("id");
+    }
+    if (filter.getSortOrder() == null) {
+      filter.setSortOrder(Order.ASC);
+    }
+    if (filter.getCount() == null) {
+      logger.info("count is null");
+    }
+    else {
+      logger.info("count is " + filter.getCount());
+    }
+    logger.info(">>>>>>>>>>>QUERY>>>>>>>>>>"+q.toString());
+    if (filter.getCount() != null && filter.getIndex() != null) {
+
+      return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
+          getMaxResultsParam(filter.getCount()), QueryParameterFactory.getFirstResultParam(filter.getIndex() * filter.
+          getCount()), QueryParameterFactory.getOrderByParam(filter.getSortBy(), com.smartitengineering.dao.common.queryparam.Order.
+          valueOf(filter.getSortOrder().name())));
+    }
+    else {
+      return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
+          getOrderByParam(filter.getSortBy(), com.smartitengineering.dao.common.queryparam.Order.valueOf(filter.
+          getSortOrder().name())));
+    }
   }
 
   @Override
   public Collection<User> getUserByOrganization(String organizationName) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    UserFilter userFilter = new UserFilter();
+    userFilter.setOrganizationName(organizationName);
+    return search(userFilter);
   }
 
   @Override

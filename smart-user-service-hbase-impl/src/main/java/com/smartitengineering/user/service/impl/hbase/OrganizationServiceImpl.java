@@ -5,10 +5,13 @@
 package com.smartitengineering.user.service.impl.hbase;
 
 import com.google.inject.Inject;
+import com.smartitengineering.common.dao.search.CommonFreeTextSearchDao;
 import com.smartitengineering.dao.common.CommonReadDao;
 import com.smartitengineering.dao.common.CommonWriteDao;
+import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
+import com.smartitengineering.user.filter.AbstractFilter.Order;
 import com.smartitengineering.user.filter.OrganizationFilter;
 import com.smartitengineering.user.observer.CRUDObservable;
 import com.smartitengineering.user.observer.ObserverNotification;
@@ -17,6 +20,9 @@ import com.smartitengineering.user.service.OrganizationService;
 import java.util.Collection;
 import java.util.Date;
 import org.apache.commons.lang.StringUtils;
+import org.apache.solr.client.solrj.util.ClientUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -24,12 +30,16 @@ import org.apache.commons.lang.StringUtils;
  */
 public class OrganizationServiceImpl implements OrganizationService {
 
+  public static final Logger logger = LoggerFactory.getLogger(OrganizationServiceImpl.class);
+
   @Inject
   private CommonWriteDao<Organization> writeDao;
   @Inject
   private CommonReadDao<Organization, String> readDao;
   @Inject
   private CRUDObservable observable;
+  @Inject
+  protected CommonFreeTextSearchDao<Organization> freeTextSearchDao;
 
   @Override
   public void save(Organization organization) {
@@ -82,7 +92,40 @@ public class OrganizationServiceImpl implements OrganizationService {
 
   @Override
   public Collection<Organization> search(OrganizationFilter organizationFilter) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    StringBuilder q = new StringBuilder();
+    final String id = organizationFilter.getOrganizationUniqueShortName();
+    if (StringUtils.isNotBlank(id)) {
+      q.append("id: ").append("org: ").append(ClientUtils.escapeQueryChars(id)).append('*');
+    }
+    final String name = organizationFilter.getName();
+    if (StringUtils.isNotBlank(name)) {
+      q.append("+name: ").append(ClientUtils.escapeQueryChars(id)).append('*');
+    }
+    if (organizationFilter.getSortBy() == null) {
+      organizationFilter.setSortBy("id");
+    }
+    if (organizationFilter.getSortOrder() == null) {
+      organizationFilter.setSortOrder(Order.ASC);
+    }
+    if (organizationFilter.getCount() == null) {
+      logger.info("count is null");
+    }
+    else {
+      logger.info("count is " + organizationFilter.getCount());
+    }
+    logger.info(">>>>>>>>>>>QUERY>>>>>>>>>>"+q.toString());
+    if (organizationFilter.getCount() != null && organizationFilter.getIndex() != null) {
+
+      return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
+          getMaxResultsParam(organizationFilter.getCount()), QueryParameterFactory.getFirstResultParam(organizationFilter.getIndex() * organizationFilter.
+          getCount()), QueryParameterFactory.getOrderByParam(organizationFilter.getSortBy(), com.smartitengineering.dao.common.queryparam.Order.
+          valueOf(organizationFilter.getSortOrder().name())));
+    }
+    else {
+      return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
+          getOrderByParam(organizationFilter.getSortBy(), com.smartitengineering.dao.common.queryparam.Order.valueOf(organizationFilter.
+          getSortOrder().name())));
+    }
   }
 
   @Override
@@ -93,7 +136,10 @@ public class OrganizationServiceImpl implements OrganizationService {
 
   @Override
   public Organization getOrganizationByUniqueShortName(String uniqueShortName) {
-    return readDao.getById(uniqueShortName);
+    OrganizationFilter organizationFilter = new OrganizationFilter();
+    organizationFilter.setOrganizationUniqueShortName(uniqueShortName);
+    Collection<Organization> organizations = search(organizationFilter);
+    return organizations.iterator().next();
   }
 
   @Override
