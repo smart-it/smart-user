@@ -29,7 +29,7 @@ public class UserAdapterHelper extends AbstractAdapterHelper<User, MultivalueMap
   protected void mergeFromF2T(User fromBean,
                               MultivalueMap<String, Object> toBean) {
     toBean.addValue("id", new StringBuilder(PREFIX).append(fromBean.getId().toString()).toString());
-    toBean.addValue("name", fromBean.getUsername().toString());
+    toBean.addValue("userName", fromBean.getUsername().toString());
     toBean.addValue("organization", fromBean.getOrganization().toString());
     toBean.addValue("lastModifiedDate", fromBean.getLastModifiedDate().toString());
     toBean.addValue("creationDate", fromBean.getCreationDate().toString());
