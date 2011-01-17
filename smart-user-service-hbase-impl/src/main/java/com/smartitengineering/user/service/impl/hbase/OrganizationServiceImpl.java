@@ -99,7 +99,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
     final String name = organizationFilter.getName();
     if (StringUtils.isNotBlank(name)) {
-      q.append("+name: ").append(ClientUtils.escapeQueryChars(id)).append('*');
+      q.append(" +name: ").append(ClientUtils.escapeQueryChars(id)).append('*');
     }
     if (organizationFilter.getSortBy() == null) {
       organizationFilter.setSortBy("id");
@@ -131,7 +131,11 @@ public class OrganizationServiceImpl implements OrganizationService {
   @Override
   public Collection<Organization> getOrganizations(String organizationNameLike, String shortName, boolean isSmallerThan,
                                                    int count) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    OrganizationFilter organizationFilter = new OrganizationFilter();
+    organizationFilter.setName(organizationNameLike);
+    organizationFilter.setOrganizationUniqueShortName(shortName);
+    organizationFilter.setCount(count);
+    return search(organizationFilter);
   }
 
   @Override

@@ -12,10 +12,12 @@ import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hbase.spi.RowCellIncrementor;
 import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
+import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.observer.CRUDObservable;
 import com.smartitengineering.user.observer.ObserverNotification;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.PrivilegeService;
+import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.user.service.impl.hbase.domain.AutoId;
 import com.smartitengineering.user.service.impl.hbase.domain.KeyableObject;
 import com.smartitengineering.user.service.impl.hbase.domain.UniqueKey;
@@ -35,6 +37,8 @@ import org.slf4j.LoggerFactory;
  * @author imyousuf
  */
 public class PrivilegeServiceImpl implements PrivilegeService {
+
+  private UserService userService;
 
   @Inject
   private CommonWriteDao<Privilege> writeDao;
@@ -196,8 +200,8 @@ public class PrivilegeServiceImpl implements PrivilegeService {
   public Collection<Privilege> getPrivilegesByOrganizationNameAndObjectID(String organizationName, String objectID) {
     StringBuilder q = new StringBuilder();
     q.append("id: ").append(ClientUtils.escapeQueryChars("privilege: ")).append("*");
-    q.append("+parentOrganization: ").append(organizationName).append('*');
-    q.append("+objectID: ").append(objectID).append('*');
+    q.append(" +parentOrganization: ").append(organizationName).append('*');
+    q.append(" +objectID: ").append(objectID).append('*');
     return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
         getOrderByParam("parentOrganization", com.smartitengineering.dao.common.queryparam.Order.valueOf("ASC")));
   }
@@ -206,8 +210,8 @@ public class PrivilegeServiceImpl implements PrivilegeService {
   public Privilege getPrivilegeByOrganizationAndPrivilegeName(String organizationName, String privilegename) {
     StringBuilder q = new StringBuilder();
     q.append("id: ").append(ClientUtils.escapeQueryChars("privilege: ")).append("*");
-    q.append("+parentOrganization: ").append(organizationName).append('*');
-    q.append("+name: ").append(privilegename).append('*');
+    q.append(" +parentOrganization: ").append(organizationName).append('*');
+    q.append(" +name: ").append(privilegename).append('*');
     Collection<Privilege> priveleges = freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
         getOrderByParam("parentOrganization", com.smartitengineering.dao.common.queryparam.Order.valueOf("ASC")));
     return priveleges.iterator().next();
@@ -215,14 +219,15 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 
   @Override
   public Collection<Privilege> getPrivilegesByOrganizationAndUser(String organizationName, String userName) {
-     throw new UnsupportedOperationException("Not supported yet.");
+     User user = userService.getUserByOrganizationAndUserName(organizationName, userName);
+    return user.getPrivileges();
   }
 
   @Override
   public Collection<Privilege> getPrivilegesByOrganization(String organization) {
     StringBuilder q = new StringBuilder();
     q.append("id: ").append(ClientUtils.escapeQueryChars("privilege: ")).append("*");
-    q.append("+parentOrganization: ").append(organization).append('*');
+    q.append(" +parentOrganization: ").append(organization).append('*');
     return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
         getOrderByParam("parentOrganization", com.smartitengineering.dao.common.queryparam.Order.valueOf("ASC")));
   }

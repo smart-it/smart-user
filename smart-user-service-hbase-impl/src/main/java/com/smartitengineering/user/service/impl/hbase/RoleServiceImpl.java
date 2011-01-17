@@ -5,8 +5,10 @@
 package com.smartitengineering.user.service.impl.hbase;
 
 import com.google.inject.Inject;
+import com.smartitengineering.common.dao.search.CommonFreeTextSearchDao;
 import com.smartitengineering.dao.common.CommonReadDao;
 import com.smartitengineering.dao.common.CommonWriteDao;
+import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hbase.spi.RowCellIncrementor;
 import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
@@ -26,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.solr.client.solrj.util.ClientUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +50,8 @@ public class RoleServiceImpl implements RoleService {
   private CommonWriteDao<AutoId> autoIdWriteDao;
   @Inject
   private CommonReadDao<AutoId, String> autoIdReadDao;
+  @Inject
+  protected CommonFreeTextSearchDao<Role> freeTextSearchDao;
   @Inject
   private CRUDObservable observable;
   @Inject
@@ -207,7 +212,14 @@ public class RoleServiceImpl implements RoleService {
 
   @Override
   public Collection<Role> search(RoleFilter filter) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    StringBuilder q = new StringBuilder();
+    q.append("id: ").append(ClientUtils.escapeQueryChars("role: ")).append("*");
+    final String name = filter.getRoleName();
+    if (StringUtils.isNotBlank(name)) {
+      q.append(" +name: ").append(ClientUtils.escapeQueryChars(name)).append('*');
+    }
+    return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
+        getOrderByParam("name", com.smartitengineering.dao.common.queryparam.Order.valueOf("ASC")));
   }
 
   @Override

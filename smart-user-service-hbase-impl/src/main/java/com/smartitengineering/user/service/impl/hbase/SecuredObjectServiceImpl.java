@@ -224,7 +224,7 @@ public class SecuredObjectServiceImpl implements SecuredObjectService {
   public Collection<SecuredObject> getByOrganization(String organizationName) {
     StringBuilder q = new StringBuilder();
     q.append("id: ").append(ClientUtils.escapeQueryChars("securedObject: ")).append("*");
-    q.append("+organization: ").append(organizationName).append('*');
+    q.append(" +organization: ").append(organizationName).append('*');
     return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
         getOrderByParam("organization", com.smartitengineering.dao.common.queryparam.Order.valueOf("ASC")));
   }
