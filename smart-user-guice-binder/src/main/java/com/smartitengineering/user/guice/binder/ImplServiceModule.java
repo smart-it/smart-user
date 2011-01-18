@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.smartitengineering.smartuser.guicebinder;
+package com.smartitengineering.user.guice.binder;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;

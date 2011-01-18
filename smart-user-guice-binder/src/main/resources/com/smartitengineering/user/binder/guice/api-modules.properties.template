@@ -1,5 +1,5 @@
 contextName=com.smartitengineering.user.service
-modules=com.smartitengineering.smartuser.guicebinder.APIModule,com.smartitengineering.smartuser.guicebinder.ImplServiceModule
+modules=com.smartitengineering.user.guice.binder.APIModule,com.smartitengineering.user.guice.binder.ImplServiceModule
 ignoreMissingDependency=false
 com.smartitengineering.cms.globalNamespace=com.smartitengineering
 solrMasterUri=http://localhost:8080/solr/
