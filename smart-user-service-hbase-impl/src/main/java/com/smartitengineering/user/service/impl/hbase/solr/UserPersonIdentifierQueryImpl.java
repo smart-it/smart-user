@@ -4,18 +4,20 @@
  */
 
 package com.smartitengineering.user.service.impl.hbase.solr;
+
 import com.smartitengineering.common.dao.search.solr.spi.ObjectIdentifierQuery;
-import com.smartitengineering.user.domain.Organization;
+import com.smartitengineering.user.domain.UserPerson;
 import org.apache.solr.client.solrj.util.ClientUtils;
 
 /**
  *
  * @author saumitra
  */
-public class OrgIdentifierQueryImpl implements ObjectIdentifierQuery<Organization>{
+public class UserPersonIdentifierQueryImpl implements ObjectIdentifierQuery<UserPerson>{
 
   @Override
-  public String getQuery(Organization object) {
-    return new StringBuilder("id: org\\:").append(ClientUtils.escapeQueryChars(object.getId().toString())).toString();
+  public String getQuery(UserPerson object) {
+    return new StringBuilder("id: userPerson\\:").append(ClientUtils.escapeQueryChars(object.getId().toString())).toString();
   }
+
 }
