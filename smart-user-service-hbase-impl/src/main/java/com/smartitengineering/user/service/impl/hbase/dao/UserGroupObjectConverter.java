@@ -35,7 +35,7 @@ public class UserGroupObjectConverter extends AbstractObjectRowConverter<UserGro
   private static final byte[] FAMILY_SELF = Bytes.toBytes("self");
   private static final byte[] FAMILY_ROLES = Bytes.toBytes("roles");
   private static final byte[] FAMILY_PRIVILEGES = Bytes.toBytes("privileges");
-  private static final byte[] FAMILY_USERS = Bytes.toBytes("privileges");
+  private static final byte[] FAMILY_USERS = Bytes.toBytes("users");
   private static final byte[] CELL_PARENT_ORG = Bytes.toBytes("parentOrg");
   private static final byte[] CELL_CREATION_DATE = Bytes.toBytes("creationDate");
   private static final byte[] CELL_LAST_MODIFIED_DATE = Bytes.toBytes("lastModifiedDate");
