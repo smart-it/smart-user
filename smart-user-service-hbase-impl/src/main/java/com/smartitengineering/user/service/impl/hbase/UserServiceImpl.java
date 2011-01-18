@@ -297,7 +297,11 @@ public class UserServiceImpl implements UserService {
   @Override
   public Collection<User> getUserByOrganization(String organizationName, String userName, boolean isSmallerThan,
                                                 int count) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    UserFilter userFilter = new UserFilter();
+    userFilter.setOrganizationName(organizationName);
+    userFilter.setUserName(userName);
+    userFilter.setCount(count);
+    return search(userFilter);
   }
 
   @Override

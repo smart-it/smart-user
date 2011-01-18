@@ -15,6 +15,7 @@ import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.domain.UserPerson;
 import com.smartitengineering.user.filter.AbstractFilter.Order;
+import com.smartitengineering.user.filter.UserFilter;
 import com.smartitengineering.user.filter.UserPersonFilter;
 import com.smartitengineering.user.observer.CRUDObservable;
 import com.smartitengineering.user.observer.ObserverNotification;
@@ -291,11 +292,11 @@ public class UserPersonServiceImpl implements UserPersonService {
     }
     final String username = filter.getUsername();
     if (StringUtils.isNotBlank(username)) {
-      q.append("+userName: ").append(username).append('*');
+      q.append(" +userName: ").append(username).append('*');
     }
     final String orgName = filter.getOrganization();
     if (StringUtils.isNotBlank(orgName)) {
-      q.append("+organization: ").append(orgName).append('*');
+      q.append(" +organization: ").append(orgName).append('*');
     }
     if (filter.getSortBy() == null) {
       filter.setSortBy("id");
@@ -335,7 +336,12 @@ public class UserPersonServiceImpl implements UserPersonService {
   @Override
   public Collection<UserPerson> getByOrganization(String organizationUniqueShortName, String userName,
                                                   boolean isSmallerThan, int count) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    OrganizationServiceImpl organizationServiceImpl = new OrganizationServiceImpl();
+    UserPersonFilter userPersonFilter = new UserPersonFilter();
+    userPersonFilter.setOrganization(organizationServiceImpl.getOrganizationByUniqueShortName(organizationUniqueShortName).getName());
+    userPersonFilter.setCount(count);
+    userPersonFilter.setUsername(userName);
+    return search(userPersonFilter);
   }
 
   @Override

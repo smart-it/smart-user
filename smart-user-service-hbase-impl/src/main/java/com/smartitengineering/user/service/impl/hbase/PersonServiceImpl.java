@@ -188,23 +188,23 @@ public class PersonServiceImpl implements PersonService {
     }
     final String username = filter.getName().toString();
     if (StringUtils.isNotBlank(username)) {
-      q.append("+name: ").append(username).append('*');
+      q.append(" +name: ").append(username).append('*');
     }
     final String nationalId = filter.getNationalId();
     if (StringUtils.isNotBlank(nationalId)) {
-      q.append("+nationalId: ").append(nationalId).append('*');
+      q.append(" +nationalId: ").append(nationalId).append('*');
     }
     final String sposeName = filter.getSposeNmae();
     if (StringUtils.isNotBlank(sposeName)) {
-      q.append("+sposeName: ").append(sposeName).append('*');
+      q.append(" +sposeName: ").append(sposeName).append('*');
     }
     final String email = filter.getEmail();
     if (StringUtils.isNotBlank(email)) {
-      q.append("+email: ").append(email).append('*');
+      q.append(" +email: ").append(email).append('*');
     }
     final String cellNo = filter.getCellNo();
     if (StringUtils.isNotBlank(cellNo)) {
-      q.append("+cellNo: ").append(cellNo).append('*');
+      q.append(" +cellNo: ").append(cellNo).append('*');
     }
     if (filter.getSortBy() == null) {
       filter.setSortBy("id");

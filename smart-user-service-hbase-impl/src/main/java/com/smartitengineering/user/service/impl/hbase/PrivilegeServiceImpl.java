@@ -202,8 +202,8 @@ public class PrivilegeServiceImpl implements PrivilegeService {
   public Collection<Privilege> getPrivilegesByOrganizationNameAndObjectID(String organizationName, String objectID) {
     StringBuilder q = new StringBuilder();
     q.append("id: ").append(ClientUtils.escapeQueryChars("privilege: ")).append("*");
-    q.append("+parentOrganization: ").append(organizationName).append('*');
-    q.append("+objectID: ").append(objectID).append('*');
+    q.append(" +parentOrganization: ").append(organizationName).append('*');
+    q.append(" +objectID: ").append(objectID).append('*');
     return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
         getOrderByParam("parentOrganization", Order.ASC));
   }
@@ -212,10 +212,10 @@ public class PrivilegeServiceImpl implements PrivilegeService {
   public Privilege getPrivilegeByOrganizationAndPrivilegeName(String organizationName, String privilegename) {
     StringBuilder q = new StringBuilder();
     q.append("id: ").append(ClientUtils.escapeQueryChars("privilege: ")).append("*");
-    q.append("+parentOrganization: ").append(organizationName).append('*');
-    q.append("+name: ").append(privilegename).append('*');
-    Collection<Privilege> priveleges = freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.
-        toString()), QueryParameterFactory.getOrderByParam("parentOrganization", Order.ASC));
+    q.append(" +parentOrganization: ").append(organizationName).append('*');
+    q.append(" +name: ").append(privilegename).append('*');
+    Collection<Privilege> priveleges = freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
+        getOrderByParam("parentOrganization", Order.ASC));
     return priveleges.iterator().next();
   }
 
@@ -232,7 +232,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
   public Collection<Privilege> getPrivilegesByOrganization(String organization) {
     StringBuilder q = new StringBuilder();
     q.append("id: ").append(ClientUtils.escapeQueryChars("privilege: ")).append("*");
-    q.append("+parentOrganization: ").append(organization).append('*');
+    q.append(" +parentOrganization: ").append(organization).append('*');
     return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
         getOrderByParam("parentOrganization", com.smartitengineering.dao.common.queryparam.Order.valueOf("ASC")));
   }

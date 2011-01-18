@@ -202,7 +202,7 @@ public class UserGroupServiceImpl implements UserGroupService {
   public Collection<UserGroup> getByOrganizationName(String organizationName) {
     StringBuilder q = new StringBuilder();
     q.append("id: ").append(ClientUtils.escapeQueryChars("userGroup: ")).append("*");
-    q.append("+organization: ").append(organizationName).append('*');
+    q.append(" +organization: ").append(organizationName).append('*');
     return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
         getOrderByParam("organization", com.smartitengineering.dao.common.queryparam.Order.valueOf("ASC")));
 
@@ -212,7 +212,7 @@ public class UserGroupServiceImpl implements UserGroupService {
   public Collection<UserGroup> getUserGroupsByUser(User user) {
     StringBuilder q = new StringBuilder();
     q.append("id: ").append(ClientUtils.escapeQueryChars("userGroup: ")).append("*");
-    q.append("+userName: ").append(user.getUsername()).append('*');
+    q.append(" +userName: ").append(user.getUsername()).append('*');
     return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
         getOrderByParam("userName", com.smartitengineering.dao.common.queryparam.Order.valueOf("ASC")));
   }
