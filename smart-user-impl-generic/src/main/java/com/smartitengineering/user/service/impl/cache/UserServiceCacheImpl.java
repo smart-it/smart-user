@@ -37,6 +37,7 @@ public class UserServiceCacheImpl implements UserService {
   private UserService primaryService;
   @Inject
   private CacheServiceProvider<Long, User> cacheProvider;
+  @Inject
   private CacheServiceProvider<String, Long> nameCacheProvider;
   private transient final Logger logger = LoggerFactory.getLogger(getClass());
   private final Mutex<Long> mutex = CacheAPIFactory.<Long>getMutex();

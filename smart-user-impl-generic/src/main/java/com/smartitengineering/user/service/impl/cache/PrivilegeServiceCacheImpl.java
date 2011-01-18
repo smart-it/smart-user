@@ -35,6 +35,7 @@ public class PrivilegeServiceCacheImpl implements PrivilegeService {
   private PrivilegeService primaryService;
   @Inject
   private CacheServiceProvider<Long, Privilege> cacheProvider;
+  @Inject
   private CacheServiceProvider<String, Long> nameCacheProvider;
   private transient final Logger logger = LoggerFactory.getLogger(getClass());
   private final Mutex<Long> mutex = CacheAPIFactory.<Long>getMutex();

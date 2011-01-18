@@ -36,6 +36,7 @@ public class RoleServiceCacheImpl implements RoleService {
   private RoleService primaryService;
   @Inject
   private CacheServiceProvider<Long, Role> cacheProvider;
+  @Inject
   private CacheServiceProvider<String, Long> nameCacheProvider;
   private transient final Logger logger = LoggerFactory.getLogger(getClass());
   private final Mutex<Long> mutex = CacheAPIFactory.<Long>getMutex();

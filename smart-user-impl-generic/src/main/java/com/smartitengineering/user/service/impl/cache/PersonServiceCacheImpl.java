@@ -28,6 +28,7 @@ public class PersonServiceCacheImpl implements PersonService {
   private PersonService primaryService;
   @Inject
   private CacheServiceProvider<Long, Person> cacheProvider;
+  @Inject
   private CacheServiceProvider<String, Long> nameCacheProvider;
   private transient final Logger logger = LoggerFactory.getLogger(getClass());
   private final Mutex<Long> mutex = CacheAPIFactory.<Long>getMutex();
