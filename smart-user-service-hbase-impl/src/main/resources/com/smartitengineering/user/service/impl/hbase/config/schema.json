@@ -1,0 +1,97 @@
+[
+  {
+    "tableName": "user_organization",
+    "columnFamilyConfigurations": [
+      {
+        "familyName": "self"
+      }
+    ]
+  }
+  , {
+    "tableName": "user_person",
+    "columnFamilyConfigurations": [
+      {
+        "familyName": "self"
+      }
+    ]
+  }
+  , {
+    "tableName": "user_autoids",
+    "columnFamilyConfigurations": [
+      {
+        "familyName": "self"
+      }
+    ]
+  }
+  , {
+    "tableName": "user_privilege",
+    "columnFamilyConfigurations": [
+      {
+        "familyName": "self"
+      }
+    ]
+  }
+  , {
+    "tableName": "user_role",
+    "columnFamilyConfigurations": [
+      {
+        "familyName": "self"
+      }
+    ]
+  }
+  , {
+    "tableName": "user_secured_object",
+    "columnFamilyConfigurations": [
+      {
+        "familyName": "self"
+      }
+    ]
+  }
+  , {
+    "tableName": "user_unique_key_index",
+    "columnFamilyConfigurations": [
+      {
+        "familyName": "self"
+      }
+    ]
+  }
+  , {
+    "tableName": "user_user_group",
+    "columnFamilyConfigurations": [
+      {
+        "familyName": "self"
+      }
+      , {
+        "familyName": "roles"
+      }
+      , {
+        "familyName": "privileges"
+      }
+      , {
+        "familyName": "users"
+      }
+    ]
+  }
+  , {
+    "tableName": "user_user_person",
+    "columnFamilyConfigurations": [
+      {
+        "familyName": "self"
+      }
+    ]
+  }
+  , {
+    "tableName": "user_user",
+    "columnFamilyConfigurations": [
+      {
+        "familyName": "self"
+      }
+      , {
+        "familyName": "roles"
+      }
+      , {
+        "familyName": "privileges"
+      }
+    ]
+  }
+]
