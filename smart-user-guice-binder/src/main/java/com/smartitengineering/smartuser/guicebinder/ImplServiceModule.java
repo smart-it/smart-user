@@ -34,6 +34,8 @@ import com.smartitengineering.dao.impl.hbase.spi.impl.MixedExecutorServiceImpl;
 import com.smartitengineering.dao.impl.hbase.spi.impl.RowCellIncrementorImpl;
 import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderBaseConfig;
 import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderImpl;
+import com.smartitengineering.dao.impl.hbase.spi.impl.guice.GenericBaseConfigProvider;
+import com.smartitengineering.dao.impl.hbase.spi.impl.guice.GenericFilterConfigsProvider;
 import com.smartitengineering.dao.impl.search.CommonWriteDaoDecorator;
 import com.smartitengineering.dao.solr.MultivalueMap;
 import com.smartitengineering.dao.solr.ServerConfiguration;
@@ -62,26 +64,6 @@ import com.smartitengineering.user.service.UserPersonService;
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.user.service.impl.ObservableImpl;
 import com.smartitengineering.user.service.impl.ObserverImpl;
-import com.smartitengineering.user.service.impl.guice.AutoIdFilterConfigsProvider;
-import com.smartitengineering.user.service.impl.guice.AutoIdSchemaBaseConfigProvider;
-import com.smartitengineering.user.service.impl.guice.OrganizationFilterConfigsProvider;
-import com.smartitengineering.user.service.impl.guice.OrganizationSchemaBaseConfigProvider;
-import com.smartitengineering.user.service.impl.guice.PersonFilterConfigsProvider;
-import com.smartitengineering.user.service.impl.guice.PersonSchemaBaseConfigProvider;
-import com.smartitengineering.user.service.impl.guice.PrivilegeFilterConfigsProvider;
-import com.smartitengineering.user.service.impl.guice.PrivilegeSchemaBaseConfigProvider;
-import com.smartitengineering.user.service.impl.guice.RoleFilterConfigsProvider;
-import com.smartitengineering.user.service.impl.guice.RoleSchemaBaseConfigProvider;
-import com.smartitengineering.user.service.impl.guice.SecuredObjectFilterConfigsProvider;
-import com.smartitengineering.user.service.impl.guice.SecuredObjectSchemaBaseConfigProvider;
-import com.smartitengineering.user.service.impl.guice.UniqueKeyIndexFilterConfigsProvider;
-import com.smartitengineering.user.service.impl.guice.UniqueKeyIndexSchemaBaseConfigProvider;
-import com.smartitengineering.user.service.impl.guice.UserFilterConfigsProvider;
-import com.smartitengineering.user.service.impl.guice.UserGroupFilterConfigsProvider;
-import com.smartitengineering.user.service.impl.guice.UserGroupSchemaBaseConfigProvider;
-import com.smartitengineering.user.service.impl.guice.UserPersonFilterConfigsProvider;
-import com.smartitengineering.user.service.impl.guice.UserPersonSchemaBaseConfigProvider;
-import com.smartitengineering.user.service.impl.guice.UserSchemaBaseConfigProvider;
 import com.smartitengineering.user.service.impl.hbase.OrganizationServiceImpl;
 import com.smartitengineering.user.service.impl.hbase.PersonServiceImpl;
 import com.smartitengineering.user.service.impl.hbase.PrivilegeServiceImpl;
@@ -231,10 +213,12 @@ public class ImplServiceModule extends AbstractModule {
 
     final TypeLiteral<SchemaInfoProviderImpl<Organization, String>> organizationTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<Organization, String>>() {
     };
-    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<Organization>>() {
-    }).toProvider(OrganizationSchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
     bind(new TypeLiteral<FilterConfigs<Organization>>() {
-    }).toProvider(OrganizationFilterConfigsProvider.class).in(Scopes.SINGLETON);
+    }).toProvider(new GenericFilterConfigsProvider<Organization>(
+        "com/smartitengineering/user/impl/organization/OrganizationFilterConfigs.json")).in(Scopes.SINGLETON);
+    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<Organization>>() {
+    }).toProvider(new GenericBaseConfigProvider<Organization>(
+        "com/smartitengineering/user/impl/organization/OrganizationSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<String>>() {
     }).toInstance(String.class);
@@ -300,10 +284,12 @@ public class ImplServiceModule extends AbstractModule {
 
     final TypeLiteral<SchemaInfoProviderImpl<User, Long>> userTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<User, Long>>() {
     };
-    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<User>>() {
-    }).toProvider(UserSchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
     bind(new TypeLiteral<FilterConfigs<User>>() {
-    }).toProvider(UserFilterConfigsProvider.class).in(Scopes.SINGLETON);
+    }).toProvider(new GenericFilterConfigsProvider<User>(
+        "com/smartitengineering/user/impl/user/UserFilterConfigs.json")).in(Scopes.SINGLETON);
+    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<User>>() {
+    }).toProvider(new GenericBaseConfigProvider<User>(
+        "com/smartitengineering/user/impl/user/UserSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 
 //    bind(new TypeLiteral<Class<Long>>() {
 //    }).toInstance(Long.class);
@@ -345,10 +331,12 @@ public class ImplServiceModule extends AbstractModule {
 
     final TypeLiteral<SchemaInfoProviderImpl<UniqueKeyIndex, UniqueKey>> uniqueKeyTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<UniqueKeyIndex, UniqueKey>>() {
     };
-    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<UniqueKeyIndex>>() {
-    }).toProvider(UniqueKeyIndexSchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
     bind(new TypeLiteral<FilterConfigs<UniqueKeyIndex>>() {
-    }).toProvider(UniqueKeyIndexFilterConfigsProvider.class).in(Scopes.SINGLETON);
+    }).toProvider(new GenericFilterConfigsProvider<UniqueKeyIndex>(
+        "com/smartitengineering/user/impl/UniqueKey/UniquekeyFilterConfigs.json")).in(Scopes.SINGLETON);
+    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<UniqueKeyIndex>>() {
+    }).toProvider(new GenericBaseConfigProvider<UniqueKeyIndex>(
+        "com/smartitengineering/user/impl/UniqueKey/UniqueKeySchemaBaseConfig.json")).in(Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<UniqueKey>>() {
     }).toInstance(UniqueKey.class);
@@ -384,10 +372,12 @@ public class ImplServiceModule extends AbstractModule {
 
     final TypeLiteral<SchemaInfoProviderImpl<AutoId, String>> autoIdTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<AutoId, String>>() {
     };
-    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<AutoId>>() {
-    }).toProvider(AutoIdSchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
     bind(new TypeLiteral<FilterConfigs<AutoId>>() {
-    }).toProvider(AutoIdFilterConfigsProvider.class).in(Scopes.SINGLETON);
+    }).toProvider(new GenericFilterConfigsProvider<AutoId>(
+        "com/smartitengineering/user/impl/autoId/AutoIdFilterConfigs.json")).in(Scopes.SINGLETON);
+    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<AutoId>>() {
+    }).toProvider(new GenericBaseConfigProvider<AutoId>(
+        "com/smartitengineering/user/impl/autoId/AutoIdSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<AutoId>>() {
     }).toInstance(AutoId.class);
@@ -452,10 +442,12 @@ public class ImplServiceModule extends AbstractModule {
 
     final TypeLiteral<SchemaInfoProviderImpl<Role, Long>> roleTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<Role, Long>>() {
     };
-    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<Role>>() {
-    }).toProvider(RoleSchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
     bind(new TypeLiteral<FilterConfigs<Role>>() {
-    }).toProvider(RoleFilterConfigsProvider.class).in(Scopes.SINGLETON);
+    }).toProvider(new GenericFilterConfigsProvider<Role>(
+        "com/smartitengineering/user/impl/role/RoleFilterConfigs.json")).in(Scopes.SINGLETON);
+    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<Role>>() {
+    }).toProvider(new GenericBaseConfigProvider<Role>(
+        "com/smartitengineering/user/impl/role/RoleSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<Long>>() {
     }).toInstance(Long.class);
@@ -523,10 +515,14 @@ public class ImplServiceModule extends AbstractModule {
 
     final TypeLiteral<SchemaInfoProviderImpl<Privilege, Long>> privilegeTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<Privilege, Long>>() {
     };
-    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<Privilege>>() {
-    }).toProvider(PrivilegeSchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
+
     bind(new TypeLiteral<FilterConfigs<Privilege>>() {
-    }).toProvider(PrivilegeFilterConfigsProvider.class).in(Scopes.SINGLETON);
+    }).toProvider(new GenericFilterConfigsProvider<Privilege>(
+        "com/smartitengineering/user/impl/privilege/PrivilegeFilterConfigs.json")).in(Scopes.SINGLETON);
+    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<Privilege>>() {
+    }).toProvider(new GenericBaseConfigProvider<Privilege>(
+        "com/smartitengineering/user/impl/privilege/PrivilegeSchemaBaseConfig.json")).in(Scopes.SINGLETON);
+    
 
 //    bind(new TypeLiteral<Class<Long>>() {
 //    }).toInstance(Long.class);
@@ -594,11 +590,12 @@ public class ImplServiceModule extends AbstractModule {
 
     final TypeLiteral<SchemaInfoProviderImpl<SecuredObject, Long>> securedObjectTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<SecuredObject, Long>>() {
     };
-    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<SecuredObject>>() {
-    }).toProvider(SecuredObjectSchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
     bind(new TypeLiteral<FilterConfigs<SecuredObject>>() {
-    }).toProvider(SecuredObjectFilterConfigsProvider.class).in(Scopes.SINGLETON);
-
+    }).toProvider(new GenericFilterConfigsProvider<SecuredObject>(
+        "com/smartitengineering/user/impl/securedObject/SecuredObjectFilterConfigs.json")).in(Scopes.SINGLETON);
+    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<SecuredObject>>() {
+    }).toProvider(new GenericBaseConfigProvider<SecuredObject>(
+        "com/smartitengineering/user/impl/securedObject/SecuredObjectSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 //    bind(new TypeLiteral<Class<Long>>() {
 //    }).toInstance(Long.class);
     bind(new TypeLiteral<SchemaInfoProvider<SecuredObject, Long>>() {
@@ -664,10 +661,12 @@ public class ImplServiceModule extends AbstractModule {
 
     final TypeLiteral<SchemaInfoProviderImpl<Person, Long>> personTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<Person, Long>>() {
     };
-    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<Person>>() {
-    }).toProvider(PersonSchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
     bind(new TypeLiteral<FilterConfigs<Person>>() {
-    }).toProvider(PersonFilterConfigsProvider.class).in(Scopes.SINGLETON);
+    }).toProvider(new GenericFilterConfigsProvider<Person>(
+        "com/smartitengineering/user/impl/person/PersonFilterConfigs.json")).in(Scopes.SINGLETON);
+    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<Person>>() {
+    }).toProvider(new GenericBaseConfigProvider<Person>(
+        "com/smartitengineering/user/impl/person/PersonSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 
 //    bind(new TypeLiteral<Class<Long>>() {
 //    }).toInstance(Long.class);
@@ -735,10 +734,12 @@ public class ImplServiceModule extends AbstractModule {
 
     final TypeLiteral<SchemaInfoProviderImpl<UserPerson, Long>> userPersonTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<UserPerson, Long>>() {
     };
-    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<UserPerson>>() {
-    }).toProvider(UserPersonSchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
     bind(new TypeLiteral<FilterConfigs<UserPerson>>() {
-    }).toProvider(UserPersonFilterConfigsProvider.class).in(Scopes.SINGLETON);
+    }).toProvider(new GenericFilterConfigsProvider<UserPerson>(
+        "com/smartitengineering/user/impl/userPerson/UserPersonFilterConfigs.json")).in(Scopes.SINGLETON);
+    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<UserPerson>>() {
+    }).toProvider(new GenericBaseConfigProvider<UserPerson>(
+        "com/smartitengineering/user/impl/user/UserPersonSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 
 //    bind(new TypeLiteral<Class<Long>>() {
 //    }).toInstance(Long.class);
@@ -815,11 +816,12 @@ public class ImplServiceModule extends AbstractModule {
 
     final TypeLiteral<SchemaInfoProviderImpl<UserGroup, Long>> userGroupTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<UserGroup, Long>>() {
     };
-    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<UserGroup>>() {
-    }).toProvider(UserGroupSchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
     bind(new TypeLiteral<FilterConfigs<UserGroup>>() {
-    }).toProvider(UserGroupFilterConfigsProvider.class).in(Scopes.SINGLETON);
-
+    }).toProvider(new GenericFilterConfigsProvider<UserGroup>(
+        "com/smartitengineering/user/impl/userGroup/UserGroupFilterConfigs.json")).in(Scopes.SINGLETON);
+    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<UserGroup>>() {
+    }).toProvider(new GenericBaseConfigProvider<UserGroup>(
+        "com/smartitengineering/user/impl/user/UserGroupSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 //    bind(new TypeLiteral<Class<Long>>() {
 //    }).toInstance(Long.class);
     bind(new TypeLiteral<SchemaInfoProvider<UserGroup, Long>>() {
