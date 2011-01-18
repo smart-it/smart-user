@@ -4,15 +4,6 @@
  */
 package com.smartitengineering.user.service;
 
-import com.smartitengineering.user.service.AuthorizationService;
-import com.smartitengineering.user.service.OrganizationService;
-import com.smartitengineering.user.service.PersonService;
-import com.smartitengineering.user.service.PrivilegeService;
-import com.smartitengineering.user.service.RoleService;
-import com.smartitengineering.user.service.SecuredObjectService;
-import com.smartitengineering.user.service.UserGroupService;
-import com.smartitengineering.user.service.UserPersonService;
-import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.util.bean.BeanFactoryRegistrar;
 import com.smartitengineering.util.bean.annotations.Aggregator;
 import com.smartitengineering.util.bean.annotations.InjectableField;
@@ -42,7 +33,6 @@ public class Services {
   private AuthorizationService authorizationService;
   @InjectableField
   private PersonService personService;
-
 
   private Services() {
   }
