@@ -254,11 +254,11 @@ public class UserServiceImpl implements UserService {
     }
     final String username = filter.getUserName();
     if (StringUtils.isNotBlank(username)) {
-      q.append("+userName: ").append(username).append('*');
+      q.append(" +userName: ").append(username).append('*');
     }
     final String orgName = filter.getOrganizationName();
     if (StringUtils.isNotBlank(orgName)) {
-      q.append("+organization: ").append(orgName);
+      q.append(" +organization: ").append(orgName);
     }
     if (filter.getSortBy() == null) {
       filter.setSortBy("id");
