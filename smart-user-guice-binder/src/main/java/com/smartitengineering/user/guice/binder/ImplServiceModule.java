@@ -54,6 +54,7 @@ import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.domain.UserGroup;
 import com.smartitengineering.user.domain.UserPerson;
 import com.smartitengineering.user.observer.CRUDObservable;
+import com.smartitengineering.user.service.AuthorizationService;
 import com.smartitengineering.user.service.OrganizationService;
 import com.smartitengineering.user.service.PersonService;
 import com.smartitengineering.user.service.PrivilegeService;
@@ -62,6 +63,7 @@ import com.smartitengineering.user.service.SecuredObjectService;
 import com.smartitengineering.user.service.UserGroupService;
 import com.smartitengineering.user.service.UserPersonService;
 import com.smartitengineering.user.service.UserService;
+import com.smartitengineering.user.service.impl.AuthorizationServiceImpl;
 import com.smartitengineering.user.service.impl.ObservableImpl;
 import com.smartitengineering.user.service.impl.ObserverImpl;
 import com.smartitengineering.user.service.impl.hbase.OrganizationServiceImpl;
@@ -220,6 +222,7 @@ public class ImplServiceModule extends AbstractModule {
     }).toProvider(new GenericBaseConfigProvider<Organization>(
         "com/smartitengineering/user/service/impl/hbase/config/OrganizationSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 
+
     bind(new TypeLiteral<Class<String>>() {
     }).toInstance(String.class);
     bind(new TypeLiteral<SchemaInfoProvider<Organization, String>>() {
@@ -333,10 +336,10 @@ public class ImplServiceModule extends AbstractModule {
     };
     bind(new TypeLiteral<FilterConfigs<UniqueKeyIndex>>() {
     }).toProvider(new GenericFilterConfigsProvider<UniqueKeyIndex>(
-        "com/smartitengineering/user/service/impl/hbase/config/UniquekeyFilterConfigs.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/UniqueKeyIndexFilterConfigs.json")).in(Scopes.SINGLETON);
     bind(new TypeLiteral<SchemaInfoProviderBaseConfig<UniqueKeyIndex>>() {
     }).toProvider(new GenericBaseConfigProvider<UniqueKeyIndex>(
-        "com/smartitengineering/user/service/impl/hbase/config/UniqueKeySchemaBaseConfig.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/UniqueKeyIndexSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<UniqueKey>>() {
     }).toInstance(UniqueKey.class);
@@ -818,10 +821,10 @@ public class ImplServiceModule extends AbstractModule {
     };
     bind(new TypeLiteral<FilterConfigs<UserGroup>>() {
     }).toProvider(new GenericFilterConfigsProvider<UserGroup>(
-        "com/smartitengineering/service/impl/hbase/config/UserGroupFilterConfigs.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/UserGroupFilterConfigs.json")).in(Scopes.SINGLETON);
     bind(new TypeLiteral<SchemaInfoProviderBaseConfig<UserGroup>>() {
     }).toProvider(new GenericBaseConfigProvider<UserGroup>(
-        "com/smartitengineering/service/impl/hbase/config/ UserGroupSchemaBaseConfig.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/UserGroupSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 //    bind(new TypeLiteral<Class<Long>>() {
 //    }).toInstance(Long.class);
     bind(new TypeLiteral<SchemaInfoProvider<UserGroup, Long>>() {
@@ -841,5 +844,6 @@ public class ImplServiceModule extends AbstractModule {
     }).toInstance(userGroupConfigImpl);
 
     bind(UserGroupService.class).to(UserGroupServiceImpl.class).in(Singleton.class);
+    bind(AuthorizationService.class).to(AuthorizationServiceImpl.class).in(Singleton.class);
   }
 }
