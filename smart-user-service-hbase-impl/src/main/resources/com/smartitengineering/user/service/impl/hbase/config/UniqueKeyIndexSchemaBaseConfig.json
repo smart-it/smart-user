@@ -1,0 +1,5 @@
+{
+  "schemaNamespace": "com.smartitengineering.user.impl.hbase.dao",
+  "mainTableName": "user_unique_key_index",
+  "transactionalDomain": "false"
+}
