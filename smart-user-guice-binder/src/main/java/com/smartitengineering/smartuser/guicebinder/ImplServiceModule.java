@@ -215,10 +215,10 @@ public class ImplServiceModule extends AbstractModule {
     };
     bind(new TypeLiteral<FilterConfigs<Organization>>() {
     }).toProvider(new GenericFilterConfigsProvider<Organization>(
-        "com/smartitengineering/user/impl/organization/OrganizationFilterConfigs.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/OrganizationFilterConfigs.json")).in(Scopes.SINGLETON);
     bind(new TypeLiteral<SchemaInfoProviderBaseConfig<Organization>>() {
     }).toProvider(new GenericBaseConfigProvider<Organization>(
-        "com/smartitengineering/user/impl/organization/OrganizationSchemaBaseConfig.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/OrganizationSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<String>>() {
     }).toInstance(String.class);
@@ -286,10 +286,10 @@ public class ImplServiceModule extends AbstractModule {
     };
     bind(new TypeLiteral<FilterConfigs<User>>() {
     }).toProvider(new GenericFilterConfigsProvider<User>(
-        "com/smartitengineering/user/impl/user/UserFilterConfigs.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/UserFilterConfigs.json")).in(Scopes.SINGLETON);
     bind(new TypeLiteral<SchemaInfoProviderBaseConfig<User>>() {
     }).toProvider(new GenericBaseConfigProvider<User>(
-        "com/smartitengineering/user/impl/user/UserSchemaBaseConfig.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/UserSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 
 //    bind(new TypeLiteral<Class<Long>>() {
 //    }).toInstance(Long.class);
@@ -333,10 +333,10 @@ public class ImplServiceModule extends AbstractModule {
     };
     bind(new TypeLiteral<FilterConfigs<UniqueKeyIndex>>() {
     }).toProvider(new GenericFilterConfigsProvider<UniqueKeyIndex>(
-        "com/smartitengineering/user/impl/UniqueKey/UniquekeyFilterConfigs.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/UniquekeyFilterConfigs.json")).in(Scopes.SINGLETON);
     bind(new TypeLiteral<SchemaInfoProviderBaseConfig<UniqueKeyIndex>>() {
     }).toProvider(new GenericBaseConfigProvider<UniqueKeyIndex>(
-        "com/smartitengineering/user/impl/UniqueKey/UniqueKeySchemaBaseConfig.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/UniqueKeySchemaBaseConfig.json")).in(Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<UniqueKey>>() {
     }).toInstance(UniqueKey.class);
@@ -374,10 +374,10 @@ public class ImplServiceModule extends AbstractModule {
     };
     bind(new TypeLiteral<FilterConfigs<AutoId>>() {
     }).toProvider(new GenericFilterConfigsProvider<AutoId>(
-        "com/smartitengineering/user/impl/autoId/AutoIdFilterConfigs.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/AutoIdFilterConfigs.json")).in(Scopes.SINGLETON);
     bind(new TypeLiteral<SchemaInfoProviderBaseConfig<AutoId>>() {
     }).toProvider(new GenericBaseConfigProvider<AutoId>(
-        "com/smartitengineering/user/impl/autoId/AutoIdSchemaBaseConfig.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/AutoIdSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<AutoId>>() {
     }).toInstance(AutoId.class);
@@ -444,10 +444,10 @@ public class ImplServiceModule extends AbstractModule {
     };
     bind(new TypeLiteral<FilterConfigs<Role>>() {
     }).toProvider(new GenericFilterConfigsProvider<Role>(
-        "com/smartitengineering/user/impl/role/RoleFilterConfigs.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/RoleFilterConfigs.json")).in(Scopes.SINGLETON);
     bind(new TypeLiteral<SchemaInfoProviderBaseConfig<Role>>() {
     }).toProvider(new GenericBaseConfigProvider<Role>(
-        "com/smartitengineering/user/impl/role/RoleSchemaBaseConfig.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/RoleSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<Long>>() {
     }).toInstance(Long.class);
@@ -518,10 +518,10 @@ public class ImplServiceModule extends AbstractModule {
 
     bind(new TypeLiteral<FilterConfigs<Privilege>>() {
     }).toProvider(new GenericFilterConfigsProvider<Privilege>(
-        "com/smartitengineering/user/impl/privilege/PrivilegeFilterConfigs.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/PrivilegeFilterConfigs.json")).in(Scopes.SINGLETON);
     bind(new TypeLiteral<SchemaInfoProviderBaseConfig<Privilege>>() {
     }).toProvider(new GenericBaseConfigProvider<Privilege>(
-        "com/smartitengineering/user/impl/privilege/PrivilegeSchemaBaseConfig.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/PrivilegeSchemaBaseConfig.json")).in(Scopes.SINGLETON);
     
 
 //    bind(new TypeLiteral<Class<Long>>() {
@@ -592,10 +592,10 @@ public class ImplServiceModule extends AbstractModule {
     };
     bind(new TypeLiteral<FilterConfigs<SecuredObject>>() {
     }).toProvider(new GenericFilterConfigsProvider<SecuredObject>(
-        "com/smartitengineering/user/impl/securedObject/SecuredObjectFilterConfigs.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/SecuredObjectFilterConfigs.json")).in(Scopes.SINGLETON);
     bind(new TypeLiteral<SchemaInfoProviderBaseConfig<SecuredObject>>() {
     }).toProvider(new GenericBaseConfigProvider<SecuredObject>(
-        "com/smartitengineering/user/impl/securedObject/SecuredObjectSchemaBaseConfig.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/SecuredObjectSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 //    bind(new TypeLiteral<Class<Long>>() {
 //    }).toInstance(Long.class);
     bind(new TypeLiteral<SchemaInfoProvider<SecuredObject, Long>>() {
@@ -663,10 +663,10 @@ public class ImplServiceModule extends AbstractModule {
     };
     bind(new TypeLiteral<FilterConfigs<Person>>() {
     }).toProvider(new GenericFilterConfigsProvider<Person>(
-        "com/smartitengineering/user/impl/person/PersonFilterConfigs.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/PersonFilterConfigs.json")).in(Scopes.SINGLETON);
     bind(new TypeLiteral<SchemaInfoProviderBaseConfig<Person>>() {
     }).toProvider(new GenericBaseConfigProvider<Person>(
-        "com/smartitengineering/user/impl/person/PersonSchemaBaseConfig.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/PersonSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 
 //    bind(new TypeLiteral<Class<Long>>() {
 //    }).toInstance(Long.class);
@@ -736,10 +736,10 @@ public class ImplServiceModule extends AbstractModule {
     };
     bind(new TypeLiteral<FilterConfigs<UserPerson>>() {
     }).toProvider(new GenericFilterConfigsProvider<UserPerson>(
-        "com/smartitengineering/user/impl/userPerson/UserPersonFilterConfigs.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/UserPersonFilterConfigs.json")).in(Scopes.SINGLETON);
     bind(new TypeLiteral<SchemaInfoProviderBaseConfig<UserPerson>>() {
     }).toProvider(new GenericBaseConfigProvider<UserPerson>(
-        "com/smartitengineering/user/impl/user/UserPersonSchemaBaseConfig.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/UserPersonSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 
 //    bind(new TypeLiteral<Class<Long>>() {
 //    }).toInstance(Long.class);
@@ -818,10 +818,10 @@ public class ImplServiceModule extends AbstractModule {
     };
     bind(new TypeLiteral<FilterConfigs<UserGroup>>() {
     }).toProvider(new GenericFilterConfigsProvider<UserGroup>(
-        "com/smartitengineering/user/impl/userGroup/UserGroupFilterConfigs.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/service/impl/hbase/config/UserGroupFilterConfigs.json")).in(Scopes.SINGLETON);
     bind(new TypeLiteral<SchemaInfoProviderBaseConfig<UserGroup>>() {
     }).toProvider(new GenericBaseConfigProvider<UserGroup>(
-        "com/smartitengineering/user/impl/user/UserGroupSchemaBaseConfig.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/service/impl/hbase/config/ UserGroupSchemaBaseConfig.json")).in(Scopes.SINGLETON);
 //    bind(new TypeLiteral<Class<Long>>() {
 //    }).toInstance(Long.class);
     bind(new TypeLiteral<SchemaInfoProvider<UserGroup, Long>>() {
