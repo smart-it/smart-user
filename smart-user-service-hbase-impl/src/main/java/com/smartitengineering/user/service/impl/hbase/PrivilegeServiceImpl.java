@@ -8,20 +8,24 @@ import com.google.inject.Inject;
 import com.smartitengineering.common.dao.search.CommonFreeTextSearchDao;
 import com.smartitengineering.dao.common.CommonReadDao;
 import com.smartitengineering.dao.common.CommonWriteDao;
+import com.smartitengineering.dao.common.queryparam.Order;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hbase.spi.RowCellIncrementor;
 import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
+import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.observer.CRUDObservable;
 import com.smartitengineering.user.observer.ObserverNotification;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.PrivilegeService;
+import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.user.service.impl.hbase.domain.AutoId;
 import com.smartitengineering.user.service.impl.hbase.domain.KeyableObject;
 import com.smartitengineering.user.service.impl.hbase.domain.UniqueKey;
 import com.smartitengineering.user.service.impl.hbase.domain.UniqueKeyIndex;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -54,6 +58,8 @@ public class PrivilegeServiceImpl implements PrivilegeService {
   protected CommonFreeTextSearchDao<Privilege> freeTextSearchDao;
   @Inject
   private RowCellIncrementor<Privilege, AutoId, String> idIncrementor;
+  @Inject
+  private UserService userService;
   private boolean autoIdInitialized = false;
   protected transient Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -199,7 +205,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     q.append("+parentOrganization: ").append(organizationName).append('*');
     q.append("+objectID: ").append(objectID).append('*');
     return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
-        getOrderByParam("parentOrganization", com.smartitengineering.dao.common.queryparam.Order.valueOf("ASC")));
+        getOrderByParam("parentOrganization", Order.ASC));
   }
 
   @Override
@@ -208,14 +214,18 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     q.append("id: ").append(ClientUtils.escapeQueryChars("privilege: ")).append("*");
     q.append("+parentOrganization: ").append(organizationName).append('*');
     q.append("+name: ").append(privilegename).append('*');
-    Collection<Privilege> priveleges = freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
-        getOrderByParam("parentOrganization", com.smartitengineering.dao.common.queryparam.Order.valueOf("ASC")));
+    Collection<Privilege> priveleges = freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.
+        toString()), QueryParameterFactory.getOrderByParam("parentOrganization", Order.ASC));
     return priveleges.iterator().next();
   }
 
   @Override
   public Collection<Privilege> getPrivilegesByOrganizationAndUser(String organizationName, String userName) {
-     throw new UnsupportedOperationException("Not supported yet.");
+    User user = userService.getUserByOrganizationAndUserName(organizationName, userName);
+    if (user == null) {
+      return Collections.emptySet();
+    }
+    return user.getPrivileges();
   }
 
   @Override
