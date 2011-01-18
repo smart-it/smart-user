@@ -1,0 +1,10 @@
+[
+  {
+    "tableName": "aponn_organization",
+    "columnFamilyConfigurations": [
+      {
+        "familyName": "self"
+      }
+    ]
+  }  
+]
