@@ -185,8 +185,8 @@ public class UserGroupServiceImpl implements UserGroupService {
     UniqueKey uniqueKey = getUniqueKeyOfIndexForUserGroupName(userGroupName, organizationShortName);
     UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(uniqueKey);
     if (index != null) {
-      long userGroupId = NumberUtils.toLong(index.getObjId(), -1l);
-      if (userGroupId > -1) {
+      long userGroupId = NumberUtils.toLong(index.getObjId(), Long.MIN_VALUE);
+      if (userGroupId > Long.MIN_VALUE) {
         return readDao.getById(userGroupId);
       }
     }

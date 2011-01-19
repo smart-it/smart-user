@@ -8,6 +8,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
+import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
 import com.smartitengineering.common.dao.search.CommonFreeTextPersistentDao;
 import com.smartitengineering.common.dao.search.CommonFreeTextSearchDao;
@@ -56,6 +57,7 @@ import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.domain.UserGroup;
 import com.smartitengineering.user.domain.UserPerson;
 import com.smartitengineering.user.observer.CRUDObservable;
+import com.smartitengineering.user.observer.CRUDObserver;
 import com.smartitengineering.user.service.AuthorizationService;
 import com.smartitengineering.user.service.OrganizationService;
 import com.smartitengineering.user.service.PersonService;
@@ -245,10 +247,9 @@ public class ImplServiceModule extends AbstractModule {
     bind(OrganizationService.class).annotatedWith(Names.named("primaryService")).to(OrganizationServiceImpl.class).in(
         Singleton.class);
 
-    ObservableImpl observableImpl = new ObservableImpl();
-    observableImpl.addObserver(new ObserverImpl());
-
-    bind(CRUDObservable.class).toInstance(observableImpl);
+    Multibinder<CRUDObserver> observerSet = Multibinder.newSetBinder(binder(), CRUDObserver.class);
+    observerSet.addBinding().to(ObserverImpl.class).in(Singleton.class);
+    bind(CRUDObservable.class).to(ObservableImpl.class).in(Singleton.class);
 
     bind(DomainIdInstanceProvider.class).to(DomainIdInstanceProviderImpl.class);
 
@@ -319,7 +320,7 @@ public class ImplServiceModule extends AbstractModule {
     });
     CellConfigImpl<User> configImpl = new CellConfigImpl<User>();
     configImpl.setFamily("self");
-    configImpl.setQualifier("userId");
+    configImpl.setQualifier("value");
 
     bind(new TypeLiteral<CellConfig<User>>() {
     }).toInstance(configImpl);
@@ -477,7 +478,7 @@ public class ImplServiceModule extends AbstractModule {
     });
     CellConfigImpl<Role> roleConfigImpl = new CellConfigImpl<Role>();
     roleConfigImpl.setFamily("self");
-    roleConfigImpl.setQualifier("roleId");
+    roleConfigImpl.setQualifier("value");
 
     bind(new TypeLiteral<CellConfig<Role>>() {
     }).toInstance(roleConfigImpl);
@@ -552,7 +553,7 @@ public class ImplServiceModule extends AbstractModule {
     });
     CellConfigImpl<Privilege> privilegeConfigImpl = new CellConfigImpl<Privilege>();
     privilegeConfigImpl.setFamily("self");
-    privilegeConfigImpl.setQualifier("privilegeId");
+    privilegeConfigImpl.setQualifier("value");
 
     bind(new TypeLiteral<CellConfig<Privilege>>() {
     }).toInstance(privilegeConfigImpl);
@@ -624,7 +625,7 @@ public class ImplServiceModule extends AbstractModule {
     });
     CellConfigImpl<SecuredObject> securedObjectConfigImpl = new CellConfigImpl<SecuredObject>();
     securedObjectConfigImpl.setFamily("self");
-    securedObjectConfigImpl.setQualifier("securedObjectId");
+    securedObjectConfigImpl.setQualifier("value");
 
     bind(new TypeLiteral<CellConfig<SecuredObject>>() {
     }).toInstance(securedObjectConfigImpl);
@@ -696,7 +697,7 @@ public class ImplServiceModule extends AbstractModule {
     });
     CellConfigImpl<Person> personConfigImpl = new CellConfigImpl<Person>();
     personConfigImpl.setFamily("self");
-    personConfigImpl.setQualifier("personId");
+    personConfigImpl.setQualifier("value");
 
     bind(new TypeLiteral<CellConfig<Person>>() {
     }).toInstance(personConfigImpl);
@@ -769,7 +770,7 @@ public class ImplServiceModule extends AbstractModule {
     });
     CellConfigImpl<UserPerson> userPersonConfigImpl = new CellConfigImpl<UserPerson>();
     userPersonConfigImpl.setFamily("self");
-    userPersonConfigImpl.setQualifier("userPersonId");
+    userPersonConfigImpl.setQualifier("value");
 
     bind(new TypeLiteral<CellConfig<UserPerson>>() {
     }).toInstance(userPersonConfigImpl);
@@ -850,7 +851,7 @@ public class ImplServiceModule extends AbstractModule {
     });
     CellConfigImpl<UserGroup> userGroupConfigImpl = new CellConfigImpl<UserGroup>();
     userGroupConfigImpl.setFamily("self");
-    userGroupConfigImpl.setQualifier("userGroupId");
+    userGroupConfigImpl.setQualifier("value");
 
     bind(new TypeLiteral<CellConfig<UserGroup>>() {
     }).toInstance(userGroupConfigImpl);

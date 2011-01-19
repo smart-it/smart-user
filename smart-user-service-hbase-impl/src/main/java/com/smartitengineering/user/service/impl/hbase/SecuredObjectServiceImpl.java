@@ -95,8 +95,8 @@ public class SecuredObjectServiceImpl implements SecuredObjectService {
   }
 
   protected UniqueKey getUniqueKeyOfIndexForSecObjObjId(SecuredObject securedObject) {
-    final String name = securedObject.getName();
-    return getUniqueKeyOfIndexForName(name, securedObject.getOrganization().getUniqueShortName());
+    final String objectId = securedObject.getObjectID();
+    return getUniqueKeyOfIndexForObjId(objectId, securedObject.getOrganization().getUniqueShortName());
   }
 
   protected UniqueKey getUniqueKeyOfIndexForObjId(final String objId, final String orgShortName) {
@@ -234,8 +234,8 @@ public class SecuredObjectServiceImpl implements SecuredObjectService {
     UniqueKey uniqueKey = getUniqueKeyOfIndexForObjId(objectID, organizationName);
     UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(uniqueKey);
     if (index != null) {
-      long securedObjectId = NumberUtils.toLong(index.getObjId(), -1l);
-      if (securedObjectId > -1) {
+      long securedObjectId = NumberUtils.toLong(index.getObjId(), Long.MIN_VALUE);
+      if (securedObjectId > Long.MIN_VALUE) {
         return getById(securedObjectId);
       }
     }
@@ -247,8 +247,8 @@ public class SecuredObjectServiceImpl implements SecuredObjectService {
     UniqueKey uniqueKey = getUniqueKeyOfIndexForName(name, organizationName);
     UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(uniqueKey);
     if (index != null) {
-      long securedObjectId = NumberUtils.toLong(index.getObjId(), -1l);
-      if (securedObjectId > -1) {
+      long securedObjectId = NumberUtils.toLong(index.getObjId(), Long.MIN_VALUE);
+      if (securedObjectId > Long.MIN_VALUE) {
         return getById(securedObjectId);
       }
     }

@@ -197,8 +197,8 @@ public class RoleServiceImpl implements RoleService {
     UniqueKey uniqueKey = getUniqueKeyOfIndexForRoleName(roleName);
     UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(uniqueKey);
     if (index != null) {
-      long roleId = NumberUtils.toLong(index.getObjId(), -1l);
-      if (roleId > -1) {
+      long roleId = NumberUtils.toLong(index.getObjId(), Long.MIN_VALUE);
+      if (roleId > Long.MIN_VALUE) {
         return readDao.getById(roleId);
       }
     }

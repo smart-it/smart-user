@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.solr.client.solrj.util.ClientUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,9 +95,9 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     return getUniqueKeyOfIndexForName(name, privilege.getParentOrganization().getUniqueShortName());
   }
 
-  protected UniqueKey getUniqueKeyOfIndexForName(final String primaryEmail, final String orgShortName) {
+  protected UniqueKey getUniqueKeyOfIndexForName(final String privilegeName, final String orgShortName) {
     UniqueKey key = new UniqueKey();
-    key.setKey(primaryEmail);
+    key.setKey(privilegeName);
     key.setObject(KeyableObject.PRIVILEGE);
     key.setOrgId(orgShortName);
     return key;
@@ -210,13 +211,15 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 
   @Override
   public Privilege getPrivilegeByOrganizationAndPrivilegeName(String organizationName, String privilegename) {
-    StringBuilder q = new StringBuilder();
-    q.append("id: ").append(ClientUtils.escapeQueryChars("privilege: ")).append("*");
-    q.append(" +parentOrganization: ").append(organizationName).append('*');
-    q.append(" +name: ").append(privilegename).append('*');
-    Collection<Privilege> priveleges = freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
-        getOrderByParam("parentOrganization", Order.ASC));
-    return priveleges.iterator().next();
+    UniqueKey uniqueKey = getUniqueKeyOfIndexForName(privilegename, organizationName);
+    UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(uniqueKey);
+    if (index != null) {
+      long privilegeId = NumberUtils.toLong(index.getObjId(), Long.MIN_VALUE);
+      if (privilegeId > Long.MIN_VALUE) {
+        return readDao.getById(privilegeId);
+      }
+    }
+    return null;
   }
 
   @Override

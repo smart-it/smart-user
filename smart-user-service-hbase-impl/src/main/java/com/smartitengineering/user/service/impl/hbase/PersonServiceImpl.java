@@ -243,8 +243,8 @@ public class PersonServiceImpl implements PersonService {
     UniqueKey uniqueKey = getUniqueKeyOfIndexForPrimaryEmail(email);
     UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(uniqueKey);
     if (index != null) {
-      long personId = NumberUtils.toLong(index.getObjId(), -1l);
-      if (personId > -1) {
+      long personId = NumberUtils.toLong(index.getObjId(), Long.MIN_VALUE);
+      if (personId > Long.MIN_VALUE) {
         return getById(personId);
       }
     }

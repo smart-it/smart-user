@@ -158,6 +158,7 @@ public class UserGroupObjectConverter extends AbstractObjectRowConverter<UserGro
   public UserGroup rowsToObject(Result startRow, ExecutorService executorService) {
     try {
       UserGroup userGroup = new UserGroup();
+      userGroup.setId(getInfoProvider().getIdFromRowId(startRow.getRow()));
       userGroup.setCreationDate(Utils.toDate(startRow.getValue(FAMILY_SELF, CELL_CREATION_DATE)));
       userGroup.setLastModifiedDate(Utils.toDate(startRow.getValue(FAMILY_SELF, CELL_LAST_MODIFIED_DATE)));
       if (startRow.getValue(FAMILY_SELF, CELL_PARENT_ORG) != null) {

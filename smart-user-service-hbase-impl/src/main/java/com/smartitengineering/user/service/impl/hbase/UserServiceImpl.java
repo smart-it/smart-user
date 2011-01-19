@@ -231,8 +231,8 @@ public class UserServiceImpl implements UserService {
     UniqueKey uniqueKey = getUniqueKeyOfIndexForUserName(userName, organizationShortName);
     UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(uniqueKey);
     if (index != null) {
-      long userId = NumberUtils.toLong(index.getObjId(), -1l);
-      if (userId > -1) {
+      long userId = NumberUtils.toLong(index.getObjId(), Long.MIN_VALUE);
+      if (userId > Long.MIN_VALUE) {
         return readDao.getById(userId);
       }
     }

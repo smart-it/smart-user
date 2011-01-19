@@ -93,6 +93,7 @@ public class PrivilegeObjectConverter extends AbstractObjectRowConverter<Privile
   public Privilege rowsToObject(Result startRow, ExecutorService executorService) {
     try {
       Privilege privilege = new Privilege();
+      privilege.setId(getInfoProvider().getIdFromRowId(startRow.getRow()));
       privilege.setCreationDate(Utils.toDate(startRow.getValue(FAMILY_SELF, CELL_CREATION_DATE)));
       privilege.setLastModifiedDate(Utils.toDate(startRow.getValue(FAMILY_SELF, CELL_LAST_MODIFIED_DATE)));
       if (startRow.getValue(FAMILY_SELF, CELL_NAME) != null) {

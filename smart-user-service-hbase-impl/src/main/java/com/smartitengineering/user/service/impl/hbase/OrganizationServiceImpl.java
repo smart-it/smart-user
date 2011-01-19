@@ -149,6 +149,7 @@ public class OrganizationServiceImpl implements OrganizationService {
   @Override
   public void validateOrganization(Organization organization) {
     if (StringUtils.isEmpty(organization.getUniqueShortName())) {
+      logger.warn("Constriant violation for empty short name! " + organization.getUniqueShortName() + " " + organization.getId());
       throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.ORGANIZATION_UNIQUE_SHORT_NAME.
           name());
     }

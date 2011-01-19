@@ -79,6 +79,7 @@ public class SecuredObjectConverter extends AbstractObjectRowConverter<SecuredOb
   public SecuredObject rowsToObject(Result startRow, ExecutorService executorService) {
     try {
       SecuredObject securedObject = new SecuredObject();
+      securedObject.setId(getInfoProvider().getIdFromRowId(startRow.getRow()));
       securedObject.setCreationDate(Utils.toDate(startRow.getValue(FAMILY_SELF, CELL_CREATION_DATE)));
       securedObject.setLastModifiedDate(Utils.toDate(startRow.getValue(FAMILY_SELF, CELL_LAST_MODIFIED_DATE)));
       if (startRow.getValue(FAMILY_SELF, CELL_NAME) != null) {

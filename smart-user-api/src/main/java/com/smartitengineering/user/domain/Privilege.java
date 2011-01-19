@@ -95,7 +95,7 @@ public class Privilege extends AbstractGenericPersistentDTO<Privilege, Long, Lon
   @Override
   @JsonIgnore
   public boolean isValid() {
-    if (StringUtils.isEmpty(name) || !(permissionMask < 0)) {
+    if (StringUtils.isEmpty(name) || (permissionMask < 0)) {
       return false;
     }
     return true;
