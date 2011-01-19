@@ -95,7 +95,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     StringBuilder q = new StringBuilder();
     final String id = organizationFilter.getOrganizationUniqueShortName();
     if (StringUtils.isNotBlank(id)) {
-      q.append("id: ").append("org: ").append(ClientUtils.escapeQueryChars(id)).append('*');
+      q.append("id: ").append(ClientUtils.escapeQueryChars(id)).append('*');
     }
     final String name = organizationFilter.getName();
     if (StringUtils.isNotBlank(name)) {
@@ -142,8 +142,8 @@ public class OrganizationServiceImpl implements OrganizationService {
   public Organization getOrganizationByUniqueShortName(String uniqueShortName) {
     OrganizationFilter organizationFilter = new OrganizationFilter();
     organizationFilter.setOrganizationUniqueShortName(uniqueShortName);
-    Collection<Organization> organizations = search(organizationFilter);
-    return organizations.iterator().next();
+    Organization organization = readDao.getById(uniqueShortName);
+    return organization;
   }
 
   @Override
