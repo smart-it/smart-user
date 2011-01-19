@@ -408,7 +408,7 @@ public class ImplServiceModule extends AbstractModule {
     }).in(Scopes.SINGLETON);
 
     //-----------------------------    
-    bind(UserService.class).to(UserServiceImpl.class).in(Singleton.class);
+    bind(UserService.class).annotatedWith(Names.named("primaryService")).to(UserServiceImpl.class).in(Singleton.class);
 
 
     /*
@@ -481,7 +481,7 @@ public class ImplServiceModule extends AbstractModule {
 
     bind(new TypeLiteral<CellConfig<Role>>() {
     }).toInstance(roleConfigImpl);
-    bind(RoleService.class).to(RoleServiceImpl.class).in(Singleton.class);
+    bind(RoleService.class).annotatedWith(Names.named("primaryService")).to(RoleServiceImpl.class).in(Singleton.class);
 
 
     /*
@@ -557,7 +557,7 @@ public class ImplServiceModule extends AbstractModule {
     bind(new TypeLiteral<CellConfig<Privilege>>() {
     }).toInstance(privilegeConfigImpl);
 
-    bind(PrivilegeService.class).to(PrivilegeServiceImpl.class).in(Singleton.class);
+    bind(PrivilegeService.class).annotatedWith(Names.named("primaryService")).to(PrivilegeServiceImpl.class).in(Singleton.class);
 
     /*
      * Start injection specific to common dao of SecuredObject
@@ -629,7 +629,7 @@ public class ImplServiceModule extends AbstractModule {
     bind(new TypeLiteral<CellConfig<SecuredObject>>() {
     }).toInstance(securedObjectConfigImpl);
 
-    bind(SecuredObjectService.class).to(SecuredObjectServiceImpl.class).in(Singleton.class);
+    bind(SecuredObjectService.class).annotatedWith(Names.named("primaryService")).to(SecuredObjectServiceImpl.class).in(Singleton.class);
     /*
      * Start injection specific to common dao of Person
      */
@@ -700,7 +700,7 @@ public class ImplServiceModule extends AbstractModule {
 
     bind(new TypeLiteral<CellConfig<Person>>() {
     }).toInstance(personConfigImpl);
-    bind(PersonService.class).to(PersonServiceImpl.class).in(Singleton.class);
+    bind(PersonService.class).annotatedWith(Names.named("primaryService")).to(PersonServiceImpl.class).in(Singleton.class);
 
 
     /*
