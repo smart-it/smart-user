@@ -168,8 +168,8 @@ public class RoleServiceImpl implements RoleService {
   @Override
   public void delete(Role role) {
     try {
-      writeDao.delete(role);
       observable.notifyObserver(ObserverNotification.DELETE_ROLE, role);
+      writeDao.delete(role);
       final UniqueKey indexKey = getUniqueKeyOfIndexForRole(role);
       UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(indexKey);
       if (index != null) {

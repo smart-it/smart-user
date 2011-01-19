@@ -195,8 +195,8 @@ public class SecuredObjectServiceImpl implements SecuredObjectService {
   @Override
   public void delete(SecuredObject securedObject) {
     try {
-      writeDao.delete(securedObject);
       observable.notifyObserver(ObserverNotification.DELETE_SECURED_OBJECT, securedObject);
+      writeDao.delete(securedObject);
       UniqueKey indexKey = getUniqueKeyOfIndexForSecObjName(securedObject);
       UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(indexKey);
       if (index != null) {

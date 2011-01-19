@@ -171,8 +171,8 @@ public class UserServiceImpl implements UserService {
   @Override
   public void delete(User user) {
     try {
-      writeDao.delete(user);
       observable.notifyObserver(ObserverNotification.DELETE_USER, user);
+      writeDao.delete(user);
       final UniqueKey indexKey = getUniqueKeyOfIndexForUser(user);
       UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(indexKey);
       if (index != null) {

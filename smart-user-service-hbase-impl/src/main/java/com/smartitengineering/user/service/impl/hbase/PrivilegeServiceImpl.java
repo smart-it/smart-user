@@ -174,8 +174,8 @@ public class PrivilegeServiceImpl implements PrivilegeService {
   @Override
   public void delete(Privilege privilege) {
     try {
-      writeDao.delete(privilege);
       observable.notifyObserver(ObserverNotification.DELETE_PRIVILEGE, privilege);
+      writeDao.delete(privilege);
       final UniqueKey indexKey = getUniqueKeyOfIndexForPrivilege(privilege);
       UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(indexKey);
       if (index != null) {

@@ -160,8 +160,8 @@ public class PersonServiceImpl implements PersonService {
   @Override
   public void delete(Person person) {
     try {
-      writeDao.delete(person);
       observable.notifyObserver(ObserverNotification.DELETE_PERSON, person);
+      writeDao.delete(person);
       final UniqueKey indexKey = getUniqueKeyOfIndexForPersonPrimaryEmail(person);
       UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(indexKey);
       if (index != null) {

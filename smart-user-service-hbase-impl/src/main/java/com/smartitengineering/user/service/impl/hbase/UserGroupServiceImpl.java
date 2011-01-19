@@ -166,8 +166,8 @@ public class UserGroupServiceImpl implements UserGroupService {
   @Override
   public void delete(UserGroup userGroup) {
     try {
-      writeDao.delete(userGroup);
       observable.notifyObserver(ObserverNotification.DELETE_USER_GROUP, userGroup);
+      writeDao.delete(userGroup);
       final UniqueKey indexKey = getUniqueKeyOfIndexForUserGroup(userGroup);
       UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(indexKey);
       if (index != null) {

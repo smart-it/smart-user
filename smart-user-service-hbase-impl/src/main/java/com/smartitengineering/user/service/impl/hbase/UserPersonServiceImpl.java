@@ -15,7 +15,6 @@ import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.domain.UserPerson;
 import com.smartitengineering.user.filter.AbstractFilter.Order;
-import com.smartitengineering.user.filter.UserFilter;
 import com.smartitengineering.user.filter.UserPersonFilter;
 import com.smartitengineering.user.observer.CRUDObservable;
 import com.smartitengineering.user.observer.ObserverNotification;
@@ -211,6 +210,7 @@ public class UserPersonServiceImpl implements UserPersonService {
   @Override
   public void delete(UserPerson userPerson) {
     try {
+      observable.notifyObserver(ObserverNotification.DELETE_USER_PERSON, userPerson);
       writeDao.delete(userPerson);
       cascadeDelete(userPerson);
       UniqueKey indexKey = getUniqueKeyOfIndexForUser(userPerson);
@@ -223,7 +223,6 @@ public class UserPersonServiceImpl implements UserPersonService {
       if (index != null) {
         uniqueKeyIndexWriteDao.delete(index);
       }
-      observable.notifyObserver(ObserverNotification.DELETE_USER_PERSON, userPerson);
     }
     catch (Exception e) {
       String message = ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
