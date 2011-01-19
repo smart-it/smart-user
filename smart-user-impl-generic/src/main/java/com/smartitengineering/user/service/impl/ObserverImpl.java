@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.service.impl;
 
+import com.google.inject.Inject;
 import com.smartitengineering.domain.PersistentDTO;
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Person;
@@ -50,12 +51,19 @@ public class ObserverImpl implements CRUDObserver {
   public final Integer PRIVILEGE_PERMISSION_MASK = 31;
   public final String EMAIL_DOMAIN = SmartUserStrings.EMAIL_DOMAIN;
   public final String USER_UNIQUE_FRAG = SmartUserStrings.USER_UNIQUE_URL_FRAGMENT;
+  @Inject
   private UserPersonService userPersonService;
+  @Inject
   private PersonService personService;
+  @Inject
   private UserService userService;
+  @Inject
   private SecuredObjectService securedObjectService;
+  @Inject
   private OrganizationService organizationService;
+  @Inject
   private PrivilegeService privilegeService;
+  @Inject
   private UserGroupService userGroupService;
 
   public UserGroupService getUserGroupService() {
