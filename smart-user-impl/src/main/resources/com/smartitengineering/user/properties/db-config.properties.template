@@ -1,0 +1,7 @@
+com.smartitengineering.dao.connection.driver_class=org.apache.derby.jdbc.EmbeddedDriver
+com.smartitengineering.dao.connection.url=jdbc:derby:target/TestDB;create=true;
+com.smartitengineering.dao.connection.username=
+com.smartitengineering.dao.connection.password=
+com.smartitengineering.dao.dialect=org.hibernate.dialect.DerbyDialect
+com.smartitengineering.dao.show_sql=false
+com.smartitengineering.dao.hbm2ddl.auto=create-drop
