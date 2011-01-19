@@ -18,6 +18,8 @@ import com.smartitengineering.common.dao.search.solr.spi.ObjectIdentifierQuery;
 import com.smartitengineering.dao.common.CommonDao;
 import com.smartitengineering.dao.common.CommonReadDao;
 import com.smartitengineering.dao.common.CommonWriteDao;
+import com.smartitengineering.dao.common.cache.BasicKey;
+import com.smartitengineering.dao.common.cache.impl.CacheAPIFactory;
 import com.smartitengineering.dao.impl.hbase.spi.AsyncExecutorService;
 import com.smartitengineering.dao.impl.hbase.spi.CellConfig;
 import com.smartitengineering.dao.impl.hbase.spi.DomainIdInstanceProvider;
@@ -108,11 +110,15 @@ import com.smartitengineering.user.service.impl.ip.provider.DomainIdInstanceProv
 import com.smartitengineering.util.bean.adapter.AbstractAdapterHelper;
 import com.smartitengineering.util.bean.adapter.GenericAdapter;
 import com.smartitengineering.util.bean.adapter.GenericAdapterImpl;
+import java.io.InputStream;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
 import org.apache.commons.lang.math.NumberUtils;
 
 /**
@@ -121,13 +127,17 @@ import org.apache.commons.lang.math.NumberUtils;
  */
 public class ImplServiceModule extends AbstractModule {
 
-  private final String autoIncrementUri;
   private final String solrMasterUri;
+  private final String cacheConfigRsrc, cacheName;
   private final long waitTime, saveInterval, updateInterval, deleteInterval;
+  static final String PREFIX_SEPARATOR_PROP_KEY = "com.smartitengineering.user.cache.prefixSeparator";
+  static final String PREFIX_SEPARATOR_PROP_DEFAULT = "|";
 
   public ImplServiceModule(Properties properties) {
-    autoIncrementUri = properties.getProperty("autoIncrementUri", "http://localhost:8080/row/");
     solrMasterUri = properties.getProperty("solrMasterUri", "http://localhost:8080/solr/");
+    cacheConfigRsrc = properties.getProperty("com.smartitengineering.user.cache.resource",
+                                             "com/smartitengineering/user/binder/guice/ehcache.xml");
+    cacheName = properties.getProperty("com.smartitengineering.user.cache.name", "userCache");
     long toLong = NumberUtils.toLong(properties.getProperty("com.smartitengineering.pos.waitTimeInSec"), 10L);
     waitTime = toLong > 0 ? toLong : 10l;
     toLong = NumberUtils.toLong(properties.getProperty("com.smartitengineering.pos.saveIntervalInSec"), 60L);
@@ -232,7 +242,8 @@ public class ImplServiceModule extends AbstractModule {
     }).to(new TypeLiteral<DiffBasedMergeService<Organization, String>>() {
     }).in(Singleton.class);
 
-    bind(OrganizationService.class).to(OrganizationServiceImpl.class).in(Singleton.class);
+    bind(OrganizationService.class).annotatedWith(Names.named("primaryService")).to(OrganizationServiceImpl.class).in(
+        Singleton.class);
 
     ObservableImpl observableImpl = new ObservableImpl();
     observableImpl.addObserver(new ObserverImpl());
@@ -339,7 +350,8 @@ public class ImplServiceModule extends AbstractModule {
         "com/smartitengineering/user/service/impl/hbase/config/UniqueKeyIndexFilterConfigs.json")).in(Scopes.SINGLETON);
     bind(new TypeLiteral<SchemaInfoProviderBaseConfig<UniqueKeyIndex>>() {
     }).toProvider(new GenericBaseConfigProvider<UniqueKeyIndex>(
-        "com/smartitengineering/user/service/impl/hbase/config/UniqueKeyIndexSchemaBaseConfig.json")).in(Scopes.SINGLETON);
+        "com/smartitengineering/user/service/impl/hbase/config/UniqueKeyIndexSchemaBaseConfig.json")).in(
+        Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<UniqueKey>>() {
     }).toInstance(UniqueKey.class);
@@ -525,7 +537,7 @@ public class ImplServiceModule extends AbstractModule {
     bind(new TypeLiteral<SchemaInfoProviderBaseConfig<Privilege>>() {
     }).toProvider(new GenericBaseConfigProvider<Privilege>(
         "com/smartitengineering/user/service/impl/hbase/config/PrivilegeSchemaBaseConfig.json")).in(Scopes.SINGLETON);
-    
+
 
 //    bind(new TypeLiteral<Class<Long>>() {
 //    }).toInstance(Long.class);
@@ -845,5 +857,23 @@ public class ImplServiceModule extends AbstractModule {
 
     bind(UserGroupService.class).to(UserGroupServiceImpl.class).in(Singleton.class);
     bind(AuthorizationService.class).to(AuthorizationServiceImpl.class).in(Singleton.class);
+
+    /*
+     * Configure Cache
+     */
+    InputStream inputStream = getClass().getClassLoader().getResourceAsStream(cacheConfigRsrc);
+    if (inputStream == null) {
+      throw new IllegalArgumentException("Cache configuration not available!");
+    }
+    CacheManager cacheManager = new CacheManager(inputStream);
+    Cache cache = cacheManager.getCache(cacheName);
+    if (cache == null) {
+      throw new IllegalStateException("Could not retrieve cache!");
+    }
+    bind(Cache.class).toInstance(cache);
+  }
+
+  static <T extends Serializable> BasicKey<T> getKeyInstance(String keyPrefix, String prefixSeparator) {
+    return CacheAPIFactory.<T>getBasicKey(keyPrefix, prefixSeparator);
   }
 }

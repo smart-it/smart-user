@@ -1,5 +1,5 @@
 contextName=com.smartitengineering.user.service
-modules=com.smartitengineering.user.guice.binder.APIModule,com.smartitengineering.user.guice.binder.ImplServiceModule
+modules=com.smartitengineering.user.guice.binder.APIModule,com.smartitengineering.user.guice.binder.ImplServiceModule,com.smartitengineering.user.guice.binder.OrganizationCacheModule
 ignoreMissingDependency=false
 com.smartitengineering.cms.globalNamespace=com.smartitengineering
 solrMasterUri=http://localhost:8080/solr/
@@ -7,3 +7,6 @@ com.smartitengineering.pos.waitTimeInSec=10
 com.smartitengineering.pos.saveIntervalInSec=60
 com.smartitengineering.pos.updateIntervalInSec=60
 com.smartitengineering.pos.deleteIntervalInSec=60
+com.smartitengineering.user.cache.resource=com/smartitengineering/user/binder/guice/ehcache.xml
+com.smartitengineering.user.cache.name=userCache
+com.smartitengineering.user.cache.prefixSeparator=|
