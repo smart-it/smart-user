@@ -52,7 +52,7 @@ public class UserServiceCacheImpl implements UserService {
   public void update(User user) {
     //First update then delete if update successful!
     try {
-      primaryService.delete(user);
+      primaryService.update(user);
       expireFromCache(user);
     }
     catch (RuntimeException exception) {
@@ -65,7 +65,7 @@ public class UserServiceCacheImpl implements UserService {
   public void delete(User user) {
     //First update then delete if update successful!
     try {
-      primaryService.update(user);
+      primaryService.delete(user);
       expireFromCache(user);
     }
     catch (RuntimeException exception) {
