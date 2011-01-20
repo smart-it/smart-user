@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ComprehensiveTest {
 
-  private static final int PORT = 10080;
+  private static final int PORT = 10090;
   public static final String DEFAULT_NS = "com.smartitengineering";
   public static final String ROOT_URI_STRING = "http://localhost:" + PORT + "/smartuser/";
   public static final String TEST = "test";
