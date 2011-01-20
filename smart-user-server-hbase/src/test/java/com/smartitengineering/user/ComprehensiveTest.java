@@ -5,12 +5,12 @@
 package com.smartitengineering.user;
 
 import com.google.inject.AbstractModule;
-import com.smartitengineering.user.client.impl.ConnectionConfig;
+import com.smartitengineering.clientrest.smartuserclientimpl.ComprehensiveClientTest;
 import com.smartitengineering.user.guice.binder.Initializer;
 import com.smartitengineering.util.bean.guice.GuiceUtil;
 import com.smartitengineering.util.rest.client.ApplicationWideClientFactoryImpl;
+import com.smartitengineering.util.rest.client.ConnectionConfig;
 import java.io.File;
-import java.net.URISyntaxException;
 import java.util.Properties;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseTestingUtility;
@@ -38,6 +38,7 @@ public class ComprehensiveTest {
   private static final HBaseTestingUtility TEST_UTIL = new HBaseTestingUtility();
   private static final Logger LOGGER = LoggerFactory.getLogger(ComprehensiveTest.class);
   private static Server jettyServer;
+  private final ComprehensiveClientTest comprehensiveClientTest = new ComprehensiveClientTest();
 
   @BeforeClass
   public static void globalSetup() throws Exception {
@@ -98,8 +99,8 @@ public class ComprehensiveTest {
   }
 
   @Test
-  public void testStartup() throws URISyntaxException {
-    
+  public void testBootstraping() {
+    comprehensiveClientTest.testBootstraping();
   }
 
   public static class ConfigurationModule extends AbstractModule {

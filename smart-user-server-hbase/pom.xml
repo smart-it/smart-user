@@ -70,6 +70,13 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>com.smartitengineering.smart-user</groupId>
+      <artifactId>smart-user-client-impl</artifactId>
+      <classifier>tests</classifier>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.apache.hbase</groupId>
       <artifactId>hbase</artifactId>
       <exclusions>
