@@ -167,13 +167,17 @@ public class ObserverImpl implements CRUDObserver {
     getPrivilegeService().create(privilege);
     privilege = getPrivilegeService().getPrivilegeByOrganizationAndPrivilegeName(organization.getUniqueShortName(), privilege.
         getName());
-
     user = getUserService().getUserByOrganizationAndUserName(organization.getUniqueShortName(), ADMIN_USERNAME);
     user.getPrivileges().add(privilege);
     getUserService().update(user);
   }
 
   private void removeOrganization(Organization organization) {
+    List<UserGroup> userGroups = new ArrayList<UserGroup>(getUserGroupService().getByOrganizationName(organization.
+        getUniqueShortName()));
+    for (UserGroup userGroup : userGroups) {
+      getUserGroupService().delete(userGroup);
+    }
     List<UserPerson> userPersons = new ArrayList<UserPerson>(getUserPersonService().getAllByOrganization(organization.
         getUniqueShortName()));
     for (UserPerson userPerson : userPersons) {
@@ -188,11 +192,6 @@ public class ObserverImpl implements CRUDObserver {
         getUniqueShortName()));
     for (SecuredObject securedObject : securedObjects) {
       getSecuredObjectService().delete(securedObject);
-    }
-    List<UserGroup> userGroups = new ArrayList<UserGroup>(getUserGroupService().getByOrganizationName(organization.
-        getUniqueShortName()));
-    for (UserGroup userGroup : userGroups) {
-      getUserGroupService().delete(userGroup);
     }
   }
 
