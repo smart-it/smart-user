@@ -184,7 +184,19 @@ public class UserServiceCacheImpl implements UserService {
         return user;
       }
     }
-    return primaryService.getUserByOrganizationAndUserName(organizationShortName, userName);
+    final User userByOrganizationAndUserName =
+               primaryService.getUserByOrganizationAndUserName(organizationShortName, userName);
+    if (userByOrganizationAndUserName != null) {
+      try {
+        Lock<Long> lock = mutex.acquire(userByOrganizationAndUserName.getId());
+        putToCache(userByOrganizationAndUserName);
+        mutex.release(lock);
+      }
+      catch (Exception ex) {
+        logger.warn("Could not do cache lookup!", ex);
+      }
+    }
+    return userByOrganizationAndUserName;
   }
 
   @Override
