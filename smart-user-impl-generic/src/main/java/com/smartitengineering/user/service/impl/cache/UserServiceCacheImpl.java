@@ -37,6 +37,7 @@ public class UserServiceCacheImpl implements UserService {
   private UserService primaryService;
   @Inject
   private CacheServiceProvider<Long, User> cacheProvider;
+  @Inject
   private CacheServiceProvider<String, Long> nameCacheProvider;
   private transient final Logger logger = LoggerFactory.getLogger(getClass());
   private final Mutex<Long> mutex = CacheAPIFactory.<Long>getMutex();
@@ -51,7 +52,7 @@ public class UserServiceCacheImpl implements UserService {
   public void update(User user) {
     //First update then delete if update successful!
     try {
-      primaryService.delete(user);
+      primaryService.update(user);
       expireFromCache(user);
     }
     catch (RuntimeException exception) {
@@ -64,7 +65,7 @@ public class UserServiceCacheImpl implements UserService {
   public void delete(User user) {
     //First update then delete if update successful!
     try {
-      primaryService.update(user);
+      primaryService.delete(user);
       expireFromCache(user);
     }
     catch (RuntimeException exception) {
@@ -183,7 +184,19 @@ public class UserServiceCacheImpl implements UserService {
         return user;
       }
     }
-    return primaryService.getUserByOrganizationAndUserName(organizationShortName, userName);
+    final User userByOrganizationAndUserName =
+               primaryService.getUserByOrganizationAndUserName(organizationShortName, userName);
+    if (userByOrganizationAndUserName != null) {
+      try {
+        Lock<Long> lock = mutex.acquire(userByOrganizationAndUserName.getId());
+        putToCache(userByOrganizationAndUserName);
+        mutex.release(lock);
+      }
+      catch (Exception ex) {
+        logger.warn("Could not do cache lookup!", ex);
+      }
+    }
+    return userByOrganizationAndUserName;
   }
 
   @Override

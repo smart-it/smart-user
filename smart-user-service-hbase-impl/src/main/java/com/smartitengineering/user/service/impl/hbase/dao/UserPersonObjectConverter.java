@@ -75,6 +75,7 @@ public class UserPersonObjectConverter extends AbstractObjectRowConverter<UserPe
   public UserPerson rowsToObject(Result startRow, ExecutorService executorService) {
     try {
       UserPerson userPerson = new UserPerson();
+      userPerson.setId(getInfoProvider().getIdFromRowId(startRow.getRow()));
       userPerson.setCreationDate(Utils.toDate(startRow.getValue(FAMILY_SELF, CELL_CREATION_DATE)));
       userPerson.setLastModifiedDate(Utils.toDate(startRow.getValue(FAMILY_SELF, CELL_LAST_MODIFIED_DATE)));
       if (startRow.getValue(FAMILY_SELF, CELL_USER_ID) != null) {

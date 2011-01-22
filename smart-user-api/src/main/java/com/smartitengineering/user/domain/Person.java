@@ -169,7 +169,7 @@ public class Person extends AbstractGenericPersistentDTO<Person, Long, Long> {
     @Override
     @JsonIgnore
     public boolean isValid() {
-        if (!StringUtils.isEmpty(primaryEmail) && self.isValid()) {
+        if (!StringUtils.isEmpty(primaryEmail)) {
             return true;
         }
         return false;

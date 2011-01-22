@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.user.service.Services;
 import com.smartitengineering.user.domain.Address;
 import com.smartitengineering.user.domain.BasicIdentity;
 import com.smartitengineering.user.domain.GeoLocation;

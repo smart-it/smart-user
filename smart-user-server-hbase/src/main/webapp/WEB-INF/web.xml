@@ -20,6 +20,9 @@
     <param-value>en</param-value>
   </context-param>
   <listener>
+    <listener-class>com.smartitengineering.user.service.impl.hbase.servlet.InitializerContextListener</listener-class>
+  </listener>
+  <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
   <filter>

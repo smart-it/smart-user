@@ -2,26 +2,23 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.smartitengineering.user.service.impl.hbase.dao;
+package com.smartitengineering.user.service.impl.ip.provider;
 
 import com.smartitengineering.dao.impl.hbase.spi.DomainIdInstanceProvider;
 import com.smartitengineering.user.service.impl.hbase.domain.UniqueKey;
 
 /**
  *
- * @author imyousuf
+ * @author modhu7
  */
-public class UserDomainIdInstanceProvider implements DomainIdInstanceProvider {
+public class DomainIdInstanceProviderImpl implements DomainIdInstanceProvider {
 
   @Override
   public <IdType> IdType getInstance(Class<? extends IdType> clazz) {
-    final Object id;
-    if (UniqueKey.class.isAssignableFrom(clazz)) {
-      id = new UniqueKey();
+    Object object = null;
+    if(UniqueKey.class.isAssignableFrom(clazz)) {
+      object = new UniqueKey();
     }
-    else {
-      id = new Object();
-    }
-    return (IdType) id;
+    return (IdType) object;
   }
 }

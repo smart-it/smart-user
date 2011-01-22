@@ -55,6 +55,7 @@ public class RoleObjectConverter extends AbstractObjectRowConverter<Role, Long> 
   public Role rowsToObject(Result startRow, ExecutorService executorService) {
     try {
       Role role = new Role();
+      role.setId(getInfoProvider().getIdFromRowId(startRow.getRow()));
       role.setCreationDate(Utils.toDate(startRow.getValue(FAMILY_SELF, CELL_CREATION_DATE)));
       role.setLastModifiedDate(Utils.toDate(startRow.getValue(FAMILY_SELF, CELL_LAST_MODIFIED_DATE)));
       if (startRow.getValue(FAMILY_SELF, CELL_NAME) != null) {

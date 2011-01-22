@@ -117,6 +117,7 @@
     <module>smart-user-service-hbase-impl</module>
     <module>smart-user-impl-generic</module>
     <module>smart-user-server-hbase</module>
+    <module>smart-user-guice-binder</module>
   </modules>
 
       

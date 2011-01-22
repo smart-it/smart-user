@@ -17,7 +17,7 @@ import com.smartitengineering.user.service.RoleService;
 import com.smartitengineering.user.service.SecuredObjectService;
 import com.smartitengineering.user.service.UserPersonService;
 import com.smartitengineering.user.service.UserService;
-import com.smartitengineering.user.ws.resources.Services;
+import com.smartitengineering.user.service.Services;
 import java.util.HashSet;
 import java.util.Set;
 

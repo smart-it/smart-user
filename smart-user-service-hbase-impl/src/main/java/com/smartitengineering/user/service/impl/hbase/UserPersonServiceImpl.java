@@ -6,13 +6,16 @@
 package com.smartitengineering.user.service.impl.hbase;
 
 import com.google.inject.Inject;
+import com.smartitengineering.common.dao.search.CommonFreeTextSearchDao;
 import com.smartitengineering.dao.common.CommonReadDao;
 import com.smartitengineering.dao.common.CommonWriteDao;
+import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hbase.spi.RowCellIncrementor;
 import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.domain.UserPerson;
+import com.smartitengineering.user.filter.AbstractFilter.Order;
 import com.smartitengineering.user.filter.UserPersonFilter;
 import com.smartitengineering.user.observer.CRUDObservable;
 import com.smartitengineering.user.observer.ObserverNotification;
@@ -26,7 +29,9 @@ import com.smartitengineering.user.service.impl.hbase.domain.UniqueKey;
 import com.smartitengineering.user.service.impl.hbase.domain.UniqueKeyIndex;
 import java.util.Collection;
 import java.util.Date;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.solr.client.solrj.util.ClientUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +57,8 @@ public class UserPersonServiceImpl implements UserPersonService {
   private CRUDObservable observable;
   @Inject
   private RowCellIncrementor<UserPerson, AutoId, String> idIncrementor;
+  @Inject
+  protected CommonFreeTextSearchDao<UserPerson> freeTextSearchDao;
   @Inject
   private UserService userService;
   @Inject
@@ -205,6 +212,7 @@ public class UserPersonServiceImpl implements UserPersonService {
   @Override
   public void delete(UserPerson userPerson) {
     try {
+      observable.notifyObserver(ObserverNotification.DELETE_USER_PERSON, userPerson);
       writeDao.delete(userPerson);
       cascadeDelete(userPerson);
       UniqueKey indexKey = getUniqueKeyOfIndexForUser(userPerson);
@@ -217,7 +225,6 @@ public class UserPersonServiceImpl implements UserPersonService {
       if (index != null) {
         uniqueKeyIndexWriteDao.delete(index);
       }
-      observable.notifyObserver(ObserverNotification.DELETE_USER_PERSON, userPerson);
     }
     catch (Exception e) {
       String message = ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
@@ -279,18 +286,63 @@ public class UserPersonServiceImpl implements UserPersonService {
 
   @Override
   public Collection<UserPerson> search(UserPersonFilter filter) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    StringBuilder q = new StringBuilder();
+    final String id = filter.getId();
+    if (StringUtils.isNotBlank(id)) {
+      q.append("id: ").append(ClientUtils.escapeQueryChars(id)).append('*');
+    }
+    final String username = filter.getUsername();
+    if (StringUtils.isNotBlank(username)) {
+      q.append(" +userName: ").append(username).append('*');
+    }
+    final String orgName = filter.getOrganization();
+    if (StringUtils.isNotBlank(orgName)) {
+      q.append(" +organization: ").append(orgName).append('*');
+    }
+    if (filter.getSortBy() == null) {
+      filter.setSortBy("id");
+    }
+    if (filter.getSortOrder() == null) {
+      filter.setSortOrder(Order.ASC);
+    }
+    if (filter.getCount() == null) {
+      logger.info("count is null");
+    }
+    else {
+      logger.info("count is " + filter.getCount());
+    }
+    logger.info(">>>>>>>>>>>QUERY>>>>>>>>>>"+q.toString());
+    if (filter.getCount() != null && filter.getIndex() != null) {
+
+      return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
+          getMaxResultsParam(filter.getCount()), QueryParameterFactory.getFirstResultParam(filter.getIndex() * filter.
+          getCount()), QueryParameterFactory.getOrderByParam(filter.getSortBy(), com.smartitengineering.dao.common.queryparam.Order.
+          valueOf(filter.getSortOrder().name())));
+    }
+    else {
+      return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
+          getOrderByParam(filter.getSortBy(), com.smartitengineering.dao.common.queryparam.Order.valueOf(filter.
+          getSortOrder().name())));
+    }
   }
 
   @Override
   public Collection<UserPerson> getAllByOrganization(String organizationUniqueShortName) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    OrganizationServiceImpl organizationServiceImpl = new OrganizationServiceImpl();
+    UserPersonFilter userPersonFilter = new UserPersonFilter();
+    userPersonFilter.setOrganization(organizationServiceImpl.getOrganizationByUniqueShortName(organizationUniqueShortName).getName());
+    return search(userPersonFilter);
   }
 
   @Override
   public Collection<UserPerson> getByOrganization(String organizationUniqueShortName, String userName,
                                                   boolean isSmallerThan, int count) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    OrganizationServiceImpl organizationServiceImpl = new OrganizationServiceImpl();
+    UserPersonFilter userPersonFilter = new UserPersonFilter();
+    userPersonFilter.setOrganization(organizationServiceImpl.getOrganizationByUniqueShortName(organizationUniqueShortName).getName());
+    userPersonFilter.setCount(count);
+    userPersonFilter.setUsername(userName);
+    return search(userPersonFilter);
   }
 
   @Override

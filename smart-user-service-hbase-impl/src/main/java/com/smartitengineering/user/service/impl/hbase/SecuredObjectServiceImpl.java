@@ -5,8 +5,10 @@
 package com.smartitengineering.user.service.impl.hbase;
 
 import com.google.inject.Inject;
+import com.smartitengineering.common.dao.search.CommonFreeTextSearchDao;
 import com.smartitengineering.dao.common.CommonReadDao;
 import com.smartitengineering.dao.common.CommonWriteDao;
+import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hbase.spi.RowCellIncrementor;
 import com.smartitengineering.user.domain.SecuredObject;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
@@ -22,6 +24,7 @@ import java.util.Collection;
 import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.solr.client.solrj.util.ClientUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +48,8 @@ public class SecuredObjectServiceImpl implements SecuredObjectService {
   private CommonReadDao<AutoId, String> autoIdReadDao;
   @Inject
   private CRUDObservable observable;
+  @Inject
+  protected CommonFreeTextSearchDao<SecuredObject> freeTextSearchDao;
   @Inject
   private RowCellIncrementor<SecuredObject, AutoId, String> idIncrementor;
   private boolean autoIdInitialized = false;
@@ -90,8 +95,8 @@ public class SecuredObjectServiceImpl implements SecuredObjectService {
   }
 
   protected UniqueKey getUniqueKeyOfIndexForSecObjObjId(SecuredObject securedObject) {
-    final String name = securedObject.getName();
-    return getUniqueKeyOfIndexForName(name, securedObject.getOrganization().getUniqueShortName());
+    final String objectId = securedObject.getObjectID();
+    return getUniqueKeyOfIndexForObjId(objectId, securedObject.getOrganization().getUniqueShortName());
   }
 
   protected UniqueKey getUniqueKeyOfIndexForObjId(final String objId, final String orgShortName) {
@@ -190,8 +195,8 @@ public class SecuredObjectServiceImpl implements SecuredObjectService {
   @Override
   public void delete(SecuredObject securedObject) {
     try {
-      writeDao.delete(securedObject);
       observable.notifyObserver(ObserverNotification.DELETE_SECURED_OBJECT, securedObject);
+      writeDao.delete(securedObject);
       UniqueKey indexKey = getUniqueKeyOfIndexForSecObjName(securedObject);
       UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(indexKey);
       if (index != null) {
@@ -217,7 +222,11 @@ public class SecuredObjectServiceImpl implements SecuredObjectService {
 
   @Override
   public Collection<SecuredObject> getByOrganization(String organizationName) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    StringBuilder q = new StringBuilder();
+    q.append("id: ").append(ClientUtils.escapeQueryChars("securedObject: ")).append("*");
+    q.append(" +organization: ").append(organizationName).append('*');
+    return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
+        getOrderByParam("organization", com.smartitengineering.dao.common.queryparam.Order.valueOf("ASC")));
   }
 
   @Override
@@ -225,8 +234,8 @@ public class SecuredObjectServiceImpl implements SecuredObjectService {
     UniqueKey uniqueKey = getUniqueKeyOfIndexForObjId(objectID, organizationName);
     UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(uniqueKey);
     if (index != null) {
-      long securedObjectId = NumberUtils.toLong(index.getObjId(), -1l);
-      if (securedObjectId > -1) {
+      long securedObjectId = NumberUtils.toLong(index.getObjId(), Long.MIN_VALUE);
+      if (securedObjectId > Long.MIN_VALUE) {
         return getById(securedObjectId);
       }
     }
@@ -238,8 +247,8 @@ public class SecuredObjectServiceImpl implements SecuredObjectService {
     UniqueKey uniqueKey = getUniqueKeyOfIndexForName(name, organizationName);
     UniqueKeyIndex index = uniqueKeyIndexReadDao.getById(uniqueKey);
     if (index != null) {
-      long securedObjectId = NumberUtils.toLong(index.getObjId(), -1l);
-      if (securedObjectId > -1) {
+      long securedObjectId = NumberUtils.toLong(index.getObjId(), Long.MIN_VALUE);
+      if (securedObjectId > Long.MIN_VALUE) {
         return getById(securedObjectId);
       }
     }

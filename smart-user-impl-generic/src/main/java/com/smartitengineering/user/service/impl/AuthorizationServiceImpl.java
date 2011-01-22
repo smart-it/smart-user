@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.service.impl;
 
+import com.google.inject.Inject;
 import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.domain.SecuredObject;
 import com.smartitengineering.user.domain.User;
@@ -26,8 +27,11 @@ import org.springframework.security.vote.AccessDecisionVoter;
  */
 public class AuthorizationServiceImpl implements AuthorizationService {
 
+  @Inject
   private UserService userService;
+  @Inject
   private SecuredObjectService securedObjectService;
+  @Inject
   private UserGroupService userGroupService;
 
   public SecuredObjectService getSecuredObjectService() {

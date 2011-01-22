@@ -124,6 +124,7 @@ public class PersonObjectConverter extends AbstractObjectRowConverter<Person, Lo
   public Person rowsToObject(Result startRow, ExecutorService executorService) {
     try {
       Person person = new Person();
+      person.setId(getInfoProvider().getIdFromRowId(startRow.getRow()));
       person.setAddress(ConvertionUtils.formAddress(startRow, FAMILY_SELF, ADDRESS_CELL_LIST));
       person.setSelf(ConvertionUtils.formBasicIdentity(startRow, FAMILY_SELF, SELF_CELL_LIST));
       person.setFather(ConvertionUtils.formBasicIdentity(startRow, FAMILY_SELF, FATHER_CELL_LIST));

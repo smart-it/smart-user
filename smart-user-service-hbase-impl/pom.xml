@@ -23,6 +23,18 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>com.smartitengineering</groupId>
+      <artifactId>smart-dao-search</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.smartitengineering.smart-dao</groupId>
+      <artifactId>solr-dao</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.smartitengineering.smart-dao</groupId>
+      <artifactId>solr-search-dao</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.smartitengineering.smart-dao</groupId>
       <artifactId>smart-hbase-dao</artifactId>
       <exclusions>

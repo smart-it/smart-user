@@ -46,9 +46,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="sidRetrievalStrategy">
       <ref bean="sidRetrievalStrategy"/>
     </property>
-    <property name="authorizationService">
-      <ref bean="authorizationService"/>
-    </property>
   </bean>
 
   <bean id="votingConfigProvider" class="com.smartitengineering.user.security.VotingConfigProviderImpl">

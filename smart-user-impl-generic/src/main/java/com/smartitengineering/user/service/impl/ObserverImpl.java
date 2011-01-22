@@ -20,11 +20,11 @@ import com.smartitengineering.user.service.OrganizationService;
 import com.smartitengineering.user.service.PersonService;
 import com.smartitengineering.user.service.PrivilegeService;
 import com.smartitengineering.user.service.SecuredObjectService;
+import com.smartitengineering.user.service.Services;
 import com.smartitengineering.user.service.UserGroupService;
 import com.smartitengineering.user.service.UserPersonService;
 import com.smartitengineering.user.service.UserService;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -51,68 +51,33 @@ public class ObserverImpl implements CRUDObserver {
   public final Integer PRIVILEGE_PERMISSION_MASK = 31;
   public final String EMAIL_DOMAIN = SmartUserStrings.EMAIL_DOMAIN;
   public final String USER_UNIQUE_FRAG = SmartUserStrings.USER_UNIQUE_URL_FRAGMENT;
-  private UserPersonService userPersonService;
-  private PersonService personService;
-  private UserService userService;
-  private SecuredObjectService securedObjectService;
-  private OrganizationService organizationService;
-  private PrivilegeService privilegeService;
-  private UserGroupService userGroupService;
 
   public UserGroupService getUserGroupService() {
-    return userGroupService;
-  }
-
-  public void setUserGroupService(UserGroupService userGroupService) {
-    this.userGroupService = userGroupService;
+    return Services.getInstance().getUserGroupService();
   }
 
   public OrganizationService getOrganizationService() {
-    return organizationService;
-  }
-
-  public void setOrganizationService(OrganizationService organizationService) {
-    this.organizationService = organizationService;
+    return Services.getInstance().getOrganizationService();
   }
 
   public PrivilegeService getPrivilegeService() {
-    return privilegeService;
-  }
-
-  public void setPrivilegeService(PrivilegeService privilegeService) {
-    this.privilegeService = privilegeService;
+    return Services.getInstance().getPrivilegeService();
   }
 
   public SecuredObjectService getSecuredObjectService() {
-    return securedObjectService;
-  }
-
-  public void setSecuredObjectService(SecuredObjectService securedObjectService) {
-    this.securedObjectService = securedObjectService;
+    return Services.getInstance().getSecuredObjectService();
   }
 
   public UserPersonService getUserPersonService() {
-    return userPersonService;
-  }
-
-  public void setUserPersonService(UserPersonService userPersonService) {
-    this.userPersonService = userPersonService;
+    return Services.getInstance().getUserPersonService();
   }
 
   public PersonService getPersonService() {
-    return personService;
-  }
-
-  public void setPersonService(PersonService personService) {
-    this.personService = personService;
+    return Services.getInstance().getPersonService();
   }
 
   public UserService getUserService() {
-    return userService;
-  }
-
-  public void setUserService(UserService userService) {
-    this.userService = userService;
+    return Services.getInstance().getUserService();
   }
 
   @Override
@@ -146,7 +111,7 @@ public class ObserverImpl implements CRUDObserver {
   private void initializeOrganization(Organization organization) {
 
     String uniqueShortName = organization.getUniqueShortName();
-    organization = organizationService.getOrganizationByUniqueShortName(uniqueShortName);
+    organization = getOrganizationService().getOrganizationByUniqueShortName(uniqueShortName);
 
     User user = new User();
     user.setUsername(ADMIN_USERNAME);
@@ -158,8 +123,7 @@ public class ObserverImpl implements CRUDObserver {
     UserPerson userPerson = new UserPerson();
     userPerson.setUser(user);
     userPerson.setPerson(person);
-    userPersonService.create(userPerson);
-    initializeUserPerson(userPerson);
+    getUserPersonService().create(userPerson);
 
 
     String orgUri = ORGS_OID + ORG_UNIQUE_FRAG + "/" + organization.getUniqueShortName();
@@ -168,8 +132,8 @@ public class ObserverImpl implements CRUDObserver {
     securedObjectOrganization.setObjectID(orgUri);
     securedObjectOrganization.setOrganization(organization);
     securedObjectOrganization.setParentObjectID(ORGS_OID);
-    securedObjectService.save(securedObjectOrganization);
-    securedObjectOrganization = securedObjectService.getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectOrganization.
+    getSecuredObjectService().save(securedObjectOrganization);
+    securedObjectOrganization = getSecuredObjectService().getByOrganizationAndObjectID(organization.getUniqueShortName(), securedObjectOrganization.
         getObjectID());
 
     SecuredObject securedObjectUsers = new SecuredObject();
@@ -177,21 +141,21 @@ public class ObserverImpl implements CRUDObserver {
     securedObjectUsers.setObjectID(orgUri + USERS_OID);
     securedObjectUsers.setOrganization(organization);
     securedObjectUsers.setParentObjectID(securedObjectOrganization.getObjectID());
-    securedObjectService.save(securedObjectUsers);
+    getSecuredObjectService().save(securedObjectUsers);
 
     SecuredObject securedObjectSOs = new SecuredObject();
     securedObjectSOs.setName(organization.getUniqueShortName() + "-" + SECURED_OBJECTS_NAME);
     securedObjectSOs.setObjectID(orgUri + SECURED_OBJECTS_OID); //This objectId is actually the http url of secured objcets list of smart-user organizations
     securedObjectSOs.setOrganization(organization);
     securedObjectSOs.setParentObjectID(securedObjectOrganization.getObjectID());
-    securedObjectService.save(securedObjectSOs);
+    getSecuredObjectService().save(securedObjectSOs);
 
     SecuredObject securedObjectPrivileges = new SecuredObject();
     securedObjectPrivileges.setName(organization.getName() + "-" + PRIVILEGES_OID_NAME);
     securedObjectPrivileges.setObjectID(orgUri + PRIVILEGES_OID); //This objectId is actually the http url of secured objcets list of smart-user organizations
     securedObjectPrivileges.setOrganization(organization);
     securedObjectPrivileges.setParentObjectID(securedObjectOrganization.getObjectID());
-    securedObjectService.save(securedObjectPrivileges);
+    getSecuredObjectService().save(securedObjectPrivileges);
 
     Privilege privilege = new Privilege();
     privilege.setDisplayName(organization.getName() + " " + "admin user profile privilege");
@@ -200,53 +164,50 @@ public class ObserverImpl implements CRUDObserver {
     privilege.setPermissionMask(PRIVILEGE_PERMISSION_MASK); //permission mask 31 means all privileges are there 11111
     privilege.setSecuredObject(securedObjectOrganization);
     privilege.setShortDescription("This admin privilege contains the authority to do any of the CRUD options");
-    privilegeService.create(privilege);
-    privilege = privilegeService.getPrivilegeByOrganizationAndPrivilegeName(organization.getUniqueShortName(), privilege.
+    getPrivilegeService().create(privilege);
+    privilege = getPrivilegeService().getPrivilegeByOrganizationAndPrivilegeName(organization.getUniqueShortName(), privilege.
         getName());
-
-    user = userService.getUserByOrganizationAndUserName(organization.getUniqueShortName(), ADMIN_USERNAME);
+    user = getUserService().getUserByOrganizationAndUserName(organization.getUniqueShortName(), ADMIN_USERNAME);
     user.getPrivileges().add(privilege);
-    userService.update(user);
+    getUserService().update(user);
   }
 
   private void removeOrganization(Organization organization) {
-    List<UserPerson> userPersons = new ArrayList<UserPerson>(userPersonService.getAllByOrganization(organization.
-        getUniqueShortName()));
-    for (UserPerson userPerson : userPersons) {
-      removeUserPerson(userPerson);
-      userPersonService.delete(userPerson);
-    }
-    List<Privilege> privileges = new ArrayList<Privilege>(privilegeService.getPrivilegesByOrganization(organization.
-        getUniqueShortName()));
-    for (Privilege privilege : privileges) {
-      removePrivilege(privilege);
-      privilegeService.delete(privilege);
-    }
-    List<SecuredObject> securedObjects = new ArrayList<SecuredObject>(securedObjectService.getByOrganization(organization.
-        getUniqueShortName()));
-    for (SecuredObject securedObject : securedObjects) {
-      securedObjectService.delete(securedObject);
-    }
-    List<UserGroup> userGroups = new ArrayList<UserGroup>(userGroupService.getByOrganizationName(organization.
+    List<UserGroup> userGroups = new ArrayList<UserGroup>(getUserGroupService().getByOrganizationName(organization.
         getUniqueShortName()));
     for (UserGroup userGroup : userGroups) {
-      userGroupService.delete(userGroup);
+      getUserGroupService().delete(userGroup);
+    }
+    List<UserPerson> userPersons = new ArrayList<UserPerson>(getUserPersonService().getAllByOrganization(organization.
+        getUniqueShortName()));
+    for (UserPerson userPerson : userPersons) {
+      getUserPersonService().delete(userPerson);
+    }
+    List<Privilege> privileges = new ArrayList<Privilege>(getPrivilegeService().getPrivilegesByOrganization(organization.
+        getUniqueShortName()));
+    for (Privilege privilege : privileges) {
+      getPrivilegeService().delete(privilege);
+    }
+    List<SecuredObject> securedObjects = new ArrayList<SecuredObject>(getSecuredObjectService().getByOrganization(organization.
+        getUniqueShortName()));
+    for (SecuredObject securedObject : securedObjects) {
+      getSecuredObjectService().delete(securedObject);
     }
   }
 
   private void initializeUserPerson(UserPerson userPerson) {
     String username = userPerson.getUser().getUsername();
     String organizationShortName = userPerson.getUser().getOrganization().getUniqueShortName();
-    UserPerson persistentUserPerson = userPersonService.getUserPersonByUsernameAndOrgName(username,
-                                                                                          organizationShortName);
+    UserPerson persistentUserPerson = getUserPersonService().getUserPersonByUsernameAndOrgName(username,
+                                                                                               organizationShortName);
     SecuredObject securedObjectUser = new SecuredObject();
     securedObjectUser.setName(username + "-profile");
     String orgUri = ORGS_OID + ORG_UNIQUE_FRAG + "/" + organizationShortName;
     securedObjectUser.setObjectID(orgUri + USERS_OID + USER_UNIQUE_FRAG + "/" + username);
     securedObjectUser.setOrganization(userPerson.getUser().getOrganization());
     securedObjectUser.setParentObjectID(orgUri + USERS_OID);
-    securedObjectService.save(securedObjectUser);
-    securedObjectUser = securedObjectService.getByOrganizationAndObjectID(userPerson.getUser().getOrganization().
+    getSecuredObjectService().save(securedObjectUser);
+    securedObjectUser = getSecuredObjectService().getByOrganizationAndObjectID(userPerson.getUser().getOrganization().
         getUniqueShortName(), securedObjectUser.getObjectID());
 
     Privilege privilegeUser = new Privilege();
@@ -258,26 +219,27 @@ public class ObserverImpl implements CRUDObserver {
     privilegeUser.setShortDescription(
         "This privilege contains the authority to change the password and profile of the user with username " + userPerson.
         getUser().getUsername());
-    privilegeService.create(privilegeUser);
+    getPrivilegeService().create(privilegeUser);
 
-    privilegeUser = privilegeService.getPrivilegeByOrganizationAndPrivilegeName(userPerson.getUser().getOrganization().
+    privilegeUser = getPrivilegeService().getPrivilegeByOrganizationAndPrivilegeName(userPerson.getUser().
+        getOrganization().
         getUniqueShortName(), privilegeUser.getName());
     Set<Privilege> privileges = userPerson.getUser().getPrivileges();
     privileges.add(privilegeUser);
     User user = persistentUserPerson.getUser();
     user.setPrivileges(privileges);
-    userService.update(user);
+    getUserService().update(user);
   }
 
   private void removeUserPerson(UserPerson userPerson) {
     User user = userPerson.getUser();
-    List<UserGroup> userGroups = new ArrayList<UserGroup>(userGroupService.getByOrganizationName(userPerson.getUser().
+    List<UserGroup> userGroups = new ArrayList<UserGroup>(getUserGroupService().getByOrganizationName(userPerson.getUser().
         getOrganization().getUniqueShortName()));
     for (UserGroup userGroup : userGroups) {
       List<User> users = new ArrayList<User>(userGroup.getUsers());
       if (users.contains(userPerson.getUser())) {
         userGroup.getUsers().remove(userPerson.getUser());
-        userGroupService.update(userGroup);
+        getUserGroupService().update(userGroup);
       }
     }
     String organizationShortName = userPerson.getUser().getOrganization().getUniqueShortName();
@@ -285,10 +247,11 @@ public class ObserverImpl implements CRUDObserver {
     String orgUri = ORGS_OID + ORG_UNIQUE_FRAG + "/" + organizationShortName;
     String privilegeName = username + "-" + organizationShortName + "-user-privilege";
 
-    SecuredObject securedObject = securedObjectService.getByOrganizationAndObjectID(organizationShortName, orgUri +
+    SecuredObject securedObject = getSecuredObjectService().getByOrganizationAndObjectID(organizationShortName, orgUri +
         USERS_OID + USER_UNIQUE_FRAG + "/" + username);
 
-    List<Privilege> privileges = new ArrayList<Privilege>(privilegeService.getPrivilegesByOrganizationNameAndObjectID(
+    List<Privilege> privileges = new ArrayList<Privilege>(getPrivilegeService().
+        getPrivilegesByOrganizationNameAndObjectID(
         organizationShortName, securedObject.getObjectID()));
 
     for (Privilege privilege : privileges) {
@@ -299,49 +262,49 @@ public class ObserverImpl implements CRUDObserver {
 //        }
 //      }
       user.getPrivileges().remove(privilege);
-      userService.update(user);
-      privilegeService.delete(privilege);
+      getUserService().update(user);
+      getPrivilegeService().delete(privilege);
     }
-    securedObjectService.delete(securedObject);
+    getSecuredObjectService().delete(securedObject);
   }
 
   private void removePrivilege(Privilege privilege) {
-    List<User> users = new ArrayList<User>(userService.getUserByOrganization(privilege.getParentOrganization().
+    List<User> users = new ArrayList<User>(getUserService().getUserByOrganization(privilege.getParentOrganization().
         getUniqueShortName()));
     for (User user : users) {
       List<Privilege> privileges = new ArrayList<Privilege>(user.getPrivileges());
       if (privileges.contains(privilege)) {
         user.getPrivileges().remove(privilege);
-        userService.update(user);
+        getUserService().update(user);
       }
     }
-    List<UserGroup> userGroups = new ArrayList<UserGroup>(userGroupService.getByOrganizationName(privilege.
+    List<UserGroup> userGroups = new ArrayList<UserGroup>(getUserGroupService().getByOrganizationName(privilege.
         getParentOrganization().getUniqueShortName()));
     for (UserGroup userGroup : userGroups) {
       List<Privilege> privileges = new ArrayList<Privilege>(userGroup.getPrivileges());
       if (privileges.contains(privilege)) {
         userGroup.getPrivileges().remove(privilege);
-        userGroupService.update(userGroup);
+        getUserGroupService().update(userGroup);
       }
     }
   }
 
   private void removeRole(Role role) {
-    List<User> users = new ArrayList<User>(userService.getAllUser());
+    List<User> users = new ArrayList<User>(getUserService().getAllUser());
     for (User user : users) {
       List<Role> roles = new ArrayList<Role>(user.getRoles());
       if (roles.contains(role)) {
         user.getRoles().remove(role);
-        userService.update(user);
+        getUserService().update(user);
       }
     }
 
-    List<UserGroup> userGroups = new ArrayList<UserGroup>(userGroupService.getAllUserGroup());
+    List<UserGroup> userGroups = new ArrayList<UserGroup>(getUserGroupService().getAllUserGroup());
     for (UserGroup userGroup : userGroups) {
       List<Role> roles = new ArrayList<Role>(userGroup.getRoles());
       if (roles.contains(role)) {
         userGroup.getRoles().remove(role);
-        userGroupService.update(userGroup);
+        getUserGroupService().update(userGroup);
       }
     }
   }

@@ -35,7 +35,7 @@ public class UserGroupObjectConverter extends AbstractObjectRowConverter<UserGro
   private static final byte[] FAMILY_SELF = Bytes.toBytes("self");
   private static final byte[] FAMILY_ROLES = Bytes.toBytes("roles");
   private static final byte[] FAMILY_PRIVILEGES = Bytes.toBytes("privileges");
-  private static final byte[] FAMILY_USERS = Bytes.toBytes("privileges");
+  private static final byte[] FAMILY_USERS = Bytes.toBytes("users");
   private static final byte[] CELL_PARENT_ORG = Bytes.toBytes("parentOrg");
   private static final byte[] CELL_CREATION_DATE = Bytes.toBytes("creationDate");
   private static final byte[] CELL_LAST_MODIFIED_DATE = Bytes.toBytes("lastModifiedDate");
@@ -158,6 +158,7 @@ public class UserGroupObjectConverter extends AbstractObjectRowConverter<UserGro
   public UserGroup rowsToObject(Result startRow, ExecutorService executorService) {
     try {
       UserGroup userGroup = new UserGroup();
+      userGroup.setId(getInfoProvider().getIdFromRowId(startRow.getRow()));
       userGroup.setCreationDate(Utils.toDate(startRow.getValue(FAMILY_SELF, CELL_CREATION_DATE)));
       userGroup.setLastModifiedDate(Utils.toDate(startRow.getValue(FAMILY_SELF, CELL_LAST_MODIFIED_DATE)));
       if (startRow.getValue(FAMILY_SELF, CELL_PARENT_ORG) != null) {

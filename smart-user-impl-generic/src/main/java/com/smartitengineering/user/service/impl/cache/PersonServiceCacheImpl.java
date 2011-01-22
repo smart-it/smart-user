@@ -28,6 +28,7 @@ public class PersonServiceCacheImpl implements PersonService {
   private PersonService primaryService;
   @Inject
   private CacheServiceProvider<Long, Person> cacheProvider;
+  @Inject
   private CacheServiceProvider<String, Long> nameCacheProvider;
   private transient final Logger logger = LoggerFactory.getLogger(getClass());
   private final Mutex<Long> mutex = CacheAPIFactory.<Long>getMutex();
@@ -55,7 +56,7 @@ public class PersonServiceCacheImpl implements PersonService {
   public void delete(Person person) {
     //First update then delete if update successful!
     try {
-      primaryService.update(person);
+      primaryService.delete(person);
       expireFromCache(person);
     }
     catch (RuntimeException exception) {
