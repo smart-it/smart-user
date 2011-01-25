@@ -129,8 +129,10 @@ public class OrganizationUserGroupsResource extends AbstractResource {
       List<UserGroup> userGroupList = new ArrayList<UserGroup>(userGroups);
 
       // uri builder for next and previous organizations according to count
-      final UriBuilder nextUri = getRelativeURIBuilder().path(OrganizationUserGroupsResource.class).path(ORGANIZATIONS_USER_GROUPS_AFTER_NAME_METHOD);
-      final UriBuilder previousUri = getRelativeURIBuilder().path(OrganizationUserGroupsResource.class).path(ORGANIZATIONS_USER_GROUPS_BEFORE_NAME_METHOD);
+      final UriBuilder nextUri = getRelativeURIBuilder().path(OrganizationUserGroupsResource.class).path(
+          ORGANIZATIONS_USER_GROUPS_AFTER_NAME_METHOD);
+      final UriBuilder previousUri = getRelativeURIBuilder().path(OrganizationUserGroupsResource.class).path(
+          ORGANIZATIONS_USER_GROUPS_BEFORE_NAME_METHOD);
 
       // link to the next organizations based on count
       Link nextLink = getAbderaFactory().newLink();
@@ -142,7 +144,7 @@ public class OrganizationUserGroupsResource extends AbstractResource {
         final Object[] values = queryParam.get(key).toArray();
         nextUri.queryParam(key, values);
         previousUri.queryParam(key, values);
-      }
+      }      
       nextLink.setHref(nextUri.build(organizationUniqueShortName, lastUserGroup.getName()).toString());
 
 
@@ -167,7 +169,8 @@ public class OrganizationUserGroupsResource extends AbstractResource {
 
         // setting link to the each individual user
         Link userLink = getAbderaFactory().newLink();
-        userLink.setHref(getRelativeURIBuilder().path(OrganizationUserGroupResource.class).build(organizationUniqueShortName, userGroup.getName()).toString());
+        userLink.setHref(getRelativeURIBuilder().path(OrganizationUserGroupResource.class).build(
+            organizationUniqueShortName, userGroup.getName()).toString());
         userLink.setRel(Link.REL_ALTERNATE);
         userLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
 
@@ -192,10 +195,11 @@ public class OrganizationUserGroupsResource extends AbstractResource {
       userGroup.setOrganization(organization);
       Services.getInstance().getUserGroupService().save(userGroup);
       responseBuilder = Response.status(Status.CREATED);
-      responseBuilder.location(getAbsoluteURIBuilder().path(OrganizationUserGroupResource.class).build(organizationUniqueShortName, userGroup.getName().toString()));
+      responseBuilder.location(getAbsoluteURIBuilder().path(OrganizationUserGroupResource.class).build(
+          organizationUniqueShortName, userGroup.getName().toString()));
     }
     catch (Exception ex) {
-      responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);      
+      responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
   }

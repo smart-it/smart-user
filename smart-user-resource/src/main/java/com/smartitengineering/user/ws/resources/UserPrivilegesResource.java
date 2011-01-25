@@ -102,7 +102,7 @@ public class UserPrivilegesResource extends AbstractResource {
 
     // create a link to parent resource, in this case now it is linked to root resource
     Link parentResourceLink = getAbderaFactory().newLink();
-    parentResourceLink.setHref(UriBuilder.fromResource(OrganizationResource.class).build(organizationName).toString());
+    parentResourceLink.setHref(getRelativeURIBuilder().path(OrganizationResource.class).build(organizationName).toString());
     parentResourceLink.setRel("organization");
     atomFeed.addLink(parentResourceLink);
 
@@ -149,7 +149,7 @@ public class UserPrivilegesResource extends AbstractResource {
         userPrivilegeEntry.setSummary(privilege.getShortDescription());
 
         Link userPrivilegeLink = getAbderaFactory().newLink();
-        userPrivilegeLink.setHref(UriBuilder.fromResource(UserPrivilegeResource.class).build(organizationName, userName, privilege.
+        userPrivilegeLink.setHref(getRelativeURIBuilder().path(UserPrivilegeResource.class).build(organizationName, userName, privilege.
             getName()).toString());
         userPrivilegeLink.setRel(Link.REL_ALTERNATE);
         userPrivilegeLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
@@ -171,7 +171,7 @@ public class UserPrivilegesResource extends AbstractResource {
       return responseBuilder.build();
     }
     try {
-      if (privilege.getId() == null || privilege.getVersion() == null) {
+      if (privilege.getId() == null /*|| privilege.getVersion() == null*/) {
         responseBuilder = Response.status(Status.BAD_REQUEST);
       }
       else {

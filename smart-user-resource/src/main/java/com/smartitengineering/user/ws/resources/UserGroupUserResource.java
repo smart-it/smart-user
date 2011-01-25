@@ -110,6 +110,7 @@ public class UserGroupUserResource extends AbstractResource {
     try {
       responseBuilder = Response.status(Status.OK);
       userGroup.getUsers().remove(user);
+      System.out.print("!!!!!@@@@@@"+user);
       Services.getInstance().getUserGroupService().update(userGroup);
     }
     catch (Exception ex) {

@@ -81,6 +81,15 @@ public class OrganizationPrivilegeResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
     ResponseBuilder responseBuilder = Response.ok();
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Entering get method of privilege resource");
+    if(organization==null){
+      System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Organization is null from privilege resource");
+    }
+    if(privilege==null){
+      System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Privilege is null from privilege resource");
+    }
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Privilege or organization is not null from privilege resource");
+
     if (organization == null || privilege == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
