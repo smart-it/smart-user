@@ -4,15 +4,14 @@
  */
 package com.smartitengineering.user.filter;
 
-
 /**
  *
  * @author russel
  */
-public class OrganizationFilter extends AbstractFilter{
+public class OrganizationFilter extends AbstractFilter {
 
   private String organizationUniqueShortName;
-  private  String name;
+  private String name;
 
   public String getOrganizationUniqueShortName() {
     if (organizationUniqueShortName == null) {
@@ -32,4 +31,4 @@ public class OrganizationFilter extends AbstractFilter{
   public void setName(String name) {
     this.name = name;
   }
-  }
+}
