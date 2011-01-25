@@ -56,4 +56,9 @@ public class Name{
     this.middleInitial = middleInitial;
   }
 
+  @Override
+  public String toString() {
+    return "" + firstName + " " + middleInitial + " " + lastName;
+  }
+
 }
