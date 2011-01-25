@@ -160,11 +160,20 @@ public class UserGroupServiceImpl implements UserGroupService {
       writeDao.update(userGroup);
       observable.notifyObserver(ObserverNotification.UPDATE_USER_GROUP, userGroup);
       if (logger.isInfoEnabled()) {
-        userGroup = getByOrganizationAndUserGroupName(userGroup.getOrganization().getUniqueShortName(), userGroup.getName());
+        userGroup = getByOrganizationAndUserGroupName(userGroup.getOrganization().getUniqueShortName(), userGroup.
+            getName());
+        UserGroup userGroup1 = readDao.getById(oldUserGroup.getId());
         Collection<User> users = userGroup.getUsers();
+        logger.info("ID0 " + userGroup.getId() + " ID1 " + userGroup1.getId());
         if (users != null && !users.isEmpty()) {
           for (User user : users) {
             logger.info("$$$ After UPDATE User " + user.getUsername());
+          }
+        }
+        users = userGroup1.getUsers();
+        if (users != null && !users.isEmpty()) {
+          for (User user : users) {
+            logger.info("$$$2 After UPDATE User " + user.getUsername());
           }
         }
       }

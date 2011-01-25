@@ -195,6 +195,9 @@ public class UserGroupObjectConverter extends AbstractObjectRowConverter<UserGro
           for (byte[] userIdBytes : userMap.keySet()) {
             userIds.add(userSchemaInfoProvider.getIdFromRowId(userIdBytes));
           }
+          if(logger.isInfoEnabled()) {
+            logger.info("Loading users: " + userIds);
+          }
           userGroup.setUsers(userService.getUsersByIds(userIds));
         }
       }
