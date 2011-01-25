@@ -11,7 +11,7 @@ package com.smartitengineering.user.filter;
 public class UserPersonFilter extends AbstractFilter {
 
   private String username;
-  private String organization;
+  private String organizationShortName;
 
   public String getUsername() {
     if (username == null) {
@@ -27,11 +27,11 @@ public class UserPersonFilter extends AbstractFilter {
     this.username = username;
   }
 
-  public String getOrganization() {
-    return organization;
+  public String getOrganizationShortName() {
+    return organizationShortName;
   }
 
-  public void setOrganization(String organization) {
-    this.organization = organization;
+  public void setOrganizationShortName(String organizationShortName) {
+    this.organizationShortName = organizationShortName;
   }
 }
