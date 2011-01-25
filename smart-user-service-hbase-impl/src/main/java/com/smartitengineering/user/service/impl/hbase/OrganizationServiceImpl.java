@@ -49,6 +49,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     organization.setLastModifiedDate(date);
     try {
       writeDao.save(organization);
+      logger.info("notify observer.................");
       observable.notifyObserver(ObserverNotification.CREATE_ORGANIZATION, organization);
     }
     catch (Exception e) {
@@ -95,11 +96,14 @@ public class OrganizationServiceImpl implements OrganizationService {
     StringBuilder q = new StringBuilder();
     final String id = organizationFilter.getOrganizationUniqueShortName();
     if (StringUtils.isNotBlank(id)) {
-      q.append("id: ").append(ClientUtils.escapeQueryChars(id)).append('*');
+      q.append("id: ").append("org\\: ").append(ClientUtils.escapeQueryChars(id)).append('*');
+    }
+    if (StringUtils.isBlank(id)) {
+      q.append("id: ").append("org\\:").append('*');
     }
     final String name = organizationFilter.getName();
     if (StringUtils.isNotBlank(name)) {
-      q.append(" +name: ").append(ClientUtils.escapeQueryChars(id)).append('*');
+      q.append(" AND ").append(" name: ").append(ClientUtils.escapeQueryChars(id)).append('*');
     }
     if (organizationFilter.getSortBy() == null) {
       organizationFilter.setSortBy("id");

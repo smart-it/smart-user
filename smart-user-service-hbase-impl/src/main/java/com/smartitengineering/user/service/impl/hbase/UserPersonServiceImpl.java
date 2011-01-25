@@ -10,6 +10,7 @@ import com.smartitengineering.dao.common.CommonReadDao;
 import com.smartitengineering.dao.common.CommonWriteDao;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hbase.spi.RowCellIncrementor;
+import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Person;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.domain.User;
@@ -20,6 +21,7 @@ import com.smartitengineering.user.observer.CRUDObservable;
 import com.smartitengineering.user.observer.ObserverNotification;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.PersonService;
+import com.smartitengineering.user.service.Services;
 import com.smartitengineering.user.service.UserPersonService;
 import com.smartitengineering.user.service.UserService;
 import com.smartitengineering.user.service.impl.hbase.domain.AutoId;
@@ -287,15 +289,18 @@ public class UserPersonServiceImpl implements UserPersonService {
     StringBuilder q = new StringBuilder();
     final String id = filter.getId();
     if (StringUtils.isNotBlank(id)) {
-      q.append("id: ").append(ClientUtils.escapeQueryChars(id)).append('*');
+      q.append("id: ").append("userPerson\\: ").append(ClientUtils.escapeQueryChars(id)).append('*');
+    }
+    if (StringUtils.isBlank(id)) {
+      q.append("id: ").append("userPerson\\:").append('*');
     }
     final String username = filter.getUsername();
     if (StringUtils.isNotBlank(username)) {
-      q.append(" +userName: ").append(username).append('*');
+      q.append(" AND ").append(" userName: ").append(username).append('*');
     }
-    final String orgName = filter.getOrganization();
+    final String orgName = filter.getOrganizationShortName();
     if (StringUtils.isNotBlank(orgName)) {
-      q.append(" +organization: ").append(orgName).append('*');
+      q.append(" AND ").append(" organizationUniqueShortName: ").append(orgName).append('*');
     }
     if (filter.getSortBy() == null) {
       filter.setSortBy("id");
@@ -326,20 +331,36 @@ public class UserPersonServiceImpl implements UserPersonService {
 
   @Override
   public Collection<UserPerson> getAllByOrganization(String organizationUniqueShortName) {
-    OrganizationServiceImpl organizationServiceImpl = new OrganizationServiceImpl();
     UserPersonFilter userPersonFilter = new UserPersonFilter();
-    userPersonFilter.setOrganization(organizationServiceImpl.getOrganizationByUniqueShortName(organizationUniqueShortName).getName());
+    if(organizationUniqueShortName != null){
+    userPersonFilter.setOrganizationShortName(organizationUniqueShortName);
+    }
     return search(userPersonFilter);
   }
 
   @Override
   public Collection<UserPerson> getByOrganization(String organizationUniqueShortName, String userName,
                                                   boolean isSmallerThan, int count) {
-    OrganizationServiceImpl organizationServiceImpl = new OrganizationServiceImpl();
     UserPersonFilter userPersonFilter = new UserPersonFilter();
-    userPersonFilter.setOrganization(organizationServiceImpl.getOrganizationByUniqueShortName(organizationUniqueShortName).getName());
+    logger.info(">>>>>>>>>>>OrgShorName>>>>>>>>>>"+organizationUniqueShortName);
+    if(organizationUniqueShortName != null){
+      Organization organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationUniqueShortName);
+      if(organization != null){
+        userPersonFilter.setOrganizationShortName(organization.getUniqueShortName());
+      }else{
+        logger.info("Organization is null");
+      }
+    }
+    if(count != 0){
+      userPersonFilter.setCount(count);
+    }
     userPersonFilter.setCount(count);
-    userPersonFilter.setUsername(userName);
+    if(userName == null){
+      logger.info("Username is null");
+    }else{
+      logger.info(">>>>>>>>>>>username>>>>>>>>>>"+userName);
+      userPersonFilter.setUsername(userName);
+    }
     return search(userPersonFilter);
   }
 

@@ -184,27 +184,30 @@ public class PersonServiceImpl implements PersonService {
     StringBuilder q = new StringBuilder();
     final String id = filter.getId();
     if (StringUtils.isNotBlank(id)) {
-      q.append("id: ").append(ClientUtils.escapeQueryChars(id)).append('*');
+      q.append("id: ").append(" person\\: ").append(ClientUtils.escapeQueryChars(id)).append('*');
+    }
+    if (StringUtils.isBlank(id)) {
+      q.append("id: ").append(" person\\:").append('*');
     }
     final String username = filter.getName().toString();
     if (StringUtils.isNotBlank(username)) {
-      q.append(" +name: ").append(username).append('*');
+      q.append(" AND ").append(" name: ").append(username).append('*');
     }
     final String nationalId = filter.getNationalId();
     if (StringUtils.isNotBlank(nationalId)) {
-      q.append(" +nationalId: ").append(nationalId).append('*');
+      q.append(" AND ").append(" nationalId: ").append(nationalId).append('*');
     }
     final String sposeName = filter.getSposeNmae();
     if (StringUtils.isNotBlank(sposeName)) {
-      q.append(" +sposeName: ").append(sposeName).append('*');
+      q.append(" AND ").append(" sposeName: ").append(sposeName).append('*');
     }
     final String email = filter.getEmail();
     if (StringUtils.isNotBlank(email)) {
-      q.append(" +email: ").append(email).append('*');
+      q.append(" AND ").append(" email: ").append(email).append('*');
     }
     final String cellNo = filter.getCellNo();
     if (StringUtils.isNotBlank(cellNo)) {
-      q.append(" +cellNo: ").append(cellNo).append('*');
+      q.append(" AND ").append(" cellNo: ").append(cellNo).append('*');
     }
     if (filter.getSortBy() == null) {
       filter.setSortBy("id");

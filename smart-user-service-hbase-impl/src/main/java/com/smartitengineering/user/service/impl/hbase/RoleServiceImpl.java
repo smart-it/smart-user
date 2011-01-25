@@ -213,10 +213,10 @@ public class RoleServiceImpl implements RoleService {
   @Override
   public Collection<Role> search(RoleFilter filter) {
     StringBuilder q = new StringBuilder();
-    q.append("id: ").append(ClientUtils.escapeQueryChars("role: ")).append("*");
+    q.append("id: ").append("role\\:").append("*");
     final String name = filter.getRoleName();
     if (StringUtils.isNotBlank(name)) {
-      q.append(" +name: ").append(ClientUtils.escapeQueryChars(name)).append('*');
+      q.append(" AND ").append(" name: ").append(ClientUtils.escapeQueryChars(name)).append('*');
     }
     return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
         getOrderByParam("name", com.smartitengineering.dao.common.queryparam.Order.valueOf("ASC")));
