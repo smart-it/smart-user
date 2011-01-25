@@ -61,6 +61,8 @@ public class UserGroup extends AbstractGenericPersistentDTO<UserGroup, Long, Lon
   
   @JsonIgnore
   public Set<User> getUsers() {
+    if(users == null)
+      users = new HashSet<User>();
     return users;
   }
 
