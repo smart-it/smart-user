@@ -57,6 +57,7 @@ public class OrganizationObjectConverter extends AbstractObjectRowConverter<Orga
 
   @Override
   protected void getDeleteForTable(Organization instance, ExecutorService service, Delete put) {
+    logger.info("@@@@@@@@@@@@Object Converter :: Deleted Organization" + instance.getUniqueShortName());
     // Nothing is needed
   }
 

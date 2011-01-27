@@ -182,7 +182,8 @@ public class UserGroupUsersResource extends AbstractResource {
         responseBuilder.location(getAbsoluteURIBuilder().path(UserGroupUserResource.class).build(organizationName, groupName, user.getUsername()));
       }
     }
-    catch (Exception ex) {      
+    catch (Exception ex) {
+      ex.printStackTrace();
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();

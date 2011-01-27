@@ -266,6 +266,7 @@ public class OrganizationResource extends AbstractResource {
     }
     try {
       Services.getInstance().getOrganizationService().delete(organization);
+      System.out.println("@@@@@@@@@@@@@@@@@ Resources :: Organization Deleted"+organization);
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);

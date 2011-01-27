@@ -63,9 +63,11 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     User user = userService.getUserByOrganizationAndUserName(organizationName, username);
     if (user == null) {
+      System.out.println("User is null: Access denied");
       return AccessDecisionVoter.ACCESS_DENIED;
     }
     if (user != null && oid == null) {
+      System.out.println("Oid is null: Access abstain");
       return AccessDecisionVoter.ACCESS_ABSTAIN;
     }
     if (oid.contains(SmartUserStrings.PRIVILEGES_URL) || oid.contains(SmartUserStrings.ROLES_URL)) {
@@ -80,28 +82,34 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
     SecuredObject securedObject = securedObjectService.getByOrganizationAndObjectID(organizationName, oid);
     if (user != null && securedObject == null) {
+      System.out.println("Secured object is null with oid:" + oid + ": Access Abstain");
       return AccessDecisionVoter.ACCESS_ABSTAIN;
     }
     else if (authorize(user.getPrivileges(), securedObject, permission) == AccessDecisionVoter.ACCESS_GRANTED) {
+      System.out.println("Wow! Access is granted");
       return AccessDecisionVoter.ACCESS_GRANTED;
     }
     else {
       List<UserGroup> userGroups = new ArrayList<UserGroup>(userGroupService.getUserGroupsByUser(user));
       for (UserGroup userGroup : userGroups) {
         if (authorize(userGroup.getPrivileges(), securedObject, permission) == AccessDecisionVoter.ACCESS_GRANTED) {
+          System.out.println("Access is granted from user group ");
           return AccessDecisionVoter.ACCESS_GRANTED;
         }
       }
+      System.out.println("Alas! no one says anyting, so access abstain");
       return AccessDecisionVoter.ACCESS_ABSTAIN;
     }
   }
 
   private Integer authorize(Collection<Privilege> privileges, SecuredObject securedObject, Integer permission) {
+    System.out.println("Start authorizing by privilege");
     for (Privilege privilege : privileges) {
       if (privilege.getSecuredObject().getObjectID().equals(securedObject.getObjectID()) && (permission.intValue() & privilege.
                                                                                              getPermissionMask().
                                                                                              intValue()) == permission.
           intValue()) {
+        System.out.println("Wow! Access is granted from authorize method, either direct privilege or parent privilege");
         return AccessDecisionVoter.ACCESS_GRANTED;
       }
     }
@@ -110,12 +118,14 @@ public class AuthorizationServiceImpl implements AuthorizationService {
           getOrganization().
           getUniqueShortName(), securedObject.getParentObjectID());
       if (parentSecuredObject == null) {
+        System.out.println("Access abstaing since there is no parent");
         return AccessDecisionVoter.ACCESS_ABSTAIN;
       }
       return authorize(privileges, securedObjectService.getByOrganizationAndObjectID(securedObject.getOrganization().
           getUniqueShortName(), securedObject.getParentObjectID()), permission);
     }
     else {
+      System.out.println("Ultimately access is denied");
       return AccessDecisionVoter.ACCESS_DENIED;
     }
   }
