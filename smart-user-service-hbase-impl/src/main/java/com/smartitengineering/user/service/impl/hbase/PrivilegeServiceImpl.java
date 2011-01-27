@@ -143,6 +143,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     if (oldPrivilege == null) {
       throw new IllegalArgumentException("Trying to update non-existent privilege!");
     }
+    privilege.setCreationDate(oldPrivilege.getCreationDate());
     try {
       if (!privilege.getName().equals(oldPrivilege.getName())) {
         final UniqueKey oldIndexKey = getUniqueKeyOfIndexForPrivilege(oldPrivilege);
@@ -235,7 +236,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     StringBuilder q = new StringBuilder();
     q.append("id: ").append("privilege\\:").append("*");
     q.append(" AND ").append(" parentOrganization: ").append(organization);
-    logger.info(">>>>>>QUERY>>>>>>>"+ q.toString());
+    logger.info(">>>>>>QUERY>>>>>>>" + q.toString());
     return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
         getOrderByParam("parentOrganization", com.smartitengineering.dao.common.queryparam.Order.valueOf("ASC")));
   }
