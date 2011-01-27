@@ -140,6 +140,10 @@ public class ComprehensiveTest {
   public void doTestUpdateUser() {
     comprehensiveClientTest.doTestUpdateUser();
   }
+  @Test
+  public void doTestCreatePrivilegesofOrganization() {
+    comprehensiveClientTest.doTestCreatePrivilegesofOrganization();
+  }
 
   @Test
   public void doTestAddPrivilegesToUser() {
@@ -150,6 +154,7 @@ public class ComprehensiveTest {
   public void doTestRemoveUserPrivilegeFromUser() {
     comprehensiveClientTest.doTestRemoveUserPrivilegeFromUser();
   }
+
   @Test
   public void doTestCreateUserGroup() {
     comprehensiveClientTest.doTestCreateUserGroup();
@@ -157,53 +162,60 @@ public class ComprehensiveTest {
 
   @Test
   public void doTestAddUsersToUserGroup() {
-  comprehensiveClientTest.doTestAddUsersToUserGroup();
+    comprehensiveClientTest.doTestAddUsersToUserGroup();
   }
+
   @Test
   public void doTestRemoveUserFromUserGroup() throws InterruptedException {
     comprehensiveClientTest.doTestRemoveUserFromUserGroup();
   }
-//  @Test
-//  public void doTestAddPrivilegesToUserGroup() throws InterruptedException {
-//    comprehensiveClientTest.doTestAddPrivilegesToUserGroup();
-//  }
-//  @Test
-//  public void doTestRemovePrivilegeFromUserGroup() {
-//    comprehensiveClientTest.doTestRemovePrivilegeFromUserGroup();
-//  }
-//  @Test
-//  public void doTestAddRoleToUserGroup() {
-//    comprehensiveClientTest.doTestAddRoleToUserGroup();
-//  }
-//  @Test
-//  public void doTestRemoveRoleFromUserGroup() {
-//    comprehensiveClientTest.doTestRemoveRoleFromUserGroup();
-//  }
-//  @Test
-//  public void doTestAuthoriztionForAdminUser() {
-//    comprehensiveClientTest.doTestAuthoriztionForAdminUser();
-//  }
+
+  @Test
+  public void doTestAddPrivilegesToUserGroup() throws InterruptedException {
+    comprehensiveClientTest.doTestAddPrivilegesToUserGroup();
+  }
+
+  @Test
+  public void doTestRemovePrivilegeFromUserGroup() {
+    comprehensiveClientTest.doTestRemovePrivilegeFromUserGroup();
+  }
+
+  @Test
+  public void doTestAddRoleToUserGroup() {
+    comprehensiveClientTest.doTestAddRoleToUserGroup();
+  }
+
+  @Test
+  public void doTestRemoveRoleFromUserGroup() {
+    comprehensiveClientTest.doTestRemoveRoleFromUserGroup();
+  }
+
+  @Test
+  public void doTestAuthoriztionForAdminUser() {
+    comprehensiveClientTest.doTestAuthoriztionForAdminUser();
+  }
+
   @Test
   public void doTestGetUser() {
     comprehensiveClientTest.doTestGetUser();
   }
 
-//  @Test
-//  public void doTestAuthorizationForUser() {
-//    comprehensiveClientTest.doTestAuthorizationForUser();
-//  }
-//  @Test
-//  public void doTestAuthorizationForUserGroup() {
-//    comprehensiveClientTest.doTestAuthorizationForUserGroup();
-//  }
-//  @Test
-//  public void doTestDeleteOrganization() {
-//    comprehensiveClientTest.doTestDeleteOrganization();
-//  }
-//   @Test
-//  public void doTestUsersAndPrivsAfterRemovingOrg() {
-//     comprehensiveClientTest.doTestUsersAndPrivsAfterRemovingOrg();
-//   }
+  @Test
+  public void doTestAuthorizationForUser() throws InterruptedException {
+    comprehensiveClientTest.doTestAuthorizationForUser();
+  }
+  @Test
+  public void doTestAuthorizationForUserGroup() {
+    comprehensiveClientTest.doTestAuthorizationForUserGroup();
+  }
+  @Test
+  public void doTestDeleteOrganization() throws InterruptedException {
+    comprehensiveClientTest.doTestDeleteOrganization();
+  }
+   @Test
+  public void doTestUsersAndPrivsAfterRemovingOrg() throws InterruptedException {
+     comprehensiveClientTest.doTestUsersAndPrivsAfterRemovingOrg();
+   }
 
   public static class ConfigurationModule extends AbstractModule {
 
