@@ -10,6 +10,7 @@ import com.smartitengineering.dao.common.CommonReadDao;
 import com.smartitengineering.dao.common.CommonWriteDao;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hbase.spi.RowCellIncrementor;
+import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.domain.UserGroup;
@@ -23,9 +24,9 @@ import com.smartitengineering.user.service.impl.hbase.domain.UniqueKey;
 import com.smartitengineering.user.service.impl.hbase.domain.UniqueKeyIndex;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.solr.client.solrj.util.ClientUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -156,7 +157,12 @@ public class UserGroupServiceImpl implements UserGroupService {
             logger.info("$$$ BEFORE UPDATE User " + user.getUsername());
           }
         }
+        final Set<Privilege> privileges = userGroup.getPrivileges();
+        if (privileges != null) {
+          logger.info("$$$ BEFORE UPDATE UserGroup Privileges " + privileges.size());
+        }
       }
+
       writeDao.update(userGroup);
       observable.notifyObserver(ObserverNotification.UPDATE_USER_GROUP, userGroup);
       if (logger.isInfoEnabled()) {
@@ -175,6 +181,10 @@ public class UserGroupServiceImpl implements UserGroupService {
           for (User user : users) {
             logger.info("$$$2 After UPDATE User " + user.getUsername());
           }
+        }
+        final Set<Privilege> privileges = userGroup.getPrivileges();
+        if (privileges != null) {
+          logger.info("$$$ AFTER UPDATE UserGroup Privileges " + privileges.size());
         }
       }
     }
@@ -239,7 +249,8 @@ public class UserGroupServiceImpl implements UserGroupService {
   public Collection<UserGroup> getUserGroupsByUser(User user) {
     StringBuilder q = new StringBuilder();
     q.append("id: ").append("userGroup\\:").append("*");
-    q.append(" AND ").append(" userName: ").append(user.getUsername()).append('*');
+    q.append(" AND ").append(" groupedUserName: ").append(user.getUsername());
+    logger.info(">>>>>QUERY>>>>>>" + q.toString());
     return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
         getOrderByParam("userName", com.smartitengineering.dao.common.queryparam.Order.valueOf("ASC")));
   }

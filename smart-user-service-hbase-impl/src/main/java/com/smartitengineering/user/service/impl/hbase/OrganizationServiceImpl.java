@@ -31,7 +31,6 @@ import org.slf4j.LoggerFactory;
 public class OrganizationServiceImpl implements OrganizationService {
 
   public static final Logger logger = LoggerFactory.getLogger(OrganizationServiceImpl.class);
-
   @Inject
   private CommonWriteDao<Organization> writeDao;
   @Inject
@@ -78,8 +77,10 @@ public class OrganizationServiceImpl implements OrganizationService {
     try {
       observable.notifyObserver(ObserverNotification.DELETE_ORGNIZATION, organization);
       writeDao.delete(organization);
+      logger.info("@@@@@@@@@@@@@Service Impl :: Organization Deleted" + organization.getUniqueShortName());
     }
     catch (Exception e) {
+      logger.info(e.getMessage(), e);
       String message = ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
           UniqueConstrainedField.ORGANIZATION;
       throw new RuntimeException(message, e);
@@ -117,13 +118,14 @@ public class OrganizationServiceImpl implements OrganizationService {
     else {
       logger.info("count is " + organizationFilter.getCount());
     }
-    logger.info(">>>>>>>>>>>QUERY>>>>>>>>>>"+q.toString());
+    logger.info(">>>>>>>>>>>QUERY>>>>>>>>>>" + q.toString());
     if (organizationFilter.getCount() != null && organizationFilter.getIndex() != null) {
 
       return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
-          getMaxResultsParam(organizationFilter.getCount()), QueryParameterFactory.getFirstResultParam(organizationFilter.getIndex() * organizationFilter.
-          getCount()), QueryParameterFactory.getOrderByParam(organizationFilter.getSortBy(), com.smartitengineering.dao.common.queryparam.Order.
-          valueOf(organizationFilter.getSortOrder().name())));
+          getMaxResultsParam(organizationFilter.getCount()), QueryParameterFactory.getFirstResultParam(organizationFilter.
+          getIndex() * organizationFilter.getCount()), QueryParameterFactory.getOrderByParam(organizationFilter.
+          getSortBy(), com.smartitengineering.dao.common.queryparam.Order.valueOf(
+          organizationFilter.getSortOrder().name())));
     }
     else {
       return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
@@ -153,7 +155,8 @@ public class OrganizationServiceImpl implements OrganizationService {
   @Override
   public void validateOrganization(Organization organization) {
     if (StringUtils.isEmpty(organization.getUniqueShortName())) {
-      logger.warn("Constriant violation for empty short name! " + organization.getUniqueShortName() + " " + organization.getId());
+      logger.warn("Constriant violation for empty short name! " + organization.getUniqueShortName() + " " + organization.
+          getId());
       throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" + UniqueConstrainedField.ORGANIZATION_UNIQUE_SHORT_NAME.
           name());
     }

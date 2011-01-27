@@ -253,7 +253,7 @@ public class UserServiceImpl implements UserService {
       q.append("id: ").append(ClientUtils.escapeQueryChars(id)).append('*');
     }
     if (StringUtils.isBlank(id)) {
-      q.append("id: ").append("user:").append('*');
+      q.append("id: ").append("user\\:").append('*');
     }
     final String username = filter.getUserName();
     if (StringUtils.isNotBlank(username)) {
