@@ -51,14 +51,19 @@ public class PrivilegeAdapterHelper extends AbstractAdapterHelper<Privilege, Mul
 
   @Override
   protected Privilege convertFromT2F(MultivalueMap<String, Object> toBean) {
-    logger.info(">>>>>>>>privileges are>>>>>>>>>"+ toBean.getFirst("id"));
+    logger.info(">>>>>>>>privileges are>>>>>>>>>" + toBean.getFirst("id"));
     final Set<Privilege> privilegesByIds =
                          Services.getInstance().getPrivilegeService().getPrivilegesByIds(Long.parseLong(toBean.getFirst(
         "id").toString().substring(PREFIX_INDEX)));
-    logger.info(">>>>>>>>privileges are>>>>>>>>>"+ privilegesByIds.iterator().next());
-    if (privilegesByIds == null || privilegesByIds.isEmpty()) {
+    if (privilegesByIds != null && !privilegesByIds.isEmpty()) {
+      logger.info(">>>>>>>>privileges are>>>>>>>>>" + privilegesByIds.iterator().next());
+      if (privilegesByIds == null || privilegesByIds.isEmpty()) {
+        return null;
+      }
+      return privilegesByIds.iterator().next();
+    }
+    else {
       return null;
     }
-    return privilegesByIds.iterator().next();
   }
 }

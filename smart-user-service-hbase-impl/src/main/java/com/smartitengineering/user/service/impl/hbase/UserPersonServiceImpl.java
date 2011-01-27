@@ -227,6 +227,7 @@ public class UserPersonServiceImpl implements UserPersonService {
       }
     }
     catch (Exception e) {
+      logger.info(e.getMessage(), e);
       String message = ExceptionMessage.STALE_OBJECT_STATE_EXCEPTION.name() + "-" +
           UniqueConstrainedField.OTHER;
       throw new RuntimeException(message, e);
@@ -314,7 +315,7 @@ public class UserPersonServiceImpl implements UserPersonService {
     else {
       logger.info("count is " + filter.getCount());
     }
-    logger.info(">>>>>>>>>>>QUERY>>>>>>>>>>"+q.toString());
+    logger.info(">>>>>>>>>>>QUERY>>>>>>>>>>" + q.toString());
     if (filter.getCount() != null && filter.getIndex() != null) {
 
       return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
@@ -332,8 +333,8 @@ public class UserPersonServiceImpl implements UserPersonService {
   @Override
   public Collection<UserPerson> getAllByOrganization(String organizationUniqueShortName) {
     UserPersonFilter userPersonFilter = new UserPersonFilter();
-    if(organizationUniqueShortName != null){
-    userPersonFilter.setOrganizationShortName(organizationUniqueShortName);
+    if (organizationUniqueShortName != null) {
+      userPersonFilter.setOrganizationShortName(organizationUniqueShortName);
     }
     return search(userPersonFilter);
   }
@@ -342,23 +343,26 @@ public class UserPersonServiceImpl implements UserPersonService {
   public Collection<UserPerson> getByOrganization(String organizationUniqueShortName, String userName,
                                                   boolean isSmallerThan, int count) {
     UserPersonFilter userPersonFilter = new UserPersonFilter();
-    logger.info(">>>>>>>>>>>OrgShorName>>>>>>>>>>"+organizationUniqueShortName);
-    if(organizationUniqueShortName != null){
-      Organization organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(organizationUniqueShortName);
-      if(organization != null){
+    logger.info(">>>>>>>>>>>OrgShorName>>>>>>>>>>" + organizationUniqueShortName);
+    if (organizationUniqueShortName != null) {
+      Organization organization = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(
+          organizationUniqueShortName);
+      if (organization != null) {
         userPersonFilter.setOrganizationShortName(organization.getUniqueShortName());
-      }else{
+      }
+      else {
         logger.info("Organization is null");
       }
     }
-    if(count != 0){
+    if (count != 0) {
       userPersonFilter.setCount(count);
     }
     userPersonFilter.setCount(count);
-    if(userName == null){
+    if (userName == null) {
       logger.info("Username is null");
-    }else{
-      logger.info(">>>>>>>>>>>username>>>>>>>>>>"+userName);
+    }
+    else {
+      logger.info(">>>>>>>>>>>username>>>>>>>>>>" + userName);
       userPersonFilter.setUsername(userName);
     }
     return search(userPersonFilter);

@@ -27,6 +27,8 @@ import com.smartitengineering.user.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -34,6 +36,7 @@ import java.util.Set;
  */
 public class ObserverImpl implements CRUDObserver {
 
+  public static final Logger logger = LoggerFactory.getLogger(ObserverImpl.class);
   public final String ORGS_OID = SmartUserStrings.ORGANIZATIONS_URL;
   public final String USERS_OID = SmartUserStrings.USERS_URL;
   public final String USERS_OID_NAME = "Users";
@@ -186,12 +189,21 @@ public class ObserverImpl implements CRUDObserver {
     List<Privilege> privileges = new ArrayList<Privilege>(getPrivilegeService().getPrivilegesByOrganization(organization.
         getUniqueShortName()));
     for (Privilege privilege : privileges) {
-      getPrivilegeService().delete(privilege);
+      if (privilege != null) {
+        logger.info("privilege name: " + privilege.getName());
+        logger.info("privilege permission mask : " + privilege.getPermissionMask());
+        getPrivilegeService().delete(privilege);
+      }
+      else {
+        logger.info("privilege null");
+      }
     }
     List<SecuredObject> securedObjects = new ArrayList<SecuredObject>(getSecuredObjectService().getByOrganization(organization.
         getUniqueShortName()));
     for (SecuredObject securedObject : securedObjects) {
-      getSecuredObjectService().delete(securedObject);
+      if (securedObject != null) {
+        getSecuredObjectService().delete(securedObject);
+      }
     }
   }
 
@@ -235,11 +247,14 @@ public class ObserverImpl implements CRUDObserver {
     User user = userPerson.getUser();
     List<UserGroup> userGroups = new ArrayList<UserGroup>(getUserGroupService().getByOrganizationName(userPerson.getUser().
         getOrganization().getUniqueShortName()));
+    logger.info("user group size : " + userGroups.size());
     for (UserGroup userGroup : userGroups) {
-      List<User> users = new ArrayList<User>(userGroup.getUsers());
-      if (users.contains(userPerson.getUser())) {
-        userGroup.getUsers().remove(userPerson.getUser());
-        getUserGroupService().update(userGroup);
+      if (userGroup != null) {
+        List<User> users = new ArrayList<User>(userGroup.getUsers());
+        if (users.contains(userPerson.getUser())) {
+          userGroup.getUsers().remove(userPerson.getUser());
+          getUserGroupService().update(userGroup);
+        }
       }
     }
     String organizationShortName = userPerson.getUser().getOrganization().getUniqueShortName();
@@ -281,10 +296,12 @@ public class ObserverImpl implements CRUDObserver {
     List<UserGroup> userGroups = new ArrayList<UserGroup>(getUserGroupService().getByOrganizationName(privilege.
         getParentOrganization().getUniqueShortName()));
     for (UserGroup userGroup : userGroups) {
-      List<Privilege> privileges = new ArrayList<Privilege>(userGroup.getPrivileges());
-      if (privileges.contains(privilege)) {
-        userGroup.getPrivileges().remove(privilege);
-        getUserGroupService().update(userGroup);
+      if (userGroup != null) {
+        List<Privilege> privileges = new ArrayList<Privilege>(userGroup.getPrivileges());
+        if (privileges.contains(privilege)) {
+          userGroup.getPrivileges().remove(privilege);
+          getUserGroupService().update(userGroup);
+        }
       }
     }
   }
@@ -301,10 +318,12 @@ public class ObserverImpl implements CRUDObserver {
 
     List<UserGroup> userGroups = new ArrayList<UserGroup>(getUserGroupService().getAllUserGroup());
     for (UserGroup userGroup : userGroups) {
-      List<Role> roles = new ArrayList<Role>(userGroup.getRoles());
-      if (roles.contains(role)) {
-        userGroup.getRoles().remove(role);
-        getUserGroupService().update(userGroup);
+      if (userGroup != null) {
+        List<Role> roles = new ArrayList<Role>(userGroup.getRoles());
+        if (roles.contains(role)) {
+          userGroup.getRoles().remove(role);
+          getUserGroupService().update(userGroup);
+        }
       }
     }
   }
