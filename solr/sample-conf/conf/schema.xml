@@ -85,6 +85,7 @@
     <field name="parentObjectID" type="string" indexed="true" stored="true" required="false"/>
     <field name="permissionMask" type="int" indexed="true" stored="true" required="false"/>
     <field name="organizationUniqueShortName" type="string" indexed="true" stored="true" required="false"/>
+    <field name="groupedUserName" type="string" indexed="true" stored="true" required="false" multiValued="true"/>
 
   </fields>
 
