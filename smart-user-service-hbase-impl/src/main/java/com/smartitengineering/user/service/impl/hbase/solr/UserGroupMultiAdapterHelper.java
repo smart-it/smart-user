@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
  */
 public class UserGroupMultiAdapterHelper extends AbstractAdapterHelper<UserGroup, List<MultivalueMap<String, Object>>> {
 
-  public static final String PREFIX = "userGroup:";
+  public static final String PREFIX = "userGroupUser:";
   private static final int PREFIX_INDEX = PREFIX.length();
   public static final Logger logger = LoggerFactory.getLogger(UserGroupMultiAdapterHelper.class);
 
