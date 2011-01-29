@@ -4,7 +4,7 @@
  */
 package com.smartitengineering.user.domain;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -13,7 +13,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author modhu7
  */
-public class Privilege extends AbstractPersistentDTO<Privilege> {
+public class Privilege extends AbstractGenericPersistentDTO<Privilege, Long, Long> {
 
   private Organization parentOrganization;
   private String name;
@@ -22,6 +22,7 @@ public class Privilege extends AbstractPersistentDTO<Privilege> {
   private SecuredObject securedObject;
   private Integer permissionMask;
   private Date lastModifiedDate;
+  private Date creationDate;
 
   public SecuredObject getSecuredObject() {
     return securedObject;
@@ -82,10 +83,19 @@ public class Privilege extends AbstractPersistentDTO<Privilege> {
     this.lastModifiedDate = lastModifiedDate;
   }
 
+  @JsonIgnore
+  public Date getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
+  }
+
   @Override
   @JsonIgnore
   public boolean isValid() {
-    if (StringUtils.isEmpty(name) || !(permissionMask < 0)) {
+    if (StringUtils.isEmpty(name) || (permissionMask < 0)) {
       return false;
     }
     return true;

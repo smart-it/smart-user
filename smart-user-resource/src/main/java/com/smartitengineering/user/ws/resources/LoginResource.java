@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.user.service.Services;
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.util.rest.atom.server.AbstractResource;
 import java.util.Date;

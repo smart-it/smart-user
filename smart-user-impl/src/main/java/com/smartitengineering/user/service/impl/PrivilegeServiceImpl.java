@@ -16,11 +16,14 @@ import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.PrivilegeService;
 import com.smartitengineering.user.service.UserService;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleStateException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -48,6 +51,9 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
   public void create(Privilege privilege) {
 
     validatePrivilege(privilege);
+    final Date date = new Date();
+    privilege.setCreationDate(date);
+    privilege.setLastModifiedDate(date);
     try {
       super.save(privilege);
     }
@@ -73,6 +79,8 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
 
   @Override
   public void update(Privilege privilege) {
+    final Date date = new Date();
+    privilege.setLastModifiedDate(date);
     validatePrivilege(privilege);
     try {
       super.update(privilege);
@@ -91,11 +99,6 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
 //    public Privilege getPrivilegesByObjectID(String objectID){
 //
 //    }
-
-  @Override
-  public Privilege getPrivilegeByName(String privilegeName) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
 
   @Override
   public Privilege getPrivilegeByOrganizationAndPrivilegeName(String organizationName, String privilegename) {
@@ -205,5 +208,18 @@ public class PrivilegeServiceImpl extends AbstractCommonDaoImpl<Privilege> imple
         getEqualPropertyParam("objectID", objectID)), QueryParameterFactory.getNestedParametersParam(
         "parentOrganization", FetchMode.DEFAULT, QueryParameterFactory.getEqualPropertyParam("uniqueShortName",
                                                                                              organizationName)));
+  }
+  @Override
+  public Set<Privilege> getPrivilegesByIds(Long... ids) {
+    return getPrivilegesByIds(Arrays.<Long>asList(ids));
+  }
+
+  @Override
+  public Set<Privilege> getPrivilegesByIds(List<Long> ids) {
+    List<Integer> ints = new ArrayList<Integer>(ids.size());
+    for (Long id : ids) {
+      ints.add(id.intValue());
+    }
+    return getByIds(ints);
   }
 }

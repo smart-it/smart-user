@@ -5,15 +5,14 @@
 
 package com.smartitengineering.user.domain;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
-import com.smartitengineering.domain.PersistentDTO;
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import org.apache.commons.lang.StringUtils;
 
 /**
  *
  * @author russel
  */
-public class Service extends AbstractPersistentDTO<Service>{
+public class Service extends AbstractGenericPersistentDTO<Service, Long, Integer>{
 
   private String name;
   private boolean isActive;

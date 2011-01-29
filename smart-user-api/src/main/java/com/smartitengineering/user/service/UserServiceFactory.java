@@ -13,7 +13,7 @@ import com.smartitengineering.util.bean.annotations.InjectableField;
  *
  * @author imyousuf
  */
-@Aggregator(contextName = "userServiceContext")
+@Aggregator(contextName = "com.smartitengineering.user.service")
 public final class UserServiceFactory {
 
     private static UserServiceFactory userServiceFactory;
@@ -21,12 +21,12 @@ public final class UserServiceFactory {
     public static UserServiceFactory getInstance() {
         if (userServiceFactory == null) {
             userServiceFactory = new UserServiceFactory();
+            BeanFactoryRegistrar.aggregate(userServiceFactory);
         }
         return userServiceFactory;
     }
 
     private UserServiceFactory() {
-        BeanFactoryRegistrar.aggregate(this);
     }
     @InjectableField
     private UserService userService;

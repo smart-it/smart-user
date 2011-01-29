@@ -4,15 +4,14 @@
  */
 package com.smartitengineering.user.domain;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
-import org.apache.commons.lang.StringUtils;
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
  * @author modhu7
  */
-public class BasicIdentity extends AbstractPersistentDTO<BasicIdentity> {
+public class BasicIdentity extends AbstractGenericPersistentDTO<BasicIdentity, Long, Long> {
 
   private String nationalID;
   private Name name;
@@ -48,10 +47,8 @@ public class BasicIdentity extends AbstractPersistentDTO<BasicIdentity> {
   @JsonIgnore
   @Override
   public boolean isValid() {
-    if (name != null) {
-      if (name.isValid()) {
-        return true;
-      }
+    if (name != null && nationalID != null) {      
+        return true;      
     }
     return false;
   }

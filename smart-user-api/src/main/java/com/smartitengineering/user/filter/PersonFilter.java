@@ -10,10 +10,14 @@ import com.smartitengineering.user.domain.Name;
  *
  * @author modhu7
  */
-public class PersonFilter {
+public class PersonFilter extends AbstractFilter{
 
     private Name name;
     private String email;
+    private String nationalId;
+    private String fatherName;
+    private String sposeNmae;
+    private String cellNo;
 
     public String getEmail() {
         if (email == null) {
@@ -42,4 +46,37 @@ public class PersonFilter {
         }
         this.name = name;
     }
+
+  public String getCellNo() {
+    return cellNo;
+  }
+
+  public void setCellNo(String cellNo) {
+    this.cellNo = cellNo;
+  }
+
+  public String getFatherName() {
+    return fatherName;
+  }
+
+  public void setFatherName(String fatherName) {
+    this.fatherName = fatherName;
+  }
+
+  public String getNationalId() {
+    return nationalId;
+  }
+
+  public void setNationalId(String nationalId) {
+    this.nationalId = nationalId;
+  }
+
+  public String getSposeNmae() {
+    return sposeNmae;
+  }
+
+  public void setSposeNmae(String sposeNmae) {
+    this.sposeNmae = sposeNmae;
+  }
+
 }

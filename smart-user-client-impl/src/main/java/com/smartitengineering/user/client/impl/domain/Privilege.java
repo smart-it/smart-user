@@ -11,7 +11,7 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
  *
  * @author russel
  */
-public class Privilege extends AbstractClientDomain implements com.smartitengineering.user.client.api.Privilege {
+public class Privilege extends AbstractClientDomain<Long> implements com.smartitengineering.user.client.api.Privilege {
 
   private String name;
   private String displayName;

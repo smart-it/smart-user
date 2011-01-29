@@ -2,11 +2,11 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
   <class dynamic-insert="false" dynamic-update="false" name="com.smartitengineering.user.domain.Person" table="person">
-    <id column="id" name="id" type="java.lang.Integer">
+    <id column="id" name="id" type="java.lang.Long">
       <generator class="increment">
       </generator>
     </id>
-    <version column="version" name="version"/>
+    <version column="version" name="version" type="long" />
     <many-to-one cascade="all" column="self_id" lazy="false" name="self"/>
     <many-to-one cascade="all" column="father_id" lazy="false" name="father"/>
     <many-to-one cascade="all" column="mother_id" lazy="false" name="mother"/>

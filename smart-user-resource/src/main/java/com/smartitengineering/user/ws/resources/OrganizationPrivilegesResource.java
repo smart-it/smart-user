@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.user.service.Services;
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.util.rest.atom.server.AbstractResource;
@@ -113,7 +114,7 @@ public class OrganizationPrivilegesResource extends AbstractResource {
 
     // create a link to parent resource, in this case now it is linked to root resource
     Link parentResourceLink = getAbderaFactory().newLink();
-    parentResourceLink.setHref(UriBuilder.fromResource(OrganizationResource.class).build(organizationUniqueShortName).
+    parentResourceLink.setHref(getRelativeURIBuilder().path(OrganizationResource.class).build(organizationUniqueShortName).
         toString());
     parentResourceLink.setRel("organization");
     atomFeed.addLink(parentResourceLink);
@@ -169,7 +170,7 @@ public class OrganizationPrivilegesResource extends AbstractResource {
 
         Link organizationPrivilegeLink = getAbderaFactory().newLink();
         //organizationLink.setHref(OrganizationResource.ORGANIZATION_URI_BUILDER.clone().build(organizationUniqueShortName,privilege.getName()).toString());
-        organizationPrivilegeLink.setHref(UriBuilder.fromResource(OrganizationPrivilegeResource.class).build(
+        organizationPrivilegeLink.setHref(getRelativeURIBuilder().path(OrganizationPrivilegeResource.class).build(
             organizationUniqueShortName, privilege.getName()).toString());
         organizationPrivilegeLink.setRel(Link.REL_ALTERNATE);
         organizationPrivilegeLink.setMimeType(MediaType.APPLICATION_ATOM_XML);

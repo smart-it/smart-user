@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author russel
  */
-public class SecuredObject extends AbstractClientDomain implements
+public class SecuredObject extends AbstractClientDomain<Long> implements
     com.smartitengineering.user.client.api.SecuredObject {
 
   private String name;

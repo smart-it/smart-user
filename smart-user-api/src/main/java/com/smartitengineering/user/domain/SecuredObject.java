@@ -4,7 +4,7 @@
  */
 package com.smartitengineering.user.domain;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -13,14 +13,24 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author russel
  */
-public class SecuredObject extends AbstractPersistentDTO<SecuredObject> {
+public class SecuredObject extends AbstractGenericPersistentDTO<SecuredObject, Long, Long> {
 
   private String name;
   private String objectID;
   private String parentObjectID;
   private Organization organization;
-  private Integer parentOrganizationID;
+  private String parentOrganizationID;
   private Date lastModifiedDate;
+  private Date creationDate;
+
+  @JsonIgnore
+  public Date getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
+  }
 
   @JsonIgnore
   public Date getLastModifiedDate() {
@@ -96,11 +106,11 @@ public class SecuredObject extends AbstractPersistentDTO<SecuredObject> {
   }
 
   @JsonIgnore
-  public Integer getParentOrganizationID() {
+  public String getParentOrganizationID() {
     return parentOrganizationID;
   }
 
-  public void setParentOrganizationID(Integer parentOrganizationID) {
+  public void setParentOrganizationID(String parentOrganizationID) {
     this.parentOrganizationID = parentOrganizationID;
   }
 }

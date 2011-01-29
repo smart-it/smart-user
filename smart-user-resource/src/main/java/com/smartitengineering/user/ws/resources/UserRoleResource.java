@@ -8,6 +8,7 @@ package com.smartitengineering.user.ws.resources;
  *
  * @author modhu7
  */
+import com.smartitengineering.user.service.Services;
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.User;

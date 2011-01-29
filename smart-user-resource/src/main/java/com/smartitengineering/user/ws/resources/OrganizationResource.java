@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.user.service.Services;
 import com.smartitengineering.user.domain.Address;
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.util.rest.atom.server.AbstractResource;
@@ -203,11 +204,11 @@ public class OrganizationResource extends AbstractResource {
 
 
     if (keyValueMap.get("id") != null) {
-      newOrganization.setId(Integer.valueOf(keyValueMap.get("id")));
+      newOrganization.setId(keyValueMap.get("id"));
     }
 
     if (keyValueMap.get("version") != null) {
-      newOrganization.setVersion(Integer.valueOf(keyValueMap.get("version")));
+      newOrganization.setVersion(Long.valueOf(keyValueMap.get("version")));
     }
 
 
@@ -265,6 +266,7 @@ public class OrganizationResource extends AbstractResource {
     }
     try {
       Services.getInstance().getOrganizationService().delete(organization);
+      System.out.println("@@@@@@@@@@@@@@@@@ Resources :: Organization Deleted"+organization);
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);

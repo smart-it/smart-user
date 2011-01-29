@@ -8,16 +8,16 @@ package com.smartitengineering.user.client.impl.domain;
  *
  * @author modhu7
  */
-public abstract class AbstractClientDomain {
+public abstract class AbstractClientDomain<Id> {
 
-  private Integer id;
+  private Id id;
   private Integer version;
 
-  public Integer getId() {
+  public Id getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Id id) {
     if (id == null) {
       return;
     }

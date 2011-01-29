@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.user.service.Services;
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.UserGroup;
 import com.smartitengineering.util.rest.atom.server.AbstractResource;
@@ -31,6 +32,7 @@ import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 /**
  *
@@ -254,7 +256,7 @@ public class OrganizationUserGroupResource extends AbstractResource {
 
     UserGroup newUserGroup = new UserGroup();
     if (keyValueMap.get("id") != null) {
-      newUserGroup.setId(Integer.valueOf(keyValueMap.get("id")));
+      newUserGroup.setId(NumberUtils.toLong(keyValueMap.get("id")));
     }
     if (keyValueMap.get("name") != null) {
       newUserGroup.setName(keyValueMap.get("name"));

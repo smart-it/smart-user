@@ -4,15 +4,11 @@
  */
 package com.smartitengineering.user.domain;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
-import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.annotate.JsonIgnore;
-
 /**
  *
  * @author modhu7
  */
-public class Name extends AbstractPersistentDTO<Name> {
+public class Name{
 
   private String firstName;
   private String lastName;
@@ -61,11 +57,8 @@ public class Name extends AbstractPersistentDTO<Name> {
   }
 
   @Override
-  @JsonIgnore
-  public boolean isValid() {
-    if (StringUtils.isEmpty(lastName) || StringUtils.isEmpty(firstName)) {
-      return false;
-    }
-    return true;
+  public String toString() {
+    return "" + firstName + " " + middleInitial + " " + lastName;
   }
+
 }

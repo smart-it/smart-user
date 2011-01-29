@@ -14,6 +14,7 @@ import com.smartitengineering.user.domain.UserGroup;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.UserGroupService;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleStateException;
@@ -32,7 +33,9 @@ public class UserGroupServiceImpl extends AbstractCommonDaoImpl<UserGroup> imple
   @Override
   public void save(UserGroup userGroup) {
     validateUserGroup(userGroup);
-
+    final Date date = new Date();
+    userGroup.setCreationDate(date);
+    userGroup.setLastModifiedDate(date);
     try {
       super.save(userGroup);
     }
@@ -48,6 +51,8 @@ public class UserGroupServiceImpl extends AbstractCommonDaoImpl<UserGroup> imple
 
   @Override
   public void update(UserGroup userGroup) {
+    final Date date = new Date();
+    userGroup.setLastModifiedDate(date);
     validateUserGroup(userGroup);
     try {
       super.update(userGroup);

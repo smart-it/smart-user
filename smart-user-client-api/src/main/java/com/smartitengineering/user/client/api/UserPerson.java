@@ -18,6 +18,8 @@ public interface UserPerson {
 
   public Date getLastModifiedDate();
 
+  public Date getCreationDate();
+
   public void setUser(User user);
 
   public void setPerson(Person person);

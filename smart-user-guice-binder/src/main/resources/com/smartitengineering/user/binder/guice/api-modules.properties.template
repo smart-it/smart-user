@@ -1,0 +1,11 @@
+contextName=com.smartitengineering.user.service
+modules=com.smartitengineering.user.guice.binder.APIModule,com.smartitengineering.user.guice.binder.ImplServiceModule,com.smartitengineering.user.guice.binder.OrganizationCacheModule,com.smartitengineering.user.guice.binder.PersonCacheModule,com.smartitengineering.user.guice.binder.PrivilegeCacheModule,com.smartitengineering.user.guice.binder.RoleCacheModule,com.smartitengineering.user.guice.binder.SecuredObjectCacheModule,com.smartitengineering.user.guice.binder.UserCacheModule,com.smartitengineering.user.guice.binder.NameCacheModule
+ignoreMissingDependency=false
+solrMasterUri=http://localhost:10090/solr/
+com.smartitengineering.pos.waitTimeInSec=10
+com.smartitengineering.pos.saveIntervalInSec=1
+com.smartitengineering.pos.updateIntervalInSec=3
+com.smartitengineering.pos.deleteIntervalInSec=5
+com.smartitengineering.user.cache.resource=com/smartitengineering/user/binder/guice/ehcache.xml
+com.smartitengineering.user.cache.name=userCache
+com.smartitengineering.user.cache.prefixSeparator=|
