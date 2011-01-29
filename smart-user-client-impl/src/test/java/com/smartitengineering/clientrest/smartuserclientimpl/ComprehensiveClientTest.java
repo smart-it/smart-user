@@ -520,7 +520,7 @@ public class ComprehensiveClientTest {
   }
 
   @Test
-  public void doTestRemoveUserPrivilegeFromUser() {
+  public void doTestRemoveUserPrivilegeFromUser() throws InterruptedException {
     sitelUserPrivsResource = sitelUserResource.getPrivilegesResource();
     List<UserPrivilegeResource> userPrivilegeResources = sitelUserPrivsResource.getUserPrivilegeResources();
     for (UserPrivilegeResource userPrivilegeResource : userPrivilegeResources) {
@@ -528,13 +528,13 @@ public class ComprehensiveClientTest {
           SITEL_ADMIN_USER_PRIVILEGE_TEST_2)) {
         try {
           userPrivilegeResource.delete();
-          Thread.sleep(5000);
         }
         catch (Exception e) {
           Assert.fail("Exception due to failure of deleting the user privilege resource");
         }
       }
     }
+    Thread.sleep(5500);
     try {
       sitelUserPrivsResource.get();
       Assert.assertEquals(USER_PRIVILEGES_NUM_AT_BEGINNING, sitelUserPrivsResource.getUserPrivilegeResources().size());
@@ -886,7 +886,6 @@ public class ComprehensiveClientTest {
 
   @Test
   public void doTestUsersAndPrivsAfterRemovingOrg() throws InterruptedException {
-    Thread.sleep(5500);
     RootResource adminRootResource = login(USERNAME, PASSWORD);
     orgsResource = adminRootResource.getLoginResource().getOrganizationsResource();
     List<OrganizationResource> organizationResources = orgsResource.getOrganizationResources();
@@ -916,7 +915,7 @@ public class ComprehensiveClientTest {
     }
 
     try {
-      Thread.sleep(120000);
+      Thread.sleep(5500);
       loginResource.getOrganizationResource();
     }
     catch (Exception e) {
