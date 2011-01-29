@@ -102,7 +102,7 @@ public class UserGroupUsersResource extends AbstractResource {
 
     // create a link to parent resource, in this case now it is linked to root resource
     Link parentResourceLink = getAbderaFactory().newLink();
-    parentResourceLink.setHref(UriBuilder.fromResource(OrganizationResource.class).build(organizationName).toString());
+    parentResourceLink.setHref(getAbsoluteURIBuilder().path(OrganizationResource.class).build(organizationName).toString());
     parentResourceLink.setRel("organization");
     atomFeed.addLink(parentResourceLink);
 
@@ -150,7 +150,7 @@ public class UserGroupUsersResource extends AbstractResource {
         userGroupUserEntry.setUpdated(user.getLastModifiedDate());
 
         Link userGroupUserLink = getAbderaFactory().newLink();
-        userGroupUserLink.setHref(UriBuilder.fromResource(UserGroupUserResource.class).build(organizationName, groupName, user.
+        userGroupUserLink.setHref(getRelativeURIBuilder().path(UserGroupUserResource.class).build(organizationName, groupName, user.
             getUsername()).toString());
         userGroupUserLink.setRel(Link.REL_ALTERNATE);
         userGroupUserLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
@@ -171,7 +171,7 @@ public class UserGroupUsersResource extends AbstractResource {
       return Response.status(Status.NOT_FOUND).build();
     }
     try {
-      if (user.getId() == null || user.getVersion() == null) {
+      if (user.getId() == null /*|| user.getVersion() == null*/) {
         responseBuilder = Response.status(Status.BAD_REQUEST);
       }
       else {
@@ -182,7 +182,8 @@ public class UserGroupUsersResource extends AbstractResource {
         responseBuilder.location(getAbsoluteURIBuilder().path(UserGroupUserResource.class).build(organizationName, groupName, user.getUsername()));
       }
     }
-    catch (Exception ex) {      
+    catch (Exception ex) {
+      ex.printStackTrace();
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();

@@ -23,12 +23,16 @@ import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author imyousuf
  */
 public class UserObjectConverter extends AbstractObjectRowConverter<User, Long> {
+
+  public static Logger logger = LoggerFactory.getLogger(UserObjectConverter.class);
 
   private static final byte[] FAMILY_SELF = Bytes.toBytes("self");
   private static final byte[] FAMILY_ROLES = Bytes.toBytes("roles");
@@ -58,6 +62,7 @@ public class UserObjectConverter extends AbstractObjectRowConverter<User, Long> 
 
   @Override
   protected void getPutForTable(User instance, ExecutorService service, Put put) {
+    logger.info("user name: " + instance.getUsername());
     put.add(FAMILY_SELF, CELL_CREATION_DATE, Utils.toBytes(instance.getCreationDate()));
     put.add(FAMILY_SELF, CELL_LAST_MODIFIED_DATE, Utils.toBytes(instance.getLastModifiedDate()));
     if (instance.getOrganization() != null && StringUtils.isNotBlank(instance.getOrganization().getId())) {

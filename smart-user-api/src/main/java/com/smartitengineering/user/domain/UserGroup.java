@@ -7,6 +7,7 @@ package com.smartitengineering.user.domain;
 import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -61,6 +62,8 @@ public class UserGroup extends AbstractGenericPersistentDTO<UserGroup, Long, Lon
   
   @JsonIgnore
   public Set<User> getUsers() {
+    if(users == null)
+      users = new HashSet<User>();
     return users;
   }
 
@@ -71,6 +74,9 @@ public class UserGroup extends AbstractGenericPersistentDTO<UserGroup, Long, Lon
 
   @JsonIgnore
   public Set<Privilege> getPrivileges() {
+    if(privileges == null) {
+      privileges = new LinkedHashSet<Privilege>();
+    }
     return privileges;
   }
 

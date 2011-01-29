@@ -252,13 +252,16 @@ public class UserServiceImpl implements UserService {
     if (StringUtils.isNotBlank(id)) {
       q.append("id: ").append(ClientUtils.escapeQueryChars(id)).append('*');
     }
+    if (StringUtils.isBlank(id)) {
+      q.append("id: ").append("user\\:").append('*');
+    }
     final String username = filter.getUserName();
     if (StringUtils.isNotBlank(username)) {
-      q.append(" +userName: ").append(username).append('*');
+      q.append(" AND ").append(" userName: ").append(username).append('*');
     }
     final String orgName = filter.getOrganizationName();
     if (StringUtils.isNotBlank(orgName)) {
-      q.append(" +organization: ").append(orgName);
+      q.append(" AND ").append(" organization: ").append(orgName);
     }
     if (filter.getSortBy() == null) {
       filter.setSortBy("id");

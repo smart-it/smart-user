@@ -12,6 +12,7 @@ import com.smartitengineering.util.rest.client.ApplicationWideClientFactoryImpl;
 import com.smartitengineering.util.rest.client.ConnectionConfig;
 import java.io.File;
 import java.util.Properties;
+import junit.framework.Assert;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseTestingUtility;
 import org.eclipse.jetty.server.Handler;
@@ -70,18 +71,19 @@ public class ComprehensiveTest {
      */
     jettyServer = new Server(PORT);
     HandlerList handlerList = new HandlerList();
-    final String webapp = "./src/main/webapp/";
-    if (!new File(webapp).exists()) {
-      throw new IllegalStateException("WebApp file/dir does not exist!");
-    }
-    WebAppContext webAppHandler = new WebAppContext(webapp, "/smartuser");
-    handlerList.addHandler(webAppHandler);
     /*
      * The following is for solr for later, when this is to be used it
      */
     System.setProperty("solr.solr.home", "./target/sample-conf/");
     Handler solr = new WebAppContext("./target/solr/", "/solr");
     handlerList.addHandler(solr);
+
+    final String webapp = "./src/main/webapp/";
+    if (!new File(webapp).exists()) {
+      throw new IllegalStateException("WebApp file/dir does not exist!");
+    }
+    WebAppContext webAppHandler = new WebAppContext(webapp, "/smartuser");
+    handlerList.addHandler(webAppHandler);
     jettyServer.setHandler(handlerList);
     jettyServer.setSendDateHeader(true);
     jettyServer.start();
@@ -99,9 +101,121 @@ public class ComprehensiveTest {
   }
 
   @Test
-  public void testBootstraping() {
+  public void testBootstraping() throws InterruptedException {
     comprehensiveClientTest.testBootstraping();
   }
+
+  @Test
+  public void doTestCreateOrganization() {
+    try {
+      comprehensiveClientTest.doTestCreateOrganization();
+    }
+    catch (Exception ex) {
+      Assert.fail("Exception from create-organization-test");
+    }
+  }
+
+  @Test
+  public void doTestUpdateOrganization() throws InterruptedException {
+    comprehensiveClientTest.doTestUpdateOrganization();
+  }
+
+  @Test
+  public void doInitialTest() throws InterruptedException {
+    LOGGER.info("starting initial test");
+    comprehensiveClientTest.doInitialTest();
+  }
+
+  @Test
+  public void doTestCreateUser() throws InterruptedException {
+    comprehensiveClientTest.doTestCreateUser();
+  }
+
+  @Test
+  public void doTestCreateAnotherUser() {
+    comprehensiveClientTest.doTestCreateAnotherUser();
+  }
+
+  @Test
+  public void doTestUpdateUser() {
+    comprehensiveClientTest.doTestUpdateUser();
+  }
+  @Test
+  public void doTestCreatePrivilegesofOrganization() {
+    comprehensiveClientTest.doTestCreatePrivilegesofOrganization();
+  }
+
+  @Test
+  public void doTestAddPrivilegesToUser() {
+    comprehensiveClientTest.doTestAddPrivilegesToUser();
+  }
+
+  @Test
+  public void doTestRemoveUserPrivilegeFromUser() throws InterruptedException {
+    comprehensiveClientTest.doTestRemoveUserPrivilegeFromUser();
+  }
+
+  @Test
+  public void doTestCreateUserGroup() {
+    comprehensiveClientTest.doTestCreateUserGroup();
+  }
+
+  @Test
+  public void doTestAddUsersToUserGroup() {
+    comprehensiveClientTest.doTestAddUsersToUserGroup();
+  }
+
+  @Test
+  public void doTestRemoveUserFromUserGroup() throws InterruptedException {
+    comprehensiveClientTest.doTestRemoveUserFromUserGroup();
+  }
+
+  @Test
+  public void doTestAddPrivilegesToUserGroup() throws InterruptedException {
+    comprehensiveClientTest.doTestAddPrivilegesToUserGroup();
+  }
+
+  @Test
+  public void doTestRemovePrivilegeFromUserGroup() {
+    comprehensiveClientTest.doTestRemovePrivilegeFromUserGroup();
+  }
+
+  @Test
+  public void doTestAddRoleToUserGroup() {
+    comprehensiveClientTest.doTestAddRoleToUserGroup();
+  }
+
+  @Test
+  public void doTestRemoveRoleFromUserGroup() {
+    comprehensiveClientTest.doTestRemoveRoleFromUserGroup();
+  }
+
+  @Test
+  public void doTestAuthoriztionForAdminUser() {
+    comprehensiveClientTest.doTestAuthoriztionForAdminUser();
+  }
+
+  @Test
+  public void doTestGetUser() {
+    comprehensiveClientTest.doTestGetUser();
+  }
+
+  @Test
+  public void doTestAuthorizationForUser() throws InterruptedException {
+    comprehensiveClientTest.doTestAuthorizationForUser();
+  }
+  @Test
+  public void doTestAuthorizationForUserGroup() {
+    comprehensiveClientTest.doTestAuthorizationForUserGroup();
+  }
+  @Test
+  public void doTestDeleteOrganization() throws InterruptedException {
+    comprehensiveClientTest.doTestDeleteOrganization();
+  }
+   @Test
+  public void doTestUsersAndPrivsAfterRemovingOrg() throws InterruptedException {
+     comprehensiveClientTest.doTestUsersAndPrivsAfterRemovingOrg();
+   }
 
   public static class ConfigurationModule extends AbstractModule {
 

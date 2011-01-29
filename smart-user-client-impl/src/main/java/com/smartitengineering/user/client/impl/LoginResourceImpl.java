@@ -11,7 +11,6 @@ import com.smartitengineering.user.client.api.OrganizationsResource;
 import com.smartitengineering.user.client.api.RolesResource;
 import com.smartitengineering.user.client.api.UserLinkResource;
 import com.smartitengineering.user.client.api.UserResource;
-import com.smartitengineering.user.client.api.UsersResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;
@@ -87,7 +86,7 @@ class LoginResourceImpl
       throws IllegalArgumentException,
              UriBuilderException {
     URI loginResourceUri =
-        UriBuilder.fromUri(BASE_URI.toString()).path(loginLink.getUri().toString()).queryParam("username", username).
+        UriBuilder.fromUri(loginLink.getUri().toString()).queryParam("username", username).
         build();
     return loginResourceUri;
   }

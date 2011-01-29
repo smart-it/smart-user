@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.solr.client.solrj.util.ClientUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -144,6 +143,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     if (oldPrivilege == null) {
       throw new IllegalArgumentException("Trying to update non-existent privilege!");
     }
+    privilege.setCreationDate(oldPrivilege.getCreationDate());
     try {
       if (!privilege.getName().equals(oldPrivilege.getName())) {
         final UniqueKey oldIndexKey = getUniqueKeyOfIndexForPrivilege(oldPrivilege);
@@ -202,9 +202,9 @@ public class PrivilegeServiceImpl implements PrivilegeService {
   @Override
   public Collection<Privilege> getPrivilegesByOrganizationNameAndObjectID(String organizationName, String objectID) {
     StringBuilder q = new StringBuilder();
-    q.append("id: ").append(ClientUtils.escapeQueryChars("privilege: ")).append("*");
-    q.append(" +parentOrganization: ").append(organizationName).append('*');
-    q.append(" +objectID: ").append(objectID).append('*');
+    q.append("id: ").append("privilege\\:").append("*");
+    q.append(" AND ").append(" parentOrganization: ").append(organizationName).append('*');
+    q.append(" AND ").append(" objectID: ").append(objectID);
     return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
         getOrderByParam("parentOrganization", Order.ASC));
   }
@@ -234,8 +234,9 @@ public class PrivilegeServiceImpl implements PrivilegeService {
   @Override
   public Collection<Privilege> getPrivilegesByOrganization(String organization) {
     StringBuilder q = new StringBuilder();
-    q.append("id: ").append(ClientUtils.escapeQueryChars("privilege: ")).append("*");
-    q.append(" +parentOrganization: ").append(organization).append('*');
+    q.append("id: ").append("privilege\\:").append("*");
+    q.append(" AND ").append(" parentOrganization: ").append(organization);
+    logger.info(">>>>>>QUERY>>>>>>>" + q.toString());
     return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.
         getOrderByParam("parentOrganization", com.smartitengineering.dao.common.queryparam.Order.valueOf("ASC")));
   }

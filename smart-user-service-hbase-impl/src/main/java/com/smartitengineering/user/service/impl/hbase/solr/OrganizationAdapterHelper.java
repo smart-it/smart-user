@@ -9,6 +9,7 @@ import com.smartitengineering.dao.solr.MultivalueMap;
 import com.smartitengineering.dao.solr.impl.MultivalueMapImpl;
 import com.smartitengineering.user.service.Services;
 import com.smartitengineering.util.bean.adapter.AbstractAdapterHelper;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -28,9 +29,17 @@ public class OrganizationAdapterHelper extends AbstractAdapterHelper<Organizatio
                               MultivalueMap<String, Object> toBean) {
     toBean.addValue("id", new StringBuilder(PREFIX).append(fromBean.getUniqueShortName()).toString());
     toBean.addValue("name", fromBean.getName().toString());
-    toBean.addValue("address", new StringBuilder(fromBean.getAddress().getStreetAddress()).append(",").append(fromBean.getAddress().getCity()).append(",").append(fromBean.getAddress().getCountry()).toString());
     toBean.addValue("lastModifiedDate", fromBean.getLastModifiedDate().toString());
     toBean.addValue("creationDate", fromBean.getCreationDate().toString());
+    if (StringUtils.isNotBlank(fromBean.getAddress().getStreetAddress())) {
+    toBean.addValue("streetAddress", fromBean.getAddress().getStreetAddress());
+    }
+    if (StringUtils.isNotBlank(fromBean.getAddress().getCity())) {
+    toBean.addValue("city", fromBean.getAddress().getCity());
+    }
+    if (StringUtils.isNotBlank(fromBean.getAddress().getCountry())) {
+    toBean.addValue("country", fromBean.getAddress().getCountry());
+    }
   }
 
   @Override
