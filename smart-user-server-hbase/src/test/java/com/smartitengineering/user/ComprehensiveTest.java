@@ -151,7 +151,7 @@ public class ComprehensiveTest {
   }
 
   @Test
-  public void doTestRemoveUserPrivilegeFromUser() {
+  public void doTestRemoveUserPrivilegeFromUser() throws InterruptedException {
     comprehensiveClientTest.doTestRemoveUserPrivilegeFromUser();
   }
 
