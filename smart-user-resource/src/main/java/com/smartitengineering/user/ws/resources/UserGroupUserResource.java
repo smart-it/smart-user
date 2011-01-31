@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.user.service.Services;
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.User;
 import com.smartitengineering.user.domain.UserGroup;
@@ -109,6 +110,7 @@ public class UserGroupUserResource extends AbstractResource {
     try {
       responseBuilder = Response.status(Status.OK);
       userGroup.getUsers().remove(user);
+      System.out.print("!!!!!@@@@@@"+user);
       Services.getInstance().getUserGroupService().update(userGroup);
     }
     catch (Exception ex) {

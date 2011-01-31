@@ -4,9 +4,10 @@
  */
 package com.smartitengineering.user.domain;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -15,7 +16,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author russel
  */
-public class UserGroup extends AbstractPersistentDTO<UserGroup> {
+public class UserGroup extends AbstractGenericPersistentDTO<UserGroup, Long, Long> {
 
   private String name;
   private Set<User> users;
@@ -24,6 +25,16 @@ public class UserGroup extends AbstractPersistentDTO<UserGroup> {
   
   private Organization organization;
   private Date lastModifiedDate;
+  private Date creationDate;
+
+  @JsonIgnore
+  public Date getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
+  }
 
   @JsonIgnore
   public Set<Role> getRoles() {
@@ -51,6 +62,8 @@ public class UserGroup extends AbstractPersistentDTO<UserGroup> {
   
   @JsonIgnore
   public Set<User> getUsers() {
+    if(users == null)
+      users = new HashSet<User>();
     return users;
   }
 
@@ -61,6 +74,9 @@ public class UserGroup extends AbstractPersistentDTO<UserGroup> {
 
   @JsonIgnore
   public Set<Privilege> getPrivileges() {
+    if(privileges == null) {
+      privileges = new LinkedHashSet<Privilege>();
+    }
     return privileges;
   }
 

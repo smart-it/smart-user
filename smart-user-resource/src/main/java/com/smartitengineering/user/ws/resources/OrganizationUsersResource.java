@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.user.service.Services;
 import com.smartitengineering.user.domain.Address;
 import com.smartitengineering.user.domain.BasicIdentity;
 import com.smartitengineering.user.domain.Name;
@@ -45,6 +46,7 @@ import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 /**
  *
@@ -305,6 +307,7 @@ public class OrganizationUsersResource extends AbstractResource {
           organizationUniqueShortName, userPerson.getUser().getUsername()));
     }
     catch (Exception ex) {
+      ex.printStackTrace();
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
@@ -327,7 +330,7 @@ public class OrganizationUsersResource extends AbstractResource {
     }
     User newUser = new User();
     if (keyValueMap.get("id") != null) {
-      newUser.setId(Integer.valueOf(keyValueMap.get("id")));
+      newUser.setId(NumberUtils.toLong(keyValueMap.get("id")));
     }
     if (keyValueMap.get("userName") != null) {
       newUser.setUsername(keyValueMap.get("userName"));

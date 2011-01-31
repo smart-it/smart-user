@@ -5,15 +5,14 @@
 
 package com.smartitengineering.user.domain;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
-import com.smartitengineering.domain.PersistentDTO;
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import java.util.List;
 
 /**
  *
  * @author russel
  */
-public class RegisteredService extends AbstractPersistentDTO<RegisteredService>{
+public class RegisteredService extends AbstractGenericPersistentDTO<RegisteredService, Long, Integer>{
 
   private List<Organization> organizationList;
   private Service service;

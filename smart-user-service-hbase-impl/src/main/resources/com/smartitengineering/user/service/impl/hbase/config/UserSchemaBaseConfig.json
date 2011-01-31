@@ -1,0 +1,5 @@
+{
+  "schemaNamespace": "com.smartitengineering.user.impl.hbase.dao",
+  "mainTableName": "user_user",
+  "transactionalDomain": "false"
+}

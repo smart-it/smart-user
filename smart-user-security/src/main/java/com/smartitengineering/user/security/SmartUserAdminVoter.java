@@ -5,12 +5,11 @@
 package com.smartitengineering.user.security;
 
 import com.smartitengineering.user.service.AuthorizationService;
+import com.smartitengineering.user.service.Services;
 import java.util.Iterator;
 import org.springframework.security.Authentication;
 import org.springframework.security.ConfigAttribute;
 import org.springframework.security.ConfigAttributeDefinition;
-import org.springframework.security.acls.objectidentity.ObjectIdentity;
-import org.springframework.security.acls.objectidentity.ObjectIdentityRetrievalStrategy;
 import org.springframework.security.acls.sid.Sid;
 import org.springframework.security.acls.sid.SidRetrievalStrategy;
 import org.springframework.security.vote.AccessDecisionVoter;
@@ -24,14 +23,9 @@ public class SmartUserAdminVoter implements AccessDecisionVoter {
   private VotingConfigProvider votingConfigProvider;
   private OidRetrievalStrategy oidRetrievalStrategy;
   private SidRetrievalStrategy sidRetrievalStrategy;
-  private AuthorizationService authorizationService;
 
   public AuthorizationService getAuthorizationService() {
-    return authorizationService;
-  }
-
-  public void setAuthorizationService(AuthorizationService authorizationService) {
-    this.authorizationService = authorizationService;
+    return Services.getInstance().getAuthorizationService();
   }
 
   public OidRetrievalStrategy getOidRetrievalStrategy() {
@@ -115,7 +109,7 @@ public class SmartUserAdminVoter implements AccessDecisionVoter {
     }
 
     // Obtain the OID applicable to the domain object
-    return authorizationService.authorize(sid.getUsername(), sid.getOrganizationName(), oid, votingConfig.
+    return getAuthorizationService().authorize(sid.getUsername(), sid.getOrganizationName(), oid, votingConfig.
         getRequirePermission()[0].getMask());
   }
 }

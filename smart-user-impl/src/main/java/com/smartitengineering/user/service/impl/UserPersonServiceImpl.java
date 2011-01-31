@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
@@ -63,18 +64,10 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
 
   @Override
   public void create(UserPerson userPerson) {
-    getUserService().validateUser(userPerson.getUser());
-    if (userPerson.getPerson().getId() != null) {
-      Integer count = (Integer) super.getOther(
-          QueryParameterFactory.getElementCountParam("person.id"),
-          QueryParameterFactory.getEqualPropertyParam(
-          "person.id", userPerson.getPerson().getId()));
-      if (count.intValue() > 0) {
-        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
-            UniqueConstrainedField.PERSON.name());
-      }
-    }
-    personService.validatePerson(userPerson.getPerson());
+    validateUserPerson(userPerson);
+    final Date date = new Date();
+    userPerson.setCreationDate(date);
+    userPerson.setLastModifiedDate(date);
     try {
       super.save(userPerson);
       observable.notifyObserver(ObserverNotification.CREATE_USER_PERSON, userPerson);
@@ -91,10 +84,28 @@ public class UserPersonServiceImpl extends AbstractCommonDaoImpl<UserPerson> imp
     }
   }
 
+  public void validateUserPerson(UserPerson userPerson) {
+    getUserService().validateUser(userPerson.getUser());
+    if (userPerson.getPerson().getId() != null) {
+      Integer count =
+              (Integer) super.getOther(
+          QueryParameterFactory.getElementCountParam("person.id"),
+          QueryParameterFactory.getEqualPropertyParam(
+          "person.id", userPerson.getPerson().getId()));
+      if (count.intValue() > 0) {
+        throw new RuntimeException(ExceptionMessage.CONSTRAINT_VIOLATION_EXCEPTION.name() + "-" +
+            UniqueConstrainedField.PERSON.name());
+      }
+    }
+    personService.validatePerson(userPerson.getPerson());
+  }
+
   @Override
   public void update(UserPerson userPerson) {
     getUserService().validateUser(userPerson.getUser());
     personService.validatePerson(userPerson.getPerson());
+    final Date date = new Date();
+    userPerson.setLastModifiedDate(date);
     try {
       super.update(userPerson);
     }

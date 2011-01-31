@@ -11,7 +11,12 @@ import com.smartitengineering.user.domain.UniqueConstrainedField;
 import com.smartitengineering.user.filter.RoleFilter;
 import com.smartitengineering.user.service.ExceptionMessage;
 import com.smartitengineering.user.service.RoleService;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleStateException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -29,6 +34,9 @@ public class RoleServiceImpl extends AbstractCommonDaoImpl<Role> implements Role
   @Override
   public void create(Role role) {
     validateRole(role);
+    final Date date = new Date();
+    role.setCreationDate(date);
+    role.setLastModifiedDate(date);
     try {
       super.save(role);
     }
@@ -60,6 +68,8 @@ public class RoleServiceImpl extends AbstractCommonDaoImpl<Role> implements Role
   @Override
   public void update(Role role) {
     validateRole(role);
+    final Date date = new Date();
+    role.setLastModifiedDate(date);
     try {
       super.update(role);
     }
@@ -113,5 +123,19 @@ public class RoleServiceImpl extends AbstractCommonDaoImpl<Role> implements Role
   @Override
   public Collection<Role> search(RoleFilter filter) {
     throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Set<Role> getRolesByIds(Long... ids) {
+    return getRolesByIds(Arrays.<Long>asList(ids));
+  }
+
+  @Override
+  public Set<Role> getRolesByIds(List<Long> ids) {
+    List<Integer> ints = new ArrayList<Integer>(ids.size());
+    for (Long id : ids) {
+      ints.add(id.intValue());
+    }
+    return getByIds(ints);
   }
 }

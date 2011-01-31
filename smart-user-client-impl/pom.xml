@@ -36,7 +36,7 @@
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-jdk14</artifactId>      
+      <artifactId>slf4j-jdk14</artifactId>
     </dependency>
     <dependency>
       <groupId>com.smartitengineering.smart-user</groupId>
@@ -60,12 +60,22 @@
     <dependency>
       <groupId>org.mortbay.jetty</groupId>
       <artifactId>jsp-2.1-glassfish</artifactId>
-      <version>9.1.1.B60.25.p2</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
   <build>
     <plugins>
+      <plugin>
+       <groupId>org.apache.maven.plugins</groupId>
+       <artifactId>maven-jar-plugin</artifactId>
+       <executions>
+         <execution>
+           <goals>
+             <goal>test-jar</goal>
+           </goals>
+         </execution>
+       </executions>
+     </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>

@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.user.service.Services;
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.SecuredObject;
 import com.smartitengineering.util.rest.atom.server.AbstractResource;
@@ -30,6 +31,7 @@ import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 /**
  *
@@ -222,7 +224,7 @@ public class OrganizationSecuredObjectResource extends AbstractResource {
 
     SecuredObject newSecuredObject = new SecuredObject();
     if (keyValueMap.get("id") != null) {
-      newSecuredObject.setId(Integer.valueOf(keyValueMap.get("id")));
+      newSecuredObject.setId(NumberUtils.toLong(keyValueMap.get("id")));
     }
     if (keyValueMap.get("name") != null) {
       newSecuredObject.setName(keyValueMap.get("name"));

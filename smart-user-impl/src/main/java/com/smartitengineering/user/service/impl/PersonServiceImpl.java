@@ -212,4 +212,9 @@ public class PersonServiceImpl extends AbstractCommonDaoImpl<Person> implements 
       }
     }
   }
+
+  @Override
+  public Person getById(Long personId) {
+    return super.getById(personId.intValue());
+  }
 }

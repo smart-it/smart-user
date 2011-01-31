@@ -20,6 +20,8 @@ public interface Organization {
 
   public Date getLastModifiedDate();
 
+  public Date getCreationDate();
+
   public void setName(String name);
 
   public void setUniqueShortName(String uniqueShortName);

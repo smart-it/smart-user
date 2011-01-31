@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.user.service.Services;
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Privilege;
 import com.smartitengineering.user.domain.SecuredObject;
@@ -30,6 +31,8 @@ import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+
 
 /**
  *
@@ -78,6 +81,15 @@ public class OrganizationPrivilegeResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
     ResponseBuilder responseBuilder = Response.ok();
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Entering get method of privilege resource");
+    if(organization==null){
+      System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Organization is null from privilege resource");
+    }
+    if(privilege==null){
+      System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Privilege is null from privilege resource");
+    }
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Privilege or organization is not null from privilege resource");
+
     if (organization == null || privilege == null) {
       return responseBuilder.status(Status.NOT_FOUND).build();
     }
@@ -232,7 +244,7 @@ public class OrganizationPrivilegeResource extends AbstractResource {
 
     Privilege newPrivilege = new Privilege();
     if (keyValueMap.get("id") != null) {
-      newPrivilege.setId(Integer.valueOf(keyValueMap.get("id")));
+      newPrivilege.setId(NumberUtils.toLong((keyValueMap.get("id"))));
     }
     if (keyValueMap.get("name") != null) {
       newPrivilege.setName(keyValueMap.get("name"));

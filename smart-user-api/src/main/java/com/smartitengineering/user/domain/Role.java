@@ -4,7 +4,7 @@
  */
 package com.smartitengineering.user.domain;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -13,11 +13,12 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author modhu7
  */
-public class Role extends AbstractPersistentDTO<Role> {
+public class Role extends AbstractGenericPersistentDTO<Role, Long, Long> {
 
   private String name;
   private String displayName;
   private String shortDescription;
+  private Date creationDate;
   private Date lastModifiedDate;
 
   public Role() {
@@ -69,6 +70,15 @@ public class Role extends AbstractPersistentDTO<Role> {
       return;
     }
     this.shortDescription = shortDescription;
+  }
+
+  @JsonIgnore
+  public Date getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
   }
 
   @JsonIgnore

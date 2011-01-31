@@ -114,6 +114,10 @@
         <!--<module>smart-user-ui</module>-->
         <module>smart-user-client-impl</module>
     <module>smart-user-client-api</module>
+    <module>smart-user-service-hbase-impl</module>
+    <module>smart-user-impl-generic</module>
+    <module>smart-user-server-hbase</module>
+    <module>smart-user-guice-binder</module>
   </modules>
 
       

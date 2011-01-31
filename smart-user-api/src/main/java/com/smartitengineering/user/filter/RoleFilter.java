@@ -9,7 +9,7 @@ package com.smartitengineering.user.filter;
  *
  * @author modhu7
  */
-public class RoleFilter {
+public class RoleFilter extends AbstractFilter{
 
     private String organizationName;
     private String username;

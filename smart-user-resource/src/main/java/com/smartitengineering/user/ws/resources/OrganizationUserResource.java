@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.user.service.Services;
 import com.smartitengineering.user.domain.Address;
 import com.smartitengineering.user.domain.BasicIdentity;
 import com.smartitengineering.user.domain.GeoLocation;
@@ -40,6 +41,7 @@ import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 /**
  *
@@ -443,52 +445,52 @@ public class OrganizationUserResource extends AbstractResource {
     UserPerson userPersonContent = new UserPerson();
 
     if (keyValueMap.get("id") != null) {
-      userPersonContent.setId(Integer.valueOf(keyValueMap.get("id")));
+      userPersonContent.setId(NumberUtils.toLong(keyValueMap.get("id")));
     }
     if (keyValueMap.get("version") != null) {
-      userPersonContent.setVersion(Integer.valueOf(keyValueMap.get("version")));
+      userPersonContent.setVersion(Long.valueOf(keyValueMap.get("version")));
     }
 
     if (keyValueMap.get("userId") != null) {
-      newUser.setId(Integer.valueOf(keyValueMap.get("userId")));
+      newUser.setId(NumberUtils.toLong(keyValueMap.get("userId")));
     }
     if (keyValueMap.get("userVersion") != null) {
-      newUser.setVersion(Integer.valueOf(keyValueMap.get("userVersion")));
+      newUser.setVersion(Long.valueOf(keyValueMap.get("userVersion")));
     }
 
     if (keyValueMap.get("personId") != null) {
-      person.setId(Integer.valueOf(keyValueMap.get("personId")));
+      person.setId(NumberUtils.toLong(keyValueMap.get("personId")));
     }
     if (keyValueMap.get("personVersion") != null) {
-      person.setVersion(Integer.valueOf(keyValueMap.get("personVersion")));
+      person.setVersion(Long.valueOf(keyValueMap.get("personVersion")));
     }
 
     if (keyValueMap.get("selfId") != null) {
-      person.getSelf().setId(Integer.valueOf(keyValueMap.get("selfId")));
+      person.getSelf().setId(NumberUtils.toLong(keyValueMap.get("selfId")));
     }
     if (keyValueMap.get("selfVersion") != null) {
-      person.getSelf().setVersion(Integer.valueOf(keyValueMap.get("selfVersion")));
+      person.getSelf().setVersion(Long.valueOf(keyValueMap.get("selfVersion")));
     }
 
     if (keyValueMap.get("spouseId") != null) {
-      person.getSpouse().setId(Integer.valueOf(keyValueMap.get("spouseId")));
+      person.getSpouse().setId(NumberUtils.toLong(keyValueMap.get("spouseId")));
     }
     if (keyValueMap.get("spouseVersion") != null) {
-      person.getSpouse().setVersion(Integer.valueOf(keyValueMap.get("spouseVersion")));
+      person.getSpouse().setVersion(Long.valueOf(keyValueMap.get("spouseVersion")));
     }
 
     if (keyValueMap.get("motherId") != null) {
-      person.getMother().setId(Integer.valueOf(keyValueMap.get("motherId")));
+      person.getMother().setId(NumberUtils.toLong(keyValueMap.get("motherId")));
     }
     if (keyValueMap.get("motherVersion") != null) {
-      person.getMother().setVersion(Integer.valueOf(keyValueMap.get("motherVersion")));
+      person.getMother().setVersion(Long.valueOf(keyValueMap.get("motherVersion")));
     }
 
     if (keyValueMap.get("fatherId") != null) {
-      person.getFather().setId(Integer.valueOf(keyValueMap.get("fatherId")));
+      person.getFather().setId(NumberUtils.toLong(keyValueMap.get("fatherId")));
     }
     if (keyValueMap.get("fatherVersion") != null) {
-      person.getFather().setVersion(Integer.valueOf(keyValueMap.get("fatherVersion")));
+      person.getFather().setVersion(Long.valueOf(keyValueMap.get("fatherVersion")));
     }
 
     userPersonContent.setUser(newUser);

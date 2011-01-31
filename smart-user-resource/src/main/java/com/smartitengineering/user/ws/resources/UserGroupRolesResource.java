@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.user.ws.resources;
 
+import com.smartitengineering.user.service.Services;
 import com.smartitengineering.user.domain.Organization;
 import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.UserGroup;
@@ -167,7 +168,7 @@ public class UserGroupRolesResource extends AbstractResource {
     }
 
     try {
-      if (role.getId() == null || role.getVersion() == null) {
+      if (role.getId() == null /*|| role.getVersion() == null*/) {
         responseBuilder = Response.status(Status.BAD_REQUEST);
       }
       else {

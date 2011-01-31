@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author russel
  */
-public class GeoLocation extends AbstractClientDomain implements com.smartitengineering.user.client.api.GeoLocation {
+public class GeoLocation implements com.smartitengineering.user.client.api.GeoLocation {
 
   private Double longitude;
   private Double latitude;
@@ -26,6 +26,7 @@ public class GeoLocation extends AbstractClientDomain implements com.smartitengi
     return latitude;
   }
 
+  @Override
   public void setLatitude(Double latitude) {
     if (latitude == null) {
       return;
@@ -33,6 +34,7 @@ public class GeoLocation extends AbstractClientDomain implements com.smartitengi
     this.latitude = latitude;
   }
 
+  @Override
   public void setLongitude(Double longitude) {
     if (longitude == null) {
       return;

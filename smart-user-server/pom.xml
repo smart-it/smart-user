@@ -30,6 +30,14 @@
           <stopKey>stop</stopKey>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <archiveClasses>true</archiveClasses>
+          <attachClasses>true</attachClasses>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
@@ -94,6 +102,10 @@
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-jdk14</artifactId>
     </dependency>
   </dependencies>
 </project>
