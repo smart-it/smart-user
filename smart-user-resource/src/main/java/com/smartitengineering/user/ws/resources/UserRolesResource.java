@@ -164,7 +164,7 @@ public class UserRolesResource extends AbstractResource {
     }
 
     try {
-      if (role.getId() == null || role.getVersion() == null) {
+      if (role.getId() == null) {
         responseBuilder = Response.status(Status.BAD_REQUEST);
       }
       else {
