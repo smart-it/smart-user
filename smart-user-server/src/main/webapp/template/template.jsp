@@ -4,7 +4,7 @@
     Author     : uzzal
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -52,7 +52,7 @@
         <div class="optionsSignout"><a href="<c:url value="/j_spring_security_logout"/>"><fmt:message key="org.manuLink6"/></a></div>
       </div>
       <div class="clear"></div>
-      <div id="content" class="template_content">
+      <div id="content" class="template_content">        
         <jsp:include page="${templateContent}"></jsp:include>
       </div>
       <div id="left" class="left_menu"></div>

@@ -23,7 +23,6 @@ import com.smartitengineering.user.client.api.UserLinkResource;
 import com.smartitengineering.user.client.api.UserPrivilegeResource;
 import com.smartitengineering.user.client.api.UserPrivilegesResource;
 import com.smartitengineering.user.client.api.UserResource;
-import com.smartitengineering.user.client.api.UserRoleResource;
 import com.smartitengineering.user.client.api.UserRolesResource;
 import com.smartitengineering.user.client.api.UsersResource;
 import com.smartitengineering.user.client.impl.RootResourceImpl;
@@ -37,7 +36,6 @@ import com.smartitengineering.user.client.impl.domain.SecuredObject;
 import com.smartitengineering.user.client.impl.domain.User;
 import com.smartitengineering.user.client.impl.domain.UserPerson;
 import com.smartitengineering.user.domain.GlobalRole;
-import com.smartitengineering.user.service.Services;
 import com.smartitengineering.util.rest.client.ApplicationWideClientFactoryImpl;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import java.io.File;
@@ -155,7 +153,9 @@ public class ComprehensiveClientTest {
     Assert.assertNotNull(userRolesResource);
     Assert.assertNotNull(userRolesResource.getUserRoleResources());
     Assert.assertEquals(1, userRolesResource.getUserRoleResources().size());
-    Assert.assertEquals(userRolesResource.getUserRoleResources().get(0).getRoleResource().getRole().getName(), GlobalRole.ROLE_ADMIN.toString());
+    Assert.assertEquals(userRolesResource.getUserRoleResources().get(0).getRoleResource().getRole().getName(), GlobalRole.ROLE_ADMIN.
+        toString());
+
 
   }
 
@@ -232,6 +232,7 @@ public class ComprehensiveClientTest {
     catch (Exception e) {
       Assert.fail("Expected organizations number and newly created organization name didn't match with the actual");
     }
+
   }
 
   @Test
@@ -320,9 +321,14 @@ public class ComprehensiveClientTest {
     Thread.sleep(1500);
     sitelUserResource = userResource;
     Assert.assertEquals(SITEL_ORG_USER_USERNAME, userResource.getUser().getUser().getUsername());
+
+
     OrganizationResource organizationResource = sitelUserResource.getOrganizationResource();
     Assert.assertNotNull(organizationResource);
-    Assert.assertTrue(organizationResource.getOrganization().getUniqueShortName().equals(sitelOrgResource.getOrganization().getUniqueShortName()));
+    Assert.assertTrue(organizationResource.getOrganization().getUniqueShortName().equals(sitelOrgResource.
+        getOrganization().getUniqueShortName()));
+
+
   }
 
   @Test
@@ -762,7 +768,7 @@ public class ComprehensiveClientTest {
   }
 
   @Test
-  public void doTestGetUser(){
+  public void doTestGetUser() {
     rootResource = login("smartadmin@smart-user", "02040250204039");
     Assert.assertNotNull(rootResource);
     LoginResource loginResource = rootResource.getLoginResource();

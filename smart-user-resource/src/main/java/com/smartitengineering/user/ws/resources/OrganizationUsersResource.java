@@ -303,11 +303,12 @@ public class OrganizationUsersResource extends AbstractResource {
     try {
       Services.getInstance().getUserPersonService().create(userPerson);
       responseBuilder = Response.status(Status.CREATED);
-      responseBuilder.location(getAbsoluteURIBuilder().path(OrganizationUserResource.class).build(organizationUniqueShortName, userPerson.getUser().getUsername()));
+      responseBuilder.location(getAbsoluteURIBuilder().path(OrganizationUserResource.class).build(
+          organizationUniqueShortName, userPerson.getUser().getUsername()));
     }
     catch (Exception ex) {
       ex.printStackTrace();
-      responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);      
+      responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
   }
@@ -337,6 +338,7 @@ public class OrganizationUsersResource extends AbstractResource {
     if (keyValueMap.get("password") != null) {
       newUser.setPassword(keyValueMap.get("password"));
     }
+    newUser.setOrganization(organization);
 
     Person person = new Person();
     BasicIdentity self = new BasicIdentity();
@@ -512,9 +514,10 @@ public class OrganizationUsersResource extends AbstractResource {
   }
 
   @POST
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   public Response post(
       @HeaderParam("Content-type") String contentType, String message) {
-    ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+    ResponseBuilder responseBuilder = Response.status(Status.OK);
     if (organization == null) {
       responseBuilder = Response.status(Status.NOT_FOUND);
       return responseBuilder.build();
@@ -525,45 +528,39 @@ public class OrganizationUsersResource extends AbstractResource {
       responseBuilder.build();
     }
 
-    final boolean isHtmlPost;
 
-    if (StringUtils.isBlank(contentType)) {
-      contentType = MediaType.APPLICATION_OCTET_STREAM;
-      isHtmlPost = false;
+
+    try {
+      //Will search for the first '=' if not found will take the whole string
+      final int startIndex = 0;//message.indexOf("=") + 1;
+      //Consider the first '=' as the start of a value point and take rest as value
+      final String realMsg = message.substring(startIndex);
+      //Decode the message to ignore the form encodings and make them human readable
+      message = URLDecoder.decode(realMsg, "UTF-8");
+
     }
-    else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
-      contentType = MediaType.APPLICATION_OCTET_STREAM;
-      isHtmlPost = true;
-
-      try {
-        //Will search for the first '=' if not found will take the whole string
-        final int startIndex = 0;//message.indexOf("=") + 1;
-        //Consider the first '=' as the start of a value point and take rest as value
-        final String realMsg = message.substring(startIndex);
-        //Decode the message to ignore the form encodings and make them human readable
-        message = URLDecoder.decode(realMsg, "UTF-8");
-
-      }
-      catch (UnsupportedEncodingException ex) {
-        ex.printStackTrace();
-      }
-    }
-    else {
-      isHtmlPost = false;
+    catch (UnsupportedEncodingException ex) {
+      ex.printStackTrace();
     }
 
-    if (isHtmlPost) {
-      UserPerson userPerson = getObjectFromContent(message);
+    UserPerson userPerson = null;
 
+    userPerson = getObjectFromContent(message);
+    try {
       if (userPerson.getPerson().isValid()) {
         Services.getInstance().getUserPersonService().create(userPerson);
-
       }
       else {
         Services.getInstance().getUserService().save(userPerson.getUser());
       }
-
+      responseBuilder.status(Status.SEE_OTHER);
+      responseBuilder.location(getRelativeURIBuilder().path(OrganizationUserResource.class).build(organization.
+          getUniqueShortName(), userPerson.getUser().getUsername()));
     }
+    catch (Exception ex) {
+      responseBuilder.status(Status.INTERNAL_SERVER_ERROR);
+    }
+
     return responseBuilder.build();
   }
 

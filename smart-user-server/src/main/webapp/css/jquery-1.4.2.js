@@ -13,11 +13,7 @@
  *
  * Date: Sat Feb 13 22:33:48 2010 -0500
  */
-<<<<<<< HEAD
-alert('jquery loaded')
-=======
-alert('JQuery Successfully loaded')
->>>>>>> saumitra/UIwork
+
 (function( window, undefined ) {
 
 // Define a local copy of jQuery
