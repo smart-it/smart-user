@@ -4,6 +4,8 @@
  */
 package com.smartitengineering.user.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.Authentication;
 import org.springframework.security.acls.sid.Sid;
 import org.springframework.security.userdetails.UserDetails;
@@ -14,13 +16,16 @@ import org.springframework.security.userdetails.UserDetails;
  */
 public class SidRetrievalStrategyImpl implements org.springframework.security.acls.sid.SidRetrievalStrategy {
 
-  public Sid[] getSids(Authentication authentication) {
+  private static Logger logger = LoggerFactory.getLogger(SidRetrievalStrategyImpl.class);
 
+
+  @Override
+  public Sid[] getSids(Authentication authentication) {
+    logger.info("getSids method is called for authentication object with username: " + authentication.getName());
     Sid[] sids = new Sid[1];
     if (authentication.getPrincipal() instanceof UserDetails) {
       sids[0] = new SidImpl(((UserDetails) authentication.getPrincipal()).getUsername());
     }
-
     return sids;
   }
 }

@@ -129,7 +129,9 @@ public class OrganizationUserResource extends AbstractResource {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
     try {
       newUserPerson.getUser().setOrganization(organization);
-      Services.getInstance().getUserPersonService().update(getUserPerson());
+      newUserPerson.getUser().setPrivileges(getUserPerson().getUser().getPrivileges());
+      newUserPerson.getUser().setRoles(getUserPerson().getUser().getRoles());
+      Services.getInstance().getUserPersonService().update(newUserPerson);
       responseBuilder = Response.ok(getUserFeed());
     }
     catch (Exception ex) {

@@ -8,6 +8,8 @@ import com.smartitengineering.user.domain.Role;
 import com.smartitengineering.user.domain.User;
 import java.util.HashSet;
 import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.userdetails.UserDetails;
 
@@ -16,6 +18,8 @@ import org.springframework.security.userdetails.UserDetails;
  * @author modhu7
  */
 public class UserDetailsImpl implements UserDetails {
+
+  private static Logger logger = LoggerFactory.getLogger(UserDetailsImpl.class);
 
   private User user = new User();
 
@@ -29,6 +33,7 @@ public class UserDetailsImpl implements UserDetails {
 
   @Override
   public GrantedAuthority[] getAuthorities() {
+    logger.info("getAuthorities method is called for user: " + user.getUsername());
     Set<SmartUserAuthority> authoritiesSet = new HashSet<SmartUserAuthority>();
     for (Role role : user.getRoles()) {
       authoritiesSet.add(new SmartUserAuthority(role.getName()));
