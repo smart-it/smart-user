@@ -137,7 +137,7 @@ public class ComprehensiveTest {
   }
 
   @Test
-  public void doTestUpdateUser() {
+  public void doTestUpdateUser() throws InterruptedException {
     comprehensiveClientTest.doTestUpdateUser();
   }
   @Test
