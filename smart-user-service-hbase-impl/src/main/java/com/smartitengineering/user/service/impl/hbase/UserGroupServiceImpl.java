@@ -137,6 +137,7 @@ public class UserGroupServiceImpl implements UserGroupService {
     if (oldUserGroup == null) {
       throw new IllegalArgumentException("Trying to update non-existent user group!");
     }
+    userGroup.setCreationDate(oldUserGroup.getCreationDate());
     try {
       if (!userGroup.getName().equals(oldUserGroup.getName())) {
         final UniqueKey oldIndexKey = getUniqueKeyOfIndexForUserGroup(oldUserGroup);
