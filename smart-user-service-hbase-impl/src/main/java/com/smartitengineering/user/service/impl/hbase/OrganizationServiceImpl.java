@@ -62,6 +62,11 @@ public class OrganizationServiceImpl implements OrganizationService {
     final Date date = new Date();
     organization.setLastModifiedDate(date);
     validateOrganization(organization);
+    Organization oldOrganization = readDao.getById(organization.getId());
+    if (oldOrganization == null) {
+      throw new IllegalArgumentException("Trying to update non-existent person!");
+    }
+    organization.setCreationDate(oldOrganization.getCreationDate());
     try {
       writeDao.update(organization);
       observable.notifyObserver(ObserverNotification.UPDATE_ORGANIZATION, organization);
@@ -77,7 +82,9 @@ public class OrganizationServiceImpl implements OrganizationService {
     try {
       observable.notifyObserver(ObserverNotification.DELETE_ORGNIZATION, organization);
       writeDao.delete(organization);
-      logger.info("@@@@@@@@@@@@@Service Impl :: Organization Deleted" + organization.getUniqueShortName());
+      if (logger.isInfoEnabled()) {
+        logger.info("Service Impl :: Organization Deleted " + organization.getUniqueShortName());
+      }
     }
     catch (Exception e) {
       logger.info(e.getMessage(), e);
@@ -116,9 +123,13 @@ public class OrganizationServiceImpl implements OrganizationService {
       logger.info("count is null");
     }
     else {
-      logger.info("count is " + organizationFilter.getCount());
+      if (logger.isInfoEnabled()) {
+        logger.info("count is " + organizationFilter.getCount());
+      }
     }
-    logger.info(">>>>>>>>>>>QUERY>>>>>>>>>>" + q.toString());
+    if (logger.isInfoEnabled()) {
+      logger.info(">>>>>>>>>>>QUERY>>>>>>>>>>" + q.toString());
+    }
     if (organizationFilter.getCount() != null && organizationFilter.getIndex() != null) {
 
       return freeTextSearchDao.search(QueryParameterFactory.getStringLikePropertyParam("q", q.toString()), QueryParameterFactory.

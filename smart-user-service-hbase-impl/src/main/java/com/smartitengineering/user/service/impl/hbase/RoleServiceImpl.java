@@ -138,6 +138,7 @@ public class RoleServiceImpl implements RoleService {
     if (oldRole == null) {
       throw new IllegalArgumentException("Trying to update non-existent role!");
     }
+    role.setCreationDate(oldRole.getCreationDate());
     try {
       if (!role.getName().equals(oldRole.getName())) {
         final UniqueKey oldIndexKey = getUniqueKeyOfIndexForRole(oldRole);

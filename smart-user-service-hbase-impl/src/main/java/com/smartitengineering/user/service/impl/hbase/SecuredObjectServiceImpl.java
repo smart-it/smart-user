@@ -153,6 +153,7 @@ public class SecuredObjectServiceImpl implements SecuredObjectService {
     if (oldSecuredObject == null) {
       throw new IllegalArgumentException("Trying to update non-existent secured object!");
     }
+    securedObject.setCreationDate(oldSecuredObject.getCreationDate());
     try {
       if (!securedObject.getName().equals(oldSecuredObject.getName())) {
         final UniqueKey oldIndexKey = getUniqueKeyOfIndexForSecObjName(oldSecuredObject);

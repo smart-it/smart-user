@@ -141,6 +141,7 @@ public class UserServiceImpl implements UserService {
     if (oldUser == null) {
       throw new IllegalArgumentException("Trying to update non-existent user!");
     }
+    user.setCreationDate(oldUser.getCreationDate());
     try {
       if (!user.getUsername().equals(oldUser.getUsername())) {
         final UniqueKey oldIndexKey = getUniqueKeyOfIndexForUser(oldUser);

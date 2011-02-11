@@ -169,6 +169,7 @@ public class UserPersonServiceImpl implements UserPersonService {
     if (oldUserPerson == null) {
       throw new IllegalArgumentException("Trying to update non-existent user person!");
     }
+    userPerson.setCreationDate(oldUserPerson.getCreationDate());
     cascadeSave(userPerson);
     try {
       if (!userPerson.getUser().getId().equals(oldUserPerson.getUser().getId())) {
