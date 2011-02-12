@@ -43,7 +43,7 @@ public class PersonServiceCacheImpl implements PersonService {
   public void update(Person person) {
     //First update then delete if update successful!
     try {
-      primaryService.delete(person);
+      primaryService.update(person);
       expireFromCache(person);
     }
     catch (RuntimeException exception) {

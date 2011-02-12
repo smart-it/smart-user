@@ -324,7 +324,7 @@ public class ComprehensiveClientTest {
     userPerson.setPerson(person);
     userResource = sitelUsersResource.create(userPerson);
     Thread.sleep(1500);
-    sitelUserResource = userResource;
+    sitelUserResource = userResource;    
     Assert.assertEquals(SITEL_ORG_USER_USERNAME, userResource.getUser().getUser().getUsername());
 
 
@@ -419,13 +419,24 @@ public class ComprehensiveClientTest {
         userPerson.getPerson().getAddress().setZip("1261");
         try {
           userIterResource.update();
-          Thread.sleep(5000);
+          Thread.sleep(10000);
         }
         catch (Exception e) {
           Assert.fail("Exception due to failure of updating particular user information");
-        }
-        userIterResource.get();
-        userPerson = (UserPerson) userIterResource.getUser();
+        }        
+      }
+    }
+    try {      
+      sitelUsersResource = sitelOrgResource.getUsersResource();
+      Assert.assertNotNull(sitelUsersResource);
+      Assert.assertEquals(USER_NUM_AT_BEGINNING + 2, sitelUsersResource.getUserResources().size());
+    }
+    catch (Exception e) {
+      Assert.fail("Expected number of users doesn't match with the actual");
+    }
+    for (UserResource userIterResource : sitelUsersResource.getUserResources()) {
+      if (userIterResource.getUser().getUser().getUsername().equals("modhu")) {
+        UserPerson userPerson = (UserPerson) userIterResource.getUser();
         Assert.assertEquals("123modhu", userPerson.getUser().getPassword());
         Assert.assertEquals("Subrata", userPerson.getPerson().getSelf().getName().getFirstName());
         Assert.assertEquals("Gupta", userPerson.getPerson().getSelf().getName().getLastName());
@@ -434,11 +445,13 @@ public class ComprehensiveClientTest {
         Assert.assertEquals("1261", userPerson.getPerson().getAddress().getZip());
       }
     }
-
+    System.out.println("end of do test update user");
   }
 
   @Test
   public void doTestUserUpdateSelf() throws InterruptedException {
+    System.out.println("starting do test update user self");
+
     RootResource modhuRootResource = login("modhu@SITEL", "123modhu");
     LoginResource modhuLoginResource = modhuRootResource.getLoginResource();
     UserResource userResource = modhuLoginResource.getUserResource();
@@ -456,10 +469,12 @@ public class ComprehensiveClientTest {
     modhuRootResource = login("modhu@SITEL", "modhu123updated");
     UserResource updatedUserResource = modhuRootResource.getLoginResource().getUserResource();
     Assert.assertEquals("modhu123updated", updatedUserResource.getUser().getUser().getPassword());
+    System.out.println("end of do test update user self");
   }
 
   @Test
   public void doTestCreatePrivilegesofOrganization() {
+    System.out.println("starting do test create privileges of organization");
     try {
       sitelPrivsResource = sitelOrgResource.getPrivilegesResource();
       Assert.assertNotNull(sitelPrivsResource);

@@ -29,7 +29,7 @@ public class PersonObjectConverter extends AbstractObjectRowConverter<Person, Lo
   private static final byte[] CELL_FAX_NUMBER = Bytes.toBytes("faxNumber");
   private static final byte[] CELL_DOB = Bytes.toBytes("dob");
   private static final byte[] CELL_ADDRESS_STREET = Bytes.toBytes("address.street");
-  private static final byte[] CELL_ADDRESS_CITY = Bytes.toBytes("address.street");
+  private static final byte[] CELL_ADDRESS_CITY = Bytes.toBytes("address.city");
   private static final byte[] CELL_ADDRESS_STATE = Bytes.toBytes("address.state");
   private static final byte[] CELL_ADDRESS_ZIP = Bytes.toBytes("address.zip");
   private static final byte[] CELL_ADDRESS_COUNTRY = Bytes.toBytes("address.country");

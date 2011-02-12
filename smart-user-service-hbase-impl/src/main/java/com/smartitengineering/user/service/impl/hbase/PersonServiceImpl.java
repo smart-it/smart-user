@@ -122,6 +122,9 @@ public class PersonServiceImpl implements PersonService {
 
   @Override
   public void update(Person person) {
+    if(logger.isInfoEnabled()){
+      logger.info("Start updating person: " + person.getPrimaryEmail() + " address: " + person.getAddress().toString());
+    }
     if (person.getId() == null) {
       throw new IllegalArgumentException("ID of person not set to be updated!");
     }
