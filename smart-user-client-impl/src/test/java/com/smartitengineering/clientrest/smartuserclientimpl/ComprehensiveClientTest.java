@@ -132,6 +132,10 @@ public class ComprehensiveClientTest {
     jettyServer.stop();
   }
 
+  private RootResource login(String username, String password) {
+    return RootResourceImpl.getInstance(username, password);
+  }
+
   @Test
   public void testBootstraping() throws InterruptedException {
     Thread.sleep(4000);
@@ -240,6 +244,7 @@ public class ComprehensiveClientTest {
 
   }
 
+
   @Test
   public void doTestUpdateOrganization() throws InterruptedException {
     Assert.assertEquals(ORGANIZATION_NUM_AT_BEGINNING + 2, orgsResource.getOrganizationResources().size());
@@ -259,7 +264,8 @@ public class ComprehensiveClientTest {
           Assert.fail("Exception due to failure of updating particular orgnization");
         }
         try {
-          organization = orgIterResource.getOrganization();
+          orgIterResource.get();
+          organization = orgIterResource.getOrganizationReloaded();
           Assert.assertEquals(CHITTAGONG, organization.getAddress().getCity());
         }
         catch (Exception e) {
@@ -268,6 +274,7 @@ public class ComprehensiveClientTest {
       }
     }
   }
+  
 
   @Test
   public void doInitialTest() throws InterruptedException {
@@ -325,7 +332,7 @@ public class ComprehensiveClientTest {
     userResource = sitelUsersResource.create(userPerson);
     Thread.sleep(1500);
     sitelUserResource = userResource;    
-    Assert.assertEquals(SITEL_ORG_USER_USERNAME, userResource.getUser().getUser().getUsername());
+    Assert.assertEquals(SITEL_ORG_USER_USERNAME, userResource.getUserReloaded().getUser().getUsername());
 
 
     OrganizationResource organizationResource = sitelUserResource.getOrganizationResource();
@@ -334,7 +341,8 @@ public class ComprehensiveClientTest {
         getOrganization().getUniqueShortName()));
 
 
-  }
+  }  
+  
 
   @Test
   public void doTestCreateAnotherUser() {
@@ -371,7 +379,7 @@ public class ComprehensiveClientTest {
     catch (Exception e) {
       Assert.fail("Exception due to failure of creating an userperson");
     }
-    Assert.assertEquals("russel", userResource.getUser().getUser().getUsername());
+    Assert.assertEquals("russel", userResource.getUserReloaded().getUser().getUsername());
   }
   //  @Test
   //  public void doUserAuthentication() {
@@ -419,7 +427,7 @@ public class ComprehensiveClientTest {
         userPerson.getPerson().getAddress().setZip("1261");
         try {
           userIterResource.update();
-          Thread.sleep(10000);
+          Thread.sleep(5000);
         }
         catch (Exception e) {
           Assert.fail("Exception due to failure of updating particular user information");
@@ -973,10 +981,6 @@ public class ComprehensiveClientTest {
       Assert.fail("Should not throw any exception");
     }
 
-  }
-
-  private RootResource login(String username, String password) {
-    return RootResourceImpl.getInstance(username, password);
-  }
+  }  
   //Test Ended by Uzzal {
 }

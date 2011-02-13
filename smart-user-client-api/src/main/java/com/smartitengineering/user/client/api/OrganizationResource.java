@@ -23,5 +23,7 @@ public interface OrganizationResource extends WritableResource<Feed> {
 
   public Organization getOrganization();
 
+  public Organization getOrganizationReloaded();
+
   public void update();
 }

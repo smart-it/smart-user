@@ -68,6 +68,11 @@ class OrganizationResourceImpl extends AbstractFeedClientResource<Resource<? ext
     return getOrganization(false);
   }
 
+  @Override
+  public Organization getOrganizationReloaded() {
+    return getOrganization(true);
+  }
+
   protected Organization getOrganization(boolean reload) {
     Resource<Organization> organization = super.<Organization>getNestedResource(REL_ORG);
     if (reload) {

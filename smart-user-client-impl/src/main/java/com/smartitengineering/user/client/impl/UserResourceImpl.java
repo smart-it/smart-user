@@ -71,6 +71,12 @@ public class UserResourceImpl extends AbstractFeedClientResource<Resource<? exte
   public UserPerson getUser() {
     return getUser(false);
   }
+
+  @Override
+  public UserPerson getUserReloaded() {
+    return getUser(true);
+  }
+
   protected UserPerson getUser(boolean reload) {
     Resource<UserPerson> user = super.<UserPerson>getNestedResource(REL_USER);
     if(reload){

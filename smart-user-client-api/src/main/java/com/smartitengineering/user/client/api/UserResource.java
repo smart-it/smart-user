@@ -13,7 +13,9 @@ import org.apache.abdera.model.Feed;
  */
 public interface UserResource extends WritableResource<Feed> {
 
-  public UserPerson getUser();  
+  public UserPerson getUser();
+
+  public UserPerson getUserReloaded();
 
   public UserPrivilegesResource getPrivilegesResource();
 
