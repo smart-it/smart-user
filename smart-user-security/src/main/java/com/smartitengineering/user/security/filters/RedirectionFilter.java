@@ -13,6 +13,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response.Status;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -121,17 +122,22 @@ public class RedirectionFilter implements Filter {
 //      }
 //    }
     if (logger.isInfoEnabled()) {
-      logger.info("User Agent " + httpRequest.getHeader("User-Agent"));
+      logger.info("User Agent " + httpRequest.getHeader(HttpHeaders.USER_AGENT));
       logger.info("Status " + status);
     }
-    if (status == Status.SEE_OTHER.getStatusCode() && requestUrl.equals(loginUrl) && !isUserAgentBrowser(httpRequest.
-        getHeader("User-Agent"))) {
-      logger.info("status is 302 and client is browser");
-      wrapper.setStatus(Status.UNAUTHORIZED.getStatusCode());
+    if (wrapper.isRedirectSet()) {
+      String location = wrapper.getLocation();
+      if (location.startsWith(loginUrl) && !isUserAgentBrowser(httpRequest.getHeader(HttpHeaders.USER_AGENT))) {
+        logger.info("status is 302 and client is not browser");
+        wrapper.setStatus(Status.UNAUTHORIZED.getStatusCode());
 //      if (requestUrl != null) {
 //        logger.info("redirecting to " + loginUrl + "?" + redirectionUrlParamName + "=" + requestUrl);
 //        wrapper.sendRedirect(loginUrl + "?" + redirectionUrlParamName + "=" + requestUrl);
 //      }
+      }
+      else {
+        wrapper.enableSendRedirect();
+      }
     }
   }
 

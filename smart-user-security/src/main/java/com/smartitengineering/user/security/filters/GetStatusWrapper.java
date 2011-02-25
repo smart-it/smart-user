@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory;
 class GetStatusWrapper extends HttpServletResponseWrapper {
 
   private int status;
+  private String location;
+  private boolean redirectSet;
   protected final transient Logger logger = LoggerFactory.getLogger(getClass());
 
   GetStatusWrapper(HttpServletResponse response) {
@@ -49,7 +51,11 @@ class GetStatusWrapper extends HttpServletResponseWrapper {
   @Override
   public void sendRedirect(String location) throws IOException {
     setStatus(SC_SEE_OTHER);
-    super.sendRedirect(location);
+    this.location = location;
+    if (logger.isInfoEnabled()) {
+      logger.info("Setting Location header to " + location);
+    }
+    redirectSet = true;
   }
 
   @Override
@@ -60,5 +66,19 @@ class GetStatusWrapper extends HttpServletResponseWrapper {
 
   public int getStatus() {
     return status;
+  }
+
+  public String getLocation() {
+    return location;
+  }
+
+  public void enableSendRedirect() throws IOException {
+    if (isRedirectSet()) {
+      super.sendRedirect(location);
+    }
+  }
+
+  public boolean isRedirectSet() {
+    return redirectSet;
   }
 }
