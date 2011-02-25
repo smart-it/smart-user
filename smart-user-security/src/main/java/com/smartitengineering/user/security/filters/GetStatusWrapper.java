@@ -50,7 +50,7 @@ class GetStatusWrapper extends HttpServletResponseWrapper {
 
   @Override
   public void sendRedirect(String location) throws IOException {
-    setStatus(SC_SEE_OTHER);
+    setStatus(SC_FOUND);
     this.location = location;
     if (logger.isInfoEnabled()) {
       logger.info("Setting Location header to " + location);

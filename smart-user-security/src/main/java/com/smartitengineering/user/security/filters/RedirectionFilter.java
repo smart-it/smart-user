@@ -84,7 +84,11 @@ public class RedirectionFilter implements Filter {
 //      logger.debug("request URL= " + httpRequest.getRequestURL());
 //      logger.debug("request URI= " + httpRequest.getRequestURI());
 //    }
+    final String contextPath = httpRequest.getContextPath();
+    String loginRedirectUrl = new StringBuilder("http://").append(httpRequest.getHeader(HttpHeaders.HOST)).append(StringUtils.
+        isBlank(contextPath) ? "/" : contextPath).append(loginUrl).toString();
     logger.info("login url " + loginUrl);
+    logger.info("login url to check for " + loginRedirectUrl);
 //    logger.info("login error param name " + loginErrorParamName);
 //    logger.info("login form post url " + loginFormPostUrl);
 //    logger.info("redirector url " + redirectorUrl);
@@ -127,7 +131,7 @@ public class RedirectionFilter implements Filter {
     }
     if (wrapper.isRedirectSet()) {
       String location = wrapper.getLocation();
-      if (location.startsWith(loginUrl) && !isUserAgentBrowser(httpRequest.getHeader(HttpHeaders.USER_AGENT))) {
+      if (location.startsWith(loginRedirectUrl) && !isUserAgentBrowser(httpRequest.getHeader(HttpHeaders.USER_AGENT))) {
         logger.info("status is 302 and client is not browser");
         wrapper.setStatus(Status.UNAUTHORIZED.getStatusCode());
 //      if (requestUrl != null) {
