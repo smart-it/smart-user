@@ -5,6 +5,7 @@
 package com.smartitengineering.user.security.filters;
 
 import java.io.IOException;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import org.slf4j.Logger;
@@ -43,6 +44,18 @@ class GetStatusWrapper extends HttpServletResponseWrapper {
     }
     super.setStatus(sc);
 
+  }
+
+  @Override
+  public void sendRedirect(String location) throws IOException {
+    setStatus(SC_SEE_OTHER);
+    super.sendRedirect(location);
+  }
+
+  @Override
+  public void setResponse(ServletResponse response) {
+    logger.info("Setting response directly");
+    super.setResponse(response);
   }
 
   public int getStatus() {
