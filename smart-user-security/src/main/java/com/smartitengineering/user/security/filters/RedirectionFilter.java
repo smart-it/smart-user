@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  */
 public class RedirectionFilter implements Filter {
 
-  private static final String[] DEFAULT_BROWSERS = {"Chrome", "Firefox", "Safari", "Opera", "MSIE 8", "MSIE 7", "MSIE 6"};
+  private static final String[] DEFAULT_BROWSERS = {"Chrome", "Firefox", "Safari", "Opera", "MSIE"};
   public static final String KEY_BROWSER_IDS = "browserIds";
   public static final String LOGIN_FORM_POST_URL = "/j_spring_security_check";
   public static final String REDIRECTOR_URL = "/";
@@ -34,40 +34,15 @@ public class RedirectionFilter implements Filter {
   private Logger logger = LoggerFactory.getLogger(RedirectionFilter.class);
   // Configured params
   private String[] browserIds;
-  private String loginFormPostUrl;
-  private String loginErrorParamName;
-  private String redirectorUrl;
-  private String redirectionUrlParamName;
-  private String loginUrl;
+  private String loginUri;
 
   @Override
   public void init(FilterConfig fc) throws ServletException {
 
-    loginUrl = fc.getInitParameter("loginUrl");
-    if (loginUrl == null) {
+    loginUri = fc.getInitParameter("loginUrl");
+    if (loginUri == null) {
       throw new IllegalArgumentException("RedirecitonFilter requires param redirectionUrl");
     }
-
-//    loginFormPostUrl = fc.getInitParameter("loginFormPostUrl");
-//    if (loginFormPostUrl == null) {
-//      loginFormPostUrl = LOGIN_FORM_POST_URL;
-//    }
-//
-//    loginErrorParamName = fc.getInitParameter("loginErrorParamName");
-//    if (loginErrorParamName == null) {
-//      loginErrorParamName = LOGIN_ERROR_PARAM_NAME;
-//    }
-//
-//    redirectorUrl = fc.getInitParameter("redirectorUrl");
-//    if (redirectorUrl == null) {
-//      redirectorUrl = LOGIN_ERROR_PARAM_NAME;
-//    }
-//
-//    redirectionUrlParamName = fc.getInitParameter("redirectionUrlParamName");
-//    if (redirectionUrlParamName == null) {
-//      redirectionUrlParamName = LOGIN_ERROR_PARAM_NAME;
-//    }
-
     String ids = fc.getInitParameter(KEY_BROWSER_IDS);
     this.browserIds = (ids != null) ? ids.split(",") : DEFAULT_BROWSERS;
 
@@ -79,53 +54,20 @@ public class RedirectionFilter implements Filter {
     HttpServletResponse httpResponse = (HttpServletResponse) response;
     HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-//    if (logger.isDebugEnabled()) {
-//      logger.debug("servlet path= " + httpRequest.getServletPath());
-//      logger.debug("request URL= " + httpRequest.getRequestURL());
-//      logger.debug("request URI= " + httpRequest.getRequestURI());
-//    }
     final String contextPath = httpRequest.getContextPath();
     String loginRedirectUrl = new StringBuilder("http://").append(httpRequest.getHeader(HttpHeaders.HOST)).append(StringUtils.
-        isBlank(contextPath) ? "/" : contextPath).append(loginUrl).toString();
-    logger.info("login url " + loginUrl);
-    logger.info("login url to check for " + loginRedirectUrl);
-//    logger.info("login error param name " + loginErrorParamName);
-//    logger.info("login form post url " + loginFormPostUrl);
-//    logger.info("redirector url " + redirectorUrl);
-//    logger.info("redirection url param name " + redirectionUrlParamName);
-//    logger.info("browser ids " + browserIds);
-
-
-    GetStatusWrapper wrapper;
+        isBlank(contextPath) ? "/" : contextPath).append(loginUri).toString();
+    if (logger.isInfoEnabled()) {
+      logger.info("login url " + loginUri);
+      logger.info("login url to check for " + loginRedirectUrl);
+    }
+    final GetStatusWrapper wrapper;
     wrapper = new GetStatusWrapper(httpResponse);
     fc.doFilter(request, wrapper);
-
-    int status = wrapper.getStatus();
+    final int status = wrapper.getStatus();
     String requestUrl = getRequestUrl(httpRequest);
-    logger.info("Request url is " + requestUrl);
-//    String rurl = request.getParameter(redirectionUrlParamName);
-//
-//    logger.info("Redirection url from param " + requestUrl);
-//
-//    if (status == Status.SEE_OTHER.getStatusCode() && requestUrl.contains(loginFormPostUrl)) {
-//      logger.info("Request Url is login form post ");
-//      if (requestUrl.contains(loginErrorParamName)) {
-//        logger.info("Request Url contains login error parameter ");
-//        wrapper.sendRedirect(loginUrl + "?" + loginErrorParamName + "=1");
-//      }
-//      else {
-//        logger.info("login is successful, see redirector");
-//        if (StringUtils.isNotBlank(rurl)) {
-//          logger.info("redirecting to parameter redirection url " + rurl);
-//          wrapper.sendRedirect(rurl);
-//        }
-//        else {
-//          logger.info("redirecting to default redirection url ");
-//          wrapper.sendRedirect(redirectorUrl);
-//        }
-//      }
-//    }
     if (logger.isInfoEnabled()) {
+      logger.info("Request url is " + requestUrl);
       logger.info("User Agent " + httpRequest.getHeader(HttpHeaders.USER_AGENT));
       logger.info("Status " + status);
     }
@@ -134,10 +76,6 @@ public class RedirectionFilter implements Filter {
       if (location.startsWith(loginRedirectUrl) && !isUserAgentBrowser(httpRequest.getHeader(HttpHeaders.USER_AGENT))) {
         logger.info("status is 302 and client is not browser");
         wrapper.setStatus(Status.UNAUTHORIZED.getStatusCode());
-//      if (requestUrl != null) {
-//        logger.info("redirecting to " + loginUrl + "?" + redirectionUrlParamName + "=" + requestUrl);
-//        wrapper.sendRedirect(loginUrl + "?" + redirectionUrlParamName + "=" + requestUrl);
-//      }
       }
       else {
         wrapper.enableSendRedirect();
@@ -150,10 +88,11 @@ public class RedirectionFilter implements Filter {
   }
 
   private boolean isUserAgentBrowser(String userAgent) {
-    logger.info("user agent " + userAgent);
-    for (String browser_id : browserIds) {
-      logger.info("Browser " + browser_id + "------ User agent" + userAgent);
-      if (userAgent.contains(browser_id)) {
+    for (String browserId : browserIds) {
+      if (logger.isInfoEnabled()) {
+        logger.info("Browser " + browserId + " ------ User agent" + userAgent);
+      }
+      if (userAgent.contains(browserId)) {
         return true;
       }
     }
